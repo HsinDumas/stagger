@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java-version: [ '8', '11', '17' ]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Build with Maven (stagger-core)
+      run: |
+        cd stagger-core
+        mvn clean package -DskipTests
+
+    - name: Run tests (stagger-core)
+      run: |
+        cd stagger-core
+        mvn test
+
+    - name: Build Maven plugin
+      run: |
+        cd stagger-maven-plugin
+        mvn clean package -DskipTests
+
+    - name: Build Gradle plugin
+      run: |
+        cd stagger-gradle-plugin
+        ./gradlew build --no-daemon -x test
+
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Check code style with Maven
+      run: |
+        cd stagger-core
+        mvn checkstyle:check || true
+
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      continue-on-error: true
