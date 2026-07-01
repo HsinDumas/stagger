@@ -1,115 +1,124 @@
-<h1 align="center">Smart-Doc Project</h1>
+# Stagger
 
-![maven](https://img.shields.io/maven-central/v/com.ly.smart-doc/smart-doc)
-[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-![number of issues closed](https://img.shields.io/github/issues-closed-raw/smart-doc-group/smart-doc)
-![closed pull requests](https://img.shields.io/github/issues-pr-closed/smart-doc-group/smart-doc)
-![java version](https://img.shields.io/badge/JAVA-1.8+-green.svg)
-[![chinese](https://img.shields.io/badge/chinese-中文文档-brightgreen)](https://smart-doc-group.github.io/zh/)
-![gitee star](https://gitee.com/smart-doc-team/smart-doc/badge/star.svg)
-![git star](https://img.shields.io/github/stars/smart-doc-group/smart-doc.svg)
-## Introduce
+> **Let Swagger stagger. Keep your code pure.**  
+> 让 Swagger 摇晃去吧，保持你的代码纯净无瑕。
 
-`smart-doc[smɑːt dɒk]`is a tool that supports both `JAVA REST API` and `JAVA WebSocket` and `Apache Dubbo RPC` interface document generation. `Smart-doc` is
-based on interface source code analysis to generate interface documents, and zero annotation intrusion. You only need to
-write Javadoc comments when developing, `smart-doc` can help you generate `Markdown` or `HTML5` document. `smart-doc` does not
-need to inject annotations into the code like `Swagger`.
+Stagger 是一款面向未来（JDK 25+ / Spring Boot 4.x+）的 **零侵入、零注解** API 文档自动化生成工具。
 
-**[Quick Start](https://smart-doc-group.github.io/)**
+## 💡 为什么叫 Stagger？
 
-## Documentation
-* [English](https://smart-doc-group.github.io/)
-* [中文](https://smart-doc-group.github.io/zh/)
+当 Swagger 用满屏幕的 `@Schema` 和 `@Operation` 注解将你的业务代码搅得一团糟时，它已经背离了"优雅"的初衷，在现代 Clean Code 的趋势下**步履蹒跚（Stagger）**。
 
-## Features
+Stagger 继承了优秀的静态解析理念，彻底摒弃注解流：
 
-- Zero annotation, zero learning cost, only need to write standard `JAVA` document comments.
-- Automatic derivation based on source code interface definition, powerful return structure derivation support.
-- Support `Spring MVC`, `Spring Boot`, `Spring Boot Web Flux` (Not support endpoint), `Feign`,`JAX-RS`.
-- Supports the derivation of asynchronous interface returns such as `Callable`, `Future`, `CompletableFuture`.
-- Support `JSR-303`parameter verification specification.
-- Support for automatic generation of request examples based on request parameters.
-- Support for generating `JSON` return value examples.
-- Support for loading source code from outside the project to generate field comments (including the sources jar
-  package).
-- Support for generating multiple formats of documents: `Markdown`,`HTML5`,`Word`,`Asciidoctor`,`Postman Collection 2.0+`,`OpenAPI 3.0`.
-- Support the generation of `Jmeter` performance testing scripts
-- Support for generating `Javadoc` documentation for `Java` classes.
-- Support for exporting error codes and data dictionary codes to API documentation.
-- The debug html5 page fully supports file upload and download testing.
-- Support `Apache Dubbo RPC`.
-- Support `GRPC`
+- 🚫 **零侵入**：你的代码里不需要引入任何 Stagger/Swagger 的第三方注解。
+- 📝 **标准 JavaDoc + AI**：只读标准的 JavaDoc 注释，并结合大模型自动补全。
+- ⚡ **面向未来**：原生支持 JDK 25 语法新特性（Record, Pattern Matching）与 Spring Boot 4.x。
+- 🔄 **多样输出**：一键生成标准 OpenAPI 3.1、Markdown、离线 HTML 等多种格式。
 
-## Best Practice
+## ✨ 核心特性
 
-`smart-doc` + [Torna](http://torna.cn) form an industry-leading document generation and management solution, using
-`smart-doc` to complete Java source code analysis and extract annotations to generate API documents without intrusion, and
-automatically push the documents to the `Torna` enterprise-level interface document management platform.
+| 特性 | Stagger | Swagger | springdoc-openapi |
+|------|---------|---------|------------------|
+| 零代码侵入 | ✅ | ❌ | ❌ |
+| 纯 JavaDoc | ✅ | ❌ | ❌ |
+| 构建时生成 | ✅ | ❌ | ❌ |
+| Gradle 9.x | ✅ | ✅ | ✅ |
+| AI 增强 | ✅ | ❌ | ❌ |
+| OpenAPI 3.1 | ✅ | ✅ | ✅ |
 
-![smart-doc+torna](https://raw.githubusercontent.com/shalousun/smart-doc/master/images/smart-doc-torna-en.png)
+## 🚀 快速开始
 
-## Building
+### Maven
 
-You could build with the following commands. (`JDK 1.8` is required to build the master branch)
-
-```
-mvn clean install -Dmaven.test.skip=true
+```xml
+<plugin>
+    <groupId>com.github.shalousun</groupId>
+    <artifactId>stagger-maven-plugin</artifactId>
+    <version>4.0.1</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>html</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
 ```
 
-## Who is using
+### Gradle
 
-These are only part of the companies using `smart-doc`, for reference only. If you are using smart-doc,
-please [add your company here](https://github.com/smart-doc-group/smart-doc/issues/12) to tell us your scenario to make
-`smart-doc` better.
+```gradle
+plugins {
+    id 'com.ly.doc' version '4.0.1'
+}
 
-![IFLYTEK](https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/iflytek.png)
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/oneplus.png" title="一加" >
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/xiaomi.png" title="小米" >
-&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/shunfeng.png" title="顺丰">
-&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/ly.jpeg" title="同程旅行" width="160px" height="70px"/>
-&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/kuishou.png" title="快手">
-&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/mafengwo.png" title="马蜂窝">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/yunda.png" title="韵达速递" width="192px" height="64px">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/zhongtongzhiyun.png" title="中通智运">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/tcsklogo.jpeg" title="同程数科" width="170px" height="64px"/>
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/flipboard.png" title="红板报">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/dianxin.png" title="中国电信">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/yidong.png" title="中国移动">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/neusoft.png" title="东软集团">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/zhongkezhilian.png" title="中科智链" width="240px" height="64px"/>
-&nbsp;&nbsp;<img src="https://www.hand-china.com/static/img/hand-logo.svg" title="上海汉得信息技术股份有限公司" width="240px" height="64px"/>
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/yuanmengjiankang.png" title="远盟健康" width="230px" height="64px"/>
+stagger {
+    sourceCodePath = "src/main/java"
+    classAbsPath = "build/classes/java/main"
+}
+```
 
-## Acknowledgements
+## 📦 项目结构
 
-Thanks to [JetBrains SoftWare](https://www.jetbrains.com) for providing free Open Source license for this project.
-<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/jetbrains-variant-3.png" width="260px" height="220px"/>
+这是 smart-doc 的现代化维护分支，采用 Monorepo 结构：
 
-## License
+```
+stagger/
+├── stagger-core/           # 核心文档生成引擎
+├── stagger-maven-plugin/   # Maven 插件
+├── stagger-gradle-plugin/  # Gradle 插件
+└── pom.xml                 # 父 POM
+```
 
-`Smart-doc` is under the Apache 2.0 license. See
-the [LICENSE](https://github.com/smart-doc-group/smart-doc/blob/master/LICENSE)
-file for details.
+## 🔧 构建
 
-## Contact
+```bash
+# 构建全部模块
+mvn clean install
 
-Email： 836575280@qq.com
+# 构建特定模块
+cd stagger-core && mvn clean install
+cd stagger-maven-plugin && mvn clean install
 
-Twitter：https://x.com/shalousun
+# 构建 Gradle 插件
+cd stagger-gradle-plugin && ./gradlew build
+```
 
+## 🐛 主要改进
 
-If you're based in China, feel free to scan the QR code to join our community QQ group. You're also welcome to follow my personal WeChat Official Account for technical content on Java, Go (Goland), Rust, AI, and more!
-<div style="display: flex; flex-wrap: wrap;">
-    <div style="margin-right: 10px;">
-        <figure>
-        <img src="https://github.com/smart-doc-group/smart-doc/raw/master/images/smart-doc-qq.png" title="QQ群2" width="200px" 
-height="200px"/>
-        <figcaption style="text-align: center;">社区QQ群</figcaption>
-        </figure>
-    </div>
-</div>
+### Gradle 9.x 兼容性修复
 
+```java
+// ❌ 旧方式（Gradle 9.0 已移除）
+project.getConvention()
+    .getPlugin(JavaPluginConvention.class)
+    .getSourceSets();
 
-Chinese users are welcome to follow my WeChat Official Account!
+// ✅ 新方式（Gradle 7.1+）
+project.getExtensions()
+    .getByType(JavaPluginExtension.class)
+    .getSourceSets();
+```
 
-<img src="https://github.com/smart-doc-group/smart-doc/raw/master/images/WeChat-Official-Account.png" style="width: 50%; height: 50%" />
+### Monorepo 管理
+
+原 smart-doc 分散在 4 个独立仓库，现已统一为单仓库，便于版本同步和维护。
+
+## 📄 License
+
+Apache License 2.0 - See LICENSE file
+
+## 👏 致谢
+
+- **原作者**: [shalousun](https://github.com/shalousun) ([smart-doc](https://github.com/smart-doc-group/smart-doc))
+- **当前维护**: [HsinDumas](https://github.com/HsinDumas)
+
+## 🤝 贡献
+
+欢迎 Pull Request！大改动请先开 Issue 讨论。
+
+---
+
+**基于**: [smart-doc](https://github.com/smart-doc-group/smart-doc)  
+**改进**: Gradle 9.x 兼容性 + 现代化维护
