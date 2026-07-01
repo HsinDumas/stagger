@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "ci"
+
+
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+    ignore:
+      # Ignore JGit dependency(work not on jdk 8)
+      - dependency-name: "org.eclipse.jgit:org.eclipse.jgit"
+        versions:
+          - "6.x"
+
+      # Ignore Data faker dependency(work not on jdk 8)
+      - dependency-name: "net.datafaker:datafaker"
+        versions:
+          - "2.x"

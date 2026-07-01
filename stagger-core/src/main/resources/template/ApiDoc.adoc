@@ -1,0 +1,114 @@
+
+== ${desc}
+<%
+for(doc in list){
+%>
+<%if(doc.deprecated){%>
+=== [line-through]#${doc.desc}#
+<%}else{%>
+=== ${doc.desc}
+<%}%>
+*URL:* `${doc.url}`
+
+*Type:* `${doc.type}`
+
+<%if(isNotEmpty(doc.author)){%>
+*Author:* ${doc.author}
+<%}%>
+
+*Content-Type:* `${doc.contentType}`
+
+*Description:* ${doc.detail}
+
+<%if(isNotEmpty(doc.requestHeaders)){%>
+*Request-headers:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Header | Type|Required|Description|Since|Example
+<%
+for(param in doc.requestHeaders){
+%>
+|${param.name}|${param.type}|${param.required}|${param.desc}|${param.since}|${param.value}
+<%}%>
+|====================
+<%}%>
+
+
+<%if(isNotEmpty(doc.pathParams)){%>
+*Path-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since|Example
+<%
+for(param in doc.pathParams){
+%>
+|${param.field}|${param.type}|${param.required}|${param.desc}|${param.version}|${param.value}
+<%}%>
+|====================
+<%}%>
+
+<%if(isNotEmpty(doc.queryParams)){%>
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since|Example
+<%
+for(param in doc.queryParams){
+%>
+|${param.field}|${param.type}|${param.required}|${param.desc}|${param.version}|${param.value}
+<%}%>
+|====================
+<%}%>
+
+<%if(isNotEmpty(doc.requestParams)){%>
+*Body-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since|Example
+<%
+for(param in doc.requestParams){
+%>
+|${param.field}|${param.type}|${param.required}|${param.desc}|${param.version}|${param.value}
+<%}%>
+|====================
+<%}%>
+
+
+<%if(isNotEmpty(doc.requestUsage)&&isRequestExample){%>
+*Request-example:*
+----
+${doc.requestUsage}
+----
+<%}%>
+<%if(isNotEmpty(doc.responseParams)){%>
+*Response-fields:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Field | Type|Description|Since|Example
+<%
+for(param in doc.responseParams){
+%>
+|${param.field}|${param.type}|${param.desc}|${param.version}|${param.value}
+<%}%>
+|====================
+<%}%>
+
+
+<%if(isNotEmpty(doc.responseUsage)&&isResponseExample){%>
+*Response-example:*
+----
+${doc.responseUsage}
+----
+<%}%>
+
+<% } %>

@@ -1,0 +1,112 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+    }
+}
+
+plugins {
+    id 'groovy'
+    id "java"
+    id "java-gradle-plugin"
+    id "maven-publish"
+    id "signing"
+    id 'com.gradle.plugin-publish' version '1.2.1'
+}
+
+group 'com.ly.smart-doc'
+version '3.1.2'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenLocal() // This is to access the local Maven repository.
+    maven { url 'https://maven.aliyun.com/repository/public' }
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'com.ly.smart-doc', name: 'smart-doc', version: '3.1.2'
+}
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+task javadocJar(type: Jar) {
+    archiveClassifier = "javadoc"
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+javadoc {
+    configure(options) {
+        tags(
+                'todo:X"',
+                'apiNote:a:"API Note:"',
+                'implSpec:a:"Implementation Requirements:"',
+                'implNote:a:"Implementation Note:"',
+        )
+    }
+}
+
+// publish to https://plugins.gradle.org/
+gradlePlugin {
+    website = 'https://github.com/TongchengOpenSource/smart-doc-gradle-plugin'
+    vcsUrl = 'https://github.com/TongchengOpenSource/smart-doc-gradle-plugin'
+    plugins {
+        create("smartdocPlugin") {
+            id = 'com.ly.smart-doc'
+            implementationClass = 'com.ly.doc.gradle.plugin.SmartDocPlugin'
+            displayName = 'smart-doc gradle plugin'
+            description = 'smart-doc gradle plugin'
+            tags.set(['smart-doc', 'gradle-plugin'])
+        }
+    }
+}
+
+// publish to local, see https://docs.gradle.org/current/userguide/publishing_maven.html
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            version "${version}"
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal() // install to '~/.m2/repository`
+        maven {
+            allowInsecureProtocol(true)
+            url "http://localhost:8081/nexus/content/repositories/releases/"
+            credentials {
+                username 'admin'
+                password 'admin123'
+            }
+        }
+    }
+}
+
+signing {
+    // Sign all publications by default
+    sign publishing.publications
+
+    // Skip signing when certain tasks are executed
+    required {
+        !project.hasProperty('skipSigning') &&
+                !project.gradle.startParameter.taskNames.any { it.contentEquals("publishToMavenLocal") } &&
+                !project.gradle.startParameter.taskNames.any { it.contentEquals("publishPlugins") }
+    }
+}

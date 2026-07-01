@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.shalousun</groupId>
+    <artifactId>stagger</artifactId>
+    <version>4.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>stagger</name>
+    <description>
+        A fork of smart-doc with enhanced Gradle 9.x compatibility.
+        Stagger is a java restful api document generation tool. Stagger is based on interface source code analysis to generate interface documentation, completely zero-injection.
+    </description>
+    <url>https://github.com/HsinDumas/stagger</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>HsinDumas</name>
+            <url>https://github.com/HsinDumas</url>
+        </developer>
+        <developer>
+            <name>shalousun (Original Author)</name>
+            <email>836575280@qq.com</email>
+            <url>https://github.com/shalousun</url>
+        </developer>
+    </developers>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <stagger.version>4.0.1-SNAPSHOT</stagger.version>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
+    </properties>
+
+    <modules>
+        <module>stagger-core</module>
+        <module>stagger-maven-plugin</module>
+        <!-- stagger-gradle-plugin uses Gradle build, not Maven -->
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.shalousun</groupId>
+                <artifactId>stagger-core</artifactId>
+                <version>${stagger.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven-source-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
