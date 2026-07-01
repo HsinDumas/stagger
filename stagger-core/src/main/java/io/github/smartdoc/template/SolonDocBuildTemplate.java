@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,16 +18,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.template;
+package io.github.stagger.template;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.*;
-import io.github.smartdoc.handler.SolonRequestHeaderHandler;
-import io.github.smartdoc.handler.SolonRequestMappingHandler;
-import io.github.smartdoc.model.*;
-import io.github.smartdoc.model.annotation.*;
-import io.github.smartdoc.model.request.RequestMapping;
-import io.github.smartdoc.utils.JavaClassValidateUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.*;
+import io.github.stagger.handler.SolonRequestHeaderHandler;
+import io.github.stagger.handler.SolonRequestMappingHandler;
+import io.github.stagger.model.*;
+import io.github.stagger.model.annotation.*;
+import io.github.stagger.model.request.RequestMapping;
+import io.github.stagger.utils.JavaClassValidateUtil;
 import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaAnnotation;
 import com.thoughtworks.qdox.model.JavaClass;

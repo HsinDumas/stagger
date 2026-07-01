@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,57 +19,57 @@
  * under the License.
  */
 
-package io.github.smartdoc.template;
+package io.github.stagger.template;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.ApiParamEnum;
-import io.github.smartdoc.constants.ApiReqParamInTypeEnum;
-import io.github.smartdoc.constants.DocAnnotationConstants;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.constants.FormDataContentTypeEnum;
-import io.github.smartdoc.constants.JavaTypeConstants;
-import io.github.smartdoc.constants.MediaType;
-import io.github.smartdoc.constants.Methods;
-import io.github.smartdoc.constants.ParamTypeConstants;
-import io.github.smartdoc.handler.IHeaderHandler;
-import io.github.smartdoc.handler.IRequestMappingHandler;
-import io.github.smartdoc.helper.FormDataBuildHelper;
-import io.github.smartdoc.helper.JsonBuildHelper;
-import io.github.smartdoc.helper.ParamsBuildHelper;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiDoc;
-import io.github.smartdoc.model.ApiExceptionStatus;
-import io.github.smartdoc.model.ApiMethodDoc;
-import io.github.smartdoc.model.ApiMethodReqParam;
-import io.github.smartdoc.model.ApiParam;
-import io.github.smartdoc.model.ApiReqParam;
-import io.github.smartdoc.model.ApiSchema;
-import io.github.smartdoc.model.DocJavaMethod;
-import io.github.smartdoc.model.DocJavaParameter;
-import io.github.smartdoc.model.DocMapping;
-import io.github.smartdoc.model.ExceptionAdviceMethod;
-import io.github.smartdoc.model.FormData;
-import io.github.smartdoc.model.annotation.EntryAnnotation;
-import io.github.smartdoc.model.annotation.ExceptionAdviceAnnotation;
-import io.github.smartdoc.model.annotation.FrameworkAnnotations;
-import io.github.smartdoc.model.annotation.MappingAnnotation;
-import io.github.smartdoc.model.request.ApiRequestExample;
-import io.github.smartdoc.model.request.CurlRequest;
-import io.github.smartdoc.model.request.RequestMapping;
-import io.github.smartdoc.model.torna.EnumInfoAndValues;
-import io.github.smartdoc.utils.ApiParamTreeUtil;
-import io.github.smartdoc.utils.CurlUtil;
-import io.github.smartdoc.utils.DocClassUtil;
-import io.github.smartdoc.utils.DocUtil;
-import io.github.smartdoc.utils.HttpStatusUtil;
-import io.github.smartdoc.utils.JavaClassUtil;
-import io.github.smartdoc.utils.JavaClassValidateUtil;
-import io.github.smartdoc.utils.JavaFieldUtil;
-import io.github.smartdoc.utils.JsonUtil;
-import io.github.smartdoc.utils.OpenApiSchemaUtil;
-import io.github.smartdoc.utils.RequestExampleUtil;
-import io.github.smartdoc.utils.TornaUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.ApiParamEnum;
+import io.github.stagger.constants.ApiReqParamInTypeEnum;
+import io.github.stagger.constants.DocAnnotationConstants;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.constants.FormDataContentTypeEnum;
+import io.github.stagger.constants.JavaTypeConstants;
+import io.github.stagger.constants.MediaType;
+import io.github.stagger.constants.Methods;
+import io.github.stagger.constants.ParamTypeConstants;
+import io.github.stagger.handler.IHeaderHandler;
+import io.github.stagger.handler.IRequestMappingHandler;
+import io.github.stagger.helper.FormDataBuildHelper;
+import io.github.stagger.helper.JsonBuildHelper;
+import io.github.stagger.helper.ParamsBuildHelper;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiDoc;
+import io.github.stagger.model.ApiExceptionStatus;
+import io.github.stagger.model.ApiMethodDoc;
+import io.github.stagger.model.ApiMethodReqParam;
+import io.github.stagger.model.ApiParam;
+import io.github.stagger.model.ApiReqParam;
+import io.github.stagger.model.ApiSchema;
+import io.github.stagger.model.DocJavaMethod;
+import io.github.stagger.model.DocJavaParameter;
+import io.github.stagger.model.DocMapping;
+import io.github.stagger.model.ExceptionAdviceMethod;
+import io.github.stagger.model.FormData;
+import io.github.stagger.model.annotation.EntryAnnotation;
+import io.github.stagger.model.annotation.ExceptionAdviceAnnotation;
+import io.github.stagger.model.annotation.FrameworkAnnotations;
+import io.github.stagger.model.annotation.MappingAnnotation;
+import io.github.stagger.model.request.ApiRequestExample;
+import io.github.stagger.model.request.CurlRequest;
+import io.github.stagger.model.request.RequestMapping;
+import io.github.stagger.model.torna.EnumInfoAndValues;
+import io.github.stagger.utils.ApiParamTreeUtil;
+import io.github.stagger.utils.CurlUtil;
+import io.github.stagger.utils.DocClassUtil;
+import io.github.stagger.utils.DocUtil;
+import io.github.stagger.utils.HttpStatusUtil;
+import io.github.stagger.utils.JavaClassUtil;
+import io.github.stagger.utils.JavaClassValidateUtil;
+import io.github.stagger.utils.JavaFieldUtil;
+import io.github.stagger.utils.JsonUtil;
+import io.github.stagger.utils.OpenApiSchemaUtil;
+import io.github.stagger.utils.RequestExampleUtil;
+import io.github.stagger.utils.TornaUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.RandomUtil;
 import com.power.common.util.StringUtil;
@@ -104,7 +104,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.github.smartdoc.constants.DocTags.IGNORE;
+import static io.github.stagger.constants.DocTags.IGNORE;
 
 /**
  * Rest api doc template
@@ -1249,7 +1249,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			}
 			// Handle if it is map types
 			else if (JavaClassValidateUtil.isMap(fullyQualifiedName)) {
-				log.warning("When using smart-doc, it is not recommended to use Map to receive parameters, Check it in "
+				log.warning("When using stagger, it is not recommended to use Map to receive parameters, Check it in "
 						+ javaMethod.getDeclaringClass().getCanonicalName() + "#" + javaMethod.getName());
 
 				paramList.addAll(ParamsBuildHelper.buildMapParam(gicNameArr, DocGlobalConstants.EMPTY, 0,

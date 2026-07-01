@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -24,7 +24,7 @@
  * It provides a container for storing and accessing the name of the exception advice annotation.
  * @author yu 2024/6/8
  */
-package io.github.smartdoc.model.annotation;
+package io.github.stagger.model.annotation;
 
 /**
  * @author yu.sun on 2024/6/9

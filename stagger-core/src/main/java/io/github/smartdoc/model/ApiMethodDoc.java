@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,11 +19,11 @@
  * under the License.
  */
 
-package io.github.smartdoc.model;
+package io.github.stagger.model;
 
-import io.github.smartdoc.constants.MediaType;
-import io.github.smartdoc.model.request.ApiRequestExample;
-import io.github.smartdoc.utils.ParamUtil;
+import io.github.stagger.constants.MediaType;
+import io.github.stagger.model.request.ApiRequestExample;
+import io.github.stagger.utils.ParamUtil;
 import com.power.common.util.StringUtil;
 import com.thoughtworks.qdox.model.JavaClass;
 

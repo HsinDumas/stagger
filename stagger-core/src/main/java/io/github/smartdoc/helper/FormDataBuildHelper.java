@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,23 +18,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.helper;
+package io.github.stagger.helper;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.constants.JSRAnnotationConstants;
-import io.github.smartdoc.constants.ParamTypeConstants;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.CustomField;
-import io.github.smartdoc.model.DocJavaField;
-import io.github.smartdoc.model.FormData;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.constants.JSRAnnotationConstants;
+import io.github.stagger.constants.ParamTypeConstants;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.CustomField;
+import io.github.stagger.model.DocJavaField;
+import io.github.stagger.model.FormData;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.RandomUtil;
 import com.power.common.util.StringUtil;
 import com.thoughtworks.qdox.model.JavaAnnotation;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaField;
-import io.github.smartdoc.utils.*;
+import io.github.stagger.utils.*;
 
 import java.util.*;
 

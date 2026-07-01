@@ -1,7 +1,7 @@
 /*
- * smart-doc
+ * stagger
  *
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,9 +20,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.plugin.util;
+package io.github.stagger.plugin.util;
 
-import io.github.smartdoc.plugin.chain.*;
+import io.github.stagger.plugin.chain.*;
 import org.apache.maven.artifact.Artifact;
 
 /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,17 +18,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.handler;
+package io.github.stagger.handler;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocAnnotationConstants;
-import io.github.smartdoc.constants.Methods;
-import io.github.smartdoc.function.RequestMappingFunc;
-import io.github.smartdoc.model.annotation.FrameworkAnnotations;
-import io.github.smartdoc.model.annotation.MappingAnnotation;
-import io.github.smartdoc.model.request.RequestMapping;
-import io.github.smartdoc.utils.DocUtil;
-import io.github.smartdoc.utils.JavaClassUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocAnnotationConstants;
+import io.github.stagger.constants.Methods;
+import io.github.stagger.function.RequestMappingFunc;
+import io.github.stagger.model.annotation.FrameworkAnnotations;
+import io.github.stagger.model.annotation.MappingAnnotation;
+import io.github.stagger.model.request.RequestMapping;
+import io.github.stagger.utils.DocUtil;
+import io.github.stagger.utils.JavaClassUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
 import com.thoughtworks.qdox.model.JavaAnnotation;
@@ -38,8 +38,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static io.github.smartdoc.constants.DocTags.DEPRECATED;
-import static io.github.smartdoc.constants.DocTags.IGNORE;
+import static io.github.stagger.constants.DocTags.DEPRECATED;
+import static io.github.stagger.constants.DocTags.IGNORE;
 
 /**
  * Spring MVC RequestMapping Handler

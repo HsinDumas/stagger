@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,21 +19,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.builder.websocket;
+package io.github.stagger.builder.websocket;
 
-import io.github.smartdoc.builder.IBaseDocBuilderTemplate;
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.HighlightStyle;
-import io.github.smartdoc.constants.TemplateVariable;
-import io.github.smartdoc.factory.BuildTemplateFactory;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiDocDict;
-import io.github.smartdoc.model.ApiErrorCode;
-import io.github.smartdoc.model.WebSocketDoc;
-import io.github.smartdoc.template.IWebSocketDocBuildTemplate;
-import io.github.smartdoc.utils.BeetlTemplateUtil;
-import io.github.smartdoc.utils.DocUtil;
+import io.github.stagger.builder.IBaseDocBuilderTemplate;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.HighlightStyle;
+import io.github.stagger.constants.TemplateVariable;
+import io.github.stagger.factory.BuildTemplateFactory;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiDocDict;
+import io.github.stagger.model.ApiErrorCode;
+import io.github.stagger.model.WebSocketDoc;
+import io.github.stagger.template.IWebSocketDocBuildTemplate;
+import io.github.stagger.utils.BeetlTemplateUtil;
+import io.github.stagger.utils.DocUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.FileUtil;
 import com.thoughtworks.qdox.JavaProjectBuilder;

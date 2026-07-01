@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,10 +19,10 @@
  * under the License.
  */
 
-package io.github.smartdoc.model;
+package io.github.stagger.model;
 
-import io.github.smartdoc.model.torna.EnumInfo;
-import io.github.smartdoc.model.torna.EnumInfoAndValues;
+import io.github.stagger.model.torna.EnumInfo;
+import io.github.stagger.model.torna.EnumInfoAndValues;
 import com.power.common.util.CollectionUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,7 +34,7 @@ import java.util.Stack;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static io.github.smartdoc.constants.DocGlobalConstants.PARAM_PREFIX;
+import static io.github.stagger.constants.DocGlobalConstants.PARAM_PREFIX;
 
 /**
  * Api Parameter

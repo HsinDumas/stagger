@@ -1,7 +1,7 @@
 /*
- * smart-doc https://github.com/HsinDumas/stagger
+ * stagger https://github.com/HsinDumas/stagger
  *
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.model;
+package io.github.stagger.model;
 
 import java.io.Serializable;
 

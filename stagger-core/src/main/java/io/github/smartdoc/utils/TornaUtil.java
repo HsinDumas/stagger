@@ -1,7 +1,7 @@
 /*
- * smart-doc
+ * stagger
  *
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -21,32 +21,32 @@
  * under the License.
  */
 
-package io.github.smartdoc.utils;
+package io.github.stagger.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import io.github.smartdoc.constants.DocAnnotationConstants;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.ParamTypeConstants;
-import io.github.smartdoc.constants.TornaConstants;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiDocDict;
-import io.github.smartdoc.model.ApiErrorCode;
-import io.github.smartdoc.model.ApiMethodDoc;
-import io.github.smartdoc.model.ApiParam;
-import io.github.smartdoc.model.ApiReqParam;
-import io.github.smartdoc.model.BodyAdvice;
-import io.github.smartdoc.model.DataDict;
-import io.github.smartdoc.model.RpcJavaMethod;
-import io.github.smartdoc.model.rpc.RpcApiDependency;
-import io.github.smartdoc.model.torna.Apis;
-import io.github.smartdoc.model.torna.CommonErrorCode;
-import io.github.smartdoc.model.torna.DebugEnv;
-import io.github.smartdoc.model.torna.HttpParam;
-import io.github.smartdoc.model.torna.TornaApi;
-import io.github.smartdoc.model.torna.TornaDic;
-import io.github.smartdoc.model.torna.TornaRequestInfo;
+import io.github.stagger.constants.DocAnnotationConstants;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.ParamTypeConstants;
+import io.github.stagger.constants.TornaConstants;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiDocDict;
+import io.github.stagger.model.ApiErrorCode;
+import io.github.stagger.model.ApiMethodDoc;
+import io.github.stagger.model.ApiParam;
+import io.github.stagger.model.ApiReqParam;
+import io.github.stagger.model.BodyAdvice;
+import io.github.stagger.model.DataDict;
+import io.github.stagger.model.RpcJavaMethod;
+import io.github.stagger.model.rpc.RpcApiDependency;
+import io.github.stagger.model.torna.Apis;
+import io.github.stagger.model.torna.CommonErrorCode;
+import io.github.stagger.model.torna.DebugEnv;
+import io.github.stagger.model.torna.HttpParam;
+import io.github.stagger.model.torna.TornaApi;
+import io.github.stagger.model.torna.TornaDic;
+import io.github.stagger.model.torna.TornaRequestInfo;
 import com.power.common.model.EnumDictionary;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.OkHttp3Util;
@@ -63,8 +63,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static io.github.smartdoc.constants.TornaConstants.ENUM_PUSH;
-import static io.github.smartdoc.constants.TornaConstants.PUSH;
+import static io.github.stagger.constants.TornaConstants.ENUM_PUSH;
+import static io.github.stagger.constants.TornaConstants.PUSH;
 
 /**
  * Torna Util

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,10 +19,10 @@
  * under the License.
  */
 
-package io.github.smartdoc.model.openapi;
+package io.github.stagger.model.openapi;
 
-import io.github.smartdoc.constants.OpenApiTagNameTypeEnum;
-import io.github.smartdoc.model.ApiDoc;
+import io.github.stagger.constants.OpenApiTagNameTypeEnum;
+import io.github.stagger.model.ApiDoc;
 
 import java.util.Objects;
 

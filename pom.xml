@@ -10,7 +10,7 @@
 
     <name>stagger</name>
     <description>
-        A fork of smart-doc with enhanced Gradle 9.x compatibility.
+        A fork of stagger with enhanced Gradle 9.x compatibility.
         Stagger is a java restful api document generation tool. Stagger is based on interface source code analysis to generate interface documentation, completely zero-injection.
     </description>
     <url>https://github.com/HsinDumas/stagger</url>

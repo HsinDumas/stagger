@@ -1,7 +1,7 @@
 /*
- * smart-doc
+ * stagger
  *
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,14 +20,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.plugin.util;
+package io.github.stagger.plugin.util;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.github.smartdoc.model.*;
-import io.github.smartdoc.plugin.constant.GlobalConstants;
+import io.github.stagger.model.*;
+import io.github.stagger.plugin.constant.GlobalConstants;
 import com.power.common.util.FileUtil;
 import com.power.common.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -41,7 +41,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-import static io.github.smartdoc.plugin.constant.GlobalConstants.FILE_SEPARATOR;
+import static io.github.stagger.plugin.constant.GlobalConstants.FILE_SEPARATOR;
 
 /**
  * @author xingzi 2019/12/07 21:19
@@ -123,7 +123,7 @@ public class MojoUtils {
                 requestBodyAdvice.setWrapperClass(getClassByClassName(requestBodyAdvice.getClassName(), classLoader));
             }
             if (Objects.nonNull(increment)) {
-                // overwrite smart-doc.json
+                // overwrite stagger.json
                 apiConfig.setIncrement(increment);
             }
 

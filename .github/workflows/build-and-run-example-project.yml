@@ -9,7 +9,7 @@ on:
       - 'pom.xml'         # Trigger workflow only if pom.xml file changes
 
 env:
-  smart-doc-version: ${{ github.run_id }} # Use the current GitHub workflow run ID as a temporary version number
+  stagger-version: ${{ github.run_id }} # Use the current GitHub workflow run ID as a temporary version number
 
 jobs:
   build:
@@ -29,7 +29,7 @@ jobs:
         run: mkdir -p logs
 
       - name: Update Version in pom.xml
-        run: mvn versions:set -DnewVersion="${{ env.smart-doc-version }}" -DgenerateBackupPoms=false
+        run: mvn versions:set -DnewVersion="${{ env.stagger-version }}" -DgenerateBackupPoms=false
 
       - name: Build and Install
         run: |
@@ -43,15 +43,15 @@ jobs:
         id: upload-artifact
         uses: actions/upload-artifact@v5
         with:
-          name: smart-doc-maven-jar
-          path: ~/.m2/repository/com/ly/smart-doc
+          name: stagger-maven-jar
+          path: ~/.m2/repository/com/ly/stagger
           if-no-files-found: error
 
       - name: Upload Build Log
         if: failure()  # Only run if previous steps fail
         uses: actions/upload-artifact@v5
         with:
-          name: error-log-smart-doc-build
+          name: error-log-stagger-build
           path: logs/build.log
 
   maven-plugin-build:
@@ -65,7 +65,7 @@ jobs:
       - name: Checkout Maven Plugin Repository
         uses: actions/checkout@v5
         with:
-          repository: HsinDumas/smart-doc-maven-plugin
+          repository: HsinDumas/stagger-maven-plugin
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up JDK 8
@@ -80,20 +80,20 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v6
         with:
-          name: smart-doc-maven-jar
+          name: stagger-maven-jar
           path: ./artifacts
 
       - name: Move Files to Local Maven Repository
         run: |
-          mkdir -p ~/.m2/repository/com/ly/smart-doc
+          mkdir -p ~/.m2/repository/com/ly/stagger
           echo "Overwriting target directory with new artifacts:"
-          rsync -av --delete ./artifacts/ ~/.m2/repository/com/ly/smart-doc/
+          rsync -av --delete ./artifacts/ ~/.m2/repository/com/ly/stagger/
           echo "Listing files in target directory:"
-          ls -lh ~/.m2/repository/com/ly/smart-doc
+          ls -lh ~/.m2/repository/com/ly/stagger
 
       - name: Update Version in pom.xml
         run: |
-          mvn versions:set-property -Dproperty="smart-doc.version" -DnewVersion="${{ env.smart-doc-version }}" -DgenerateBackupPoms=false
+          mvn versions:set-property -Dproperty="stagger.version" -DnewVersion="${{ env.stagger-version }}" -DgenerateBackupPoms=false
 
       - name: Build and Install
         run: |
@@ -107,8 +107,8 @@ jobs:
         id: upload-artifact
         uses: actions/upload-artifact@v5
         with:
-          name: smart-doc-maven-plugin-jar
-          path: ~/.m2/repository/com/ly/smart-doc
+          name: stagger-maven-plugin-jar
+          path: ~/.m2/repository/com/ly/stagger
           if-no-files-found: error
 
       - name: Upload Plugin Build Log
@@ -132,7 +132,7 @@ jobs:
       - name: Checkout Example Project
         uses: actions/checkout@v5
         with:
-          repository: HsinDumas/smart-doc-example-cn
+          repository: HsinDumas/stagger-example-cn
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up JDK 17
@@ -147,20 +147,20 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v6
         with:
-          name: smart-doc-maven-plugin-jar
+          name: stagger-maven-plugin-jar
           path: ./artifacts
 
       - name: Move Files to Local Maven Repository
         run: |
-          mkdir -p ~/.m2/repository/com/ly/smart-doc
+          mkdir -p ~/.m2/repository/com/ly/stagger
           echo "Overwriting target directory with new artifacts:"
-          rsync -av --delete ./artifacts/ ~/.m2/repository/com/ly/smart-doc/
+          rsync -av --delete ./artifacts/ ~/.m2/repository/com/ly/stagger/
           echo "Listing files in target directory:"
-          ls -lh ~/.m2/repository/com/ly/smart-doc
+          ls -lh ~/.m2/repository/com/ly/stagger
 
       - name: Update Smart-Doc Version in pom.xml
         run: |
-          mvn versions:set-property -Dproperty="smart-doc.version" -DnewVersion="${{ env.smart-doc-version }}" -DgenerateBackupPoms=false
+          mvn versions:set-property -Dproperty="stagger.version" -DnewVersion="${{ env.stagger-version }}" -DgenerateBackupPoms=false
 
       - name: Build and Install Example Project
         run: |
@@ -174,61 +174,61 @@ jobs:
         run: |
           case ${{ matrix.doc_type }} in
             rest)
-              mvn -DskipTests=true smart-doc:adoc 2>&1 | tee logs/rest-adoc.log
+              mvn -DskipTests=true stagger:adoc 2>&1 | tee logs/rest-adoc.log
               if grep -E "\[ERROR\]" logs/rest-adoc.log; then cat logs/rest-adoc.log; exit 1; fi
           
-              mvn -DskipTests=true smart-doc:html 2>&1 | tee logs/rest-html.log
+              mvn -DskipTests=true stagger:html 2>&1 | tee logs/rest-html.log
               if grep -E "\[ERROR\]" logs/rest-html.log; then cat logs/rest-html.log; exit 1; fi
           
-              mvn -DskipTests=true smart-doc:jmeter 2>&1 | tee logs/rest-jmeter.log
+              mvn -DskipTests=true stagger:jmeter 2>&1 | tee logs/rest-jmeter.log
               if grep -E "\[ERROR\]" logs/rest-jmeter.log; then cat logs/rest-jmeter.log; exit 1; fi
           
-              mvn -DskipTests=true smart-doc:markdown 2>&1 | tee logs/rest-markdown.log
+              mvn -DskipTests=true stagger:markdown 2>&1 | tee logs/rest-markdown.log
               if grep -E "\[ERROR\]" logs/rest-markdown.log; then cat logs/rest-markdown.log; exit 1; fi
           
-              mvn -DskipTests=true smart-doc:openapi 2>&1 | tee logs/rest-openapi.log
+              mvn -DskipTests=true stagger:openapi 2>&1 | tee logs/rest-openapi.log
               if grep -E "\[ERROR\]" logs/rest-openapi.log; then cat logs/rest-openapi.log; exit 1; fi
           
-              mvn -DskipTests=true smart-doc:postman 2>&1 | tee logs/rest-postman.log
+              mvn -DskipTests=true stagger:postman 2>&1 | tee logs/rest-postman.log
               if grep -E "\[ERROR\]" logs/rest-postman.log; then cat logs/rest-postman.log; exit 1; fi 
           
-              mvn -DskipTests=true smart-doc:swagger 2>&1 | tee logs/rest-swagger.log
+              mvn -DskipTests=true stagger:swagger 2>&1 | tee logs/rest-swagger.log
               if grep -E "\[ERROR\]" logs/rest-swagger.log; then cat logs/rest-swagger.log; exit 1; fi   
           
-              mvn -DskipTests=true smart-doc:word 2>&1 | tee logs/rest-word.log
+              mvn -DskipTests=true stagger:word 2>&1 | tee logs/rest-word.log
               if grep -E "\[ERROR\]" logs/rest-word.log; then cat logs/rest-word.log; exit 1; fi   
           
               mvn test -Dtest=com.power.doc.torna.TornaApiTest 2>&1 | tee logs/rest-TornaApiTest.log
               if grep -E "\[ERROR\]" logs/rest-TornaApiTest.log; then cat logs/rest-TornaApiTest.log; exit 1; fi
               ;;
             dubbo)
-              mvn -DskipTests=true smart-doc:rpc-adoc 2>&1 | tee logs/rpc-adoc.log
+              mvn -DskipTests=true stagger:rpc-adoc 2>&1 | tee logs/rpc-adoc.log
               if grep -E "\[ERROR\]" logs/rpc-adoc.log; then cat logs/rpc-adoc.log; exit 1; fi
           
-              mvn -DskipTests=true smart-doc:rpc-html 2>&1 | tee logs/rpc-html.log
+              mvn -DskipTests=true stagger:rpc-html 2>&1 | tee logs/rpc-html.log
               if grep -E "\[ERROR\]" logs/rpc-html.log; then cat logs/rpc-html.log; exit 1; fi
 
-              mvn -DskipTests=true smart-doc:rpc-markdown 2>&1 | tee logs/rpc-markdown.log
+              mvn -DskipTests=true stagger:rpc-markdown 2>&1 | tee logs/rpc-markdown.log
               if grep -E "\[ERROR\]" logs/rpc-markdown.log; then cat logs/rpc-markdown.log; exit 1; fi
               ;;
             javadoc)
-              mvn -DskipTests=true smart-doc:javadoc-adoc 2>&1 | tee logs/javadoc-adoc.log
+              mvn -DskipTests=true stagger:javadoc-adoc 2>&1 | tee logs/javadoc-adoc.log
               if grep -E "\[ERROR\]" logs/javadoc-adoc.log; then cat logs/javadoc-adoc.log; exit 1; fi
           
-              mvn -DskipTests=true smart-doc:javadoc-html 2>&1 | tee logs/javadoc-html.log
+              mvn -DskipTests=true stagger:javadoc-html 2>&1 | tee logs/javadoc-html.log
               if grep -E "\[ERROR\]" logs/javadoc-html.log; then cat logs/javadoc-html.log; exit 1; fi
 
-              mvn -DskipTests=true smart-doc:javadoc-markdown 2>&1 | tee logs/javadoc-markdown.log
+              mvn -DskipTests=true stagger:javadoc-markdown 2>&1 | tee logs/javadoc-markdown.log
               if grep -E "\[ERROR\]" logs/javadoc-markdown.log; then cat logs/javadoc-markdown.log; exit 1; fi
               ;;
             websocket)
-              mvn -DskipTests=true smart-doc:websocket-adoc 2>&1 | tee logs/websocket-adoc.log
+              mvn -DskipTests=true stagger:websocket-adoc 2>&1 | tee logs/websocket-adoc.log
               if grep -E "\[ERROR\]" logs/websocket-adoc.log; then cat logs/websocket-adoc.log; exit 1; fi
           
-              mvn -DskipTests=true smart-doc:websocket-html 2>&1 | tee logs/websocket-html.log
+              mvn -DskipTests=true stagger:websocket-html 2>&1 | tee logs/websocket-html.log
               if grep -E "\[ERROR\]" logs/websocket-html.log; then cat logs/websocket-html.log; exit 1; fi
 
-              mvn -DskipTests=true smart-doc:websocket-markdown 2>&1 | tee logs/websocket-markdown.log
+              mvn -DskipTests=true stagger:websocket-markdown 2>&1 | tee logs/websocket-markdown.log
               if grep -E "\[ERROR\]" logs/websocket-markdown.log; then cat logs/websocket-markdown.log; exit 1; fi
               ;;
           esac
@@ -261,7 +261,7 @@ jobs:
       - name: Checkout Example Project
         uses: actions/checkout@v5
         with:
-          repository: HsinDumas/smart-doc-example-cn
+          repository: HsinDumas/stagger-example-cn
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up JDK 17
@@ -277,17 +277,17 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v6
         with:
-          name: smart-doc-maven-plugin-jar
+          name: stagger-maven-plugin-jar
           path: ./artifacts
 
       - name: Move Files to Local Maven Repository
         run: |
           if [[ "${{ matrix.os }}" == "ubuntu-latest" || "${{ matrix.os }}" == "macos-latest" ]]; then
-            TARGET_DIR=~/.m2/repository/com/ly/smart-doc/
+            TARGET_DIR=~/.m2/repository/com/ly/stagger/
             mkdir -p "$TARGET_DIR" || echo "Directory already exists"
             rsync -av --delete ./artifacts/ "$TARGET_DIR"
           elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-            TARGET_DIR="$USERPROFILE\\.m2\\repository\\com\\ly\\smart-doc\\"
+            TARGET_DIR="$USERPROFILE\\.m2\\repository\\com\\ly\\stagger\\"
             mkdir -p "$TARGET_DIR" || echo "Directory already exists"
             cp -r ./artifacts/* "$TARGET_DIR"
           fi
@@ -296,7 +296,7 @@ jobs:
 
       - name: Update Smart-Doc Version in pom.xml
         run: |
-          mvn versions:set-property -Dproperty="smart-doc.version" -DnewVersion="${{ env.smart-doc-version }}" -DgenerateBackupPoms=false
+          mvn versions:set-property -Dproperty="stagger.version" -DnewVersion="${{ env.stagger-version }}" -DgenerateBackupPoms=false
 
       - name: Build and Install Example Project
         run: |
@@ -309,19 +309,19 @@ jobs:
 
       - name: Generate gRPC AsciiDoc Documentation
         run: |
-          mvn -DskipTests=true smart-doc:grpc-adoc 2>&1 | tee logs/grpc-adoc.log
+          mvn -DskipTests=true stagger:grpc-adoc 2>&1 | tee logs/grpc-adoc.log
           if grep -E "\[ERROR\]" logs/grpc-adoc.log; then cat logs/grpc-adoc.log; exit 1; fi
         shell: bash
 
       - name: Generate gRPC HTML Documentation
         run: |
-          mvn -DskipTests=true smart-doc:grpc-html 2>&1 | tee logs/grpc-html.log
+          mvn -DskipTests=true stagger:grpc-html 2>&1 | tee logs/grpc-html.log
           if grep -E "\[ERROR\]" logs/grpc-html.log; then cat logs/grpc-html.log; exit 1; fi
         shell: bash
 
       - name: Generate gRPC Markdown Documentation
         run: |
-          mvn -DskipTests=true smart-doc:grpc-markdown 2>&1 | tee logs/grpc-markdown.log
+          mvn -DskipTests=true stagger:grpc-markdown 2>&1 | tee logs/grpc-markdown.log
           if grep -E "\[ERROR\]" logs/grpc-markdown.log; then cat logs/grpc-markdown.log; exit 1; fi
         shell: bash
 

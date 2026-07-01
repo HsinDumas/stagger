@@ -1,32 +1,32 @@
 <h1 align="center">Smart-Doc Maven Plugin</h1>
 
-![maven](https://img.shields.io/maven-central/v/com.ly.smart-doc/smart-doc-maven-plugin)
+![maven](https://img.shields.io/maven-central/v/com.ly.stagger/stagger-maven-plugin)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-![number of issues closed](https://img.shields.io/github/issues-closed-raw/HsinDumas/smart-doc-maven-plugin)
-![closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/HsinDumas/smart-doc-maven-plugin)
+![number of issues closed](https://img.shields.io/github/issues-closed-raw/HsinDumas/stagger-maven-plugin)
+![closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/HsinDumas/stagger-maven-plugin)
 ![java version](https://img.shields.io/badge/JAVA-1.8+-green.svg)
 [![chinese](https://img.shields.io/badge/chinese-中文文档-brightgreen)](https://github.com/HsinDumas/stagger-maven-plugin/blob/master/README_CN.md)
 
 ## Introduce
 
-smart-doc-maven-plugin is a `maven` plugin developed by the smart-doc official team.
-This plugin is available from smart-doc 1.7.9.
-Using smart-doc-maven-plugin makes it easier to integrate smart-doc into your project, and integration is more
+stagger-maven-plugin is a `maven` plugin developed by the stagger official team.
+This plugin is available from stagger 1.7.9.
+Using stagger-maven-plugin makes it easier to integrate stagger into your project, and integration is more
 lightweight.
 You no longer need to write unit tests in your project to
-Start smart-doc to scan source code analysis and generate API documents.
-You can run the `maven` command directly or click on the preset` goal` of the smart-doc-maven-plugin in the IDE to
+Start stagger to scan source code analysis and generate API documents.
+You can run the `maven` command directly or click on the preset` goal` of the stagger-maven-plugin in the IDE to
 generate API documentation.
-smart-doc-maven-plugin will also make smart-doc's ability to generate API documentation more powerful.
-[About smart-doc](https://HsinDumas.github.io/#/)
+stagger-maven-plugin will also make stagger's ability to generate API documentation more powerful.
+[About stagger](https://HsinDumas.github.io/#/)
 
 ## Best Practice
 
-smart-doc + [Torna](http://torna.cn) form an industry-leading document generation and management solution, using
-smart-doc to complete Java source code analysis and extract annotations to generate API documents without intrusion, and
+stagger + [Torna](http://torna.cn) form an industry-leading document generation and management solution, using
+stagger to complete Java source code analysis and extract annotations to generate API documents without intrusion, and
 automatically push the documents to the Torna enterprise-level interface document management platform.
 
-![smart-doc+torna](https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/smart-doc-torna-en.png)
+![stagger+torna](https://raw.githubusercontent.com/HsinDumas/stagger/master/images/stagger-torna-en.png)
 
 ## Getting started
 
@@ -34,22 +34,22 @@ automatically push the documents to the Torna enterprise-level interface documen
 
 ```
 <plugin>
-    <groupId>com.ly.smart-doc</groupId>
-    <artifactId>smart-doc-maven-plugin</artifactId>
+    <groupId>com.ly.stagger</groupId>
+    <artifactId>stagger-maven-plugin</artifactId>
     <version>[latest version]</version>
     <configuration>
         <!--skip option is used to disable plugin in child module-->
         <!--<skip>true</skip>-->
         <!--Specify the configuration file used to generate the document-->
-        <configFile>./src/main/resources/smart-doc.json</configFile>
-        <!--smart-doc implements automatic analysis of the dependency tree to load the source code of third-party dependencies. If some framework dependency libraries are not loaded, an error is reported, then use excludes to exclude-->
+        <configFile>./src/main/resources/stagger.json</configFile>
+        <!--stagger implements automatic analysis of the dependency tree to load the source code of third-party dependencies. If some framework dependency libraries are not loaded, an error is reported, then use excludes to exclude-->
         <excludes>
             <!--The format is: groupId: artifactId; refer to the following-->
             <!--since 1.0.7 version you can also use regular matching to exclude, such as: poi. *-->
             <exclude>com.google.guava:guava</exclude>
         </excludes>
         <!--Since version 1.0.8, the plugin provides includes support-->
-        <!--smart-doc can automatically analyze the dependency tree to load all dependent source code. In principle, it will affect the efficiency of document construction, so you can use includes to let the plugin load the components you configure.-->
+        <!--stagger can automatically analyze the dependency tree to load all dependent source code. In principle, it will affect the efficiency of document construction, so you can use includes to let the plugin load the components you configure.-->
         <includes>
             <!--The format is: groupId: artifactId; refer to the following-->
             <include>com.alibaba:fastjson</include>
@@ -57,10 +57,10 @@ automatically push the documents to the Torna enterprise-level interface documen
     </configuration>
     <executions>
         <execution>
-            <!--Comment out phase if you don't need to start smart-doc when compiling-->
+            <!--Comment out phase if you don't need to start stagger when compiling-->
             <phase>compile</phase>
             <goals>
-                <!--smart-doc provides html, openapi, markdown, adoc and other goals-->
+                <!--stagger provides html, openapi, markdown, adoc and other goals-->
                 <goal>html</goal>
             </goals>
         </execution>
@@ -70,9 +70,9 @@ automatically push the documents to the Torna enterprise-level interface documen
 
 ### Create a json config
 
-Create a json configuration file in your project. The smart-doc-maven-plugin plugin will use this configuration
+Create a json configuration file in your project. The stagger-maven-plugin plugin will use this configuration
 information.
-For example, create `/src/main/resources/smart-doc.json` in the project.
+For example, create `/src/main/resources/stagger.json` in the project.
 The configuration contents are as follows.
 
 **Minimize configuration:**
@@ -85,12 +85,12 @@ The configuration contents are as follows.
 }
 ```
 
-Only three configurations items are needed to generate API documentation using smart-doc-maven-plugin. In fact, only
+Only three configurations items are needed to generate API documentation using stagger-maven-plugin. In fact, only
 outPath must be configured.
 
 **Detailed configuration content:**
 
-smart-doc provides a lot of configuration options. For more configuration options,
+stagger provides a lot of configuration options. For more configuration options,
 please refer to the [official documentation](https://HsinDumas.github.io/#/diy/config?id=allconfig)
 
 ### Generated document
@@ -98,30 +98,30 @@ please refer to the [official documentation](https://HsinDumas.github.io/#/diy/c
 #### Run plugin with maven command
 
 ```
-mvn -Dfile.encoding=UTF-8 smart-doc:html
+mvn -Dfile.encoding=UTF-8 stagger:html
 //  Generate document output to Markdown
-mvn -Dfile.encoding=UTF-8 smart-doc:markdown
+mvn -Dfile.encoding=UTF-8 stagger:markdown
 // Generate document output to Adoc
-mvn -Dfile.encoding=UTF-8 smart-doc:adoc
+mvn -Dfile.encoding=UTF-8 stagger:adoc
 // Generate Postman.
-mvn -Dfile.encoding=UTF-8 smart-doc:postman
-// build Open Api 3.0+,Since smart-doc-maven-plugin 1.1.5
-mvn -Dfile.encoding=UTF-8 smart-doc:openapi
+mvn -Dfile.encoding=UTF-8 stagger:postman
+// build Open Api 3.0+,Since stagger-maven-plugin 1.1.5
+mvn -Dfile.encoding=UTF-8 stagger:openapi
 // Generate document and push to torna
-mvn -Dfile.encoding=UTF-8 smart-doc:torna-rest
+mvn -Dfile.encoding=UTF-8 stagger:torna-rest
 // Generate document output to Word.
-mvn -Dfile.encoding=UTF-8 smart-doc:word
+mvn -Dfile.encoding=UTF-8 stagger:word
 // Generate Jmeter performance pressure test scripts.
-mvn -Dfile.encoding=UTF-8 smart-doc:
+mvn -Dfile.encoding=UTF-8 stagger:
 
 
 // Apache Dubbo RPC
 // Generate html
-mvn -Dfile.encoding=UTF-8 smart-doc:rpc-html
+mvn -Dfile.encoding=UTF-8 stagger:rpc-html
 // Generate markdown
-mvn -Dfile.encoding=UTF-8 smart-doc:rpc-markdown
+mvn -Dfile.encoding=UTF-8 stagger:rpc-markdown
 // Generate adoc
-mvn -Dfile.encoding=UTF-8 smart-doc:rpc-adoc
+mvn -Dfile.encoding=UTF-8 stagger:rpc-adoc
 ```
 
 **Note:** Under the window system, if you use the maven command line to perform document generation,
@@ -141,10 +141,10 @@ OS name: "windows 10", version: "10.0", arch: "amd64", family: "dos"
 
 #### Run plugin in IDEA
 
-On Use IntelliJ IDE, if you have added smart-doc-maven-plugin to the project,
-you can directly find the plugin smart-doc plugin and click to generate API documentation.
+On Use IntelliJ IDE, if you have added stagger-maven-plugin to the project,
+you can directly find the plugin stagger plugin and click to generate API documentation.
 
-![smart-doc-maven-plugin](https://raw.githubusercontent.com/HsinDumas/smart-doc-maven-plugin/master/images/idea.png)
+![stagger-maven-plugin](https://raw.githubusercontent.com/HsinDumas/stagger-maven-plugin/master/images/idea.png)
 
 ### Generated document example
 
@@ -172,33 +172,33 @@ mvn clean install -Dmaven.test.skip=true
 
 ## Who is using
 
-These are only part of the companies using smart-doc, for reference only. If you are using smart-doc,
+These are only part of the companies using stagger, for reference only. If you are using stagger,
 please [add your company here](https://github.com/HsinDumas/stagger/issues/12) to tell us your scenario to make
-smart-doc better.
+stagger better.
 
-![IFLYTEK](https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/iflytek.png)
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/oneplus.png" title="一加" >
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/xiaomi.png" title="小米" >
-&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/shunfeng.png" title="顺丰">
-&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/ly.jpeg" title="同程旅行" width="160px" height="70px"/>
-&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/kuishou.png" title="快手">
-&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/mafengwo.png" title="马蜂窝">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/yunda.png" title="韵达速递" width="192px" height="64px">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/zhongtongzhiyun.png" title="中通智运">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/tcsklogo.jpeg" title="同程数科" width="170px" height="64px"/>
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/flipboard.png" title="红板报">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/dianxin.png" title="中国电信">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/yidong.png" title="中国移动">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/neusoft.png" title="东软集团">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/zhongkezhilian.png" title="中科智链" width="240px" height="64px"/>
+![IFLYTEK](https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/iflytek.png)
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/oneplus.png" title="一加" >
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/xiaomi.png" title="小米" >
+&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/shunfeng.png" title="顺丰">
+&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/ly.jpeg" title="同程旅行" width="160px" height="70px"/>
+&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/kuishou.png" title="快手">
+&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/mafengwo.png" title="马蜂窝">
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/yunda.png" title="韵达速递" width="192px" height="64px">
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/zhongtongzhiyun.png" title="中通智运">
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/tcsklogo.jpeg" title="同程数科" width="170px" height="64px"/>
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/flipboard.png" title="红板报">
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/dianxin.png" title="中国电信">
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/yidong.png" title="中国移动">
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/neusoft.png" title="东软集团">
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/zhongkezhilian.png" title="中科智链" width="240px" height="64px"/>
 &nbsp;&nbsp;<img src="https://www.hand-china.com/static/img/hand-logo.svg" title="上海汉得信息技术股份有限公司" width="240px" height="64px"/>
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/yuanmengjiankang.png" title="远盟健康" width="230px" height="64px"/>
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/stagger/master/images/known-users/yuanmengjiankang.png" title="远盟健康" width="230px" height="64px"/>
 
 
 ## License
 
-smart-doc-maven-plugin is under the Apache 2.0 license. See
-the [LICENSE](https://raw.githubusercontent.com/HsinDumas/smart-doc-maven-plugin/master/LICENSE) file for details.
+stagger-maven-plugin is under the Apache 2.0 license. See
+the [LICENSE](https://raw.githubusercontent.com/HsinDumas/stagger-maven-plugin/master/LICENSE) file for details.
 
 ## Contact
 

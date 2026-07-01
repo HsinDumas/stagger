@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,9 +18,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.filter;
+package io.github.stagger.filter;
 
-import io.github.smartdoc.model.ApiReturn;
+import io.github.stagger.model.ApiReturn;
 
 import java.util.ArrayList;
 import java.util.List;

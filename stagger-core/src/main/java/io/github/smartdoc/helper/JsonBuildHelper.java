@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,24 +18,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.helper;
+package io.github.stagger.helper;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.constants.JavaTypeConstants;
-import io.github.smartdoc.model.ApiReturn;
-import io.github.smartdoc.model.CustomField;
-import io.github.smartdoc.model.CustomFieldInfo;
-import io.github.smartdoc.model.DocJavaField;
-import io.github.smartdoc.model.DocJavaMethod;
-import io.github.smartdoc.model.FieldJsonAnnotationInfo;
-import io.github.smartdoc.utils.DocClassUtil;
-import io.github.smartdoc.utils.DocUtil;
-import io.github.smartdoc.utils.JavaClassUtil;
-import io.github.smartdoc.utils.JavaClassValidateUtil;
-import io.github.smartdoc.utils.JavaFieldUtil;
-import io.github.smartdoc.utils.JsonUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.constants.JavaTypeConstants;
+import io.github.stagger.model.ApiReturn;
+import io.github.stagger.model.CustomField;
+import io.github.stagger.model.CustomFieldInfo;
+import io.github.stagger.model.DocJavaField;
+import io.github.stagger.model.DocJavaMethod;
+import io.github.stagger.model.FieldJsonAnnotationInfo;
+import io.github.stagger.utils.DocClassUtil;
+import io.github.stagger.utils.DocUtil;
+import io.github.stagger.utils.JavaClassUtil;
+import io.github.stagger.utils.JavaClassValidateUtil;
+import io.github.stagger.utils.JavaFieldUtil;
+import io.github.stagger.utils.JsonUtil;
 import com.power.common.util.StringUtil;
 import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -51,7 +51,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static io.github.smartdoc.constants.DocTags.IGNORE_RESPONSE_BODY_ADVICE;
+import static io.github.stagger.constants.DocTags.IGNORE_RESPONSE_BODY_ADVICE;
 
 /**
  * Json Builder

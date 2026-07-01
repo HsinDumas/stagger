@@ -54,7 +54,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.shalousun</groupId>
-            <artifactId>smart-doc</artifactId>
+            <artifactId>stagger-core</artifactId>
             <version>4.0.0</version>
         </dependency>
     </dependencies>
@@ -105,7 +105,7 @@
                 </executions>
             </plugin>
         </plugins>
-        <finalName>smart-doc-maven-plugin</finalName>
+        <finalName>stagger-maven-plugin</finalName>
     </build>
     <profiles>
         <profile>

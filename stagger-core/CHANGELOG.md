@@ -1,4 +1,4 @@
-## smart-doc版本
+## stagger版本
 
 ### 版本号：3.0.3
 
@@ -22,7 +22,7 @@
 ### 版本号：3.0.2
 - 更新日期: 2024-2-26
 - 更新内容：
-  1. 优化推送rpc文档到torna时smart-doc设置的框架名错误，[#690](https://github.com/HsinDumas/stagger/issues/690)
+  1. 优化推送rpc文档到torna时stagger设置的框架名错误，[#690](https://github.com/HsinDumas/stagger/issues/690)
   2. 修复html文档搜索后链接错误的bug，[#693](https://github.com/HsinDumas/stagger/pull/693)
   3. 支持分批上传文档到torna[#697](https://github.com/HsinDumas/stagger/issues/697)
   4. 修复mock中值双引号被删除的问题[#680](https://github.com/HsinDumas/stagger/issues/680)
@@ -38,7 +38,7 @@
   14. 忽略NoClassDefFoundError错误，避免第三方代码存在问题时影响文档生成。 [#724](https://github.com/HsinDumas/stagger/issue/724)
   15. 修复gradle插件codePath未设置导致使用报错的问题。 [gradle #15](https://github.com/HsinDumas/stagger-gradle-plugin/pull/15)
   16. 优化常量获取，兼容更多用户可以在路径中使用各种常量。[#730](https://github.com/HsinDumas/stagger/pull/730)
-  17. 修改高版本smart-doc生成JAX-RS规范项目文档报错问题。[#729](https://github.com/HsinDumas/stagger/pull/729)
+  17. 修改高版本stagger生成JAX-RS规范项目文档报错问题。[#729](https://github.com/HsinDumas/stagger/pull/729)
   18. 修复内部枚举类作为参数时无法正常解析的问题。[#728](https://github.com/HsinDumas/stagger/pull/728)
   19. 修复void返回时返回用例生成错误。[#726](https://github.com/HsinDumas/stagger/pull/726)
   20. 修改JAX-RS绑定集合入参报错问题。 [#735](https://github.com/HsinDumas/stagger/pull/735)
@@ -84,7 +84,7 @@
 
 - 更新日期: 2023-09-3
 - 更新内容：
-  1. 优化smart-doc常量获取，支持静态导入的常量获取。[qdox #1](https://github.com/HsinDumas/qdox/pull/1)
+  1. 优化stagger常量获取，支持静态导入的常量获取。[qdox #1](https://github.com/HsinDumas/qdox/pull/1)
   2. 无源代码第三方接口范型方法的解析支持，[pr#587](https://github.com/HsinDumas/stagger/pull/587)
   3. 生成Markdown代码块添加语言类型支持，[#566](https://github.com/HsinDumas/stagger/pull/566)
   4. 修复openapi生成summary和description设置，[#580](https://github.com/HsinDumas/stagger/issues/580)
@@ -338,7 +338,7 @@
     7. 修复多文件上传，推送到torna的类型错误[#234](https://github.com/HsinDumas/stagger/issues/234)
     8. 修复分组验证在OpenAPI中不生效问题[#243](https://github.com/HsinDumas/stagger/issues/243)
     9. 修复OpenAPI数据类型设置错误[#253](https://github.com/HsinDumas/stagger/issues/253)
-    10. 支持在smart-doc.json配置中对@RequestHeader进行忽略了[#250](https://github.com/HsinDumas/stagger/issues/250)
+    10. 支持在stagger.json配置中对@RequestHeader进行忽略了[#250](https://github.com/HsinDumas/stagger/issues/250)
     11. 修复controller注释html文档导航链接无效的问题[#255](https://github.com/HsinDumas/stagger/issues/255)
     12. 支持内部类枚举私有属性解析。
     13. 移除Spring标记过时的`application/json;charset=UTF-8`，默认改为`application/json`
@@ -512,7 +512,7 @@
 
 - 更新日期: 2021-08-08
 - 更新内容：
-    1. 修复字典码推送torna错误 #https://gitee.com/smart-doc-team/smart-doc/issues/I43JQR。
+    1. 修复字典码推送torna错误 #https://gitee.com/stagger-team/stagger/issues/I43JQR。
     2. 新增jsr303 @size和@length支持。
     3. 修改html的模板样式错误。
     4. 修复postman错误#I41G2E 。
@@ -527,7 +527,7 @@
     2. 支持请求头常量设置解析。
     3. 支持使用JsonIgnoreProperties和JSONType注解去忽略多字段。
     4. 修改部分文档设置allInOneDocFileName无效的问题,[#131](https://github.com/HsinDumas/stagger/issues/131)
-    5. 修复dubbo rpc文档模板格式错误 #https://gitee.com/smart-doc-team/smart-doc/issues/I40ZGE .
+    5. 修复dubbo rpc文档模板格式错误 #https://gitee.com/stagger-team/stagger/issues/I40ZGE .
     6. 支持配置添加拦截器中设置全局请求参数，[#132](https://github.com/HsinDumas/stagger/issues/132)
     7. 修复部分类型mock未推送到torna的问题。
 
@@ -566,7 +566,7 @@
     4. 修复推送到torna请求或返回为数组时，示例显示错误
     5. Character类型解析支持。
     6. 修复使用Quartz中JobDataMap类型解析错误。
-    7. 移除YapiBuilder。smart-doc不在支持其他第三方接口系统，请使用torna.
+    7. 移除YapiBuilder。stagger不在支持其他第三方接口系统，请使用torna.
 
 #### 版本号：2.1.9
 
@@ -574,7 +574,7 @@
 - 更新内容：
     1. 修复inlineEnum为false时枚举展示在参数中的问题。
     2. 返回Spring文件下载对象支持自动识别为文件下载，减少手动标记@download tag。
-    3. smart-doc使用的css cdn更换，默认使用国内cdn，提升国内的加载速度，切换英文环境使用google的cdn.
+    3. stagger使用的css cdn更换，默认使用国内cdn，提升国内的加载速度，切换英文环境使用google的cdn.
     4. 添加多层泛型嵌套的解析支持。gitee #I3T6UV .
     5. 修复父类是泛型时父类中LocalDateTime类型字段生成json样例错误。
     6. 添加将接口排序order推送到torna中。
@@ -798,7 +798,7 @@
     3. 修改服务url的地址为空字符串，不再提供默认http前缀
     4. 增加泛型实际类型的显示开关控制。
     5. 修复类继承一个泛型类时的解析错误。
-    6. 优化smart-doc maven插件，提升用户在多模块下的使用体验。
+    6. 优化stagger maven插件，提升用户在多模块下的使用体验。
 
 #### 版本号：1.9.5
 
@@ -832,7 +832,7 @@
 - 更新内容：
     1. 修改前面版本修改引发的普通jsr 303验证解析错误问题。
     2. 新增忽略请求参数对象的配置gitee #I1RBJO。
-    3. 修改smart-doc的beetl配置避免和用户的业务中beetl配置冲突。
+    3. 修改stagger的beetl配置避免和用户的业务中beetl配置冲突。
     4. 新增ApiDataBuilder中获取树形格式参数数据的接口[#40](https://github.com/HsinDumas/stagger/issues/40)
     5. 新增对Open Api 3.0的支持。
     6. 修改字典表空时内部发生空指针的问题。
@@ -844,7 +844,7 @@
 - 更新内容：
     1. 修改进去版本更新导致的泛型解析问题。
     2. 修改1.8.9版本修改后带来的dubbo接口文档显示问题
-    3. 修改smart-doc-maven-plugin生成dubbo文档时缺乏配置文件错误问题。
+    3. 修改stagger-maven-plugin生成dubbo文档时缺乏配置文件错误问题。
     4. 修改gradle插件的对多模块的支持。
 
 #### 版本号：1.9.0
@@ -893,23 +893,23 @@
 
 - 更新日期: 2020-05-09
 - 更新内容：
-    1. 增加localTime支持[gitee #I1F7CW](https://gitee.com/sunyurepository/smart-doc/issues/I1F7CW)。
-    2. 优化smart-doc导入Postman
-       collection时的header问题[gitee #I1EX42](https://gitee.com/sunyurepository/smart-doc/issues/I1EX42)
-    3. 优化smart-doc-maven-plugin加载source的过滤，支持使用通配符来过滤。
-    4. 首次发布gradle插件，发布smart-doc-gradle-plugin插件，
+    1. 增加localTime支持[gitee #I1F7CW](https://gitee.com/sunyurepository/stagger/issues/I1F7CW)。
+    2. 优化stagger导入Postman
+       collection时的header问题[gitee #I1EX42](https://gitee.com/sunyurepository/stagger/issues/I1EX42)
+    3. 优化stagger-maven-plugin加载source的过滤，支持使用通配符来过滤。
+    4. 首次发布gradle插件，发布stagger-gradle-plugin插件，
     5. 修复通用泛型解析出错[git #28](https://github.com/HsinDumas/stagger/issues/28)。
 
 #### 版本号：1.8.5
 
 - 更新日期: 2020-04-19
 - 更新内容：
-    1. maven插件错误码列表导出bug[git #I1EHXA](https://gitee.com/sunyurepository/smart-doc/issues/I1EHXA)
-    2. 增加@PatchMapping支持[gitee #I1EDRF](https://gitee.com/sunyurepository/smart-doc/issues/I1EDRF)
-    3. 解决javadoc包含重复tag生成文档报错[gitee #I1ENNM](https://gitee.com/sunyurepository/smart-doc/issues/I1ENNM)
+    1. maven插件错误码列表导出bug[git #I1EHXA](https://gitee.com/sunyurepository/stagger/issues/I1EHXA)
+    2. 增加@PatchMapping支持[gitee #I1EDRF](https://gitee.com/sunyurepository/stagger/issues/I1EDRF)
+    3. 解决javadoc包含重复tag生成文档报错[gitee #I1ENNM](https://gitee.com/sunyurepository/stagger/issues/I1ENNM)
     4. 修改当请求参数为泛型时数据解析错误问题。
     5. 修复分组验证空指针问题，不对返回对象做分组验证处理。
-    6. 优化smart-doc-maven-plugin对多级maven项目的加载。
+    6. 优化stagger-maven-plugin对多级maven项目的加载。
     7. 支持请求参数对象替换成另外的对象来渲染文档
 
 #### 版本号：1.8.4
@@ -918,16 +918,16 @@
 - 更新内容：
     1. Controller新增时候@ignore
        tag,可适应该tag忽略不需要生成文档的controller[git #24](https://github.com/HsinDumas/stagger/issues/24)
-    2. 参数中包含 HttpSession时smart-doc卡主，[gitee #I1CA9M](https://gitee.com/sunyurepository/smart-doc/issues/I1CA9M)
-    3. 解决一些复杂分组场景smart-doc报错的问题[gitee #I1CPSM](https://gitee.com/sunyurepository/smart-doc/issues/I1CPSM)
-    4. 解决smart-doc-maven-plugin插件读取配置乱码问题。
+    2. 参数中包含 HttpSession时stagger卡主，[gitee #I1CA9M](https://gitee.com/sunyurepository/stagger/issues/I1CA9M)
+    3. 解决一些复杂分组场景stagger报错的问题[gitee #I1CPSM](https://gitee.com/sunyurepository/stagger/issues/I1CPSM)
+    4. 解决stagger-maven-plugin插件读取配置乱码问题。
 
 #### 版本号：1.8.3
 
 - 更新日期: 2020-03-21
 - 更新内容：
     1. 增加从接口方法getter或者setter方法中读取注释。
-    2. 修改smart-doc默认编码为utf-8，解决生成文档乱码问题。
+    2. 修改stagger默认编码为utf-8，解决生成文档乱码问题。
     3. 增加对代码中@author tag的支持，支持多作者。
 
 #### 版本号：1.8.2
@@ -957,10 +957,10 @@
 - 更新内容：
     1. 修改参数上多个验证注解不支持的问题。
     2. 修改支持上传文件参数不列举到文档的问题。
-    3. 新增ApiDataBuilder用于获取smart-doc生成的文档数据，包含header、字典、错误码等。
+    3. 新增ApiDataBuilder用于获取stagger生成的文档数据，包含header、字典、错误码等。
     4. 合并fork分支的github book html5模板，新增搜索和锚点。
     5. 新增自定义@mock tag用于指定生成文档的字段值，@param 的参数注释增加mock值的功能(@param name 姓名|张三)
-    6. 重点：smart-doc的maven插件smart-doc-maven-plugin增强对maven标准项目的支持。
+    6. 重点：stagger的maven插件stagger-maven-plugin增强对maven标准项目的支持。
     7. 全面支持spring的表单参数绑定解析。
     8. postman json生成支持所有参数自动回填。再也不用自己建参数了。
     9. 优化对实体类中枚举字段的支持。
@@ -972,10 +972,10 @@
 - 更新内容：
     1. 修改request请求参数中嵌套对象不能解析的bug，参考gitee #I16AN2.
     2. controller参数是数组时添加@PathVariable注解会报空指针,参考gitee #I16F6G
-    3. 新增ApiDataBuilder用于获取smart-doc生成的文档数据，包含header、字典、错误码等。
+    3. 新增ApiDataBuilder用于获取stagger生成的文档数据，包含header、字典、错误码等。
     4. 修改github https://github.com/HsinDumas/stagger/issues/9 文档错误bug.
     5. 新增接口的@author展示，方法从文档中查到找到接口负责人，生成文档可以选择关闭显示。
-    6. 重点：smart-doc的maven插件smart-doc-maven-plugin 1.0.0版本发布。
+    6. 重点：stagger的maven插件stagger-maven-plugin 1.0.0版本发布。
 
 #### 版本号：1.7.8
 
@@ -1107,20 +1107,20 @@
 - 更新内容：
     1. 修改PostMapping和GetMapping value为空报错的bug
     2. 增强时间字段的mock数据创建
-    3. 修改smart-doc解析自引用对象出错的bug
+    3. 修改stagger解析自引用对象出错的bug
 
 #### 版本号：1.0
 
 - 更新日期：2018-08-25
 - 更新内容：
-    1. smart-doc增加将所有文档导出归档到一个markdown中件的功能
+    1. stagger增加将所有文档导出归档到一个markdown中件的功能
     2. 参考阿里开发手册将直接提升到1.0，之前的版本主要是个人内部测试
 
 #### 版本号：0.5
 
 - 更新日期：2018-08-23
 - 更新内容：
-    1. 将api-doc重命名为smart-doc并发布到中央仓库
+    1. 将api-doc重命名为stagger并发布到中央仓库
 
 #### 版本号：0.4
 

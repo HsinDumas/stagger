@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,18 +18,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.builder;
+package io.github.stagger.builder;
 
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.DocLanguage;
-import io.github.smartdoc.constants.FrameworkEnum;
-import io.github.smartdoc.constants.HighLightJsConstants;
-import io.github.smartdoc.constants.TemplateVariable;
-import io.github.smartdoc.factory.BuildTemplateFactory;
-import io.github.smartdoc.model.*;
-import io.github.smartdoc.template.IDocBuildTemplate;
-import io.github.smartdoc.utils.BeetlTemplateUtil;
-import io.github.smartdoc.utils.DocUtil;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.DocLanguage;
+import io.github.stagger.constants.FrameworkEnum;
+import io.github.stagger.constants.HighLightJsConstants;
+import io.github.stagger.constants.TemplateVariable;
+import io.github.stagger.factory.BuildTemplateFactory;
+import io.github.stagger.model.*;
+import io.github.stagger.template.IDocBuildTemplate;
+import io.github.stagger.utils.BeetlTemplateUtil;
+import io.github.stagger.utils.DocUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.DateTimeUtil;
 import com.power.common.util.FileUtil;
@@ -125,7 +125,7 @@ public interface IBaseDocBuilderTemplate<T extends IDoc> {
 				.setRevisionTime(strTime)
 				.setAuthor("@" + System.getProperty("user.name"))
 				.setVersion("v" + strTime)
-				.setRemarks("Created by smart-doc")
+				.setRemarks("Created by stagger")
 				.setStatus("auto"));
 		}
 		if (StringUtil.isEmpty(config.getFramework())) {

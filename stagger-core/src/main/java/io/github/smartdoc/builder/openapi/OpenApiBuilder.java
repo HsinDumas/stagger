@@ -1,7 +1,7 @@
 /*
- * smart-doc
+ * stagger
  *
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,24 +20,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.builder.openapi;
+package io.github.stagger.builder.openapi;
 
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.Methods;
-import io.github.smartdoc.constants.OpenApiTagNameTypeEnum;
-import io.github.smartdoc.constants.ParamTypeConstants;
-import io.github.smartdoc.helper.JavaProjectBuilderHelper;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiDoc;
-import io.github.smartdoc.model.ApiExceptionStatus;
-import io.github.smartdoc.model.ApiMethodDoc;
-import io.github.smartdoc.model.ApiParam;
-import io.github.smartdoc.model.ApiReqParam;
-import io.github.smartdoc.model.ApiSchema;
-import io.github.smartdoc.model.TagDoc;
-import io.github.smartdoc.model.openapi.OpenApiTag;
-import io.github.smartdoc.utils.JsonUtil;
-import io.github.smartdoc.utils.OpenApiSchemaUtil;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.Methods;
+import io.github.stagger.constants.OpenApiTagNameTypeEnum;
+import io.github.stagger.constants.ParamTypeConstants;
+import io.github.stagger.helper.JavaProjectBuilderHelper;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiDoc;
+import io.github.stagger.model.ApiExceptionStatus;
+import io.github.stagger.model.ApiMethodDoc;
+import io.github.stagger.model.ApiParam;
+import io.github.stagger.model.ApiReqParam;
+import io.github.stagger.model.ApiSchema;
+import io.github.stagger.model.TagDoc;
+import io.github.stagger.model.openapi.OpenApiTag;
+import io.github.stagger.utils.JsonUtil;
+import io.github.stagger.utils.OpenApiSchemaUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.FileUtil;
 import com.thoughtworks.qdox.JavaProjectBuilder;
@@ -79,7 +79,7 @@ public class OpenApiBuilder extends AbstractOpenApiBuilder {
 
 	/**
 	 * For unit testing
-	 * @param config Configuration of smart-doc
+	 * @param config Configuration of stagger
 	 */
 	public static void buildOpenApi(ApiConfig config) {
 		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
@@ -87,8 +87,8 @@ public class OpenApiBuilder extends AbstractOpenApiBuilder {
 	}
 
 	/**
-	 * Only for smart-doc maven plugin and gradle plugin.
-	 * @param config Configuration of smart-doc
+	 * Only for stagger maven plugin and gradle plugin.
+	 * @param config Configuration of stagger
 	 * @param projectBuilder JavaDocBuilder of QDox
 	 */
 	public static void buildOpenApi(ApiConfig config, JavaProjectBuilder projectBuilder) {
@@ -121,7 +121,7 @@ public class OpenApiBuilder extends AbstractOpenApiBuilder {
 
 	/**
 	 * Build openapi info
-	 * @param apiConfig Configuration of smart-doc
+	 * @param apiConfig Configuration of stagger
 	 * @return Map
 	 */
 	private static Map<String, Object> buildInfo(ApiConfig apiConfig) {
@@ -133,7 +133,7 @@ public class OpenApiBuilder extends AbstractOpenApiBuilder {
 
 	/**
 	 * Build Servers
-	 * @param config Configuration of smart-doc
+	 * @param config Configuration of stagger
 	 * @return List of Map
 	 */
 	private static List<Map<String, Object>> buildServers(ApiConfig config) {
@@ -199,7 +199,7 @@ public class OpenApiBuilder extends AbstractOpenApiBuilder {
 
 	/**
 	 * Build requestBody
-	 * @param apiConfig Configuration of smart-doc
+	 * @param apiConfig Configuration of stagger
 	 * @param apiMethodDoc ApiMethodDoc
 	 * @return requestBody Map
 	 */

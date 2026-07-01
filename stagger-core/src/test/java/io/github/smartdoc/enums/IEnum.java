@@ -1,4 +1,4 @@
-package io.github.smartdoc.enums;
+package io.github.stagger.enums;
 
 /**
  * @author <a href="mailto:cqmike0315@gmail.com" rel="nofollow">chenqi</a>

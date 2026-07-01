@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,21 +18,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.template;
+package io.github.stagger.template;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.helper.ParamsBuildHelper;
-import io.github.smartdoc.model.*;
-import io.github.smartdoc.model.annotation.FrameworkAnnotations;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.helper.ParamsBuildHelper;
+import io.github.stagger.model.*;
+import io.github.stagger.model.annotation.FrameworkAnnotations;
 import com.power.common.util.StringUtil;
 import com.thoughtworks.qdox.model.*;
-import io.github.smartdoc.utils.*;
+import io.github.stagger.utils.*;
 
 import java.util.*;
 
-import static io.github.smartdoc.constants.DocGlobalConstants.NO_COMMENTS_FOUND;
+import static io.github.stagger.constants.DocGlobalConstants.NO_COMMENTS_FOUND;
 
 /**
  * Base Doc Build Template

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,7 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.model.postman;
+package io.github.stagger.model.postman;
 
 import java.util.UUID;
 
@@ -39,7 +39,7 @@ public class InfoBean {
 
 	public InfoBean(String name) {
 		if (StringUtils.isBlank(name)) {
-			this.name = "smart-doc    "
+			this.name = "stagger    "
 					+ DateTimeUtil.long2Str(System.currentTimeMillis(), DateTimeUtil.DATE_FORMAT_SECOND);
 		}
 		else {

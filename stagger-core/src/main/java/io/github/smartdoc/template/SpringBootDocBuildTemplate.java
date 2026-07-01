@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,38 +18,38 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.template;
+package io.github.stagger.template;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocAnnotationConstants;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.constants.FrameworkEnum;
-import io.github.smartdoc.constants.Methods;
-import io.github.smartdoc.constants.SpringMvcAnnotations;
-import io.github.smartdoc.constants.SpringMvcRequestAnnotationsEnum;
-import io.github.smartdoc.handler.SpringMVCRequestHeaderHandler;
-import io.github.smartdoc.handler.SpringMVCRequestMappingHandler;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiDoc;
-import io.github.smartdoc.model.ApiExceptionStatus;
-import io.github.smartdoc.model.ApiParam;
-import io.github.smartdoc.model.ApiReqParam;
-import io.github.smartdoc.model.ApiSchema;
-import io.github.smartdoc.model.ExceptionAdviceMethod;
-import io.github.smartdoc.model.WebSocketDoc;
-import io.github.smartdoc.model.annotation.EntryAnnotation;
-import io.github.smartdoc.model.annotation.ExceptionAdviceAnnotation;
-import io.github.smartdoc.model.annotation.FrameworkAnnotations;
-import io.github.smartdoc.model.annotation.HeaderAnnotation;
-import io.github.smartdoc.model.annotation.MappingAnnotation;
-import io.github.smartdoc.model.annotation.PathVariableAnnotation;
-import io.github.smartdoc.model.annotation.RequestBodyAnnotation;
-import io.github.smartdoc.model.annotation.RequestParamAnnotation;
-import io.github.smartdoc.model.annotation.RequestPartAnnotation;
-import io.github.smartdoc.model.annotation.ServerEndpointAnnotation;
-import io.github.smartdoc.model.request.RequestMapping;
-import io.github.smartdoc.utils.JavaClassValidateUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocAnnotationConstants;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.constants.FrameworkEnum;
+import io.github.stagger.constants.Methods;
+import io.github.stagger.constants.SpringMvcAnnotations;
+import io.github.stagger.constants.SpringMvcRequestAnnotationsEnum;
+import io.github.stagger.handler.SpringMVCRequestHeaderHandler;
+import io.github.stagger.handler.SpringMVCRequestMappingHandler;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiDoc;
+import io.github.stagger.model.ApiExceptionStatus;
+import io.github.stagger.model.ApiParam;
+import io.github.stagger.model.ApiReqParam;
+import io.github.stagger.model.ApiSchema;
+import io.github.stagger.model.ExceptionAdviceMethod;
+import io.github.stagger.model.WebSocketDoc;
+import io.github.stagger.model.annotation.EntryAnnotation;
+import io.github.stagger.model.annotation.ExceptionAdviceAnnotation;
+import io.github.stagger.model.annotation.FrameworkAnnotations;
+import io.github.stagger.model.annotation.HeaderAnnotation;
+import io.github.stagger.model.annotation.MappingAnnotation;
+import io.github.stagger.model.annotation.PathVariableAnnotation;
+import io.github.stagger.model.annotation.RequestBodyAnnotation;
+import io.github.stagger.model.annotation.RequestParamAnnotation;
+import io.github.stagger.model.annotation.RequestPartAnnotation;
+import io.github.stagger.model.annotation.ServerEndpointAnnotation;
+import io.github.stagger.model.request.RequestMapping;
+import io.github.stagger.utils.JavaClassValidateUtil;
 import com.power.common.util.DateTimeUtil;
 import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaAnnotation;

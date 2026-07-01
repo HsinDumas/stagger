@@ -1,4 +1,4 @@
-package io.github.smartdoc.model;
+package io.github.stagger.model;
 
 import java.io.Serializable;
 

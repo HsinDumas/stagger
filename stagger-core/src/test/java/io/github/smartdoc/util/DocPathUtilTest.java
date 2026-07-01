@@ -1,7 +1,7 @@
-package io.github.smartdoc.util;
+package io.github.stagger.util;
 
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.utils.DocPathUtil;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.utils.DocPathUtil;
 
 import org.junit.jupiter.api.Test;
 

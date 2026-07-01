@@ -1,9 +1,9 @@
-package io.github.smartdoc.util;
+package io.github.stagger.util;
 
-import io.github.smartdoc.constants.ApiReqParamInTypeEnum;
-import io.github.smartdoc.model.ApiReqParam;
-import io.github.smartdoc.model.request.CurlRequest;
-import io.github.smartdoc.utils.CurlUtil;
+import io.github.stagger.constants.ApiReqParamInTypeEnum;
+import io.github.stagger.model.ApiReqParam;
+import io.github.stagger.model.request.CurlRequest;
+import io.github.stagger.utils.CurlUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

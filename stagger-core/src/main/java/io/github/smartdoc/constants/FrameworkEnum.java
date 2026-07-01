@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,7 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.constants;
+package io.github.stagger.constants;
 
 import com.power.common.util.StringUtil;
 
@@ -35,32 +35,32 @@ public enum FrameworkEnum {
 	/**
 	 * Apache Dubbo
 	 */
-	DUBBO("dubbo", "io.github.smartdoc.template.RpcDocBuildTemplate"),
+	DUBBO("dubbo", "io.github.stagger.template.RpcDocBuildTemplate"),
 
 	/**
 	 * Javadoc
 	 */
-	JAVADOC("javadoc", "io.github.smartdoc.template.JavadocDocBuildTemplate"),
+	JAVADOC("javadoc", "io.github.stagger.template.JavadocDocBuildTemplate"),
 
 	/**
 	 * Spring Framework
 	 */
-	SPRING("spring", "io.github.smartdoc.template.SpringBootDocBuildTemplate"),
+	SPRING("spring", "io.github.stagger.template.SpringBootDocBuildTemplate"),
 
 	/**
 	 * Solon
 	 */
-	SOLON("solon", "io.github.smartdoc.template.SolonDocBuildTemplate"),
+	SOLON("solon", "io.github.stagger.template.SolonDocBuildTemplate"),
 
 	/**
 	 * JAX-RS
 	 */
-	JAX_RS("JAX-RS", "io.github.smartdoc.template.JAXRSDocBuildTemplate"),
+	JAX_RS("JAX-RS", "io.github.stagger.template.JAXRSDocBuildTemplate"),
 
 	/**
 	 * grpc
 	 */
-	GRPC("grpc", "io.github.smartdoc.template.GRpcDocBuildTemplate"),
+	GRPC("grpc", "io.github.stagger.template.GRpcDocBuildTemplate"),
 
 	;
 

@@ -1,4 +1,4 @@
-package io.github.smartdoc.enums;
+package io.github.stagger.enums;
 
 /**
  * @author yu 2019/10/31.

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,10 +19,10 @@
  * under the License.
  */
 
-package io.github.smartdoc.model.torna;
+package io.github.stagger.model.torna;
 
-import io.github.smartdoc.model.ApiMethodDoc;
-import io.github.smartdoc.constants.TornaConstants;
+import io.github.stagger.model.ApiMethodDoc;
+import io.github.stagger.constants.TornaConstants;
 
 import java.io.Serializable;
 import java.util.List;

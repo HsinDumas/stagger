@@ -1,7 +1,7 @@
 /*
- * smart-doc https://github.com/HsinDumas/stagger
+ * stagger https://github.com/HsinDumas/stagger
  *
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,28 +20,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.helper;
+package io.github.stagger.helper;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.constants.JavaTypeConstants;
-import io.github.smartdoc.constants.ParamTypeConstants;
-import io.github.smartdoc.extension.json.PropertyNameHelper;
-import io.github.smartdoc.extension.json.PropertyNamingStrategies;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiDataDictionary;
-import io.github.smartdoc.model.ApiParam;
-import io.github.smartdoc.model.CustomFieldInfo;
-import io.github.smartdoc.model.DocJavaField;
-import io.github.smartdoc.model.FieldJsonAnnotationInfo;
-import io.github.smartdoc.model.torna.EnumInfoAndValues;
-import io.github.smartdoc.utils.DocClassUtil;
-import io.github.smartdoc.utils.DocUtil;
-import io.github.smartdoc.utils.JavaClassUtil;
-import io.github.smartdoc.utils.JavaClassValidateUtil;
-import io.github.smartdoc.utils.JavaFieldUtil;
-import io.github.smartdoc.utils.ParamUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.constants.JavaTypeConstants;
+import io.github.stagger.constants.ParamTypeConstants;
+import io.github.stagger.extension.json.PropertyNameHelper;
+import io.github.stagger.extension.json.PropertyNamingStrategies;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiDataDictionary;
+import io.github.stagger.model.ApiParam;
+import io.github.stagger.model.CustomFieldInfo;
+import io.github.stagger.model.DocJavaField;
+import io.github.stagger.model.FieldJsonAnnotationInfo;
+import io.github.stagger.model.torna.EnumInfoAndValues;
+import io.github.stagger.utils.DocClassUtil;
+import io.github.stagger.utils.DocUtil;
+import io.github.stagger.utils.JavaClassUtil;
+import io.github.stagger.utils.JavaClassValidateUtil;
+import io.github.stagger.utils.JavaFieldUtil;
+import io.github.stagger.utils.ParamUtil;
 import com.power.common.model.EnumDictionary;
 import com.power.common.util.StringUtil;
 import com.thoughtworks.qdox.model.JavaAnnotation;

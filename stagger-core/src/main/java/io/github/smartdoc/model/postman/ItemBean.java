@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,11 +18,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.model.postman;
+package io.github.stagger.model.postman;
 
 import java.util.List;
 
-import io.github.smartdoc.model.postman.request.RequestBean;
+import io.github.stagger.model.postman.request.RequestBean;
 
 /**
  * @author xingzi

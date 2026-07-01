@@ -57,7 +57,7 @@
             <version>${beetl.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.ly.smart-doc</groupId>
+            <groupId>com.ly.stagger</groupId>
             <artifactId>qdox</artifactId>
             <version>${qdox.version}</version>
         </dependency>
@@ -172,7 +172,7 @@
                 </executions>
             </plugin>
         </plugins>
-        <finalName>smart-doc</finalName>
+        <finalName>stagger</finalName>
     </build>
     <profiles>
         <profile>

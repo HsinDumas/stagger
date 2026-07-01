@@ -1,6 +1,6 @@
-package io.github.smartdoc.model.torna;
+package io.github.stagger.model.torna;
 
-import io.github.smartdoc.model.ApiParam;
+import io.github.stagger.model.ApiParam;
 
 import java.io.Serializable;
 import java.util.List;

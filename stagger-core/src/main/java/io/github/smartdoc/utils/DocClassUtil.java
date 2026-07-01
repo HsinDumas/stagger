@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,10 +18,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.utils;
+package io.github.stagger.utils;
 
-import io.github.smartdoc.filter.ReturnTypeProcessor;
-import io.github.smartdoc.model.ApiReturn;
+import io.github.stagger.filter.ReturnTypeProcessor;
+import io.github.stagger.model.ApiReturn;
 import com.power.common.util.StringUtil;
 import com.thoughtworks.qdox.model.JavaAnnotation;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -403,7 +403,7 @@ public class DocClassUtil {
 	 */
 	public static String rewriteRequestParam(String typeName) {
 		if (typeName.equals("org.springframework.data.domain.Pageable")) {
-			return "io.github.smartdoc.model.framework.PageableAsQueryParam";
+			return "io.github.stagger.model.framework.PageableAsQueryParam";
 		}
 		return typeName;
 	}

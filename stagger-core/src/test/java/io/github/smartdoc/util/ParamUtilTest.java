@@ -1,9 +1,9 @@
-package io.github.smartdoc.util;
+package io.github.stagger.util;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import io.github.smartdoc.model.ApiParam;
-import io.github.smartdoc.utils.ParamUtil;
+import io.github.stagger.model.ApiParam;
+import io.github.stagger.utils.ParamUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

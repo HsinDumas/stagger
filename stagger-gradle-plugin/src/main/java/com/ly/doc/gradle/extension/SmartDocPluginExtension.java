@@ -1,7 +1,7 @@
 /*
- * smart-doc
+ * stagger
  *
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -53,7 +53,7 @@ public class SmartDocPluginExtension {
     private Boolean increment = false;
 
     /**
-     * Smart doc config file, like smart-doc.json
+     * Smart doc config file, like stagger.json
      * @return Config File
      */
     public File getConfigFile() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,18 +18,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.handler;
+package io.github.stagger.handler;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocAnnotationConstants;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.JAXRSAnnotations;
-import io.github.smartdoc.constants.JakartaJaxrsAnnotations;
-import io.github.smartdoc.constants.JavaTypeConstants;
-import io.github.smartdoc.constants.MediaType;
-import io.github.smartdoc.model.request.JaxrsPathMapping;
-import io.github.smartdoc.utils.DocUrlUtil;
-import io.github.smartdoc.utils.DocUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocAnnotationConstants;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.JAXRSAnnotations;
+import io.github.stagger.constants.JakartaJaxrsAnnotations;
+import io.github.stagger.constants.JavaTypeConstants;
+import io.github.stagger.constants.MediaType;
+import io.github.stagger.model.request.JaxrsPathMapping;
+import io.github.stagger.utils.DocUrlUtil;
+import io.github.stagger.utils.DocUtil;
 import com.power.common.util.StringUtil;
 import com.power.common.util.UrlUtil;
 import com.thoughtworks.qdox.model.JavaAnnotation;
@@ -43,8 +43,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.github.smartdoc.constants.DocTags.DEPRECATED;
-import static io.github.smartdoc.constants.DocTags.IGNORE;
+import static io.github.stagger.constants.DocTags.DEPRECATED;
+import static io.github.stagger.constants.DocTags.IGNORE;
 
 /**
  * JAX-RS Path Handler This class is responsible for processing JAX-RS annotations on Java

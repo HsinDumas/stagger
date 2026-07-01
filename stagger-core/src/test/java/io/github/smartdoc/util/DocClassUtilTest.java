@@ -1,7 +1,7 @@
-package io.github.smartdoc.util;
+package io.github.stagger.util;
 
-import io.github.smartdoc.utils.JavaClassValidateUtil;
-import io.github.smartdoc.utils.DocClassUtil;
+import io.github.stagger.utils.JavaClassValidateUtil;
+import io.github.stagger.utils.DocClassUtil;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ public class DocClassUtilTest {
 	@Test
 	public void testGetSimpleGicName() {
 		char me = 'k';
-		String className = "io.github.smartdoc.controller.Teacher<io.github.smartdoc.controller.Teacher<io.github.smartdoc.controller.User,io.github.smartdoc.controller.User,io.github.smartdoc.controller.User>,io.github.smartdoc.controller.Teacher<io.github.smartdoc.controller.User,io.github.smartdoc.controller.User,io.github.smartdoc.controller.User>,io.github.smartdoc.controller.Teacher<io.github.smartdoc.controller.User,io.github.smartdoc.controller.User,io.github.smartdoc.controller.User>>";
+		String className = "io.github.stagger.controller.Teacher<io.github.stagger.controller.Teacher<io.github.stagger.controller.User,io.github.stagger.controller.User,io.github.stagger.controller.User>,io.github.stagger.controller.Teacher<io.github.stagger.controller.User,io.github.stagger.controller.User,io.github.stagger.controller.User>,io.github.stagger.controller.Teacher<io.github.stagger.controller.User,io.github.stagger.controller.User,io.github.stagger.controller.User>>";
 		String[] arr = DocClassUtil.getSimpleGicName(className);
 		// System.out.println("arr:"+ JSON.toJSONString(arr));
 	}

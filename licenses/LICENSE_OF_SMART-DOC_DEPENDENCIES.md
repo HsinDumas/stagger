@@ -1,6 +1,6 @@
 # Licenses of dependencies
 
-smart-doc may contain portions of the following works:
+stagger may contain portions of the following works:
 
 ## Apache 2.0 licenses
 - [github.com/paul-hammant/qdox](https://github.com/paul-hammant/qdox/blob/master/LICENSE.txt)

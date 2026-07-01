@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,11 +18,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.builder;
+package io.github.stagger.builder;
 
-import io.github.smartdoc.helper.JavaProjectBuilderHelper;
-import io.github.smartdoc.model.ApiAllData;
-import io.github.smartdoc.model.ApiConfig;
+import io.github.stagger.helper.JavaProjectBuilderHelper;
+import io.github.stagger.model.ApiAllData;
+import io.github.stagger.model.ApiConfig;
 import com.thoughtworks.qdox.JavaProjectBuilder;
 
 /**

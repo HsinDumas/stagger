@@ -1,7 +1,7 @@
 /*
- * smart-doc
+ * stagger
  *
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,16 +20,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.plugin.mojo;
+package io.github.stagger.plugin.mojo;
 
-import io.github.smartdoc.helper.JavaProjectBuilderHelper;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.plugin.constant.GlobalConstants;
-import io.github.smartdoc.plugin.constant.MojoConstants;
-import io.github.smartdoc.plugin.util.ArtifactFilterUtil;
-import io.github.smartdoc.plugin.util.ClassLoaderUtil;
-import io.github.smartdoc.plugin.util.FileUtil;
-import io.github.smartdoc.plugin.util.MojoUtils;
+import io.github.stagger.helper.JavaProjectBuilderHelper;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.plugin.constant.GlobalConstants;
+import io.github.stagger.plugin.constant.MojoConstants;
+import io.github.stagger.plugin.util.ArtifactFilterUtil;
+import io.github.stagger.plugin.util.ClassLoaderUtil;
+import io.github.stagger.plugin.util.FileUtil;
+import io.github.stagger.plugin.util.MojoUtils;
 import com.power.common.constants.Charset;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.DateTimeUtil;
@@ -100,7 +100,7 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
     private Set excludes;
     @Parameter(required = false)
     private Set includes;
-    @Parameter(property = "smartdoc.skip")
+    @Parameter(property = "stagger.skip")
     private String skip;
     @Parameter(property = "increment")
     private Boolean increment;
@@ -230,7 +230,7 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
      */
     private void loadSourcesDependency(JavaProjectBuilder javaDocBuilder, Artifact sourcesArtifact) {
         String artifactName = sourcesArtifact.getGroupId() + ":" + sourcesArtifact.getArtifactId();
-        getLog().debug("smart-doc loaded artifact:" + artifactName);
+        getLog().debug("stagger loaded artifact:" + artifactName);
         // create request
         ArtifactResolutionRequest request = new ArtifactResolutionRequest();
         request.setArtifact(sourcesArtifact);
@@ -245,7 +245,7 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
             try {
                 sourceURL = artifact.getFile().toURI().toURL().toString();
                 if (getLog().isDebugEnabled()) {
-                    getLog().debug("smart-doc loaded jar source:" + sourceURL);
+                    getLog().debug("stagger loaded jar source:" + sourceURL);
                 }
                 jarFile = new JarFile(artifact.getFile());
             } catch (IOException e) {

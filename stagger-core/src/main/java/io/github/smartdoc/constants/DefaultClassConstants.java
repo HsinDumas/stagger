@@ -1,4 +1,4 @@
-package io.github.smartdoc.constants;
+package io.github.stagger.constants;
 
 import java.util.Set;
 import java.util.stream.Collectors;

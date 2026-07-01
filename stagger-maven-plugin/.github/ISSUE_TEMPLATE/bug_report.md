@@ -10,8 +10,8 @@ assignees: ''
 
 <!--- Include as many relevant details about the environment you experienced the bug in -->
 
-* smart-doc version:
-* plugin version (e.g. smart-doc-maven-plugin or smart-doc-gradle-plugin):
+* stagger version:
+* plugin version (e.g. stagger-maven-plugin or stagger-gradle-plugin):
 * build tool version(maven or gradle):
 * jdk version:
 

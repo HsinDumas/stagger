@@ -1,7 +1,7 @@
 /*
- * smart-doc
+ * stagger
  *
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,12 +20,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.utils;
+package io.github.stagger.utils;
 
-import io.github.smartdoc.constants.ComponentTypeEnum;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiParam;
+import io.github.stagger.constants.ComponentTypeEnum;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiParam;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -34,7 +34,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static io.github.smartdoc.constants.TornaConstants.GSON;
+import static io.github.stagger.constants.TornaConstants.GSON;
 
 /**
  * OpenApi Schema Util

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,20 +18,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.template;
+package io.github.stagger.template;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.constants.TornaConstants;
-import io.github.smartdoc.helper.DocBuildHelper;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiDoc;
-import io.github.smartdoc.model.ApiGroup;
-import io.github.smartdoc.model.ApiMethodDoc;
-import io.github.smartdoc.model.annotation.FrameworkAnnotations;
-import io.github.smartdoc.model.dependency.FileDiff;
-import io.github.smartdoc.utils.DocPathUtil;
-import io.github.smartdoc.utils.DocUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.constants.TornaConstants;
+import io.github.stagger.helper.DocBuildHelper;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiDoc;
+import io.github.stagger.model.ApiGroup;
+import io.github.stagger.model.ApiMethodDoc;
+import io.github.stagger.model.annotation.FrameworkAnnotations;
+import io.github.stagger.model.dependency.FileDiff;
+import io.github.stagger.utils.DocPathUtil;
+import io.github.stagger.utils.DocUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
 import com.thoughtworks.qdox.JavaProjectBuilder;

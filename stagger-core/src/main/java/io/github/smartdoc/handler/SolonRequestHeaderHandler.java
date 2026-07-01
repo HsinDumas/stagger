@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,11 +18,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.handler;
+package io.github.stagger.handler;
 
-import io.github.smartdoc.constants.DocAnnotationConstants;
-import io.github.smartdoc.constants.SolonAnnotations;
-import io.github.smartdoc.model.annotation.HeaderAnnotation;
+import io.github.stagger.constants.DocAnnotationConstants;
+import io.github.stagger.constants.SolonAnnotations;
+import io.github.stagger.model.annotation.HeaderAnnotation;
 
 /**
  * Solon Request Header Handler

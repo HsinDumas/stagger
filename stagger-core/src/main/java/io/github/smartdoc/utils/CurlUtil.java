@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,12 +18,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.utils;
+package io.github.stagger.utils;
 
-import io.github.smartdoc.constants.MediaType;
-import io.github.smartdoc.model.ApiReqParam;
-import io.github.smartdoc.model.FormData;
-import io.github.smartdoc.model.request.CurlRequest;
+import io.github.stagger.constants.MediaType;
+import io.github.stagger.model.ApiReqParam;
+import io.github.stagger.model.FormData;
+import io.github.stagger.model.request.CurlRequest;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
 

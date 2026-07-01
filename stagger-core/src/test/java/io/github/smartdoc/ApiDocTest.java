@@ -1,13 +1,13 @@
-package io.github.smartdoc;
+package io.github.stagger;
 
-import io.github.smartdoc.builder.ApiDocBuilder;
-import io.github.smartdoc.builder.JMeterBuilder;
-import io.github.smartdoc.constants.DocLanguage;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.SourceCodePath;
+import io.github.stagger.builder.ApiDocBuilder;
+import io.github.stagger.builder.JMeterBuilder;
+import io.github.stagger.constants.DocLanguage;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.SourceCodePath;
 import com.power.common.util.DateTimeUtil;
-import io.github.smartdoc.builder.HtmlApiDocBuilder;
-import io.github.smartdoc.constants.FrameworkEnum;
+import io.github.stagger.builder.HtmlApiDocBuilder;
+import io.github.stagger.constants.FrameworkEnum;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -42,13 +42,13 @@ public class ApiDocTest {
 		// config.setTornaDebug(true);
 		config.setAllInOne(false);
 		config.setCoverOld(true);
-		config.setOutPath("D:\\smart-doc\\docs\\html");
+		config.setOutPath("D:\\stagger\\docs\\html");
 		// config.setMd5EncryptedHtmlName(true);
 		config.setFramework(FrameworkEnum.SPRING.getFramework());
 		config.setSourceCodePaths(
-				SourceCodePath.builder().setDesc("current project code").setPath("D:\\smart-doc\\test-project"));
+				SourceCodePath.builder().setDesc("current project code").setPath("D:\\stagger\\test-project"));
 		config.setPackageFilters("com.power.doc.controller.*");
-		config.setBaseDir("D:\\smart-doc\\test-project\\smart-doc-example-cn-master");
+		config.setBaseDir("D:\\stagger\\test-project\\stagger-example-cn-master");
 		config.setCodePath("/src/main/java");
 
 		// config.setJarSourcePaths(SourceCodePath.builder()
@@ -85,12 +85,12 @@ public class ApiDocTest {
 		config.setCreateDebugPage(false);
 		config.setAllInOne(true);
 		config.setCoverOld(false);
-		config.setOutPath("D:\\smart-doc\\docs\\jmx1");
+		config.setOutPath("D:\\stagger\\docs\\jmx1");
 		config.setFramework(FrameworkEnum.SPRING.getFramework());
 		config.setSourceCodePaths(
-				SourceCodePath.builder().setDesc("current project code").setPath("D:\\smart-doc\\test-project"));
+				SourceCodePath.builder().setDesc("current project code").setPath("D:\\stagger\\test-project"));
 		config.setPackageFilters("com.power.doc.controller.*");
-		config.setBaseDir("D:\\smart-doc\\test-project\\smart-doc-example-cn-master");
+		config.setBaseDir("D:\\stagger\\test-project\\stagger-example-cn-master");
 		config.setCodePath("/src/main/java");
 
 		long start = System.currentTimeMillis();
@@ -120,12 +120,12 @@ public class ApiDocTest {
 		config.setCreateDebugPage(false);
 		config.setAllInOne(true);
 		config.setCoverOld(false);
-		config.setOutPath("D:\\smart-doc\\docs\\jmx1");
+		config.setOutPath("D:\\stagger\\docs\\jmx1");
 		config.setFramework(FrameworkEnum.SPRING.getFramework());
 		// 不指定SourcePaths默认加载代码为项目src/main/java下的
-		config.setSourceCodePaths(SourceCodePath.builder().setDesc("本项目代码").setPath("D:\\smart-doc\\test-project"));
+		config.setSourceCodePaths(SourceCodePath.builder().setDesc("本项目代码").setPath("D:\\stagger\\test-project"));
 		config.setPackageFilters("com.power.doc.controller.*");
-		config.setBaseDir("D:\\smart-doc\\test-project\\smart-doc-example-cn-master");
+		config.setBaseDir("D:\\stagger\\test-project\\stagger-example-cn-master");
 		config.setCodePath("/src/main/java");
 
 		long start = System.currentTimeMillis();

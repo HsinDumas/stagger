@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,25 +18,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.template;
+package io.github.stagger.template;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocAnnotationConstants;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.constants.JavaTypeConstants;
-import io.github.smartdoc.constants.ParamTypeConstants;
-import io.github.smartdoc.helper.ParamsBuildHelper;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiParam;
-import io.github.smartdoc.model.DocJavaMethod;
-import io.github.smartdoc.model.JavadocJavaMethod;
-import io.github.smartdoc.utils.ApiParamTreeUtil;
-import io.github.smartdoc.utils.DocClassUtil;
-import io.github.smartdoc.utils.DocUtil;
-import io.github.smartdoc.utils.JavaClassUtil;
-import io.github.smartdoc.utils.JavaClassValidateUtil;
-import io.github.smartdoc.utils.JavaFieldUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocAnnotationConstants;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.constants.JavaTypeConstants;
+import io.github.stagger.constants.ParamTypeConstants;
+import io.github.stagger.helper.ParamsBuildHelper;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiParam;
+import io.github.stagger.model.DocJavaMethod;
+import io.github.stagger.model.JavadocJavaMethod;
+import io.github.stagger.utils.ApiParamTreeUtil;
+import io.github.stagger.utils.DocClassUtil;
+import io.github.stagger.utils.DocUtil;
+import io.github.stagger.utils.JavaClassUtil;
+import io.github.stagger.utils.JavaClassValidateUtil;
+import io.github.stagger.utils.JavaFieldUtil;
 import com.power.common.util.StringUtil;
 import com.thoughtworks.qdox.model.JavaAnnotation;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -56,8 +56,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static io.github.smartdoc.constants.DocTags.DEPRECATED;
-import static io.github.smartdoc.constants.DocTags.IGNORE;
+import static io.github.stagger.constants.DocTags.DEPRECATED;
+import static io.github.stagger.constants.DocTags.IGNORE;
 
 /**
  * java doc template

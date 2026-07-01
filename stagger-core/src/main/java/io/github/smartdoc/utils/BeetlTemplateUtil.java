@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,9 +18,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.utils;
+package io.github.stagger.utils;
 
-import io.github.smartdoc.constants.DocGlobalConstants;
+import io.github.stagger.constants.DocGlobalConstants;
 import com.power.common.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
@@ -61,7 +61,7 @@ public class BeetlTemplateUtil {
 		try {
 			ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("/template/");
 			Configuration cfg = Configuration.defaultConfiguration();
-			cfg.add("/smart-doc-beetl.properties");
+			cfg.add("/stagger-beetl.properties");
 			Thread.currentThread().setContextClassLoader(GroupTemplate.class.getClassLoader());
 			GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
 			if (templateName.endsWith(HTML_SUFFIX)) {

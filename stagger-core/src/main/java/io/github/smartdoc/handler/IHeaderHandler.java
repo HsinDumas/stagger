@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,20 +18,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.handler;
+package io.github.stagger.handler;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.constants.ParamTypeConstants;
-import io.github.smartdoc.helper.ParamsBuildHelper;
-import io.github.smartdoc.model.ApiReqParam;
-import io.github.smartdoc.model.annotation.HeaderAnnotation;
-import io.github.smartdoc.model.torna.EnumInfoAndValues;
-import io.github.smartdoc.utils.DocClassUtil;
-import io.github.smartdoc.utils.DocUtil;
-import io.github.smartdoc.utils.JavaClassUtil;
-import io.github.smartdoc.utils.JavaClassValidateUtil;
-import io.github.smartdoc.utils.JavaFieldUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.constants.ParamTypeConstants;
+import io.github.stagger.helper.ParamsBuildHelper;
+import io.github.stagger.model.ApiReqParam;
+import io.github.stagger.model.annotation.HeaderAnnotation;
+import io.github.stagger.model.torna.EnumInfoAndValues;
+import io.github.stagger.utils.DocClassUtil;
+import io.github.stagger.utils.DocUtil;
+import io.github.stagger.utils.JavaClassUtil;
+import io.github.stagger.utils.JavaClassValidateUtil;
+import io.github.stagger.utils.JavaFieldUtil;
 import com.power.common.util.StringUtil;
 import com.thoughtworks.qdox.model.JavaAnnotation;
 import com.thoughtworks.qdox.model.JavaClass;

@@ -62,7 +62,7 @@ stagger {
 
 ## 📦 Monorepo Structure
 
-This is a modern maintenance fork of smart-doc, organized as a monorepo:
+This is a modern maintenance fork of stagger, organized as a monorepo:
 
 ```
 stagger/
@@ -104,7 +104,7 @@ project.getExtensions()
 
 ### Unified Monorepo
 
-Original smart-doc was scattered across 4 separate repositories. Now unified in a single repo for easier version management and maintenance.
+Original stagger was scattered across 4 separate repositories. Now unified in a single repo for easier version management and maintenance.
 
 ## 📄 License
 
@@ -112,7 +112,7 @@ Apache License 2.0 - See LICENSE file
 
 ## 👏 Acknowledgments
 
-- **Original Author**: [shalousun](https://github.com/shalousun) ([smart-doc](https://github.com/HsinDumas/stagger))
+- **Original Author**: [shalousun](https://github.com/shalousun) ([stagger](https://github.com/HsinDumas/stagger))
 - **Current Maintainer**: [HsinDumas](https://github.com/HsinDumas)
 
 ## 🤝 Contributing
@@ -121,5 +121,5 @@ Pull requests welcome! Please open an issue first for major changes.
 
 ---
 
-**Based on**: [smart-doc](https://github.com/HsinDumas/stagger)  
+**Based on**: [stagger](https://github.com/HsinDumas/stagger)  
 **Enhanced with**: Gradle 9.x compatibility + modern maintenance

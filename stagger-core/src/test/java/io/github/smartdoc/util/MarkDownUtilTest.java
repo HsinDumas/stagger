@@ -1,4 +1,4 @@
-package io.github.smartdoc.util;
+package io.github.stagger.util;
 
 import org.junit.jupiter.api.Test;
 

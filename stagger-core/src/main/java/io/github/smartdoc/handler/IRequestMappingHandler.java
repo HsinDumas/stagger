@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,15 +18,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.handler;
+package io.github.stagger.handler;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.function.RequestMappingFunc;
-import io.github.smartdoc.model.annotation.FrameworkAnnotations;
-import io.github.smartdoc.model.request.RequestMapping;
-import io.github.smartdoc.utils.DocUrlUtil;
-import io.github.smartdoc.utils.DocUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.function.RequestMappingFunc;
+import io.github.stagger.model.annotation.FrameworkAnnotations;
+import io.github.stagger.model.request.RequestMapping;
+import io.github.stagger.utils.DocUrlUtil;
+import io.github.stagger.utils.DocUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
 import com.power.common.util.UrlUtil;

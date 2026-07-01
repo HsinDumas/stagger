@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.plugin.util;
+package io.github.stagger.plugin.util;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;

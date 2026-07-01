@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,25 +18,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.template;
+package io.github.stagger.template;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocAnnotationConstants;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.constants.JavaTypeConstants;
-import io.github.smartdoc.handler.DefaultWebSocketRequestHandler;
-import io.github.smartdoc.handler.IWebSocketRequestHandler;
-import io.github.smartdoc.helper.ParamsBuildHelper;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiParam;
-import io.github.smartdoc.model.WebSocketDoc;
-import io.github.smartdoc.model.annotation.FrameworkAnnotations;
-import io.github.smartdoc.model.annotation.ServerEndpointAnnotation;
-import io.github.smartdoc.model.request.ServerEndpoint;
-import io.github.smartdoc.utils.DocClassUtil;
-import io.github.smartdoc.utils.DocUtil;
-import io.github.smartdoc.utils.JavaClassUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocAnnotationConstants;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.constants.JavaTypeConstants;
+import io.github.stagger.handler.DefaultWebSocketRequestHandler;
+import io.github.stagger.handler.IWebSocketRequestHandler;
+import io.github.stagger.helper.ParamsBuildHelper;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiParam;
+import io.github.stagger.model.WebSocketDoc;
+import io.github.stagger.model.annotation.FrameworkAnnotations;
+import io.github.stagger.model.annotation.ServerEndpointAnnotation;
+import io.github.stagger.model.request.ServerEndpoint;
+import io.github.stagger.utils.DocClassUtil;
+import io.github.stagger.utils.DocUtil;
+import io.github.stagger.utils.JavaClassUtil;
 import com.power.common.util.StringUtil;
 import com.power.common.util.ValidateUtil;
 import com.thoughtworks.qdox.model.JavaAnnotation;

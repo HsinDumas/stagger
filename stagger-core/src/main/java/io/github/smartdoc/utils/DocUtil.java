@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,28 +19,28 @@
  * under the License.
  */
 
-package io.github.smartdoc.utils;
+package io.github.stagger.utils;
 
-import io.github.smartdoc.builder.WordDocBuilder;
-import io.github.smartdoc.constants.DocAnnotationConstants;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.constants.JAXRSAnnotations;
-import io.github.smartdoc.constants.JakartaJaxrsAnnotations;
-import io.github.smartdoc.constants.JavaTypeConstants;
-import io.github.smartdoc.constants.MediaType;
-import io.github.smartdoc.extension.dict.DictionaryValuesResolver;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiDataDictionary;
-import io.github.smartdoc.model.ApiDocDict;
-import io.github.smartdoc.model.ApiErrorCode;
-import io.github.smartdoc.model.ApiErrorCodeDictionary;
-import io.github.smartdoc.model.ApiReqParam;
-import io.github.smartdoc.model.DataDict;
-import io.github.smartdoc.model.DocJavaField;
-import io.github.smartdoc.model.FormData;
-import io.github.smartdoc.model.SystemPlaceholders;
-import io.github.smartdoc.model.request.RequestMapping;
+import io.github.stagger.builder.WordDocBuilder;
+import io.github.stagger.constants.DocAnnotationConstants;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.constants.JAXRSAnnotations;
+import io.github.stagger.constants.JakartaJaxrsAnnotations;
+import io.github.stagger.constants.JavaTypeConstants;
+import io.github.stagger.constants.MediaType;
+import io.github.stagger.extension.dict.DictionaryValuesResolver;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiDataDictionary;
+import io.github.stagger.model.ApiDocDict;
+import io.github.stagger.model.ApiErrorCode;
+import io.github.stagger.model.ApiErrorCodeDictionary;
+import io.github.stagger.model.ApiReqParam;
+import io.github.stagger.model.DataDict;
+import io.github.stagger.model.DocJavaField;
+import io.github.stagger.model.FormData;
+import io.github.stagger.model.SystemPlaceholders;
+import io.github.stagger.model.request.RequestMapping;
 import com.mifmif.common.regex.Generex;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.DateTimeUtil;

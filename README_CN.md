@@ -62,7 +62,7 @@ stagger {
 
 ## 📦 项目结构
 
-这是 smart-doc 的现代化维护分支，采用 Monorepo 结构：
+这是 stagger 的现代化维护分支，采用 Monorepo 结构：
 
 ```
 stagger/
@@ -104,7 +104,7 @@ project.getExtensions()
 
 ### 统一 Monorepo 管理
 
-原 smart-doc 分散在 4 个独立仓库，现已统一为单仓库，便于版本同步和维护。
+原 stagger 分散在 4 个独立仓库，现已统一为单仓库，便于版本同步和维护。
 
 ## 📄 许可证
 
@@ -112,7 +112,7 @@ Apache License 2.0 - 详见 LICENSE 文件
 
 ## 👏 致谢
 
-- **原作者**: [shalousun](https://github.com/shalousun) ([smart-doc](https://github.com/HsinDumas/stagger))
+- **原作者**: [shalousun](https://github.com/shalousun) ([stagger](https://github.com/HsinDumas/stagger))
 - **当前维护**: [HsinDumas](https://github.com/HsinDumas)
 
 ## 🤝 贡献
@@ -121,5 +121,5 @@ Apache License 2.0 - 详见 LICENSE 文件
 
 ---
 
-**基于**: [smart-doc](https://github.com/HsinDumas/stagger)  
+**基于**: [stagger](https://github.com/HsinDumas/stagger)  
 **增强**: Gradle 9.x 兼容性 + 现代化维护

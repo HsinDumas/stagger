@@ -1,19 +1,19 @@
-package io.github.smartdoc.qbox;
+package io.github.stagger.qbox;
 
 import java.nio.file.Paths;
 
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.SourceCodePath;
-import io.github.smartdoc.builder.HtmlApiDocBuilder;
-import io.github.smartdoc.constants.FrameworkEnum;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.SourceCodePath;
+import io.github.stagger.builder.HtmlApiDocBuilder;
+import io.github.stagger.constants.FrameworkEnum;
 
 import org.junit.jupiter.api.Test;
 
 /**
- * smart-doc
+ * stagger
  *
  * @author spencer
- * @project smart-doc
+ * @project stagger
  * @date 2022-01-2022/1/13
  */
 public class QboxScanSourceTest {

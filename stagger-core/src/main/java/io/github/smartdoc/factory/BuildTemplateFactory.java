@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,13 +18,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.factory;
+package io.github.stagger.factory;
 
-import io.github.smartdoc.constants.FrameworkEnum;
-import io.github.smartdoc.model.IDoc;
-import io.github.smartdoc.model.WebSocketDoc;
-import io.github.smartdoc.template.IDocBuildTemplate;
-import io.github.smartdoc.template.IWebSocketDocBuildTemplate;
+import io.github.stagger.constants.FrameworkEnum;
+import io.github.stagger.model.IDoc;
+import io.github.stagger.model.WebSocketDoc;
+import io.github.stagger.template.IDocBuildTemplate;
+import io.github.stagger.template.IWebSocketDocBuildTemplate;
 
 import java.util.ServiceLoader;
 
@@ -52,7 +52,7 @@ public class BuildTemplateFactory {
 			}
 		}
 		throw new RuntimeException("The framework=>" + framework
-				+ " is not found , smart-doc currently supported framework name can only be set in ["
+				+ " is not found , stagger currently supported framework name can only be set in ["
 				+ FrameworkEnum.allFramework() + "].");
 	}
 
@@ -74,7 +74,7 @@ public class BuildTemplateFactory {
 			}
 		}
 		throw new RuntimeException("The framework=>" + framework
-				+ " is not found , smart-doc currently supported framework name can only be set in ["
+				+ " is not found , stagger currently supported framework name can only be set in ["
 				+ FrameworkEnum.allFramework() + "].");
 	}
 

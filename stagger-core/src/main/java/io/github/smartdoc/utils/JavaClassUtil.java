@@ -1,7 +1,7 @@
 /*
- * smart-doc
+ * stagger
  *
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,23 +20,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.utils;
+package io.github.stagger.utils;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DefaultClassConstants;
-import io.github.smartdoc.constants.DocAnnotationConstants;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.constants.DocValidatorAnnotationEnum;
-import io.github.smartdoc.constants.JSRAnnotationConstants;
-import io.github.smartdoc.constants.JavaTypeConstants;
-import io.github.smartdoc.constants.ParamTypeConstants;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiDataDictionary;
-import io.github.smartdoc.model.DocJavaField;
-import io.github.smartdoc.model.torna.EnumInfo;
-import io.github.smartdoc.model.torna.EnumInfoAndValues;
-import io.github.smartdoc.model.torna.Item;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DefaultClassConstants;
+import io.github.stagger.constants.DocAnnotationConstants;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.constants.DocValidatorAnnotationEnum;
+import io.github.stagger.constants.JSRAnnotationConstants;
+import io.github.stagger.constants.JavaTypeConstants;
+import io.github.stagger.constants.ParamTypeConstants;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiDataDictionary;
+import io.github.stagger.model.DocJavaField;
+import io.github.stagger.model.torna.EnumInfo;
+import io.github.stagger.model.torna.EnumInfoAndValues;
+import io.github.stagger.model.torna.Item;
 import com.power.common.model.EnumDictionary;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.EnumUtil;

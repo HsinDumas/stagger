@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,22 +18,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.builder;
+package io.github.stagger.builder;
 
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.HighLightJsConstants;
-import io.github.smartdoc.constants.HighlightStyle;
-import io.github.smartdoc.helper.JavaProjectBuilderHelper;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiConstant;
-import io.github.smartdoc.model.ApiDataDictionary;
-import io.github.smartdoc.model.ApiErrorCodeDictionary;
-import io.github.smartdoc.model.ApiObjectReplacement;
-import io.github.smartdoc.model.BodyAdvice;
-import io.github.smartdoc.model.CustomField;
-import io.github.smartdoc.model.DocJavaField;
-import io.github.smartdoc.model.SourceCodePath;
-import io.github.smartdoc.utils.JavaClassUtil;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.HighLightJsConstants;
+import io.github.stagger.constants.HighlightStyle;
+import io.github.stagger.helper.JavaProjectBuilderHelper;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiConstant;
+import io.github.stagger.model.ApiDataDictionary;
+import io.github.stagger.model.ApiErrorCodeDictionary;
+import io.github.stagger.model.ApiObjectReplacement;
+import io.github.stagger.model.BodyAdvice;
+import io.github.stagger.model.CustomField;
+import io.github.stagger.model.DocJavaField;
+import io.github.stagger.model.SourceCodePath;
+import io.github.stagger.utils.JavaClassUtil;
 import com.power.common.constants.Charset;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;

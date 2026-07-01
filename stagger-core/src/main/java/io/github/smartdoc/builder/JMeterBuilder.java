@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,14 +19,14 @@
  * under the License.
  */
 
-package io.github.smartdoc.builder;
+package io.github.stagger.builder;
 
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.factory.BuildTemplateFactory;
-import io.github.smartdoc.helper.JavaProjectBuilderHelper;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiDoc;
-import io.github.smartdoc.template.IDocBuildTemplate;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.factory.BuildTemplateFactory;
+import io.github.stagger.helper.JavaProjectBuilderHelper;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiDoc;
+import io.github.stagger.template.IDocBuildTemplate;
 import com.power.common.util.DateTimeUtil;
 import com.power.common.util.StringUtil;
 import com.thoughtworks.qdox.JavaProjectBuilder;
@@ -62,7 +62,7 @@ public class JMeterBuilder {
 	}
 
 	/**
-	 * Only for smart-doc maven plugin and gradle plugin.
+	 * Only for stagger maven plugin and gradle plugin.
 	 * @param config ApiConfig
 	 * @param javaProjectBuilder ProjectDocConfigBuilder
 	 */

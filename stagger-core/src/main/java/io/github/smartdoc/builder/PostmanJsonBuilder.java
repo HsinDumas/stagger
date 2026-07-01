@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,30 +18,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.builder;
+package io.github.stagger.builder;
 
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.MediaType;
-import io.github.smartdoc.constants.Methods;
-import io.github.smartdoc.factory.BuildTemplateFactory;
-import io.github.smartdoc.helper.JavaProjectBuilderHelper;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiDoc;
-import io.github.smartdoc.model.ApiMethodDoc;
-import io.github.smartdoc.model.ApiParam;
-import io.github.smartdoc.model.ApiReqParam;
-import io.github.smartdoc.model.FormData;
-import io.github.smartdoc.model.postman.InfoBean;
-import io.github.smartdoc.model.postman.ItemBean;
-import io.github.smartdoc.model.postman.RequestItem;
-import io.github.smartdoc.model.postman.UrlBean;
-import io.github.smartdoc.model.postman.request.ParamBean;
-import io.github.smartdoc.model.postman.request.RequestBean;
-import io.github.smartdoc.model.postman.request.body.BodyBean;
-import io.github.smartdoc.model.postman.request.header.HeaderBean;
-import io.github.smartdoc.template.IDocBuildTemplate;
-import io.github.smartdoc.utils.DocPathUtil;
-import io.github.smartdoc.utils.JsonUtil;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.MediaType;
+import io.github.stagger.constants.Methods;
+import io.github.stagger.factory.BuildTemplateFactory;
+import io.github.stagger.helper.JavaProjectBuilderHelper;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiDoc;
+import io.github.stagger.model.ApiMethodDoc;
+import io.github.stagger.model.ApiParam;
+import io.github.stagger.model.ApiReqParam;
+import io.github.stagger.model.FormData;
+import io.github.stagger.model.postman.InfoBean;
+import io.github.stagger.model.postman.ItemBean;
+import io.github.stagger.model.postman.RequestItem;
+import io.github.stagger.model.postman.UrlBean;
+import io.github.stagger.model.postman.request.ParamBean;
+import io.github.stagger.model.postman.request.RequestBean;
+import io.github.stagger.model.postman.request.body.BodyBean;
+import io.github.stagger.model.postman.request.header.HeaderBean;
+import io.github.stagger.template.IDocBuildTemplate;
+import io.github.stagger.utils.DocPathUtil;
+import io.github.stagger.utils.JsonUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.FileUtil;
 import com.power.common.util.StringUtil;
@@ -86,7 +86,7 @@ public class PostmanJsonBuilder {
 	}
 
 	/**
-	 * Only for smart-doc maven plugin and gradle plugin.
+	 * Only for stagger maven plugin and gradle plugin.
 	 * @param config ApiConfig Object
 	 * @param projectBuilder QDOX avaProjectBuilder
 	 */

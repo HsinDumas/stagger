@@ -1,4 +1,4 @@
-package io.github.smartdoc;
+package io.github.stagger;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,7 +1,7 @@
-package io.github.smartdoc.helper;
+package io.github.stagger.helper;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.model.ApiConfig;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.model.ApiConfig;
 import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.model.JavaClass;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +17,7 @@ import java.util.HashSet;
 class JsonBuildHelperTest {
 
 	/**
-	 * io.github.smartdoc.helper.JsonBuildHelper#buildJson issue:NPE in JsonBuildHelper
+	 * io.github.stagger.helper.JsonBuildHelper#buildJson issue:NPE in JsonBuildHelper
 	 * #789
 	 */
 	@Test

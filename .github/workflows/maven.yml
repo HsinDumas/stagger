@@ -16,7 +16,7 @@ on:
 
 jobs:
   build:
-    if: ${{ github.repository == 'HsinDumas/smart-doc' }}
+    if: ${{ github.repository == 'HsinDumas/stagger' }}
     runs-on: ubuntu-latest
 
     steps:

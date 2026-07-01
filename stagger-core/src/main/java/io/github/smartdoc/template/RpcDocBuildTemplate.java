@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,21 +18,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.template;
+package io.github.stagger.template;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.constants.DubboAnnotationConstants;
-import io.github.smartdoc.constants.FrameworkEnum;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiSchema;
-import io.github.smartdoc.model.RpcJavaMethod;
-import io.github.smartdoc.model.WebSocketDoc;
-import io.github.smartdoc.model.annotation.FrameworkAnnotations;
-import io.github.smartdoc.model.rpc.RpcApiDoc;
-import io.github.smartdoc.utils.DocUtil;
-import io.github.smartdoc.utils.JavaClassUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.constants.DubboAnnotationConstants;
+import io.github.stagger.constants.FrameworkEnum;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiSchema;
+import io.github.stagger.model.RpcJavaMethod;
+import io.github.stagger.model.WebSocketDoc;
+import io.github.stagger.model.annotation.FrameworkAnnotations;
+import io.github.stagger.model.rpc.RpcApiDoc;
+import io.github.stagger.utils.DocUtil;
+import io.github.stagger.utils.JavaClassUtil;
 import com.power.common.util.StringUtil;
 import com.power.common.util.ValidateUtil;
 import com.thoughtworks.qdox.model.DocletTag;

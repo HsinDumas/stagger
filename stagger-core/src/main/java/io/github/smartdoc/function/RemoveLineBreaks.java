@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,9 +18,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.function;
+package io.github.stagger.function;
 
-import io.github.smartdoc.utils.DocUtil;
+import io.github.stagger.utils.DocUtil;
 
 import org.beetl.core.Context;
 import org.beetl.core.Function;

@@ -1,7 +1,7 @@
 /*
- * smart-doc
+ * stagger
  *
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -21,16 +21,16 @@
  * under the License.
  */
 
-package io.github.smartdoc.utils;
+package io.github.stagger.utils;
 
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.Methods;
-import io.github.smartdoc.constants.ParamTypeConstants;
-import io.github.smartdoc.model.ApiMethodDoc;
-import io.github.smartdoc.model.ApiReqParam;
-import io.github.smartdoc.model.FormData;
-import io.github.smartdoc.model.request.ApiRequestExample;
-import io.github.smartdoc.model.request.CurlRequest;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.Methods;
+import io.github.stagger.constants.ParamTypeConstants;
+import io.github.stagger.model.ApiMethodDoc;
+import io.github.stagger.model.ApiReqParam;
+import io.github.stagger.model.FormData;
+import io.github.stagger.model.request.ApiRequestExample;
+import io.github.stagger.model.request.CurlRequest;
 import com.power.common.util.UrlUtil;
 
 import java.util.ArrayList;

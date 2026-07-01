@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,13 +19,13 @@
  * under the License.
  */
 
-package io.github.smartdoc.utils;
+package io.github.stagger.utils;
 
-import io.github.smartdoc.constants.DocAnnotationConstants;
-import io.github.smartdoc.constants.JSRAnnotationConstants;
-import io.github.smartdoc.constants.JavaTypeConstants;
-import io.github.smartdoc.constants.SolonAnnotations;
-import io.github.smartdoc.constants.SpringMvcAnnotations;
+import io.github.stagger.constants.DocAnnotationConstants;
+import io.github.stagger.constants.JSRAnnotationConstants;
+import io.github.stagger.constants.JavaTypeConstants;
+import io.github.stagger.constants.SolonAnnotations;
+import io.github.stagger.constants.SpringMvcAnnotations;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
 import com.power.common.util.ValidateUtil;
@@ -35,8 +35,8 @@ import com.thoughtworks.qdox.model.expression.AnnotationValue;
 import java.util.List;
 import java.util.Objects;
 
-import static io.github.smartdoc.constants.JsonPropertyAnnotationAccessConstants.JSON_PROPERTY_READ_ONLY;
-import static io.github.smartdoc.constants.JsonPropertyAnnotationAccessConstants.JSON_PROPERTY_WRITE_ONLY;
+import static io.github.stagger.constants.JsonPropertyAnnotationAccessConstants.JSON_PROPERTY_READ_ONLY;
+import static io.github.stagger.constants.JsonPropertyAnnotationAccessConstants.JSON_PROPERTY_WRITE_ONLY;
 
 /**
  * Java Class Validate Util

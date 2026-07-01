@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,19 +18,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.helper;
+package io.github.stagger.helper;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocAnnotationConstants;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.constants.JSRAnnotationConstants;
-import io.github.smartdoc.model.CustomField;
-import io.github.smartdoc.model.CustomFieldInfo;
-import io.github.smartdoc.model.DocJavaField;
-import io.github.smartdoc.model.FieldJsonAnnotationInfo;
-import io.github.smartdoc.utils.DocUtil;
-import io.github.smartdoc.utils.JavaClassUtil;
-import io.github.smartdoc.utils.JavaClassValidateUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocAnnotationConstants;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.constants.JSRAnnotationConstants;
+import io.github.stagger.model.CustomField;
+import io.github.stagger.model.CustomFieldInfo;
+import io.github.stagger.model.DocJavaField;
+import io.github.stagger.model.FieldJsonAnnotationInfo;
+import io.github.stagger.utils.DocUtil;
+import io.github.stagger.utils.JavaClassUtil;
+import io.github.stagger.utils.JavaClassValidateUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringEscapeUtil;
 import com.power.common.util.StringUtil;

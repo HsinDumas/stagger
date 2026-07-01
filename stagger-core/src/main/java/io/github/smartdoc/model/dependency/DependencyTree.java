@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,9 +18,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.model.dependency;
+package io.github.stagger.model.dependency;
 
-import io.github.smartdoc.utils.JsonUtil;
+import io.github.stagger.utils.JsonUtil;
 import com.power.common.util.FileUtil;
 
 import java.io.BufferedReader;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  */
 public class DependencyTree {
 
-	private static final String CONFIG_NAME = ".smart-doc-dependency.json";
+	private static final String CONFIG_NAME = ".stagger-dependency.json";
 
 	/**
 	 * whether increment build
@@ -56,7 +56,7 @@ public class DependencyTree {
 	private String schema = "v1";
 
 	/**
-	 * Git commit id when smart-doc build.
+	 * Git commit id when stagger build.
 	 */
 	private String commitId;
 

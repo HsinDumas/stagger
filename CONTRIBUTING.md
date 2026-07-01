@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for your interest in contributing to `smart-doc`! For detailed guidelines on how to contribute, please review our official [**Contribution Guide**](https://HsinDumas.github.io/guide/community/contributing).
+Thank you for your interest in contributing to `stagger`! For detailed guidelines on how to contribute, please review our official [**Contribution Guide**](https://HsinDumas.github.io/guide/community/contributing).
 
 ## Key Highlights
 Before submitting a Pull Request (PR), please ensure:
@@ -20,13 +20,13 @@ If your contribution involves:
 	- Check if your PR adds or modifies configurations (e.g., new parameters, default value updates).
 	- Update or add corresponding documentation in the [`HsinDumas.github.io`](https://github.com/HsinDumas/stagger-group.github.io/tree/master/docs).
 - 📚 **New features**:
-	- Provide usage examples in the [`smart-doc-example-cn`](https://github.com/HsinDumas/stagger-example-cn) repository to demonstrate implementation.
+	- Provide usage examples in the [`stagger-example-cn`](https://github.com/HsinDumas/stagger-example-cn) repository to demonstrate implementation.
 
 
 ## How to Contribute
 1. Fork the repository and clone it locally.
 2. Create a new branch for your changes.
-3. Test your modifications using `smart-doc` (see [Quick Start](https://HsinDumas.github.io/guide/getting-started)).
+3. Test your modifications using `stagger` (see [Quick Start](https://HsinDumas.github.io/guide/getting-started)).
 4. Format code with `mvn spring-javaformat:apply`.
 5. Submit a PR to the main repository.
 
@@ -35,4 +35,4 @@ If your contribution involves:
 - ❓ Help answer questions in the `Help` category.
 - 💡 Propose ideas or showcase tools in `Ideas` or `Show and tell`.
 
-Your contributions are vital to making `smart-doc` better for everyone. Thank you!  
+Your contributions are vital to making `stagger` better for everyone. Thank you!  

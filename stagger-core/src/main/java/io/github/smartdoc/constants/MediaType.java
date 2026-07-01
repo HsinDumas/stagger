@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.smartdoc.constants;
+package io.github.stagger.constants;
 
 import java.io.Serializable;
 import java.util.Arrays;

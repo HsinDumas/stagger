@@ -1,11 +1,11 @@
-package io.github.smartdoc.util;
+package io.github.stagger.util;
 
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.DocLanguage;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.enums.IEnum;
-import io.github.smartdoc.enums.OrderEnum;
-import io.github.smartdoc.utils.DocUtil;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.DocLanguage;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.enums.IEnum;
+import io.github.stagger.enums.OrderEnum;
+import io.github.stagger.utils.DocUtil;
 import com.thoughtworks.qdox.model.DocletTag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -97,7 +97,7 @@ public class DocUtilTest {
 
 	@Test
 	public void testReplaceGenericParameter() {
-		String base = "java.util.List<com.smartdoc.example.model.TreeNode<T>>";
+		String base = "java.util.List<com.stagger.example.model.TreeNode<T>>";
 		String originalGeneric = "T";
 		String replacement = "User";
 		String result = DocUtil.replaceGenericParameter(base, originalGeneric, replacement);

@@ -1,4 +1,4 @@
-package io.github.smartdoc.qbox;
+package io.github.stagger.qbox;
 
 /**
  * qbox scan error

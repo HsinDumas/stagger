@@ -1,9 +1,9 @@
-package io.github.smartdoc.util;
+package io.github.stagger.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.smartdoc.utils.DocUrlUtil;
+import io.github.stagger.utils.DocUrlUtil;
 
 import org.junit.jupiter.api.Test;
 

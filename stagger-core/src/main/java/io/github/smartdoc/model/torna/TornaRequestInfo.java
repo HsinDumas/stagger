@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,14 +18,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.model.torna;
+package io.github.stagger.model.torna;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
-import io.github.smartdoc.constants.TornaConstants;
+import io.github.stagger.constants.TornaConstants;
 
 /**
  * Print the log of pushing documents to Torna

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,30 +18,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.template;
+package io.github.stagger.template;
 
 import com.google.gson.Gson;
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.FrameworkEnum;
-import io.github.smartdoc.constants.GrpcMethodTypeEnum;
-import io.github.smartdoc.constants.ParamTypeConstants;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiParam;
-import io.github.smartdoc.model.ApiSchema;
-import io.github.smartdoc.model.SourceCodePath;
-import io.github.smartdoc.model.annotation.FrameworkAnnotations;
-import io.github.smartdoc.model.grpc.GrpcApiDoc;
-import io.github.smartdoc.model.grpc.GrpcJavaMethod;
-import io.github.smartdoc.model.grpc.ProtoInfo;
-import io.github.smartdoc.model.grpc.proto.EnumDefinition;
-import io.github.smartdoc.model.grpc.proto.EnumValue;
-import io.github.smartdoc.model.grpc.proto.Message;
-import io.github.smartdoc.model.grpc.proto.MessageField;
-import io.github.smartdoc.model.grpc.proto.ProtoJson;
-import io.github.smartdoc.model.grpc.proto.Service;
-import io.github.smartdoc.model.grpc.proto.ServiceMethod;
-import io.github.smartdoc.utils.DocUtil;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.FrameworkEnum;
+import io.github.stagger.constants.GrpcMethodTypeEnum;
+import io.github.stagger.constants.ParamTypeConstants;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiParam;
+import io.github.stagger.model.ApiSchema;
+import io.github.stagger.model.SourceCodePath;
+import io.github.stagger.model.annotation.FrameworkAnnotations;
+import io.github.stagger.model.grpc.GrpcApiDoc;
+import io.github.stagger.model.grpc.GrpcJavaMethod;
+import io.github.stagger.model.grpc.ProtoInfo;
+import io.github.stagger.model.grpc.proto.EnumDefinition;
+import io.github.stagger.model.grpc.proto.EnumValue;
+import io.github.stagger.model.grpc.proto.Message;
+import io.github.stagger.model.grpc.proto.MessageField;
+import io.github.stagger.model.grpc.proto.ProtoJson;
+import io.github.stagger.model.grpc.proto.Service;
+import io.github.stagger.model.grpc.proto.ServiceMethod;
+import io.github.stagger.utils.DocUtil;
 import com.power.common.util.FileUtil;
 import com.power.common.util.StringUtil;
 import com.thoughtworks.qdox.model.JavaClass;

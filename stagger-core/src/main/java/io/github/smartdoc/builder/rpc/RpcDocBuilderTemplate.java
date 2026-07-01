@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,18 +19,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.builder.rpc;
+package io.github.stagger.builder.rpc;
 
-import io.github.smartdoc.builder.IRpcDocBuilderTemplate;
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.FrameworkEnum;
-import io.github.smartdoc.constants.TornaConstants;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.ApiGroup;
-import io.github.smartdoc.model.RpcJavaMethod;
-import io.github.smartdoc.model.rpc.RpcApiDoc;
-import io.github.smartdoc.utils.DocPathUtil;
-import io.github.smartdoc.utils.DocUtil;
+import io.github.stagger.builder.IRpcDocBuilderTemplate;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.FrameworkEnum;
+import io.github.stagger.constants.TornaConstants;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.ApiGroup;
+import io.github.stagger.model.RpcJavaMethod;
+import io.github.stagger.model.rpc.RpcApiDoc;
+import io.github.stagger.utils.DocPathUtil;
+import io.github.stagger.utils.DocUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
 

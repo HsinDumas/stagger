@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,16 +18,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.builder.rpc;
+package io.github.stagger.builder.rpc;
 
-import io.github.smartdoc.constants.TornaConstants;
-import io.github.smartdoc.helper.JavaProjectBuilderHelper;
-import io.github.smartdoc.model.ApiConfig;
-import io.github.smartdoc.model.rpc.RpcApiDoc;
-import io.github.smartdoc.model.torna.Apis;
-import io.github.smartdoc.model.torna.DubboInfo;
-import io.github.smartdoc.model.torna.TornaApi;
-import io.github.smartdoc.utils.TornaUtil;
+import io.github.stagger.constants.TornaConstants;
+import io.github.stagger.helper.JavaProjectBuilderHelper;
+import io.github.stagger.model.ApiConfig;
+import io.github.stagger.model.rpc.RpcApiDoc;
+import io.github.stagger.model.torna.Apis;
+import io.github.stagger.model.torna.DubboInfo;
+import io.github.stagger.model.torna.TornaApi;
+import io.github.stagger.utils.TornaUtil;
 import com.thoughtworks.qdox.JavaProjectBuilder;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -59,7 +59,7 @@ public class RpcTornaBuilder {
 	}
 
 	/**
-	 * Only for smart-doc maven plugin and gradle plugin.
+	 * Only for stagger maven plugin and gradle plugin.
 	 * @param config ApiConfig
 	 * @param javaProjectBuilder ProjectDocConfigBuilder
 	 */

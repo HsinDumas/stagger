@@ -1,6 +1,6 @@
 # 贡献指南
 
-感谢您对参与 `smart-doc` 贡献的兴趣！详细的贡献指引请参考我们的官方 [**贡献指南文档**](https://HsinDumas.github.io/zh/guide/community/contributing)。
+感谢您对参与 `stagger` 贡献的兴趣！详细的贡献指引请参考我们的官方 [**贡献指南文档**](https://HsinDumas.github.io/zh/guide/community/contributing)。
 
 ## 核心要求
 提交 Pull Request (PR) 前请确保：
@@ -20,12 +20,12 @@
 	- 检查 PR 是否新增/修改配置（如新增参数、修改默认值）。
 	- 在 [`HsinDumas.github.io`](https://github.com/HsinDumas/stagger-group.github.io/tree/master/docs) 中补充或更新对应文档。
 - 📚 **新功能实现**：
-	- 在 [`smart-doc-example-cn`](https://github.com/HsinDumas/stagger-example-cn) 仓库提供使用示例，便于其他用户快速理解。
+	- 在 [`stagger-example-cn`](https://github.com/HsinDumas/stagger-example-cn) 仓库提供使用示例，便于其他用户快速理解。
 
 ## 贡献步骤
 1. Fork 仓库并本地克隆。
 2. 创建新分支进行修改。
-3. 使用 `smart-doc` 测试改动（参考 [快速入门](https://HsinDumas.github.io/zh/guide/getting-started)）。
+3. 使用 `stagger` 测试改动（参考 [快速入门](https://HsinDumas.github.io/zh/guide/getting-started)）。
 4. 执行 `mvn spring-javaformat:apply` 格式化代码。
 5. 向主仓库提交 PR。
 
@@ -34,4 +34,4 @@
 - ❓ 在 `Help` 分类帮助解答用户疑问。
 - 💡 在 `Ideas` 或 `Show and tell` 提出建议或展示相关工具。
 
-您的贡献将帮助 `smart-doc` 更好地服务全球开发者！感谢支持！
+您的贡献将帮助 `stagger` 更好地服务全球开发者！感谢支持！

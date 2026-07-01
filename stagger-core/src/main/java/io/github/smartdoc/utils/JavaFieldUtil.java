@@ -1,7 +1,7 @@
 /*
- * smart-doc
+ * stagger
  *
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,14 +20,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.github.smartdoc.utils;
+package io.github.stagger.utils;
 
-import io.github.smartdoc.constants.DocGlobalConstants;
-import io.github.smartdoc.constants.DocValidatorAnnotationEnum;
-import io.github.smartdoc.constants.JSRAnnotationConstants;
-import io.github.smartdoc.constants.JSRAnnotationPropConstants;
-import io.github.smartdoc.model.CustomField;
-import io.github.smartdoc.model.DocJavaField;
+import io.github.stagger.constants.DocGlobalConstants;
+import io.github.stagger.constants.DocValidatorAnnotationEnum;
+import io.github.stagger.constants.JSRAnnotationConstants;
+import io.github.stagger.constants.JSRAnnotationPropConstants;
+import io.github.stagger.model.CustomField;
+import io.github.stagger.model.DocJavaField;
 import com.power.common.util.StringUtil;
 import com.thoughtworks.qdox.model.JavaAnnotation;
 import com.thoughtworks.qdox.model.JavaClass;

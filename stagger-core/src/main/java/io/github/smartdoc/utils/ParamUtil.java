@@ -1,7 +1,7 @@
 /*
- * smart-doc
+ * stagger
  *
- * Copyright (C) 2018-2024 smart-doc
+ * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -21,13 +21,13 @@
  * under the License.
  */
 
-package io.github.smartdoc.utils;
+package io.github.stagger.utils;
 
-import io.github.smartdoc.builder.ProjectDocConfigBuilder;
-import io.github.smartdoc.constants.DocTags;
-import io.github.smartdoc.constants.ParamTypeConstants;
-import io.github.smartdoc.model.ApiParam;
-import io.github.smartdoc.model.torna.EnumInfoAndValues;
+import io.github.stagger.builder.ProjectDocConfigBuilder;
+import io.github.stagger.constants.DocTags;
+import io.github.stagger.constants.ParamTypeConstants;
+import io.github.stagger.model.ApiParam;
+import io.github.stagger.model.torna.EnumInfoAndValues;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
 import com.thoughtworks.qdox.model.JavaClass;

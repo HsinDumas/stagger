@@ -1,4 +1,4 @@
-package io.github.smartdoc.utils;
+package io.github.stagger.utils;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;

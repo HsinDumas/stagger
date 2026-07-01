@@ -1,4 +1,4 @@
-package io.github.smartdoc.model.annotation;
+package io.github.stagger.model.annotation;
 
 /**
  * request part annotation info

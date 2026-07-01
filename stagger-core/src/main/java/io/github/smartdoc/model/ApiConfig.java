@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2025 smart-doc
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,14 +19,14 @@
  * under the License.
  */
 
-package io.github.smartdoc.model;
+package io.github.stagger.model;
 
-import io.github.smartdoc.constants.ComponentTypeEnum;
-import io.github.smartdoc.constants.DocLanguage;
-import io.github.smartdoc.constants.OpenApiTagNameTypeEnum;
-import io.github.smartdoc.handler.ICustomJavaMethodHandler;
-import io.github.smartdoc.model.jmeter.JMeter;
-import io.github.smartdoc.model.rpc.RpcApiDependency;
+import io.github.stagger.constants.ComponentTypeEnum;
+import io.github.stagger.constants.DocLanguage;
+import io.github.stagger.constants.OpenApiTagNameTypeEnum;
+import io.github.stagger.handler.ICustomJavaMethodHandler;
+import io.github.stagger.model.jmeter.JMeter;
+import io.github.stagger.model.rpc.RpcApiDependency;
 import com.power.common.util.CollectionUtil;
 
 import java.util.List;
@@ -374,7 +374,7 @@ public class ApiConfig {
 	private String author;
 
 	/**
-	 * smart-doc supported framework, if not set default is spring,
+	 * stagger supported framework, if not set default is spring,
 	 */
 	private String framework;
 
