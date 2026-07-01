@@ -1,33 +1,34 @@
 # Stagger
 
-> **Let Swagger stagger. Keep your code pure.**  
-> 让 Swagger 摇晃去吧，保持你的代码纯净无瑕。
+[中文版本](./README_CN.md)
 
-Stagger 是一款面向未来（JDK 25+ / Spring Boot 4.x+）的 **零侵入、零注解** API 文档自动化生成工具。
+> **Let Swagger stagger. Keep your code pure.**
 
-## 💡 为什么叫 Stagger？
+Stagger is a **zero-intrusion, zero-annotation** API documentation generation tool built for the future (JDK 25+ / Spring Boot 4.x+).
 
-当 Swagger 用满屏幕的 `@Schema` 和 `@Operation` 注解将你的业务代码搅得一团糟时，它已经背离了"优雅"的初衷，在现代 Clean Code 的趋势下**步履蹒跚（Stagger）**。
+## 💡 Why Stagger?
 
-Stagger 继承了优秀的静态解析理念，彻底摒弃注解流：
+When Swagger floods your business code with `@Schema` and `@Operation` annotations, it defeats the purpose of elegance. In the modern Clean Code era, such approaches **stagger** forward clumsily.
 
-- 🚫 **零侵入**：你的代码里不需要引入任何 Stagger/Swagger 的第三方注解。
-- 📝 **标准 JavaDoc + AI**：只读标准的 JavaDoc 注释，并结合大模型自动补全。
-- ⚡ **面向未来**：原生支持 JDK 25 语法新特性（Record, Pattern Matching）与 Spring Boot 4.x。
-- 🔄 **多样输出**：一键生成标准 OpenAPI 3.1、Markdown、离线 HTML 等多种格式。
+Stagger embraces the elegant static analysis approach and completely abandons annotation hell:
 
-## ✨ 核心特性
+- 🚫 **Zero Intrusion** - No third-party annotations in your codebase.
+- 📝 **Standard JavaDoc + AI** - Reads pure JavaDoc comments and auto-enhances with LLMs.
+- ⚡ **Future-Ready** - Native support for JDK 25 features (Records, Pattern Matching) & Spring Boot 4.x.
+- 🔄 **Multiple Formats** - Generate OpenAPI 3.1, Markdown, offline HTML in one command.
 
-| 特性 | Stagger | Swagger | springdoc-openapi |
-|------|---------|---------|------------------|
-| 零代码侵入 | ✅ | ❌ | ❌ |
-| 纯 JavaDoc | ✅ | ❌ | ❌ |
-| 构建时生成 | ✅ | ❌ | ❌ |
-| Gradle 9.x | ✅ | ✅ | ✅ |
-| AI 增强 | ✅ | ❌ | ❌ |
+## ✨ Feature Comparison
+
+| Feature | Stagger | Swagger | springdoc-openapi |
+|---------|---------|---------|------------------|
+| Zero Code Intrusion | ✅ | ❌ | ❌ |
+| Pure JavaDoc | ✅ | ❌ | ❌ |
+| Build-time Generation | ✅ | ❌ | ❌ |
+| Gradle 9.x Support | ✅ | ✅ | ✅ |
+| AI Enhancement | ✅ | ❌ | ❌ |
 | OpenAPI 3.1 | ✅ | ✅ | ✅ |
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
 ### Maven
 
@@ -59,66 +60,66 @@ stagger {
 }
 ```
 
-## 📦 项目结构
+## 📦 Monorepo Structure
 
-这是 smart-doc 的现代化维护分支，采用 Monorepo 结构：
+This is a modern maintenance fork of smart-doc, organized as a monorepo:
 
 ```
 stagger/
-├── stagger-core/           # 核心文档生成引擎
-├── stagger-maven-plugin/   # Maven 插件
-├── stagger-gradle-plugin/  # Gradle 插件
-└── pom.xml                 # 父 POM
+├── stagger-core/           # Core documentation engine
+├── stagger-maven-plugin/   # Maven plugin
+├── stagger-gradle-plugin/  # Gradle plugin
+└── pom.xml                 # Parent POM
 ```
 
-## 🔧 构建
+## 🔧 Building
 
 ```bash
-# 构建全部模块
+# Build all modules
 mvn clean install
 
-# 构建特定模块
+# Build specific module
 cd stagger-core && mvn clean install
 cd stagger-maven-plugin && mvn clean install
 
-# 构建 Gradle 插件
+# Build Gradle plugin
 cd stagger-gradle-plugin && ./gradlew build
 ```
 
-## 🐛 主要改进
+## 🐛 Key Improvements
 
-### Gradle 9.x 兼容性修复
+### Gradle 9.x Compatibility Fix
 
 ```java
-// ❌ 旧方式（Gradle 9.0 已移除）
+// ❌ Old (Removed in Gradle 9.0)
 project.getConvention()
     .getPlugin(JavaPluginConvention.class)
     .getSourceSets();
 
-// ✅ 新方式（Gradle 7.1+）
+// ✅ New (Gradle 7.1+)
 project.getExtensions()
     .getByType(JavaPluginExtension.class)
     .getSourceSets();
 ```
 
-### Monorepo 管理
+### Unified Monorepo
 
-原 smart-doc 分散在 4 个独立仓库，现已统一为单仓库，便于版本同步和维护。
+Original smart-doc was scattered across 4 separate repositories. Now unified in a single repo for easier version management and maintenance.
 
 ## 📄 License
 
 Apache License 2.0 - See LICENSE file
 
-## 👏 致谢
+## 👏 Acknowledgments
 
-- **原作者**: [shalousun](https://github.com/shalousun) ([smart-doc](https://github.com/smart-doc-group/smart-doc))
-- **当前维护**: [HsinDumas](https://github.com/HsinDumas)
+- **Original Author**: [shalousun](https://github.com/shalousun) ([smart-doc](https://github.com/smart-doc-group/smart-doc))
+- **Current Maintainer**: [HsinDumas](https://github.com/HsinDumas)
 
-## 🤝 贡献
+## 🤝 Contributing
 
-欢迎 Pull Request！大改动请先开 Issue 讨论。
+Pull requests welcome! Please open an issue first for major changes.
 
 ---
 
-**基于**: [smart-doc](https://github.com/smart-doc-group/smart-doc)  
-**改进**: Gradle 9.x 兼容性 + 现代化维护
+**Based on**: [smart-doc](https://github.com/smart-doc-group/smart-doc)  
+**Enhanced with**: Gradle 9.x compatibility + modern maintenance
