@@ -11,13 +11,13 @@
 启动`smart-doc`扫描代码分析生成接口文档。可以直接运行`gradle`命令
 或者是`IDE`中点击`smart-doc-gradle-plugin`预设好的`task`即可生成接口文档。
 `smart-doc-gradle-plugin`底层完全依赖于官方开源的`smart-doc`解析库.
-[关于smart-doc](https://github.com/TongchengOpenSource/smart-doc)
+[关于smart-doc](https://github.com/HsinDumas/stagger)
 ## Best Practice
 `smart-doc` + [Torna](http://torna.cn) 组成行业领先的文档生成和管理解决方案，使用`smart-doc`无侵入完成`Java`源代码分析和提取注释生成`API`文档，自动将文档推送到`Torna`企业级接口文档管理平台。
 
 ![smart-doc+torna](https://gitee.com/smart-doc-team/smart-doc/raw/master/images/smart-doc-torna.png)
 
-[smart-doc+Torna文档自动化](https://smart-doc-group.github.io/zh/guide/integrated/torna)
+[smart-doc+Torna文档自动化](https://HsinDumas.github.io/zh/guide/integrated/torna)
 ## Getting started
 ### Add plugin
 Using the plugins DSL:
@@ -119,7 +119,7 @@ https://gitee.com/devin-alan/smart-doc-gradle-plugin-demo
 仅仅需要上面一行配置就能启动`smart-doc-gradle-plugin`插件。
 
 `smart-doc`提供很多配置项，
-详细配置请参考[官方文档](https://smart-doc-group.github.io/zh/guide/advanced/config)
+详细配置请参考[官方文档](https://HsinDumas.github.io/zh/guide/advanced/config)
 
 ### Generated document
 #### Use Gradle command
@@ -195,7 +195,7 @@ smart-doc-gradle-plugin is under the Apache 2.0 license.  See the [LICENSE](htt
 
 **注意：** smart-doc源代码文件全部带有版权注释，使用关键代码二次开源请保留原始版权，否则后果自负！
 ## Who is using
-> 排名不分先后，更多接入公司，欢迎在[用户登记](https://github.com/TongchengOpenSource/smart-doc/issues/12)登记（仅供开源用户参考）
+> 排名不分先后，更多接入公司，欢迎在[用户登记](https://github.com/HsinDumas/stagger/issues/12)登记（仅供开源用户参考）
 
 ![IFLYTEK](https://gitee.com/smart-doc-team/smart-doc/raw/master/images/known-users/iflytek.png)
 &nbsp;&nbsp;<img src="https://gitee.com/smart-doc-team/smart-doc/raw/master/images/known-users/oneplus.png" title="一加" >

@@ -112,7 +112,7 @@ Apache License 2.0 - See LICENSE file
 
 ## 👏 Acknowledgments
 
-- **Original Author**: [shalousun](https://github.com/shalousun) ([smart-doc](https://github.com/smart-doc-group/smart-doc))
+- **Original Author**: [shalousun](https://github.com/shalousun) ([smart-doc](https://github.com/HsinDumas/stagger))
 - **Current Maintainer**: [HsinDumas](https://github.com/HsinDumas)
 
 ## 🤝 Contributing
@@ -121,5 +121,5 @@ Pull requests welcome! Please open an issue first for major changes.
 
 ---
 
-**Based on**: [smart-doc](https://github.com/smart-doc-group/smart-doc)  
+**Based on**: [smart-doc](https://github.com/HsinDumas/stagger)  
 **Enhanced with**: Gradle 9.x compatibility + modern maintenance

@@ -4,74 +4,74 @@
 
 - 更新日期: 2024-3-30
 - 更新内容：
-  1. 新功能：：sparkles: 添加 WebSocket 支持并更新许可证有效期。[#752](https://github.com/smart-doc-group/smart-doc/pull/752)
-  2. 修复 #746：为枚举值添加分隔符。[#754](https://github.com/smart-doc-group/smart-doc/pull/754)
-  3. 新功能：优化 JSR 验证信息的提取。[#755](https://github.com/smart-doc-group/smart-doc/pull/755)
-  4. 在参数中添加扩展以支持 openapi..[#759](https://github.com/smart-doc-group/smart-doc/pull/759)
-  5. 修复泛型 typeName 或 returnType 的错误。[#761](https://github.com/smart-doc-group/smart-doc/pull/761)
-  6. 修复 Solon 框架中的非接口文档问题。[#765](https://github.com/smart-doc-group/smart-doc/pull/765)
-  7. 修复 Javadoc 标签使用错误的提示。[#767](https://github.com/smart-doc-group/smart-doc/pull/767)
-  8. Solon 已弃用 PathVar 并替换为 Path。[#765](https://github.com/smart-doc-group/smart-doc/pull/765)
-  9. 优化 Javadoc 标签使用错误的提示。[#767](https://github.com/smart-doc-group/smart-doc/pull/767)
-  10. 修复 Solon 框架中非接口文档的问题。[#771](https://github.com/smart-doc-group/smart-doc/pull/771)
-  11. 更新：修复 null 参数值中多余的双引号问题。[#772](https://github.com/smart-doc-group/smart-doc/pull/772)
-  12. 新功能：支持 RPC 中多级接口继承。[#773](https://github.com/smart-doc-group/smart-doc/pull/773)
-  13. 新功能：在添加自定义注解到参数后，忽略集合参数检查。[#774](https://github.com/smart-doc-group/smart-doc/pull/774)
-  14. 新功能：忽略集合参数检查。[#775](https://github.com/smart-doc-group/smart-doc/pull/775)
+  1. 新功能：：sparkles: 添加 WebSocket 支持并更新许可证有效期。[#752](https://github.com/HsinDumas/stagger/pull/752)
+  2. 修复 #746：为枚举值添加分隔符。[#754](https://github.com/HsinDumas/stagger/pull/754)
+  3. 新功能：优化 JSR 验证信息的提取。[#755](https://github.com/HsinDumas/stagger/pull/755)
+  4. 在参数中添加扩展以支持 openapi..[#759](https://github.com/HsinDumas/stagger/pull/759)
+  5. 修复泛型 typeName 或 returnType 的错误。[#761](https://github.com/HsinDumas/stagger/pull/761)
+  6. 修复 Solon 框架中的非接口文档问题。[#765](https://github.com/HsinDumas/stagger/pull/765)
+  7. 修复 Javadoc 标签使用错误的提示。[#767](https://github.com/HsinDumas/stagger/pull/767)
+  8. Solon 已弃用 PathVar 并替换为 Path。[#765](https://github.com/HsinDumas/stagger/pull/765)
+  9. 优化 Javadoc 标签使用错误的提示。[#767](https://github.com/HsinDumas/stagger/pull/767)
+  10. 修复 Solon 框架中非接口文档的问题。[#771](https://github.com/HsinDumas/stagger/pull/771)
+  11. 更新：修复 null 参数值中多余的双引号问题。[#772](https://github.com/HsinDumas/stagger/pull/772)
+  12. 新功能：支持 RPC 中多级接口继承。[#773](https://github.com/HsinDumas/stagger/pull/773)
+  13. 新功能：在添加自定义注解到参数后，忽略集合参数检查。[#774](https://github.com/HsinDumas/stagger/pull/774)
+  14. 新功能：忽略集合参数检查。[#775](https://github.com/HsinDumas/stagger/pull/775)
 
 ### 版本号：3.0.2
 - 更新日期: 2024-2-26
 - 更新内容：
-  1. 优化推送rpc文档到torna时smart-doc设置的框架名错误，[#690](https://github.com/smart-doc-group/smart-doc/issues/690)
-  2. 修复html文档搜索后链接错误的bug，[#693](https://github.com/smart-doc-group/smart-doc/pull/693)
-  3. 支持分批上传文档到torna[#697](https://github.com/smart-doc-group/smart-doc/issues/697)
-  4. 修复mock中值双引号被删除的问题[#680](https://github.com/smart-doc-group/smart-doc/issues/680)
-  5. 支持提取java record的注释[#703](https://github.com/smart-doc-group/smart-doc/pull/703)
-  6. 修复报错信息错误[#706](https://github.com/smart-doc-group/smart-doc/pull/706)
-  7. 优化第三方库枚举缺失导致生成文档被中断的问题[#707](https://github.com/smart-doc-group/smart-doc/pull/707)
-  8. 重构优化word模版，生成的文档更漂亮 [#710](https://github.com/smart-doc-group/smart-doc/pull/710)
-  9. 修复创建word文档错误的问题[#711](https://github.com/smart-doc-group/smart-doc/pull/711)
-  10. 修复html特殊元素导致生成的jmeter无法打开的bug [#713](https://github.com/smart-doc-group/smart-doc/pull/713)
-  11. 支持@JsonSerialize(using = ToStringSerializer.class)字段类型的处理。 [#715](https://github.com/smart-doc-group/smart-doc/pull/715)
-  12. 修复openApi生成的tags与paths未对packageFilters进行过滤。 [#716](https://github.com/smart-doc-group/smart-doc/pull/716)
-  13. 修复项目采用git初始化未提交时生成文档报错bug。 [#719](https://github.com/smart-doc-group/smart-doc/issue/719)
-  14. 忽略NoClassDefFoundError错误，避免第三方代码存在问题时影响文档生成。 [#724](https://github.com/smart-doc-group/smart-doc/issue/724)
-  15. 修复gradle插件codePath未设置导致使用报错的问题。 [gradle #15](https://github.com/smart-doc-group/smart-doc-gradle-plugin/pull/15)
-  16. 优化常量获取，兼容更多用户可以在路径中使用各种常量。[#730](https://github.com/smart-doc-group/smart-doc/pull/730)
-  17. 修改高版本smart-doc生成JAX-RS规范项目文档报错问题。[#729](https://github.com/smart-doc-group/smart-doc/pull/729)
-  18. 修复内部枚举类作为参数时无法正常解析的问题。[#728](https://github.com/smart-doc-group/smart-doc/pull/728)
-  19. 修复void返回时返回用例生成错误。[#726](https://github.com/smart-doc-group/smart-doc/pull/726)
-  20. 修改JAX-RS绑定集合入参报错问题。 [#735](https://github.com/smart-doc-group/smart-doc/pull/735)
-  21. 新增类级别的接口排除过滤。[#736](https://github.com/smart-doc-group/smart-doc/pull/736)
-  22. openapi枚举类型增加取值范围展示[#741](https://github.com/smart-doc-group/smart-doc/pull/741)
+  1. 优化推送rpc文档到torna时smart-doc设置的框架名错误，[#690](https://github.com/HsinDumas/stagger/issues/690)
+  2. 修复html文档搜索后链接错误的bug，[#693](https://github.com/HsinDumas/stagger/pull/693)
+  3. 支持分批上传文档到torna[#697](https://github.com/HsinDumas/stagger/issues/697)
+  4. 修复mock中值双引号被删除的问题[#680](https://github.com/HsinDumas/stagger/issues/680)
+  5. 支持提取java record的注释[#703](https://github.com/HsinDumas/stagger/pull/703)
+  6. 修复报错信息错误[#706](https://github.com/HsinDumas/stagger/pull/706)
+  7. 优化第三方库枚举缺失导致生成文档被中断的问题[#707](https://github.com/HsinDumas/stagger/pull/707)
+  8. 重构优化word模版，生成的文档更漂亮 [#710](https://github.com/HsinDumas/stagger/pull/710)
+  9. 修复创建word文档错误的问题[#711](https://github.com/HsinDumas/stagger/pull/711)
+  10. 修复html特殊元素导致生成的jmeter无法打开的bug [#713](https://github.com/HsinDumas/stagger/pull/713)
+  11. 支持@JsonSerialize(using = ToStringSerializer.class)字段类型的处理。 [#715](https://github.com/HsinDumas/stagger/pull/715)
+  12. 修复openApi生成的tags与paths未对packageFilters进行过滤。 [#716](https://github.com/HsinDumas/stagger/pull/716)
+  13. 修复项目采用git初始化未提交时生成文档报错bug。 [#719](https://github.com/HsinDumas/stagger/issue/719)
+  14. 忽略NoClassDefFoundError错误，避免第三方代码存在问题时影响文档生成。 [#724](https://github.com/HsinDumas/stagger/issue/724)
+  15. 修复gradle插件codePath未设置导致使用报错的问题。 [gradle #15](https://github.com/HsinDumas/stagger-gradle-plugin/pull/15)
+  16. 优化常量获取，兼容更多用户可以在路径中使用各种常量。[#730](https://github.com/HsinDumas/stagger/pull/730)
+  17. 修改高版本smart-doc生成JAX-RS规范项目文档报错问题。[#729](https://github.com/HsinDumas/stagger/pull/729)
+  18. 修复内部枚举类作为参数时无法正常解析的问题。[#728](https://github.com/HsinDumas/stagger/pull/728)
+  19. 修复void返回时返回用例生成错误。[#726](https://github.com/HsinDumas/stagger/pull/726)
+  20. 修改JAX-RS绑定集合入参报错问题。 [#735](https://github.com/HsinDumas/stagger/pull/735)
+  21. 新增类级别的接口排除过滤。[#736](https://github.com/HsinDumas/stagger/pull/736)
+  22. openapi枚举类型增加取值范围展示[#741](https://github.com/HsinDumas/stagger/pull/741)
 
 ### 版本号：3.0.1
 - 更新日期: 2023-12-17
 - 更新内容：
-  1. 优化Dubbo文档设置，[#649](https://github.com/smart-doc-group/smart-doc/issues/649)
-  2. 优化Dubbo文档中字段类型展示，[#648](https://github.com/smart-doc-group/smart-doc/issues/648)
-  3. 支持获取接口上RequestMapping[#681](https://github.com/smart-doc-group/smart-doc/issues/681)
-  4. 优化html模版页面url策略方便分享[#658](https://github.com/smart-doc-group/smart-doc/issues/658)
-  5. 支持jmeter性能测试[#653](https://github.com/smart-doc-group/smart-doc/issues/653)
-  6. 支持导入文档到word中[#686](https://github.com/smart-doc-group/smart-doc/pull/686)
-  7. 支持多路由场景下的openapi生成[#679](https://github.com/smart-doc-group/smart-doc/pull/679)
-  8. 兼容swagger的tag [#674](https://github.com/smart-doc-group/smart-doc/pull/674)
-  9. 修复componentType配置为NORMAL失效的问题[#665](https://github.com/smart-doc-group/smart-doc/pull/665)
-  10. 支持基于git管理的增量文档构建[#657](https://github.com/smart-doc-group/smart-doc/pull/657)
+  1. 优化Dubbo文档设置，[#649](https://github.com/HsinDumas/stagger/issues/649)
+  2. 优化Dubbo文档中字段类型展示，[#648](https://github.com/HsinDumas/stagger/issues/648)
+  3. 支持获取接口上RequestMapping[#681](https://github.com/HsinDumas/stagger/issues/681)
+  4. 优化html模版页面url策略方便分享[#658](https://github.com/HsinDumas/stagger/issues/658)
+  5. 支持jmeter性能测试[#653](https://github.com/HsinDumas/stagger/issues/653)
+  6. 支持导入文档到word中[#686](https://github.com/HsinDumas/stagger/pull/686)
+  7. 支持多路由场景下的openapi生成[#679](https://github.com/HsinDumas/stagger/pull/679)
+  8. 兼容swagger的tag [#674](https://github.com/HsinDumas/stagger/pull/674)
+  9. 修复componentType配置为NORMAL失效的问题[#665](https://github.com/HsinDumas/stagger/pull/665)
+  10. 支持基于git管理的增量文档构建[#657](https://github.com/HsinDumas/stagger/pull/657)
 
 ### 版本号：3.0.0
 - 更新日期: 2023-10-20
 - 更新内容：
-  1. 修复Java 16+版本反射获取字段是jdk中的类时异常。 [#615](https://github.com/smart-doc-group/smart-doc/issues/615)
-  2. 修复枚举字典显示错乱问题，维持代码中编写的顺序。[#603](https://github.com/smart-doc-group/smart-doc/issues/603)
-  3. 支持获取接口的注释，[#573](https://github.com/smart-doc-group/smart-doc/pull/573)
-  4. 生成html页面支持多文件上传。[#594](https://github.com/smart-doc-group/smart-doc/issues/594)
-  5. 无参请求生成时生成的OpenAPI文档错误。[#616](https://github.com/smart-doc-group/smart-doc/issues/616)
-  6. 扫描文档时丢弃对JDK原生类型的反射，避免高版本JDK反射时报错。[pr#621](https://github.com/smart-doc-group/smart-doc/pull/621)
-  7. 修复生成postman collection后导入到postman缺少file文件参数问题。[#622](https://github.com/smart-doc-group/smart-doc/issues/622)
-  8. 修复配置ResponseBodyAdvice后torna推送数据错误问题。[#599](https://github.com/smart-doc-group/smart-doc/issues/599)
-  9. 修复customResponseFields无法忽略字段的bug。 [#625](https://github.com/smart-doc-group/smart-doc/issues/625)
-  10. 修复请求参数标记@Null注解时字段没被忽略的bug。[#608](https://github.com/smart-doc-group/smart-doc/issues/608)
+  1. 修复Java 16+版本反射获取字段是jdk中的类时异常。 [#615](https://github.com/HsinDumas/stagger/issues/615)
+  2. 修复枚举字典显示错乱问题，维持代码中编写的顺序。[#603](https://github.com/HsinDumas/stagger/issues/603)
+  3. 支持获取接口的注释，[#573](https://github.com/HsinDumas/stagger/pull/573)
+  4. 生成html页面支持多文件上传。[#594](https://github.com/HsinDumas/stagger/issues/594)
+  5. 无参请求生成时生成的OpenAPI文档错误。[#616](https://github.com/HsinDumas/stagger/issues/616)
+  6. 扫描文档时丢弃对JDK原生类型的反射，避免高版本JDK反射时报错。[pr#621](https://github.com/HsinDumas/stagger/pull/621)
+  7. 修复生成postman collection后导入到postman缺少file文件参数问题。[#622](https://github.com/HsinDumas/stagger/issues/622)
+  8. 修复配置ResponseBodyAdvice后torna推送数据错误问题。[#599](https://github.com/HsinDumas/stagger/issues/599)
+  9. 修复customResponseFields无法忽略字段的bug。 [#625](https://github.com/HsinDumas/stagger/issues/625)
+  10. 修复请求参数标记@Null注解时字段没被忽略的bug。[#608](https://github.com/HsinDumas/stagger/issues/608)
 
 
 ### 版本号：2.7.7
@@ -84,222 +84,222 @@
 
 - 更新日期: 2023-09-3
 - 更新内容：
-  1. 优化smart-doc常量获取，支持静态导入的常量获取。[qdox #1](https://github.com/smart-doc-group/qdox/pull/1)
-  2. 无源代码第三方接口范型方法的解析支持，[pr#587](https://github.com/smart-doc-group/smart-doc/pull/587)
-  3. 生成Markdown代码块添加语言类型支持，[#566](https://github.com/smart-doc-group/smart-doc/pull/566)
-  4. 修复openapi生成summary和description设置，[#580](https://github.com/smart-doc-group/smart-doc/issues/580)
-  5. 修复生成的openapi.json中接口的路径参数赋予format错误,[#578](https://github.com/smart-doc-group/smart-doc/issues/578)
+  1. 优化smart-doc常量获取，支持静态导入的常量获取。[qdox #1](https://github.com/HsinDumas/qdox/pull/1)
+  2. 无源代码第三方接口范型方法的解析支持，[pr#587](https://github.com/HsinDumas/stagger/pull/587)
+  3. 生成Markdown代码块添加语言类型支持，[#566](https://github.com/HsinDumas/stagger/pull/566)
+  4. 修复openapi生成summary和description设置，[#580](https://github.com/HsinDumas/stagger/issues/580)
+  5. 修复生成的openapi.json中接口的路径参数赋予format错误,[#578](https://github.com/HsinDumas/stagger/issues/578)
 
 ### 版本号：2.7.5
 
 - 更新日期: 2023-08-20
 - 更新内容：
-  1. fix内部类嵌套泛型解析异常，[#561](https://github.com/smart-doc-group/smart-doc/issues/561)
+  1. fix内部类嵌套泛型解析异常，[#561](https://github.com/HsinDumas/stagger/issues/561)
 
 ### 版本号：2.7.4
 
 - 更新日期: 2023-08-01
 - 更新内容：
-  1. 修复torna-rpc推送检查outpath错误，[#556](https://github.com/smart-doc-group/smart-doc/issues/556)
-  2. 完善torna version推送 [pr#557](https://github.com/smart-doc-group/smart-doc/pull/557)
+  1. 修复torna-rpc推送检查outpath错误，[#556](https://github.com/HsinDumas/stagger/issues/556)
+  2. 完善torna version推送 [pr#557](https://github.com/HsinDumas/stagger/pull/557)
 
 ### 版本号：2.7.3
 
 - 更新日期: 2023-07-20
 - 更新内容：
-  1. 修复第三方依赖无源代码下的范型解析bug，[#539](https://github.com/smart-doc-group/smart-doc/issues/539)
+  1. 修复第三方依赖无源代码下的范型解析bug，[#539](https://github.com/HsinDumas/stagger/issues/539)
 
 ### 版本号：2.7.2
 
 - 更新日期: 2023-07-09
 - 更新内容：
-  1. 支持无源代码下的范型解析，[#539](https://github.com/smart-doc-group/smart-doc/issues/539)
-  2. 修复[2.6.9, 2.7.1]版本dubbo rpc重复生成接口文档bug。[#531](https://github.com/smart-doc-group/smart-doc/issues/531)
-  3. 修改不通类方法接口同名时归档错误问题，[#531](https://github.com/smart-doc-group/smart-doc/issues/534)
-  4. torna增加version推送，[#535](https://github.com/smart-doc-group/smart-doc/issues/535)
+  1. 支持无源代码下的范型解析，[#539](https://github.com/HsinDumas/stagger/issues/539)
+  2. 修复[2.6.9, 2.7.1]版本dubbo rpc重复生成接口文档bug。[#531](https://github.com/HsinDumas/stagger/issues/531)
+  3. 修改不通类方法接口同名时归档错误问题，[#531](https://github.com/HsinDumas/stagger/issues/534)
+  4. torna增加version推送，[#535](https://github.com/HsinDumas/stagger/issues/535)
   5. 删除自定义@required tag，@ignore tag不在支持字段忽略。使用jsr规则替代。
 
 ### 版本号：2.7.1
 
 - 更新日期: 2023-06-23
 - 更新内容：
-  1. 修复Spring各个Mapping注解的name解析使用错误，[#518](https://github.com/smart-doc-group/smart-doc/issues/518)
-  2. packageFilters 参数支持到方法级别。[#519](https://github.com/smart-doc-group/smart-doc/issues/519)
+  1. 修复Spring各个Mapping注解的name解析使用错误，[#518](https://github.com/HsinDumas/stagger/issues/518)
+  2. packageFilters 参数支持到方法级别。[#519](https://github.com/HsinDumas/stagger/issues/519)
 
 ### 版本号：2.7.0
 
 - 更新日期: 2023-06-10
 - 更新内容：
-  1. 支持在子类使用@JsonIgnore忽略后，同时忽略父类中的同名字段，[#509](https://github.com/smart-doc-group/smart-doc/issues/509)
-  2. 修复内部类嵌套结构formdata example错误。[pr#512](https://github.com/smart-doc-group/smart-doc/pull/512)
-  3. 修复url中使用环境变量表达式时解析错误，[#515](https://github.com/smart-doc-group/smart-doc/issues/515)
+  1. 支持在子类使用@JsonIgnore忽略后，同时忽略父类中的同名字段，[#509](https://github.com/HsinDumas/stagger/issues/509)
+  2. 修复内部类嵌套结构formdata example错误。[pr#512](https://github.com/HsinDumas/stagger/pull/512)
+  3. 修复url中使用环境变量表达式时解析错误，[#515](https://github.com/HsinDumas/stagger/issues/515)
 
 ### 版本号：2.6.9
 
 - 更新日期: 2023-05-14
 - 更新内容：
-  1. 修复qdox不允许将字段名命名为permits关键字的bug，[#498](https://github.com/smart-doc-group/smart-doc/issues/498)
-  2. dubbo接口继承父类时，父类中接口未解析问题修复。[#493](https://github.com/smart-doc-group/smart-doc/issues/493)
+  1. 修复qdox不允许将字段名命名为permits关键字的bug，[#498](https://github.com/HsinDumas/stagger/issues/498)
+  2. dubbo接口继承父类时，父类中接口未解析问题修复。[#493](https://github.com/HsinDumas/stagger/issues/493)
   3. 优化插件对许多无关依赖的过滤，提升插件开箱即用的能力。
-  4. 支持禁用随机mock值生成，[#497](https://github.com/smart-doc-group/smart-doc/issues/497)
+  4. 支持禁用随机mock值生成，[#497](https://github.com/HsinDumas/stagger/issues/497)
 
 
 ### 版本号：2.6.8
 
 - 更新日期: 2023-05-02
 - 更新内容：
-  1. 支持扩展对DocJavaMethod进行数据自定义处理，[#488](https://github.com/smart-doc-group/smart-doc/issues/488)
-  2. 修复mock值中使用cron表达式后转义值问题。[#487](https://github.com/smart-doc-group/smart-doc/issues/487)
-  3. 支持gson别名解析。 [#485](https://github.com/smart-doc-group/smart-doc/pull/485）
-  4. 修复无法获取多层继承的父类接口bug。[#480](https://github.com/smart-doc-group/smart-doc/issues/480)
-  5. 支持接口中使用多个@RequestBody。 [#pr475](https://github.com/smart-doc-group/smart-doc/pull/475)
-  6. 升级jquery，[#pr474](https://github.com/smart-doc-group/smart-doc/pull/474)
-  7. 修复file字段required设置，[#pr470](https://github.com/smart-doc-group/smart-doc/pull/470)
-  8. 修复多path错误，[#466](https://github.com/smart-doc-group/smart-doc/issues/466)
+  1. 支持扩展对DocJavaMethod进行数据自定义处理，[#488](https://github.com/HsinDumas/stagger/issues/488)
+  2. 修复mock值中使用cron表达式后转义值问题。[#487](https://github.com/HsinDumas/stagger/issues/487)
+  3. 支持gson别名解析。 [#485](https://github.com/HsinDumas/stagger/pull/485）
+  4. 修复无法获取多层继承的父类接口bug。[#480](https://github.com/HsinDumas/stagger/issues/480)
+  5. 支持接口中使用多个@RequestBody。 [#pr475](https://github.com/HsinDumas/stagger/pull/475)
+  6. 升级jquery，[#pr474](https://github.com/HsinDumas/stagger/pull/474)
+  7. 修复file字段required设置，[#pr470](https://github.com/HsinDumas/stagger/pull/470)
+  8. 修复多path错误，[#466](https://github.com/HsinDumas/stagger/issues/466)
 
 ### 版本号：2.6.7
 
 - 更新日期: 2023-03-28
 - 更新内容：
-  1. 修复JAX-RS Produces注解使用时contentType为空的bug，[#415](https://github.com/smart-doc-group/smart-doc/issues/415)
-  2. 修复不能忽略被继承类中相应字段bug。[#453](https://github.com/smart-doc-group/smart-doc/issues/453)
-  3. 修复使用@see tag时的未写注释导致空指针问腿。[#451](https://github.com/smart-doc-group/smart-doc/issues/451）
-  4. 修复openapi的生成bug。[#458](https://github.com/smart-doc-group/smart-doc/issues/458)
-  5. 修复openapi无法归类的问题。 [#pr460](https://github.com/smart-doc-group/smart-doc/pull/460)
+  1. 修复JAX-RS Produces注解使用时contentType为空的bug，[#415](https://github.com/HsinDumas/stagger/issues/415)
+  2. 修复不能忽略被继承类中相应字段bug。[#453](https://github.com/HsinDumas/stagger/issues/453)
+  3. 修复使用@see tag时的未写注释导致空指针问腿。[#451](https://github.com/HsinDumas/stagger/issues/451）
+  4. 修复openapi的生成bug。[#458](https://github.com/HsinDumas/stagger/issues/458)
+  5. 修复openapi无法归类的问题。 [#pr460](https://github.com/HsinDumas/stagger/pull/460)
 
 ### 版本号：2.6.6
 
 - 更新日期: 2023-03-08
 - 更新内容：
-  1. 修复集合或者数组入参推送torna数据错误，[#415](https://github.com/smart-doc-group/smart-doc/issues/415)
-  2. 请求注解consumes支持。[#424](https://github.com/smart-doc-group/smart-doc/issues/424)
-  3. url中path param占位符解析优化。[#447](https://github.com/smart-doc-group/smart-doc/issues/447）
+  1. 修复集合或者数组入参推送torna数据错误，[#415](https://github.com/HsinDumas/stagger/issues/415)
+  2. 请求注解consumes支持。[#424](https://github.com/HsinDumas/stagger/issues/424)
+  3. url中path param占位符解析优化。[#447](https://github.com/HsinDumas/stagger/issues/447）
  
 ### 版本号：2.6.5
 
 - 更新日期: 2023-02-27
 - 更新内容：
-  1. 修复集合或者数组入参推送torna数据错误，[#415](https://github.com/smart-doc-group/smart-doc/issues/415)
-  2. 文档泛型支持数组类型标注。[#421](https://github.com/smart-doc-group/smart-doc/issues/421)
-  3. list<Primitive Type> 和list<File> 类型openapi生成错误。[#423](https://github.com/smart-doc-group/smart-doc/issues/423)
-  4. 修复设置requestFieldToUnderline为true时path参数丢失，[#103](https://github.com/smart-doc-group/smart-doc/issues/103)
-  5. 优化自定义字典值处理接口DictionaryValuesResolver[#pr428](https://github.com/smart-doc-group/smart-doc/pull/428)
-  6. 修复HTML模版文档的描述展示[#pr438](https://github.com/smart-doc-group/smart-doc/pull/438)
+  1. 修复集合或者数组入参推送torna数据错误，[#415](https://github.com/HsinDumas/stagger/issues/415)
+  2. 文档泛型支持数组类型标注。[#421](https://github.com/HsinDumas/stagger/issues/421)
+  3. list<Primitive Type> 和list<File> 类型openapi生成错误。[#423](https://github.com/HsinDumas/stagger/issues/423)
+  4. 修复设置requestFieldToUnderline为true时path参数丢失，[#103](https://github.com/HsinDumas/stagger/issues/103)
+  5. 优化自定义字典值处理接口DictionaryValuesResolver[#pr428](https://github.com/HsinDumas/stagger/pull/428)
+  6. 修复HTML模版文档的描述展示[#pr438](https://github.com/HsinDumas/stagger/pull/438)
 
 ### 版本号：2.6.4
 
 - 更新日期: 2023-01-28
 - 更新内容：
-  1. 支持没有getter方法的枚举字典提取，[#408](https://github.com/smart-doc-group/smart-doc/issues/408)
-  2. 优化插件遇到源码语法错误时的报错提示。[#402](https://github.com/smart-doc-group/smart-doc/issues/402)
-  3. URL 结尾存在多余'/' 。[#396](https://github.com/smart-doc-group/smart-doc/issues/396)
+  1. 支持没有getter方法的枚举字典提取，[#408](https://github.com/HsinDumas/stagger/issues/408)
+  2. 优化插件遇到源码语法错误时的报错提示。[#402](https://github.com/HsinDumas/stagger/issues/402)
+  3. URL 结尾存在多余'/' 。[#396](https://github.com/HsinDumas/stagger/issues/396)
   4. 支持SpringBoot 3.0和Jakarta EE 10.
-  5. 二维数据推送torna类型错误，[#380](https://github.com/smart-doc-group/smart-doc/issues/380)
+  5. 二维数据推送torna类型错误，[#380](https://github.com/HsinDumas/stagger/issues/380)
   6. 优化插件对常用无关文档依赖做加载优化。
-  7. 支持controller继承接口中的注解[#pr392](https://github.com/smart-doc-group/smart-doc/pull/392)。
+  7. 支持controller继承接口中的注解[#pr392](https://github.com/HsinDumas/stagger/pull/392)。
 
 ### 版本号：2.6.3
 
 - 更新日期: 2022-12-10
 - 更新内容：
-  1. 单个接口推送到torna目录显示优化，[#385](https://github.com/smart-doc-group/smart-doc/pull/385)
+  1. 单个接口推送到torna目录显示优化，[#385](https://github.com/HsinDumas/stagger/pull/385)
   2. 修改timestamp类型在文档中显示错误。
   3. 修改枚举重复问题。
   4. 支持SpringBoot 3.0和Jakarta EE 10.
-  5. 二维数据推送torna类型错误，[#380](https://github.com/smart-doc-group/smart-doc/issues/380)
+  5. 二维数据推送torna类型错误，[#380](https://github.com/HsinDumas/stagger/issues/380)
   6. 优化插件对常用无关文档依赖做加载优化。
-  7. 支持controller继承接口中的注解[#pr392](https://github.com/smart-doc-group/smart-doc/pull/392)。
+  7. 支持controller继承接口中的注解[#pr392](https://github.com/HsinDumas/stagger/pull/392)。
 
 ### 版本号：2.6.2
 
 - 更新日期: 2022-10-29
 - 更新内容：
-  1. 修复枚举渲染换行问题，[#377](https://github.com/smart-doc-group/smart-doc/issues/377)
-  2. 文档url显示错误，[#379](https://github.com/smart-doc-group/smart-doc-maven-plugin/issues/379)
+  1. 修复枚举渲染换行问题，[#377](https://github.com/HsinDumas/stagger/issues/377)
+  2. 文档url显示错误，[#379](https://github.com/HsinDumas/stagger-maven-plugin/issues/379)
   3. 优化openapi文档生成
 
 ### 版本号：2.6.1
 
 - 更新日期: 2022-10-23
 - 更新内容：
-  1. 修复枚举渲染和rpc文档字段类型，[#377](https://github.com/smart-doc-group/smart-doc/issues/377)
-  2. markdown文档字段描述填充错误，[#378](https://github.com/smart-doc-group/smart-doc-maven-plugin/issues/378)
+  1. 修复枚举渲染和rpc文档字段类型，[#377](https://github.com/HsinDumas/stagger/issues/377)
+  2. markdown文档字段描述填充错误，[#378](https://github.com/HsinDumas/stagger-maven-plugin/issues/378)
   3. 格式化markdown模板错误
 
 ### 版本号：2.6.0
 
 - 更新日期: 2022-10-15
 - 更新内容：
-    1. 修复markdown从出现换行错误导致渲染混乱，[#340](https://github.com/smart-doc-group/smart-doc-maven-plugin/issues/17)
-    2. Post请求中文参数编码错误，[#19](https://github.com/smart-doc-group/smart-doc-maven-plugin/issues/19)
-    3. 支持推送@since到torna的注释中，[#344](https://github.com/smart-doc-group/smart-doc/issues/344)
-    4. spring mvc mapping method数组书写方式解析错误，[#361](https://github.com/smart-doc-group/smart-doc/issues/361)
-    5. 修复jax-rs方法上绑定集合解析错误，[#358](https://github.com/smart-doc-group/smart-doc/issues/358)
-    6. 修复customResponseFields配置无效错误，[#355](https://github.com/smart-doc-group/smart-doc/issues/355)
-    7. 对Jackson注解@JsonNaming驼峰转下划线的支持,[#349](https://github.com/smart-doc-group/smart-doc/issues/349)
+    1. 修复markdown从出现换行错误导致渲染混乱，[#340](https://github.com/HsinDumas/stagger-maven-plugin/issues/17)
+    2. Post请求中文参数编码错误，[#19](https://github.com/HsinDumas/stagger-maven-plugin/issues/19)
+    3. 支持推送@since到torna的注释中，[#344](https://github.com/HsinDumas/stagger/issues/344)
+    4. spring mvc mapping method数组书写方式解析错误，[#361](https://github.com/HsinDumas/stagger/issues/361)
+    5. 修复jax-rs方法上绑定集合解析错误，[#358](https://github.com/HsinDumas/stagger/issues/358)
+    6. 修复customResponseFields配置无效错误，[#355](https://github.com/HsinDumas/stagger/issues/355)
+    7. 对Jackson注解@JsonNaming驼峰转下划线的支持,[#349](https://github.com/HsinDumas/stagger/issues/349)
     8. curl请求用例显示混乱。
-    9. 修复常量解析private字段被解析是发生异常问题，[#356](https://github.com/smart-doc-group/smart-doc/issues/356)
-    10. RequestMapping中params解析出错,[#374](https://github.com/smart-doc-group/smart-doc/issues/374)
-    11. 自循环依赖对象字段显示优化，[#376](https://github.com/smart-doc-group/smart-doc/issues/376)
-    12. maven 插件是否能考虑支持appToken，[#354](https://github.com/smart-doc-group/smart-doc/issues/354)
+    9. 修复常量解析private字段被解析是发生异常问题，[#356](https://github.com/HsinDumas/stagger/issues/356)
+    10. RequestMapping中params解析出错,[#374](https://github.com/HsinDumas/stagger/issues/374)
+    11. 自循环依赖对象字段显示优化，[#376](https://github.com/HsinDumas/stagger/issues/376)
+    12. maven 插件是否能考虑支持appToken，[#354](https://github.com/HsinDumas/stagger/issues/354)
     13. 优化到大量的代码，和2.5.3对比变化非常大。
 
 ### 版本号：2.5.3
 
 - 更新日期: 2022-09-10
 - 更新内容：
-    1. 使用@see注释内容不是枚举类名运行错误，[#340](https://github.com/smart-doc-group/smart-doc/issues/340)
-    2. jsr校验注解支持常量替换，[#334](https://github.com/smart-doc-group/smart-doc/issues/334)
-    3. 支持推送@since到torna的注释中，[#344](https://github.com/smart-doc-group/smart-doc/issues/344)
+    1. 使用@see注释内容不是枚举类名运行错误，[#340](https://github.com/HsinDumas/stagger/issues/340)
+    2. jsr校验注解支持常量替换，[#334](https://github.com/HsinDumas/stagger/issues/334)
+    3. 支持推送@since到torna的注释中，[#344](https://github.com/HsinDumas/stagger/issues/344)
 
 ### 版本号：2.5.2
 
 - 更新日期: 2022-09-02
 - 更新内容：
-    1. 修复query参数推送到torna被设置到body中，[#336](https://github.com/smart-doc-group/smart-doc/issues/336)
-    2. 请求头参数支持mock值设置，[#337](https://github.com/smart-doc-group/smart-doc/issues/337)
-    3. 支持错误码自定义解析器。[#338](https://github.com/smart-doc-group/smart-doc/issues/338)
-    4. 修改字段@see 非枚举时错误，[#340](https://github.com/smart-doc-group/smart-doc/issues/340)
+    1. 修复query参数推送到torna被设置到body中，[#336](https://github.com/HsinDumas/stagger/issues/336)
+    2. 请求头参数支持mock值设置，[#337](https://github.com/HsinDumas/stagger/issues/337)
+    3. 支持错误码自定义解析器。[#338](https://github.com/HsinDumas/stagger/issues/338)
+    4. 修改字段@see 非枚举时错误，[#340](https://github.com/HsinDumas/stagger/issues/340)
     5. 修复openapi表单对象请求参数丢失。
 
 ### 版本号：2.5.1
 
 - 更新日期: 2022-08-27
 - 更新内容：
-    1. 升级qdox，解决字段名使用record报错问题，[#231](https://github.com/smart-doc-group/smart-doc/issues/231)
-    2. 优化枚举在文档中的展示[#332](https://github.com/smart-doc-group/smart-doc/issues/332)
+    1. 升级qdox，解决字段名使用record报错问题，[#231](https://github.com/HsinDumas/stagger/issues/231)
+    2. 优化枚举在文档中的展示[#332](https://github.com/HsinDumas/stagger/issues/332)
     3. 修改date类型文档显示错误
     4. 修复list参数入参样例错误
     5. 修复2.5.0不支持jdk 8的问题
-    6. html特殊字符增加转义处理，解决html文档显示问题[#333](https://github.com/smart-doc-group/smart-doc/issues/333)
+    6. html特殊字符增加转义处理，解决html文档显示问题[#333](https://github.com/HsinDumas/stagger/issues/333)
 
 ### 版本号：2.5.0
 
 - 更新日期: 2022-08-20
 - 更新内容：
-    1. 修复使用@see指向枚举类不存在时空指针问题，改成提示性异常处理，帮助用户可以定位问题，[#331](https://github.com/smart-doc-group/smart-doc/issues/331)
-    2. 支持更多jdk 8时间类型[#315](https://github.com/smart-doc-group/smart-doc/issues/315)
-    3. 支持jsr验证规则提取[#267](https://github.com/smart-doc-group/smart-doc/issues/267)
+    1. 修复使用@see指向枚举类不存在时空指针问题，改成提示性异常处理，帮助用户可以定位问题，[#331](https://github.com/HsinDumas/stagger/issues/331)
+    2. 支持更多jdk 8时间类型[#315](https://github.com/HsinDumas/stagger/issues/315)
+    3. 支持jsr验证规则提取[#267](https://github.com/HsinDumas/stagger/issues/267)
 
 ### 版本号：2.4.9
 
 - 更新日期: 2022-08-07
 - 更新内容：
-    1. 支持使用@see指向枚举类，[#306](https://github.com/smart-doc-group/smart-doc/issues/306)
+    1. 支持使用@see指向枚举类，[#306](https://github.com/HsinDumas/stagger/issues/306)
     2. 修复枚举请求的用例展示错误
 
 ### 版本号：2.4.8
 
 - 更新日期: 2022-07-09
 - 更新内容：
-    1. 支持servlet 3.0 文件上传[#294](https://github.com/smart-doc-group/smart-doc/issues/294)
-    2. 修复表单复杂对象嵌套Request-example错误问题[#284](https://github.com/smart-doc-group/smart-doc/issues/284)
-    3. 修复注释换行导致html文档链接无法点击问题[#290](https://github.com/smart-doc-group/smart-doc/issues/290)
-    4. 修复实现接口的枚举作为字段时生成文档报错,[#292](https://github.com/smart-doc-group/smart-doc/issues/292)
-    5. 修复Delete Option json请求没有request body的问题[#300](https://github.com/smart-doc-group/smart-doc/issues/300)
-    6. 修复OpenAPI导出一级菜单未使用注释名的bug,[#296](https://github.com/smart-doc-group/smart-doc/issues/296)
-    7. 新增对JAX-RS @PATCH、@HEAD 的支持[#pr303](https://github.com/smart-doc-group/smart-doc/pull/303)
-    8. 自增serverEnv配置用户支持在postman中设置服务器地址变量，[#280](https://github.com/smart-doc-group/smart-doc/issues/280)
+    1. 支持servlet 3.0 文件上传[#294](https://github.com/HsinDumas/stagger/issues/294)
+    2. 修复表单复杂对象嵌套Request-example错误问题[#284](https://github.com/HsinDumas/stagger/issues/284)
+    3. 修复注释换行导致html文档链接无法点击问题[#290](https://github.com/HsinDumas/stagger/issues/290)
+    4. 修复实现接口的枚举作为字段时生成文档报错,[#292](https://github.com/HsinDumas/stagger/issues/292)
+    5. 修复Delete Option json请求没有request body的问题[#300](https://github.com/HsinDumas/stagger/issues/300)
+    6. 修复OpenAPI导出一级菜单未使用注释名的bug,[#296](https://github.com/HsinDumas/stagger/issues/296)
+    7. 新增对JAX-RS @PATCH、@HEAD 的支持[#pr303](https://github.com/HsinDumas/stagger/pull/303)
+    8. 自增serverEnv配置用户支持在postman中设置服务器地址变量，[#280](https://github.com/HsinDumas/stagger/issues/280)
 
 
 ### 版本号：2.4.7
@@ -307,39 +307,39 @@
 - 更新日期: 2022-06-13
 - 更新内容：
     1. 修复2.4.6版本使用高版本jdk出现module权限的问题
-    2. 修复bug[#283](https://github.com/smart-doc-group/smart-doc/issues/283)
+    2. 修复bug[#283](https://github.com/HsinDumas/stagger/issues/283)
 
 
 ### 版本号：2.4.6
 
 - 更新日期: 2022-05-29
 - 更新内容：
-    1. 新增枚举字典扫描，[#264](https://github.com/smart-doc-group/smart-doc/issues/264)
-    2. BigDecimal类型输出优化，[#268](https://github.com/smart-doc-group/smart-doc/issues/268)
-    3. 对不规范的mock注释增加检查，[#262](https://github.com/smart-doc-group/smart-doc/issues/262)
+    1. 新增枚举字典扫描，[#264](https://github.com/HsinDumas/stagger/issues/264)
+    2. BigDecimal类型输出优化，[#268](https://github.com/HsinDumas/stagger/issues/268)
+    3. 对不规范的mock注释增加检查，[#262](https://github.com/HsinDumas/stagger/issues/262)
 
 ### 版本号：2.4.5
 
 - 更新日期: 2022-05-10
 - 更新内容：
     1. 修复部分代码空指针问题，加固健壮性
-    2. 修复curl example错误问题，改为方法名[#256](https://github.com/smart-doc-group/smart-doc/issues/256)
+    2. 修复curl example错误问题，改为方法名[#256](https://github.com/HsinDumas/stagger/issues/256)
 
 #### 版本号：2.4.4
 
 - 更新日期: 2022-05-03
 - 更新内容：
-    1. 优化对mongodb ObjectId类型的解析[#240](https://github.com/smart-doc-group/smart-doc/issues/240)
-    2. 优化OpenAPI生成时operationId值的填充，改为方法名[#235](https://github.com/smart-doc-group/smart-doc/issues/235)
-    3. 修复请求参数为Long类型数组时自定义mock提取错误[#244](https://github.com/smart-doc-group/smart-doc/issues/244)
-    4. 修复文档说明生成输出多个br标签[#248](https://github.com/smart-doc-group/smart-doc/issues/248)
-    5. 修复query param参数显示在Request-body中的问题[#242](https://github.com/smart-doc-group/smart-doc/issues/242)
-    6. 修复Controller类上RequestMapping多path包含parameter时的解析错误[#206](https://github.com/smart-doc-group/smart-doc/issues/206)
-    7. 修复多文件上传，推送到torna的类型错误[#234](https://github.com/smart-doc-group/smart-doc/issues/234)
-    8. 修复分组验证在OpenAPI中不生效问题[#243](https://github.com/smart-doc-group/smart-doc/issues/243)
-    9. 修复OpenAPI数据类型设置错误[#253](https://github.com/smart-doc-group/smart-doc/issues/253)
-    10. 支持在smart-doc.json配置中对@RequestHeader进行忽略了[#250](https://github.com/smart-doc-group/smart-doc/issues/250)
-    11. 修复controller注释html文档导航链接无效的问题[#255](https://github.com/smart-doc-group/smart-doc/issues/255)
+    1. 优化对mongodb ObjectId类型的解析[#240](https://github.com/HsinDumas/stagger/issues/240)
+    2. 优化OpenAPI生成时operationId值的填充，改为方法名[#235](https://github.com/HsinDumas/stagger/issues/235)
+    3. 修复请求参数为Long类型数组时自定义mock提取错误[#244](https://github.com/HsinDumas/stagger/issues/244)
+    4. 修复文档说明生成输出多个br标签[#248](https://github.com/HsinDumas/stagger/issues/248)
+    5. 修复query param参数显示在Request-body中的问题[#242](https://github.com/HsinDumas/stagger/issues/242)
+    6. 修复Controller类上RequestMapping多path包含parameter时的解析错误[#206](https://github.com/HsinDumas/stagger/issues/206)
+    7. 修复多文件上传，推送到torna的类型错误[#234](https://github.com/HsinDumas/stagger/issues/234)
+    8. 修复分组验证在OpenAPI中不生效问题[#243](https://github.com/HsinDumas/stagger/issues/243)
+    9. 修复OpenAPI数据类型设置错误[#253](https://github.com/HsinDumas/stagger/issues/253)
+    10. 支持在smart-doc.json配置中对@RequestHeader进行忽略了[#250](https://github.com/HsinDumas/stagger/issues/250)
+    11. 修复controller注释html文档导航链接无效的问题[#255](https://github.com/HsinDumas/stagger/issues/255)
     12. 支持内部类枚举私有属性解析。
     13. 移除Spring标记过时的`application/json;charset=UTF-8`，默认改为`application/json`
 
@@ -347,10 +347,10 @@
 
 - 更新日期: 2022-04-17
 - 更新内容：
-    1. 支持生成openapi时不生成请求和返回用例[#233](https://github.com/smart-doc-group/smart-doc/issues/233)
-    2. 优化对map返回结构的解析[#223](https://github.com/smart-doc-group/smart-doc/issues/223)
-    3. 修复生成openapi的时候对contentType的处理转义[#232](https://github.com/smart-doc-group/smart-doc/issues/232)
-    4. 修改分组归档处理[#226](https://github.com/smart-doc-group/smart-doc/issues/226)
+    1. 支持生成openapi时不生成请求和返回用例[#233](https://github.com/HsinDumas/stagger/issues/233)
+    2. 优化对map返回结构的解析[#223](https://github.com/HsinDumas/stagger/issues/223)
+    3. 修复生成openapi的时候对contentType的处理转义[#232](https://github.com/HsinDumas/stagger/issues/232)
+    4. 修改分组归档处理[#226](https://github.com/HsinDumas/stagger/issues/226)
 
 #### 版本号：2.4.2
 
@@ -358,7 +358,7 @@
 - 更新内容：
     1. 修改2.4.1静态常量自动解析不完善的问题。
     2. 新增header自动常量解析。
-    3. 修改某些特殊情况下泛型继承解析问题[#215](https://github.com/smart-doc-group/smart-doc/issues/215)
+    3. 修改某些特殊情况下泛型继承解析问题[#215](https://github.com/HsinDumas/stagger/issues/215)
     4. 优化对文档中特殊大于和小于符号的处理。
 
 #### 版本号：2.4.1
@@ -504,7 +504,7 @@
     1. 支持在html文档中不显示参数列表。
     2. html文档使用的资源全部改成本地引用。
     3. 修复Boolean类型字段命名为is前缀时，is前缀被去除的bug。
-    4. 修复配置了字典码列表后枚举字段注释显示错误[#139](https://github.com/smart-doc-group/smart-doc/issues/139)
+    4. 修复配置了字典码列表后枚举字段注释显示错误[#139](https://github.com/HsinDumas/stagger/issues/139)
     5. 修复分析过程中出现的数组越界异常 。
     6. 新增接口分组支持。
 
@@ -526,9 +526,9 @@
     1. 增加pathPrefix配置项用于配置上下文，引入该配置项后serverUrl仅用于配置服务器地址。
     2. 支持请求头常量设置解析。
     3. 支持使用JsonIgnoreProperties和JSONType注解去忽略多字段。
-    4. 修改部分文档设置allInOneDocFileName无效的问题,[#131](https://github.com/smart-doc-group/smart-doc/issues/131)
+    4. 修改部分文档设置allInOneDocFileName无效的问题,[#131](https://github.com/HsinDumas/stagger/issues/131)
     5. 修复dubbo rpc文档模板格式错误 #https://gitee.com/smart-doc-team/smart-doc/issues/I40ZGE .
-    6. 支持配置添加拦截器中设置全局请求参数，[#132](https://github.com/smart-doc-group/smart-doc/issues/132)
+    6. 支持配置添加拦截器中设置全局请求参数，[#132](https://github.com/HsinDumas/stagger/issues/132)
     7. 修复部分类型mock未推送到torna的问题。
 
 #### 版本号：2.2.2
@@ -542,7 +542,7 @@
     5. 优化了maven插件的提示，优化后可以将加载了那些目录模块代码路径打印。
     6. 提供了其它框架扩展文档解析的能力。
     7. 修复doc模板错误，gitee #I3Y640。
-    8. 修复字典模板错误，[#119](https://github.com/smart-doc-group/smart-doc/issues/119)
+    8. 修复字典模板错误，[#119](https://github.com/HsinDumas/stagger/issues/119)
     9. 添加忽略HttpServlet对象。
     10. 支持内置替换Jpa Pageable分页对象，去除不必要的请求参数替换配置。
     11. packageFilters增强，可使用正则进行匹配，gitee #I3YKZ4 。
@@ -633,7 +633,7 @@
 - 更新日期: 2021-04-11
 - 更新内容：
     1. 增强对文件上传的支持。
-    2. 增加customRequestFields配置项，[#97](https://github.com/smart-doc-group/smart-doc/issues/97)
+    2. 增加customRequestFields配置项，[#97](https://github.com/HsinDumas/stagger/issues/97)
     3. 修复往torna推送漏掉pathParams的问题。
     4. 修改debug测试页面，支持post表单请求
     5. 修改表单请求对象中枚举字段默认值错误的bug
@@ -666,7 +666,7 @@
 
 - 更新日期: 2021-03-12
 - 更新内容：
-    1. 支持UUID和ZonedDateTime字段类型，[#89](https://github.com/smart-doc-group/smart-doc/issues/89)
+    1. 支持UUID和ZonedDateTime字段类型，[#89](https://github.com/HsinDumas/stagger/issues/89)
     2. 对map参数增加开关来兼容旧项目，还是不建议使用map参数。
     3. 完成和Torna的对接。
 
@@ -709,7 +709,7 @@
     1. 修改页面的错误列表标题显示。
     2. 修改debug页面curl header语法错误。
     3. 修改debug页面json参数输入框，允许粘贴小段文本。
-    4. 解决使用dubbo 2.7+，在provider中生成文档出错问题[#77](https://github.com/smart-doc-group/smart-doc/issues/77)
+    4. 解决使用dubbo 2.7+，在provider中生成文档出错问题[#77](https://github.com/HsinDumas/stagger/issues/77)
 
 #### 版本号：2.0.2
 
@@ -826,14 +826,14 @@
     4. 修复一些泛型例子解析错误bug。
     5. 优化MultipartFile文件上传参数处理，不对该参数进行展开分析。
 
-###https://github.com/smart-doc-group/smart-doc/issues/ 版本号：1.9.2
+###https://github.com/HsinDumas/stagger/issues/ 版本号：1.9.2
 
 - 更新日期: 2020-08-23
 - 更新内容：
     1. 修改前面版本修改引发的普通jsr 303验证解析错误问题。
     2. 新增忽略请求参数对象的配置gitee #I1RBJO。
     3. 修改smart-doc的beetl配置避免和用户的业务中beetl配置冲突。
-    4. 新增ApiDataBuilder中获取树形格式参数数据的接口[#40](https://github.com/smart-doc-group/smart-doc/issues/40)
+    4. 新增ApiDataBuilder中获取树形格式参数数据的接口[#40](https://github.com/HsinDumas/stagger/issues/40)
     5. 新增对Open Api 3.0的支持。
     6. 修改字典表空时内部发生空指针的问题。
     7. 优化curl用例，增加请求头。
@@ -861,7 +861,7 @@
 
 - 更新日期: 2020-07-05
 - 更新内容：
-    1. 修改[#38](https://github.com/smart-doc-group/smart-doc/issues/38)
+    1. 修改[#38](https://github.com/HsinDumas/stagger/issues/38)
     2. 修改gitee #I1LBKO。
     3. 修改fix #39多泛型解析顺序问题。
     4. 优化支持gitee #I1IQKY常量解析需求
@@ -886,7 +886,7 @@
     3. 增加dubbo rpc文档生成支持。
     4. 增加将驼峰字段格式转化为下划线格式。
     5. maven插件和gradle插件提供includes支持，方便自行配置加载第三方库。
-    6. fix https://github.com/smart-doc-group/smart-doc/issues/32.
+    6. fix https://github.com/HsinDumas/stagger/issues/32.
     7. 增加文档接口根据接口标题排序功能。
 
 #### 版本号：1.8.6
@@ -898,7 +898,7 @@
        collection时的header问题[gitee #I1EX42](https://gitee.com/sunyurepository/smart-doc/issues/I1EX42)
     3. 优化smart-doc-maven-plugin加载source的过滤，支持使用通配符来过滤。
     4. 首次发布gradle插件，发布smart-doc-gradle-plugin插件，
-    5. 修复通用泛型解析出错[git #28](https://github.com/smart-doc-group/smart-doc/issues/28)。
+    5. 修复通用泛型解析出错[git #28](https://github.com/HsinDumas/stagger/issues/28)。
 
 #### 版本号：1.8.5
 
@@ -917,7 +917,7 @@
 - 更新日期: 2020-03-30
 - 更新内容：
     1. Controller新增时候@ignore
-       tag,可适应该tag忽略不需要生成文档的controller[git #24](https://github.com/smart-doc-group/smart-doc/issues/24)
+       tag,可适应该tag忽略不需要生成文档的controller[git #24](https://github.com/HsinDumas/stagger/issues/24)
     2. 参数中包含 HttpSession时smart-doc卡主，[gitee #I1CA9M](https://gitee.com/sunyurepository/smart-doc/issues/I1CA9M)
     3. 解决一些复杂分组场景smart-doc报错的问题[gitee #I1CPSM](https://gitee.com/sunyurepository/smart-doc/issues/I1CPSM)
     4. 解决smart-doc-maven-plugin插件读取配置乱码问题。
@@ -973,7 +973,7 @@
     1. 修改request请求参数中嵌套对象不能解析的bug，参考gitee #I16AN2.
     2. controller参数是数组时添加@PathVariable注解会报空指针,参考gitee #I16F6G
     3. 新增ApiDataBuilder用于获取smart-doc生成的文档数据，包含header、字典、错误码等。
-    4. 修改github https://github.com/smart-doc-group/smart-doc/issues/9 文档错误bug.
+    4. 修改github https://github.com/HsinDumas/stagger/issues/9 文档错误bug.
     5. 新增接口的@author展示，方法从文档中查到找到接口负责人，生成文档可以选择关闭显示。
     6. 重点：smart-doc的maven插件smart-doc-maven-plugin 1.0.0版本发布。
 
@@ -985,8 +985,8 @@
     2. 修改使用mybatis-plus实体继承Model对象时将log字段输出到文档的问题。
     3. 添加对transient修饰字段文档输出开关，默认不输出。
     4. html文档添加项目名称显示
-    5. 修改[#github 4](https://github.com/smart-doc-group/smart-doc/issues/4) 泛型中Void类型解析死循环
-    6. 修改[#github 5](https://github.com/smart-doc-group/smart-doc/issues/5) 简单枚举参数解析空指针异常
+    5. 修改[#github 4](https://github.com/HsinDumas/stagger/issues/4) 泛型中Void类型解析死循环
+    6. 修改[#github 5](https://github.com/HsinDumas/stagger/issues/5) 简单枚举参数解析空指针异常
     7. 添加导出PostMan json数据
 
 #### 版本号：1.7.7

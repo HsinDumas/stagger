@@ -63,8 +63,8 @@ javadoc {
 
 // publish to https://plugins.gradle.org/
 gradlePlugin {
-    website = 'https://github.com/TongchengOpenSource/smart-doc-gradle-plugin'
-    vcsUrl = 'https://github.com/TongchengOpenSource/smart-doc-gradle-plugin'
+    website = 'https://github.com/HsinDumas/stagger'
+    vcsUrl = 'https://github.com/HsinDumas/stagger'
     plugins {
         create("smartdocPlugin") {
             id = 'com.ly.smart-doc'

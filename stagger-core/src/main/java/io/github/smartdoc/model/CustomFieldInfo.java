@@ -1,5 +1,5 @@
 /*
- * smart-doc https://github.com/smart-doc-group/smart-doc
+ * smart-doc https://github.com/HsinDumas/stagger
  *
  * Copyright (C) 2018-2025 smart-doc
  *
