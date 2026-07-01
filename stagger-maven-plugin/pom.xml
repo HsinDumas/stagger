@@ -17,6 +17,8 @@
     <name>stagger-maven-plugin</name>
     <url>https://github.com/HsinDumas/stagger</url>
     <description>Maven plugin for Stagger documentation generation</description>
+
+    <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.pluging.version>3.8.6</maven.pluging.version>
         <maven.pluging.annotations.version>3.8.2</maven.pluging.annotations.version>
