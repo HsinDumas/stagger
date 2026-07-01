@@ -112,7 +112,7 @@ Apache License 2.0 - 详见 LICENSE 文件
 
 ## 👏 致谢
 
-- **原作者**: [shalousun](https://github.com/shalousun) ([smart-doc](https://github.com/smart-doc-group/smart-doc))
+- **原作者**: [shalousun](https://github.com/shalousun) ([smart-doc](https://github.com/HsinDumas/stagger))
 - **当前维护**: [HsinDumas](https://github.com/HsinDumas)
 
 ## 🤝 贡献
@@ -121,5 +121,5 @@ Apache License 2.0 - 详见 LICENSE 文件
 
 ---
 
-**基于**: [smart-doc](https://github.com/smart-doc-group/smart-doc)  
+**基于**: [smart-doc](https://github.com/HsinDumas/stagger)  
 **增强**: Gradle 9.x 兼容性 + 现代化维护

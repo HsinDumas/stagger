@@ -65,7 +65,7 @@ jobs:
       - name: Checkout Maven Plugin Repository
         uses: actions/checkout@v5
         with:
-          repository: smart-doc-group/smart-doc-maven-plugin
+          repository: HsinDumas/smart-doc-maven-plugin
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up JDK 8
@@ -132,7 +132,7 @@ jobs:
       - name: Checkout Example Project
         uses: actions/checkout@v5
         with:
-          repository: smart-doc-group/smart-doc-example-cn
+          repository: HsinDumas/smart-doc-example-cn
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up JDK 17
@@ -261,7 +261,7 @@ jobs:
       - name: Checkout Example Project
         uses: actions/checkout@v5
         with:
-          repository: smart-doc-group/smart-doc-example-cn
+          repository: HsinDumas/smart-doc-example-cn
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up JDK 17

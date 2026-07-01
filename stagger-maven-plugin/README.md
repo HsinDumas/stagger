@@ -2,10 +2,10 @@
 
 ![maven](https://img.shields.io/maven-central/v/com.ly.smart-doc/smart-doc-maven-plugin)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-![number of issues closed](https://img.shields.io/github/issues-closed-raw/smart-doc-group/smart-doc-maven-plugin)
-![closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/smart-doc-group/smart-doc-maven-plugin)
+![number of issues closed](https://img.shields.io/github/issues-closed-raw/HsinDumas/smart-doc-maven-plugin)
+![closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/HsinDumas/smart-doc-maven-plugin)
 ![java version](https://img.shields.io/badge/JAVA-1.8+-green.svg)
-[![chinese](https://img.shields.io/badge/chinese-中文文档-brightgreen)](https://github.com/smart-doc-group/smart-doc-maven-plugin/blob/master/README_CN.md)
+[![chinese](https://img.shields.io/badge/chinese-中文文档-brightgreen)](https://github.com/HsinDumas/stagger-maven-plugin/blob/master/README_CN.md)
 
 ## Introduce
 
@@ -18,7 +18,7 @@ Start smart-doc to scan source code analysis and generate API documents.
 You can run the `maven` command directly or click on the preset` goal` of the smart-doc-maven-plugin in the IDE to
 generate API documentation.
 smart-doc-maven-plugin will also make smart-doc's ability to generate API documentation more powerful.
-[About smart-doc](https://smart-doc-group.github.io/#/)
+[About smart-doc](https://HsinDumas.github.io/#/)
 
 ## Best Practice
 
@@ -26,7 +26,7 @@ smart-doc + [Torna](http://torna.cn) form an industry-leading document generatio
 smart-doc to complete Java source code analysis and extract annotations to generate API documents without intrusion, and
 automatically push the documents to the Torna enterprise-level interface document management platform.
 
-![smart-doc+torna](https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/smart-doc-torna-en.png)
+![smart-doc+torna](https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/smart-doc-torna-en.png)
 
 ## Getting started
 
@@ -91,7 +91,7 @@ outPath must be configured.
 **Detailed configuration content:**
 
 smart-doc provides a lot of configuration options. For more configuration options,
-please refer to the [official documentation](https://smart-doc-group.github.io/#/diy/config?id=allconfig)
+please refer to the [official documentation](https://HsinDumas.github.io/#/diy/config?id=allconfig)
 
 ### Generated document
 
@@ -144,7 +144,7 @@ OS name: "windows 10", version: "10.0", arch: "amd64", family: "dos"
 On Use IntelliJ IDE, if you have added smart-doc-maven-plugin to the project,
 you can directly find the plugin smart-doc plugin and click to generate API documentation.
 
-![smart-doc-maven-plugin](https://raw.githubusercontent.com/smart-doc-group/smart-doc-maven-plugin/master/images/idea.png)
+![smart-doc-maven-plugin](https://raw.githubusercontent.com/HsinDumas/smart-doc-maven-plugin/master/images/idea.png)
 
 ### Generated document example
 
@@ -173,32 +173,32 @@ mvn clean install -Dmaven.test.skip=true
 ## Who is using
 
 These are only part of the companies using smart-doc, for reference only. If you are using smart-doc,
-please [add your company here](https://github.com/smart-doc-group/smart-doc/issues/12) to tell us your scenario to make
+please [add your company here](https://github.com/HsinDumas/stagger/issues/12) to tell us your scenario to make
 smart-doc better.
 
-![IFLYTEK](https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/iflytek.png)
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/oneplus.png" title="一加" >
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/xiaomi.png" title="小米" >
-&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/shunfeng.png" title="顺丰">
-&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/ly.jpeg" title="同程旅行" width="160px" height="70px"/>
-&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/kuishou.png" title="快手">
-&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/mafengwo.png" title="马蜂窝">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/yunda.png" title="韵达速递" width="192px" height="64px">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/zhongtongzhiyun.png" title="中通智运">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/tcsklogo.jpeg" title="同程数科" width="170px" height="64px"/>
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/flipboard.png" title="红板报">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/dianxin.png" title="中国电信">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/yidong.png" title="中国移动">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/neusoft.png" title="东软集团">
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/zhongkezhilian.png" title="中科智链" width="240px" height="64px"/>
+![IFLYTEK](https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/iflytek.png)
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/oneplus.png" title="一加" >
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/xiaomi.png" title="小米" >
+&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/shunfeng.png" title="顺丰">
+&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/ly.jpeg" title="同程旅行" width="160px" height="70px"/>
+&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/kuishou.png" title="快手">
+&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/mafengwo.png" title="马蜂窝">
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/yunda.png" title="韵达速递" width="192px" height="64px">
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/zhongtongzhiyun.png" title="中通智运">
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/tcsklogo.jpeg" title="同程数科" width="170px" height="64px"/>
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/flipboard.png" title="红板报">
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/dianxin.png" title="中国电信">
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/yidong.png" title="中国移动">
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/neusoft.png" title="东软集团">
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/zhongkezhilian.png" title="中科智链" width="240px" height="64px"/>
 &nbsp;&nbsp;<img src="https://www.hand-china.com/static/img/hand-logo.svg" title="上海汉得信息技术股份有限公司" width="240px" height="64px"/>
-&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/smart-doc-group/smart-doc/master/images/known-users/yuanmengjiankang.png" title="远盟健康" width="230px" height="64px"/>
+&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/HsinDumas/smart-doc/master/images/known-users/yuanmengjiankang.png" title="远盟健康" width="230px" height="64px"/>
 
 
 ## License
 
 smart-doc-maven-plugin is under the Apache 2.0 license. See
-the [LICENSE](https://raw.githubusercontent.com/smart-doc-group/smart-doc-maven-plugin/master/LICENSE) file for details.
+the [LICENSE](https://raw.githubusercontent.com/HsinDumas/smart-doc-maven-plugin/master/LICENSE) file for details.
 
 ## Contact
 
