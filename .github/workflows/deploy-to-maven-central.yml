@@ -1,11 +1,11 @@
-name: Deploy to Maven Central
+name: Release Publish (Gradle)
 
 on:
   release:
     types: [created]
 
 jobs:
-  deploy:
+  publish:
     if: ${{ github.repository == 'HsinDumas/stagger' }}
     runs-on: ubuntu-latest
 
@@ -16,13 +16,13 @@ jobs:
       - name: Set Up JDK
         uses: actions/setup-java@v5
         with:
-          java-version: '8'
+          java-version: '25'
           distribution: 'temurin'
+          cache: gradle
 
-      - name: Deploy to Maven Central
-        run: mvn deploy -P release
-        env:
-          GPG_KEY: ${{ secrets.GPG_KEY }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      - name: Publish artifacts to Maven Local
+        run: |
+          ./gradlew --no-daemon \
+            :stagger-core:publishToMavenLocal \
+            :stagger-maven-plugin:publishToMavenLocal \
+            :stagger-gradle-plugin:publishToMavenLocal

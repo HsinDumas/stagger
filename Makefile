@@ -1,22 +1,40 @@
 
 release:
-	mvn clean deploy -P release -DskipTests
+	./gradlew --no-daemon clean \
+		:stagger-core:publishToMavenLocal \
+		:stagger-maven-plugin:publishToMavenLocal \
+		:stagger-gradle-plugin:publishToMavenLocal
 
 # release with keyname
 release-with-key:
-	mvn clean deploy -P release -DskipTests -Dgpg.keyname=xx
+	./gradlew --no-daemon clean \
+		:stagger-core:publishToMavenLocal \
+		:stagger-maven-plugin:publishToMavenLocal \
+		:stagger-gradle-plugin:publishToMavenLocal
 
 checkstyle-checkstyle:
-	mvn checkstyle:checkstyle
+	./gradlew --no-daemon \
+		:stagger-core:checkstyleMain \
+		:stagger-maven-plugin:checkstyleMain \
+		:stagger-gradle-plugin:checkstyleMain
 
 checkstyle-check:
-	mvn checkstyle:check
+	./gradlew --no-daemon \
+		:stagger-core:checkstyleMain \
+		:stagger-maven-plugin:checkstyleMain \
+		:stagger-gradle-plugin:checkstyleMain
 
 spring-javaformat-validate:
-	mvn spring-javaformat:validate
+	./gradlew --no-daemon \
+		:stagger-core:checkFormatMain \
+		:stagger-maven-plugin:checkFormatMain \
+		:stagger-gradle-plugin:checkFormatMain
 
 spring-javaformat-apply:
-	mvn spring-javaformat:apply
+	./gradlew --no-daemon \
+		:stagger-core:format \
+		:stagger-maven-plugin:format \
+		:stagger-gradle-plugin:format
 
 install: spring-javaformat-apply
-	mvn clean install -DskipTests
+	./gradlew --no-daemon clean build -x test

@@ -69,21 +69,22 @@ stagger/
 ├── stagger-core/           # 核心文档生成引擎
 ├── stagger-maven-plugin/   # Maven 插件
 ├── stagger-gradle-plugin/  # Gradle 插件
-└── pom.xml                 # 父 POM
+├── build.gradle.kts        # 根 Gradle 构建
+└── settings.gradle.kts     # 模块配置
 ```
 
 ## 🔧 构建
 
 ```bash
 # 构建全部模块
-mvn clean install
+./gradlew clean build -x test
 
 # 构建特定模块
-cd stagger-core && mvn clean install
-cd stagger-maven-plugin && mvn clean install
+./gradlew :stagger-core:build -x test
+./gradlew :stagger-maven-plugin:build -x test
 
 # 构建 Gradle 插件
-cd stagger-gradle-plugin && ./gradlew build
+./gradlew :stagger-gradle-plugin:build -x test
 ```
 
 ## 🐛 主要改进

@@ -69,21 +69,22 @@ stagger/
 ├── stagger-core/           # Core documentation engine
 ├── stagger-maven-plugin/   # Maven plugin
 ├── stagger-gradle-plugin/  # Gradle plugin
-└── pom.xml                 # Parent POM
+├── build.gradle.kts        # Root Gradle build
+└── settings.gradle.kts     # Module settings
 ```
 
 ## 🔧 Building
 
 ```bash
 # Build all modules
-mvn clean install
+./gradlew clean build -x test
 
 # Build specific module
-cd stagger-core && mvn clean install
-cd stagger-maven-plugin && mvn clean install
+./gradlew :stagger-core:build -x test
+./gradlew :stagger-maven-plugin:build -x test
 
 # Build Gradle plugin
-cd stagger-gradle-plugin && ./gradlew build
+./gradlew :stagger-gradle-plugin:build -x test
 ```
 
 ## 🐛 Key Improvements

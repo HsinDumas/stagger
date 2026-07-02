@@ -25,7 +25,7 @@ jobs:
             
             This includes requirements for:  
             - ✅ Commit message format (Angular Convention. `feat`, `fix`, etc.)  
-            - 🧹 Code style (execute `mvn spring-javaformat:apply`)   
+            - 🧹 Code style (execute `./gradlew format`)   
             - 📄 Documentation updates (if config changes)   
             - 💡 Example code submission (for new features)
             
@@ -37,7 +37,7 @@ jobs:
             In addition, if you have added new features, please provide example code in the repository [HsinDumas/stagger-example-cn](https://github.com/HsinDumas/stagger-example-cn). This will help other users understand how to use the new features.
             
             **Code Style Reminder:**  
-            The code should use the Spring code style. Please format your code using the command `mvn spring-javaformat:apply`. You can also install the [Spring Java Format](https://github.com/spring-io/spring-javaformat) plugin for convenience.
+            The code should use the Spring code style. Please format your code using the command `./gradlew format`. You can also install the [Spring Java Format](https://github.com/spring-io/spring-javaformat) plugin for convenience.
             
             ---
             
@@ -47,7 +47,7 @@ jobs:
             
             需特别注意：  
             - ✅ 提交信息格式 (`feat`, `fix` 等类型)  
-            - 🧹 代码风格（执行 `mvn spring-javaformat:apply`）  
+            - 🧹 代码风格（执行 `./gradlew format`）  
             - 📄 文档更新（配置变更需同步更新 docs）  
             - 💡 示例代码（新功能需提供示例）  
             
@@ -58,4 +58,4 @@ jobs:
             另外，如果您添加了新功能，请在仓库[HsinDumas/stagger-example-cn](https://github.com/HsinDumas/stagger-example-cn)中提供示例代码。这将帮助其他用户了解如何使用新功能。
             
             **代码风格提示：**  
-            请使用 Spring 代码风格。您可以通过命令 `mvn spring-javaformat:apply` 格式化代码。为了方便操作，您还可以安装 [Spring Java Format](https://github.com/spring-io/spring-javaformat) 插件。
+            请使用 Spring 代码风格。您可以通过命令 `./gradlew format` 格式化代码。为了方便操作，您还可以安装 [Spring Java Format](https://github.com/spring-io/spring-javaformat) 插件。

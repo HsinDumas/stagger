@@ -9,56 +9,45 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java-version: [ '8', '11', '17' ]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
-    - name: Set up JDK ${{ matrix.java-version }}
-      uses: actions/setup-java@v4
+    - name: Set up JDK 25
+      uses: actions/setup-java@v5
       with:
-        java-version: ${{ matrix.java-version }}
+        java-version: '25'
         distribution: 'temurin'
-        cache: maven
+        cache: gradle
 
-    - name: Build with Maven (stagger-core)
+    - name: Build with Gradle
       run: |
-        cd stagger-core
-        mvn clean package -DskipTests
-
-    - name: Run tests (stagger-core)
-      run: |
-        cd stagger-core
-        mvn test
-
-    - name: Build Maven plugin
-      run: |
-        cd stagger-maven-plugin
-        mvn clean package -DskipTests
-
-    - name: Build Gradle plugin
-      run: |
-        cd stagger-gradle-plugin
-        ./gradlew build --no-daemon -x test
+        ./gradlew --no-daemon \
+          :stagger-core:build \
+          :stagger-maven-plugin:build \
+          :stagger-gradle-plugin:build
 
   code-quality:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
-    - name: Set up JDK
-      uses: actions/setup-java@v4
+    - name: Set up JDK 25
+      uses: actions/setup-java@v5
       with:
-        java-version: '11'
+        java-version: '25'
         distribution: 'temurin'
-        cache: maven
+        cache: gradle
 
-    - name: Check code style with Maven
+    - name: Check code style with Gradle
       run: |
-        cd stagger-core
-        mvn checkstyle:check || true
+        ./gradlew --no-daemon \
+          :stagger-core:checkFormatMain \
+          :stagger-core:checkstyleMain \
+          :stagger-maven-plugin:checkFormatMain \
+          :stagger-maven-plugin:checkstyleMain \
+          :stagger-gradle-plugin:checkFormatMain \
+          :stagger-gradle-plugin:checkstyleMain
 
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@master
