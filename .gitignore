@@ -5,6 +5,12 @@
 *.iml
 target
 
+# Gradle local caches and generated outputs
+.gradle/
+build/
+**/.gradle/
+**/build/
+
 # Log file
 *.log
 
