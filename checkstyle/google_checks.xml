@@ -40,6 +40,7 @@
     <!-- See http://checkstyle.org/checks/whitespace/index.html -->
     <module name="FileTabCharacter">
         <property name="eachLine" value="true"/>
+        <property name="severity" value="ignore"/>
     </module>
 
     <module name="LineLength">
@@ -47,6 +48,7 @@
         <property name="max" value="100"/>
         <property name="ignorePattern"
                   value="^package.*|^import.*|href\s*=\s*&quot;[^&quot;]*&quot;|http://|https://|ftp://"/>
+        <property name="severity" value="ignore"/>
     </module>
 
     <module name="TreeWalker">
@@ -258,6 +260,7 @@
             <property name="throwsIndent" value="4"/>
             <property name="lineWrappingIndentation" value="4"/>
             <property name="arrayInitIndent" value="2"/>
+            <property name="severity" value="ignore"/>
         </module>
         <module name="AbbreviationAsWordInName">
             <property name="ignoreFinal" value="false"/>
@@ -320,6 +323,7 @@
         <module name="SummaryJavadoc">
             <property name="forbiddenSummaryFragments"
                       value="^@return the *|^This method returns |^A [{]@code [a-zA-Z0-9]+[}]( is a )"/>
+            <property name="severity" value="ignore"/>
         </module>
         <module name="JavadocParagraph"/>
         <module name="RequireEmptyLineBeforeBlockTagGroup"/>

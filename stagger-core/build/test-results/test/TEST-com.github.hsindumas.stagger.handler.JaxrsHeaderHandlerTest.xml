@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.github.hsindumas.stagger.handler.JaxrsHeaderHandlerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-07-02T06:01:01.190Z" hostname="CN-CTQH19396R" time="0.014">
+  <properties/>
+  <testcase name="shouldResolveNestedEnumHeaderFromSourceFallback()" classname="com.github.hsindumas.stagger.handler.JaxrsHeaderHandlerTest" time="0.006"/>
+  <testcase name="shouldKeepDefaultValueForEnumHeader()" classname="com.github.hsindumas.stagger.handler.JaxrsHeaderHandlerTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.github.hsindumas.stagger.util.JavaClassUtilTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-07-02T06:01:02.052Z" hostname="CN-CTQH19396R" time="0.028">
+  <properties/>
+  <testcase name="shouldReturnImplementedInterfacesFromAccessor()" classname="com.github.hsindumas.stagger.util.JavaClassUtilTest" time="0.026"/>
+  <testcase name="shouldFallbackToEmptyWhenInterfaceClassesAccessorFails()" classname="com.github.hsindumas.stagger.util.JavaClassUtilTest" time="0.001"/>
+  <testcase name="shouldFallbackToEmptyWhenImplementedInterfacesAccessorFails()" classname="com.github.hsindumas.stagger.util.JavaClassUtilTest" time="0.0"/>
+  <testcase name="shouldReturnInterfaceClassesFromAccessor()" classname="com.github.hsindumas.stagger.util.JavaClassUtilTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

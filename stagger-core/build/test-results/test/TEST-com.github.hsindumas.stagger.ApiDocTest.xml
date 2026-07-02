@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.github.hsindumas.stagger.ApiDocTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-07-02T06:00:59.136Z" hostname="CN-CTQH19396R" time="1.83">
+  <properties/>
+  <testcase name="testBuilderControllersApi()" classname="com.github.hsindumas.stagger.ApiDocTest" time="1.765"/>
+  <testcase name="testBoot4ExchangeMappingsRegistered()" classname="com.github.hsindumas.stagger.ApiDocTest" time="0.001"/>
+  <testcase name="testJmxBuilderControllersApi()" classname="com.github.hsindumas.stagger.ApiDocTest" time="0.036"/>
+  <testcase name="testMdBuilderControllersApi1()" classname="com.github.hsindumas.stagger.ApiDocTest" time="0.021"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+]]></system-err>
+</testsuite>

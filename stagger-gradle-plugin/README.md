@@ -1,6 +1,6 @@
 <h1 align="center">Smart-Doc Gradle Plugin</h1>
 
-![gradle](https://img.shields.io/gradle-plugin-portal/v/com.ly.stagger)
+![gradle](https://img.shields.io/gradle-plugin-portal/v/com.github.hsindumas)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 ![number of issues closed](https://img.shields.io/github/issues-closed-raw/shalousun/stagger-gradle-plugin)
 ![closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/shalousun/stagger-gradle-plugin)
@@ -26,7 +26,7 @@ and automatically push the documents to the `Torna` enterprise-level interface d
 Using the plugins DSL:
 ```
 plugins {
-  id "com.ly.stagger" version "[latest]"
+  id "com.github.hsindumas" version "[latest]"
 }
 ```
 Using legacy plugin application:
@@ -38,11 +38,11 @@ buildscript {
     }
   }
   dependencies {
-    classpath "com.ly.stagger:stagger-gradle-plugin:[latest]"
+    classpath "com.github.hsindumas:stagger-gradle-plugin:[latest]"
   }
 }
 
-apply plugin: "com.ly.stagger"
+apply plugin: "com.github.hsindumas"
 ```
 ### Plugin options
 
@@ -89,7 +89,7 @@ After configuration, you can directly use `-Psmartdoc.configFile` to override it
 For multi-module gradle projects, if you do not want to configure in each module, you can put the `stagger` plugin related configuration into subprojects.
 ```
 subprojects{
-    apply plugin: 'com.github.shalousun.stagger'
+    apply plugin: 'com.github.hsindumas.stagger'
     smartdoc {
         //
         configFile = file("src/main/resources/stagger.json")

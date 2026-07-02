@@ -1,6 +1,6 @@
 <h1 align="center">Smart-Doc Maven Plugin</h1>
 
-![maven](https://img.shields.io/maven-central/v/com.ly.stagger/stagger-maven-plugin)
+![maven](https://img.shields.io/maven-central/v/com.github.hsindumas/stagger-maven-plugin)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 ![number of issues closed](https://img.shields.io/github/issues-closed-raw/HsinDumas/stagger-maven-plugin)
 ![closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/HsinDumas/stagger-maven-plugin)
@@ -34,7 +34,7 @@ automatically push the documents to the Torna enterprise-level interface documen
 
 ```
 <plugin>
-    <groupId>com.ly.stagger</groupId>
+    <groupId>com.github.hsindumas</groupId>
     <artifactId>stagger-maven-plugin</artifactId>
     <version>[latest version]</version>
     <configuration>

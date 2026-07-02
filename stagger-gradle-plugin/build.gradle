@@ -18,7 +18,7 @@ plugins {
     id 'com.gradle.plugin-publish' version '1.2.1'
 }
 
-group 'com.ly.stagger'
+group 'com.github.hsindumas'
 version '3.1.2'
 
 sourceCompatibility = 1.8
@@ -30,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'com.ly.stagger', name: 'stagger', version: '3.1.2'
+    implementation "com.github.hsindumas:stagger-core:${version}"
 }
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
@@ -66,9 +66,9 @@ gradlePlugin {
     website = 'https://github.com/HsinDumas/stagger'
     vcsUrl = 'https://github.com/HsinDumas/stagger'
     plugins {
-        create("smartdocPlugin") {
-            id = 'com.ly.stagger'
-            implementationClass = 'com.ly.doc.gradle.plugin.SmartDocPlugin'
+        create("staggerPlugin") {
+            id = 'com.github.hsindumas.stagger'
+            implementationClass = 'com.github.hsindumas.stagger.gradle.plugin.StaggerPlugin'
             displayName = 'stagger gradle plugin'
             description = 'stagger gradle plugin'
             tags.set(['stagger', 'gradle-plugin'])

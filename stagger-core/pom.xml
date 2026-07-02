@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>com.github.shalousun</groupId>
+        <groupId>com.github.hsindumas</groupId>
         <artifactId>stagger</artifactId>
         <version>4.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
@@ -23,7 +23,7 @@
 		<mockito.version>4.11.0</mockito.version>
 		<beetl.version>3.20.0.RELEASE</beetl.version>
         <common-util.version>2.2.9</common-util.version>
-        <qdox.version>2.0.3.5</qdox.version>
+        <qdox.version>2.2.0</qdox.version>
         <datafaker.version>1.9.0</datafaker.version>
         <gson.version>2.13.2</gson.version>
         <eclipse.jgit.version>5.13.3.202401111512-r</eclipse.jgit.version>
@@ -57,7 +57,7 @@
             <version>${beetl.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.ly.stagger</groupId>
+            <groupId>com.thoughtworks.qdox</groupId>
             <artifactId>qdox</artifactId>
             <version>${qdox.version}</version>
         </dependency>

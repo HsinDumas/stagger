@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="10.20.1">
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/ApiDocTest.java">
+<error line="21" column="1" severity="warning" message="导入语句&apos;org.junit.jupiter.api.Assertions.assertEquals&apos;位置错误。应位于 &apos;STATIC&apos; 组，此行不应导入。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="22" column="1" severity="warning" message="导入语句&apos;org.junit.jupiter.api.Assertions.assertTrue&apos;位置错误。应位于 &apos;STATIC&apos; 组，此行不应导入。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="37" severity="warning" message="Javadoc tag &apos;@throws&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+<error line="53" severity="warning" message="Javadoc tag &apos;@throws&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+<error line="69" severity="warning" message="Javadoc tag &apos;@throws&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/util/JsonUtilTest.java">
+<error line="5" column="1" severity="warning" message="导入组之前的额外空行 &apos;org.junit.jupiter.api.Test&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/util/DocUrlUtilTest.java">
+<error line="6" column="1" severity="warning" message="导入组之前的额外空行 &apos;com.github.hsindumas.stagger.utils.DocUrlUtil&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="6" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.utils.DocUrlUtil&apos; 字典顺序错误。应在&apos;java.util.List&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="8" column="1" severity="warning" message="导入组之前的额外空行 &apos;org.junit.jupiter.api.Test&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/util/CurlUtilTest.java">
+<error line="9" column="1" severity="warning" message="导入组之前的额外空行 &apos;java.util.Arrays&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="9" column="1" severity="warning" message="导入语句&apos;java.util.Arrays&apos; 字典顺序错误。应在&apos;org.junit.jupiter.api.Test&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/util/DocClassUtilTest.java">
+<error line="4" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.utils.DocClassUtil&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.utils.JavaClassValidateUtil&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="6" column="1" severity="warning" message="导入组之前的额外空行 &apos;org.junit.jupiter.api.Test&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/util/DocUtilTest.java">
+<error line="13" column="1" severity="warning" message="导入组之前的额外空行 &apos;java.util.Arrays&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="13" column="1" severity="warning" message="导入语句&apos;java.util.Arrays&apos; 字典顺序错误。应在&apos;org.mockito.Mockito&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="14" column="1" severity="warning" message="导入语句&apos;java.util.Collections&apos; 字典顺序错误。应在&apos;org.mockito.Mockito&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="15" column="1" severity="warning" message="导入语句&apos;java.util.HashMap&apos; 字典顺序错误。应在&apos;org.mockito.Mockito&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="16" column="1" severity="warning" message="导入语句&apos;java.util.List&apos; 字典顺序错误。应在&apos;org.mockito.Mockito&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="17" column="1" severity="warning" message="导入语句&apos;java.util.Map&apos; 字典顺序错误。应在&apos;org.mockito.Mockito&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="19" column="1" severity="warning" message="导入语句&apos;org.junit.jupiter.api.Assertions.assertEquals&apos;位置错误。应位于 &apos;STATIC&apos; 组，此行不应导入。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="20" column="1" severity="warning" message="导入语句&apos;org.junit.jupiter.api.Assertions.assertTrue&apos;位置错误。应位于 &apos;STATIC&apos; 组，此行不应导入。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="21" column="1" severity="warning" message="导入语句&apos;org.mockito.Mockito.when&apos;位置错误。应位于 &apos;STATIC&apos; 组，此行不应导入。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="177" column="24" severity="warning" message="名称 &apos;valueWithCRLF&apos; 中不能出现超过 &apos;1&apos; 个连续大写字母。" source="com.puppycrawl.tools.checkstyle.checks.naming.AbbreviationAsWordInNameCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/util/DocPathUtilTest.java">
+<error line="6" column="1" severity="warning" message="导入组之前的额外空行 &apos;org.junit.jupiter.api.Test&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/util/ParamUtilTest.java">
+<error line="5" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.model.ApiParam&apos; 字典顺序错误。应在&apos;com.google.gson.reflect.TypeToken&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="6" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.utils.ParamUtil&apos; 字典顺序错误。应在&apos;com.google.gson.reflect.TypeToken&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="9" column="1" severity="warning" message="导入组之前的额外空行 &apos;java.util.List&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="9" column="1" severity="warning" message="导入语句&apos;java.util.List&apos; 字典顺序错误。应在&apos;org.junit.jupiter.api.Test&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/util/MarkDownUtilTest.java">
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/enums/BaseEnum.java">
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/enums/OrderEnum.java">
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/enums/IEnum.java">
+<error line="8" column="18" severity="warning" message="名称 &apos;IEnum&apos; 中不能出现超过 &apos;1&apos; 个连续大写字母。" source="com.puppycrawl.tools.checkstyle.checks.naming.AbbreviationAsWordInNameCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/function/WordXmlEscapeTest.java">
+<error line="9" column="1" severity="warning" message="导入组之前的额外空行 &apos;java.util.stream.Stream&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="9" column="1" severity="warning" message="导入语句&apos;java.util.stream.Stream&apos; 字典顺序错误。应在&apos;org.junit.jupiter.params.provider.NullAndEmptySource&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="11" column="1" severity="warning" message="导入语句&apos;org.junit.jupiter.api.Assertions.assertEquals&apos;位置错误。应位于 &apos;STATIC&apos; 组，此行不应导入。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="44" severity="warning" message="Javadoc tag &apos;@return&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/function/HtmlEscapeTest.java">
+<error line="9" column="1" severity="warning" message="导入组之前的额外空行 &apos;java.util.stream.Stream&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="9" column="1" severity="warning" message="导入语句&apos;java.util.stream.Stream&apos; 字典顺序错误。应在&apos;org.junit.jupiter.params.provider.NullAndEmptySource&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="11" column="1" severity="warning" message="导入语句&apos;org.junit.jupiter.api.Assertions.assertEquals&apos;位置错误。应位于 &apos;STATIC&apos; 组，此行不应导入。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="45" severity="warning" message="Javadoc tag &apos;@return&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/qbox/ScanErrorSource.java">
+<error line="3" column="1" severity="warning" message="Javadoc注释放在错误的位置。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.InvalidJavadocPositionCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/qbox/QboxScanSourceTest.java">
+<error line="5" column="1" severity="warning" message="导入组之前的额外空行 &apos;com.github.hsindumas.stagger.model.ApiConfig&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="5" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.model.ApiConfig&apos; 字典顺序错误。应在&apos;java.nio.file.Paths&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="6" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.model.SourceCodePath&apos; 字典顺序错误。应在&apos;java.nio.file.Paths&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="7" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.builder.HtmlApiDocBuilder&apos; 字典顺序错误。应在&apos;java.nio.file.Paths&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="8" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.constants.FrameworkEnum&apos; 字典顺序错误。应在&apos;java.nio.file.Paths&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="10" column="1" severity="warning" message="导入组之前的额外空行 &apos;org.junit.jupiter.api.Test&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/Main.java">
+<error line="18" column="23" severity="warning" message="&apos;static&apos; 修饰符顺序违反 JLS 建议." source="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck"/>
+<error line="34" column="9" severity="warning" message="缺少 Javadoc 。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocMethodCheck"/>
+<error line="58" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="61" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="67" column="9" severity="warning" message="缺少 Javadoc 。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocMethodCheck"/>
+<error line="72" column="25" severity="warning" message="第 4 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="76" column="25" severity="warning" message="第 4 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="83" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="90" column="9" severity="warning" message="缺少 Javadoc 。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocMethodCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/helper/JsonBuildHelperTest.java">
+<error line="10" column="1" severity="warning" message="导入组之前的额外空行 &apos;java.util.HashMap&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="10" column="1" severity="warning" message="导入语句&apos;java.util.HashMap&apos; 字典顺序错误。应在&apos;org.junit.jupiter.api.Test&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="11" column="1" severity="warning" message="导入语句&apos;java.util.HashSet&apos; 字典顺序错误。应在&apos;org.junit.jupiter.api.Test&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="25" column="14" severity="warning" message="名称 &apos;testBuildJsonWithNPE&apos; 中不能出现超过 &apos;1&apos; 个连续大写字母。" source="com.puppycrawl.tools.checkstyle.checks.naming.AbbreviationAsWordInNameCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-core/src/test/java/com/github/hsindumas/stagger/GenerexTest.java">
+<error line="5" column="1" severity="warning" message="导入组之前的额外空行 &apos;org.junit.jupiter.api.Test&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+</file>
+</checkstyle>

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="10.20.1">
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/util/ArtifactFilterUtil.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="25" column="55" severity="warning" message="不应使用 &apos;.*&apos; 形式的导入 - com.github.hsindumas.stagger.maven.plugin.chain.* 。" source="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
+<error line="38" severity="warning" message="Javadoc tag &apos;@param&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+<error line="49" column="17" severity="warning" message="变量&apos;springBootArtifactFilterChain&apos;声明及第一次使用距离4行（最多：3 行）。若需要存储该变量的值，请将其声明为final的（方法调用前声明以避免副作用影响原值）。" source="com.puppycrawl.tools.checkstyle.checks.coding.VariableDeclarationUsageDistanceCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/util/FileUtil.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入组之前的额外空行 &apos;java.util.regex.Matcher&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="40" column="9" severity="warning" message="缺少 Javadoc 。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocMethodCheck"/>
+<error line="47" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/util/ClassLoaderUtil.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="28" column="1" severity="warning" message="导入组之前的额外空行 &apos;java.io.File&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="28" column="1" severity="warning" message="导入语句&apos;java.io.File&apos; 字典顺序错误。应在&apos;org.apache.maven.project.MavenProject&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="29" column="1" severity="warning" message="导入语句&apos;java.net.URL&apos; 字典顺序错误。应在&apos;org.apache.maven.project.MavenProject&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="30" column="1" severity="warning" message="导入语句&apos;java.net.URLClassLoader&apos; 字典顺序错误。应在&apos;org.apache.maven.project.MavenProject&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="31" column="1" severity="warning" message="导入语句&apos;java.util.List&apos; 字典顺序错误。应在&apos;org.apache.maven.project.MavenProject&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="43" severity="warning" message="Javadoc tag &apos;@param&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+<error line="62" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/util/MojoUtils.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="29" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.model.*&apos; 字典顺序错误。应在&apos;com.google.gson.GsonBuilder&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="29" column="42" severity="warning" message="不应使用 &apos;.*&apos; 形式的导入 - com.github.hsindumas.stagger.model.* 。" source="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
+<error line="30" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.GlobalConstants&apos; 字典顺序错误。应在&apos;com.google.gson.GsonBuilder&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="37" column="32" severity="warning" message="不应使用 &apos;.*&apos; 形式的导入 - org.apache.maven.project.* 。" source="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
+<error line="39" column="1" severity="warning" message="导入组之前的额外空行 &apos;java.io.File&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="39" column="1" severity="warning" message="导入语句&apos;java.io.File&apos; 字典顺序错误。应在&apos;org.apache.maven.project.*&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="40" column="1" severity="warning" message="导入语句&apos;java.io.FileInputStream&apos; 字典顺序错误。应在&apos;org.apache.maven.project.*&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="41" column="1" severity="warning" message="导入语句&apos;java.io.FileNotFoundException&apos; 字典顺序错误。应在&apos;org.apache.maven.project.*&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="42" column="1" severity="warning" message="导入语句&apos;java.util.*&apos; 字典顺序错误。应在&apos;org.apache.maven.project.*&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="42" column="17" severity="warning" message="不应使用 &apos;.*&apos; 形式的导入 - java.util.* 。" source="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
+<error line="44" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.GlobalConstants.FILE_SEPARATOR&apos;位置错误。应位于 &apos;STATIC&apos; 组，此行不应导入。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="55" column="22" severity="warning" message="&apos;static&apos; 修饰符顺序违反 JLS 建议." source="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck"/>
+<error line="62" column="57" severity="warning" message="Parameter name &apos;aClass&apos; must match pattern &apos;^[a-z]([a-z0-9][a-zA-Z0-9]*)?$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.ParameterNameCheck"/>
+<error line="69" severity="warning" message="Javadoc tag &apos;@param&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+<error line="94" column="25" severity="warning" message="变量&apos;responseBodyAdvice&apos;声明及第一次使用距离4行（最多：3 行）。若需要存储该变量的值，请将其声明为final的（方法调用前声明以避免副作用影响原值）。" source="com.puppycrawl.tools.checkstyle.checks.coding.VariableDeclarationUsageDistanceCheck"/>
+<error line="95" column="25" severity="warning" message="变量&apos;requestBodyAdvice&apos;声明及第一次使用距离5行（最多：3 行）。若需要存储该变量的值，请将其声明为final的（方法调用前声明以避免副作用影响原值）。" source="com.puppycrawl.tools.checkstyle.checks.coding.VariableDeclarationUsageDistanceCheck"/>
+<error line="129" column="25" severity="warning" message="第 4 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="133" column="25" severity="warning" message="第 4 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="139" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="149" severity="warning" message="Javadoc tag &apos;@param&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+<error line="160" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="199" severity="warning" message="Javadoc tag &apos;@param&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+<error line="207" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="225" severity="warning" message="Javadoc tag &apos;@param&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+<error line="241" severity="warning" message="Javadoc tag &apos;@param&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+<error line="258" column="25" severity="warning" message="第 4 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="278" column="25" severity="warning" message="第 4 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="287" severity="warning" message="Javadoc tag &apos;@param&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+<error line="298" column="33" severity="warning" message="第 5 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="302" column="25" severity="warning" message="第 4 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="306" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/chain/ContainsFilterChain.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入组之前的额外空行 &apos;java.util.HashSet&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;java.util.HashSet&apos; 字典顺序错误。应在&apos;org.apache.maven.artifact.Artifact&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="28" column="1" severity="warning" message="导入语句&apos;java.util.Set&apos; 字典顺序错误。应在&apos;org.apache.maven.artifact.Artifact&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="36" column="23" severity="warning" message="&apos;static&apos; 修饰符顺序违反 JLS 建议." source="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/chain/FilterChain.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入组之前的额外空行 &apos;java.util.Objects&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;java.util.Objects&apos; 字典顺序错误。应在&apos;org.apache.maven.artifact.Artifact&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="39" column="9" severity="warning" message="缺少 Javadoc 。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocMethodCheck"/>
+<error line="42" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/chain/GroupIdFilterChain.java">
+<error line="28" column="1" severity="warning" message="导入组之前的额外空行 &apos;java.util.HashSet&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="28" column="1" severity="warning" message="导入语句&apos;java.util.HashSet&apos; 字典顺序错误。应在&apos;org.apache.maven.artifact.Artifact&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="29" column="1" severity="warning" message="导入语句&apos;java.util.Set&apos; 字典顺序错误。应在&apos;org.apache.maven.artifact.Artifact&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="37" column="23" severity="warning" message="&apos;static&apos; 修饰符顺序违反 JLS 建议." source="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck"/>
+<error line="95" column="9" severity="warning" message="“VARIABLE_DEF”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/chain/SpringBootArtifactFilterChain.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/chain/StartsWithFilterChain.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入组之前的额外空行 &apos;java.util.HashSet&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;java.util.HashSet&apos; 字典顺序错误。应在&apos;org.apache.maven.artifact.Artifact&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="28" column="1" severity="warning" message="导入语句&apos;java.util.Set&apos; 字典顺序错误。应在&apos;org.apache.maven.artifact.Artifact&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="36" column="23" severity="warning" message="&apos;static&apos; 修饰符顺序违反 JLS 建议." source="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/chain/CommonArtifactFilterChain.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/constant/GlobalConstants.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/constant/MojoConstants.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/RpcAdocMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="46" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/WordRestMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="48" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/RpcMarkdownMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="46" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/BaseDocsGeneratorMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.GlobalConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="28" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="29" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.util.ArtifactFilterUtil&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="30" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.util.ClassLoaderUtil&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="31" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.util.FileUtil&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="32" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.util.MojoUtils&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="62" column="1" severity="warning" message="导入组之前的额外空行 &apos;java.io.File&apos;。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="62" column="1" severity="warning" message="导入语句&apos;java.io.File&apos; 字典顺序错误。应在&apos;org.apache.maven.shared.dependency.graph.DependencyNode&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="63" column="1" severity="warning" message="导入语句&apos;java.io.IOException&apos; 字典顺序错误。应在&apos;org.apache.maven.shared.dependency.graph.DependencyNode&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="64" column="1" severity="warning" message="导入语句&apos;java.net.URL&apos; 字典顺序错误。应在&apos;org.apache.maven.shared.dependency.graph.DependencyNode&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="65" column="1" severity="warning" message="导入语句&apos;java.util.*&apos; 字典顺序错误。应在&apos;org.apache.maven.shared.dependency.graph.DependencyNode&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="65" column="17" severity="warning" message="不应使用 &apos;.*&apos; 形式的导入 - java.util.* 。" source="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
+<error line="66" column="1" severity="warning" message="导入语句&apos;java.util.jar.JarEntry&apos; 字典顺序错误。应在&apos;org.apache.maven.shared.dependency.graph.DependencyNode&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="67" column="1" severity="warning" message="导入语句&apos;java.util.jar.JarFile&apos; 字典顺序错误。应在&apos;org.apache.maven.shared.dependency.graph.DependencyNode&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="68" column="1" severity="warning" message="导入语句&apos;java.util.stream.Collectors&apos; 字典顺序错误。应在&apos;org.apache.maven.shared.dependency.graph.DependencyNode&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="243" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="251" severity="warning" message="Javadoc tag &apos;@param&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+<error line="267" column="32" severity="warning" message="名称 &apos;sourceURL&apos; 中不能出现超过 &apos;1&apos; 个连续大写字母。" source="com.puppycrawl.tools.checkstyle.checks.naming.AbbreviationAsWordInNameCheck"/>
+<error line="274" column="25" severity="warning" message="第 4 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="291" column="33" severity="warning" message="第 5 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+<error line="302" severity="warning" message="Javadoc tag &apos;@return&apos; 前面应有一个空行。" source="com.puppycrawl.tools.checkstyle.checks.javadoc.RequireEmptyLineBeforeBlockTagGroupCheck"/>
+<error line="309" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/TornaRpcMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="48" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/WebSocketAdocMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="52" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/HtmlMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="49" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/RpcWordMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="46" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/JMeterMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="40" column="14" severity="warning" message="名称 &apos;JMeterMojo&apos; 中不能出现超过 &apos;1&apos; 个连续大写字母。" source="com.puppycrawl.tools.checkstyle.checks.naming.AbbreviationAsWordInNameCheck"/>
+<error line="46" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/TornaRestMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="48" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/WebSocketMarkdownMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="52" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/GrpcAdocMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="49" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/JavadocAdocMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="45" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/MarkDownMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="46" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/WebSocketHtmlMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="52" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/JavadocMarkdownMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="45" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/RpcHtmlMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="46" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/SwaggerMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="48" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/JavadocHtmlMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="45" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/PostManMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="46" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/GrpcMarkdownMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="49" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/OpenApiMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="48" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/ADocMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="40" column="14" severity="warning" message="名称 &apos;ADocMojo&apos; 中不能出现超过 &apos;1&apos; 个连续大写字母。" source="com.puppycrawl.tools.checkstyle.checks.naming.AbbreviationAsWordInNameCheck"/>
+<error line="46" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+<file name="/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-maven-plugin/src/main/java/com/github/hsindumas/stagger/maven/plugin/mojo/GrpcHtmlMojo.java">
+<error line="23" column="1" severity="warning" message="“package”之前应该有一个空白行。" source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="27" column="1" severity="warning" message="导入语句&apos;com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants&apos; 字典顺序错误。应在&apos;com.github.hsindumas.stagger.model.ApiConfig&apos;之前。" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="49" column="17" severity="warning" message="第 3 个字符 &apos;}&apos;应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。" source="RightCurlySame"/>
+</file>
+</checkstyle>

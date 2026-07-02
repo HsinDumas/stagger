@@ -1,0 +1,1 @@
+rootProject.name = "stagger-gradle-plugin"

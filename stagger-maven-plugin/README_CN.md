@@ -1,6 +1,6 @@
 <h1 align="center"><a href="https://github.com/HsinDumas/stagger-maven-plugin" target="_blank">Smart-Doc Maven Plugin</a></h1>
 
-![maven](https://img.shields.io/maven-central/v/com.ly.stagger/stagger-maven-plugin)
+![maven](https://img.shields.io/maven-central/v/com.github.hsindumas/stagger-maven-plugin)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 ![number of issues closed](https://img.shields.io/github/issues-closed-raw/HsinDumas/stagger-maven-plugin)
 ![closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/HsinDumas/stagger-maven-plugin)
@@ -31,7 +31,7 @@ stagger + [Torna](http://torna.cn) 组成行业领先的文档生成和管理解
 
 ```
 <plugin>
-    <groupId>com.ly.stagger</groupId>
+    <groupId>com.github.hsindumas</groupId>
     <artifactId>stagger-maven-plugin</artifactId>
     <version>【最新版】</version>
     <configuration>

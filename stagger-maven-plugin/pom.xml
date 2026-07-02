@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.shalousun</groupId>
+        <groupId>com.github.hsindumas</groupId>
         <artifactId>stagger</artifactId>
         <version>4.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
@@ -55,9 +55,9 @@
             <version>3.3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.github.shalousun</groupId>
+            <groupId>com.github.hsindumas</groupId>
             <artifactId>stagger-core</artifactId>
-            <version>4.0.0</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <build>

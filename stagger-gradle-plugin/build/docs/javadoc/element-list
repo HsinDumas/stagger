@@ -1,0 +1,7 @@
+com.github.hsindumas.stagger.gradle.chain
+com.github.hsindumas.stagger.gradle.constant
+com.github.hsindumas.stagger.gradle.extension
+com.github.hsindumas.stagger.gradle.model
+com.github.hsindumas.stagger.gradle.plugin
+com.github.hsindumas.stagger.gradle.task
+com.github.hsindumas.stagger.gradle.util

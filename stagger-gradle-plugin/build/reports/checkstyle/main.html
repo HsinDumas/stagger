@@ -1,0 +1,1553 @@
+<html>
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Checkstyle Violations</title>
+        <style type="text/css">
+                    body {
+                        background-color: #fff;
+                        color: #02303A;
+                    }
+
+                    a {
+                        color: #1DA2BD;
+                    }
+                    a.link {
+                        color: #02303A;
+                    }
+
+                    p {
+                        font-size: 1rem;
+                    }
+
+                    h1 a[name] {
+                        margin: 0;
+                        padding: 0;
+                    }
+
+                    tr:nth-child(even) {
+                        background: white;
+                    }
+
+                    th {
+                        font-weight:bold;
+                    }
+                    tr {
+                        background: #efefef;
+                    }
+                    table th, td, tr {
+                        font-size:100%;
+                        border: none;
+                        text-align: left;
+                        vertical-align: top;
+                    }
+                </style>
+    </head>
+    <body>
+        <p>
+            <a name="top">
+                <h1>Checkstyle Results</h1>
+            </a>
+        </p>
+        <hr align="left" width="95%" size="1">
+        <h2>Summary</h2>
+        <table class="summary" width="95%">
+            <tr>
+                <th>Total files checked</th><th>Total violations</th><th>Files with violations</th>
+            </tr>
+            <tr>
+                <td>39</td><td>283</td><td>39</td>
+            </tr>
+        </table>
+        <hr align="left" width="95%" size="1">
+        <div class="violations">
+            <h2>Violations</h2>
+            <p>
+                <table class="filelist" width="95%">
+                    <tr>
+                        <th>File</th><th>Total violations</th>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66446">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/DocBaseTask.java</a></td><td>47</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N65711">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/util/GradleUtil.java</a></td><td>17</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N65832">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/util/SourceSetUtil.java</a></td><td>15</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N65631">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/util/ClassLoaderUtil.java</a></td><td>11</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66121">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/GrpcAdocTask.java</a></td><td>8</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N67304">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/GrpcHtmlTask.java</a></td><td>8</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N67039">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/GrpcMarkdownTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66774">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/JavadocAdocTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N67145">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/JavadocHtmlTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N67470">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/JavadocMarkdownTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66340">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/JMeterTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N67364">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/OpenApiTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N67092">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/PostmanTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66181">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/RestAdocTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N67251">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/RestHtmlTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66393">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/RestMarkdownTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66880">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/RpcAdocTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N67523">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/RpcHtmlTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66827">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/RpcMarkdownTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N67198">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/SwaggerTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66234">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/TornaRestTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66986">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/TornaRpcTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66933">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/WebSocketAdocTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N67417">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/WebSocketHtmlTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66287">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/WebSocketMarkdownTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N67576">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/WordTask.java</a></td><td>7</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N65970">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/chain/FilterChain.java</a></td><td>6</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N65542">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/extension/SmartDocPluginExtension.java</a></td><td>5</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N65577">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/util/ArtifactFilterUtil.java</a></td><td>5</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N65945">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/chain/ContainsFilterChain.java</a></td><td>3</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66013">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/chain/GroupIdFilterChain.java</a></td><td>3</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66049">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/chain/StartsWithFilterChain.java</a></td><td>3</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66085">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/constant/TaskConstants.java</a></td><td>3</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N67629">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/model/CustomArtifact.java</a></td><td>3</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N65614">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/util/I18nMsgUtil.java</a></td><td>2</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66074">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/chain/CommonArtifactFilterChain.java</a></td><td>1</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66038">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/chain/SpringBootArtifactFilterChain.java</a></td><td>1</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66110">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/constant/GlobalConstants.java</a></td><td>1</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N65934">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/plugin/StaggerPlugin.java</a></td><td>1</td>
+                    </tr>
+                </table>
+                <p></p>
+                
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66074">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/chain/CommonArtifactFilterChain.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N65945">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/chain/ContainsFilterChain.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'java.util.HashSet'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>'static' 修饰符顺序违反 JLS 建议.</td><td>36</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N65970">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/chain/FilterChain.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'java.util.Objects'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>37</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>43</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>50</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>57</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66013">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/chain/GroupIdFilterChain.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'java.util.HashSet'。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>'static' 修饰符顺序违反 JLS 建议.</td><td>37</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;VARIABLE_DEF&rdquo;之前应该有一个空白行。</td><td>95</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66038">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/chain/SpringBootArtifactFilterChain.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66049">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/chain/StartsWithFilterChain.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'java.util.HashSet'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>'static' 修饰符顺序违反 JLS 建议.</td><td>36</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66110">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/constant/GlobalConstants.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66085">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/constant/TaskConstants.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>不应使用 '.*' 形式的导入 - com.github.hsindumas.stagger.gradle.task.* 。</td><td>25</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'java.util.HashMap'。</td><td>27</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N65542">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/extension/SmartDocPluginExtension.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@return' 前面应有一个空行。</td><td>58</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>70</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@return' 前面应有一个空行。</td><td>80</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>88</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N67629">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/model/CustomArtifact.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@return' 前面应有一个空行。</td><td>50</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>58</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N65934">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/plugin/StaggerPlugin.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66446">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/DocBaseTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.power.common.constants.Charset'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.power.common.constants.Charset' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.power.common.util.CollectionUtil' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.power.common.util.RegexUtil' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>31</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.gradle.constant.GlobalConstants' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>32</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.gradle.extension.SmartDocPluginExtension' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>33</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.gradle.model.CustomArtifact' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>34</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.gradle.util.ArtifactFilterUtil' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>35</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.gradle.util.GradleUtil' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>36</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.gradle.util.I18nMsgUtil' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>37</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.gradle.util.SourceSetUtil' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>38</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.power.common.util.StringUtil' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>39</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>40</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.library.SortedClassLibraryBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>41</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.DefaultTask' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>42</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.Project' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>43</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.artifacts.Configuration' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>44</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.artifacts.ResolvedArtifact' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>45</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.artifacts.ResolvedModuleVersion' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>46</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.artifacts.component.ComponentIdentifier' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>47</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.artifacts.result.ArtifactResult' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>48</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.artifacts.result.ComponentArtifactsResult' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>49</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.internal.artifacts.result.DefaultResolvedArtifactResult' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>50</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>51</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.plugins.JavaPlugin' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>52</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.tasks.TaskAction' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>53</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.jvm.JvmLibrary' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>54</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.language.base.artifact.SourcesArtifact' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>55</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'java.io.File'。</td><td>57</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.io.File' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>57</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.net.URL' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>58</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.nio.file.Path' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>59</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.nio.file.Paths' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>60</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.util.*' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>61</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>不应使用 '.*' 形式的导入 - java.util.* 。</td><td>61</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.util.jar.JarEntry' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>62</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.util.jar.JarFile' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>63</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>83</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>106</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@return' 前面应有一个空行。</td><td>139</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>@标签应有非空说明。</td><td>164</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>164</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>227</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>239</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66121">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/GrpcAdocTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.grpc.GrpcAsciidocBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.grpc.GrpcAsciidocBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.rpc.RpcAdocBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>31</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>49</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N67304">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/GrpcHtmlTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.grpc.GrpcHtmlBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.grpc.GrpcHtmlBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.rpc.RpcHtmlBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>31</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>49</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N67039">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/GrpcMarkdownTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.grpc.GrpcMarkdownBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.grpc.GrpcMarkdownBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>48</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66774">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/JavadocAdocTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.javadoc.JavadocAdocBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.javadoc.JavadocAdocBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>48</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N67145">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/JavadocHtmlTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.javadoc.JavadocHtmlBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.javadoc.JavadocHtmlBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>48</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N67470">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/JavadocMarkdownTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.javadoc.JavadocMarkdownBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.javadoc.JavadocMarkdownBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>48</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66340">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/JMeterTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.JMeterBuilder'。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.JMeterBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>31</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>名称 'JMeterTask' 中不能出现超过 '1' 个连续大写字母。</td><td>42</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>48</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N67364">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/OpenApiTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.openapi.OpenApiBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.openapi.OpenApiBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>47</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N67092">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/PostmanTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.PostmanJsonBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.PostmanJsonBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>45</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66181">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/RestAdocTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.AdocDocBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.AdocDocBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>45</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N67251">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/RestHtmlTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.HtmlApiDocBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.HtmlApiDocBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>45</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66393">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/RestMarkdownTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.ApiDocBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.ApiDocBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>45</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66880">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/RpcAdocTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.rpc.RpcAdocBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.rpc.RpcAdocBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>45</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N67523">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/RpcHtmlTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.rpc.RpcHtmlBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.rpc.RpcHtmlBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>45</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66827">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/RpcMarkdownTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.rpc.RpcMarkdownBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.rpc.RpcMarkdownBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>45</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N67198">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/SwaggerTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.openapi.SwaggerBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.openapi.SwaggerBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>47</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66234">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/TornaRestTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.TornaBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.TornaBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>45</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66986">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/TornaRpcTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.rpc.RpcTornaBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.rpc.RpcTornaBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>45</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66933">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/WebSocketAdocTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.websocket.WebSocketAsciidocBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.websocket.WebSocketAsciidocBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>48</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N67417">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/WebSocketHtmlTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.websocket.WebSocketHtmlBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.websocket.WebSocketHtmlBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>48</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66287">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/WebSocketMarkdownTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.websocket.WebSocketMarkdownBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.websocket.WebSocketMarkdownBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>48</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N67576">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/task/WordTask.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'com.github.hsindumas.stagger.builder.WordDocBuilder'。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.builder.WordDocBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.ApiConfig' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.thoughtworks.qdox.JavaProjectBuilder' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'org.gradle.api.logging.Logger' 字典顺序错误。应在'org.gradle.work.DisableCachingByDefault'之前。</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>45</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N65577">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/util/ArtifactFilterUtil.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>不应使用 '.*' 形式的导入 - com.github.hsindumas.stagger.gradle.chain.* 。</td><td>25</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>38</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>变量'springBootArtifactFilterChain'声明及第一次使用距离4行（最多：3 行）。若需要存储该变量的值，请将其声明为final的（方法调用前声明以避免副作用影响原值）。</td><td>46</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>57</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N65631">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/util/ClassLoaderUtil.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'java.io.File'。</td><td>33</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.io.File' 字典顺序错误。应在'org.gradle.api.tasks.SourceSetContainer'之前。</td><td>33</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.net.MalformedURLException' 字典顺序错误。应在'org.gradle.api.tasks.SourceSetContainer'之前。</td><td>34</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.net.URL' 字典顺序错误。应在'org.gradle.api.tasks.SourceSetContainer'之前。</td><td>35</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.net.URLClassLoader' 字典顺序错误。应在'org.gradle.api.tasks.SourceSetContainer'之前。</td><td>36</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.util.ArrayList' 字典顺序错误。应在'org.gradle.api.tasks.SourceSetContainer'之前。</td><td>37</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.util.List' 字典顺序错误。应在'org.gradle.api.tasks.SourceSetContainer'之前。</td><td>38</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.util.Set' 字典顺序错误。应在'org.gradle.api.tasks.SourceSetContainer'之前。</td><td>39</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>49</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>70</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N65711">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/util/GradleUtil.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'com.github.hsindumas.stagger.model.*' 字典顺序错误。应在'com.google.gson.GsonBuilder'之前。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>不应使用 '.*' 形式的导入 - com.github.hsindumas.stagger.model.* 。</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'java.io.File'。</td><td>35</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.io.File' 字典顺序错误。应在'org.gradle.api.logging.Logger'之前。</td><td>35</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.io.FileInputStream' 字典顺序错误。应在'org.gradle.api.logging.Logger'之前。</td><td>36</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.io.FileNotFoundException' 字典顺序错误。应在'org.gradle.api.logging.Logger'之前。</td><td>37</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.util.List' 字典顺序错误。应在'org.gradle.api.logging.Logger'之前。</td><td>38</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.util.Objects' 字典顺序错误。应在'org.gradle.api.logging.Logger'之前。</td><td>39</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>'static' 修饰符顺序违反 JLS 建议.</td><td>50</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Parameter name 'aClass' must match pattern '^[a-z]([a-z0-9][a-zA-Z0-9]*)?$'.</td><td>57</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>64</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>变量'responseBodyAdvice'声明及第一次使用距离4行（最多：3 行）。若需要存储该变量的值，请将其声明为final的（方法调用前声明以避免副作用影响原值）。</td><td>79</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>变量'requestBodyAdvice'声明及第一次使用距离5行（最多：3 行）。若需要存储该变量的值，请将其声明为final的（方法调用前声明以避免副作用影响原值）。</td><td>80</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>118</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>128</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>135</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N65614">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/util/I18nMsgUtil.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>39</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N65832">/Users/dumas/IdeaProjects/HsinDumas/stagger/stagger-gradle-plugin/src/main/java/com/github/hsindumas/stagger/gradle/util/SourceSetUtil.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&ldquo;package&rdquo;之前应该有一个空白行。</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入组之前的额外空行 'java.io.File'。</td><td>32</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.io.File' 字典顺序错误。应在'org.gradle.api.logging.Logger'之前。</td><td>32</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.util.Collections' 字典顺序错误。应在'org.gradle.api.logging.Logger'之前。</td><td>33</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.util.Optional' 字典顺序错误。应在'org.gradle.api.logging.Logger'之前。</td><td>34</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>导入语句'java.util.Set' 字典顺序错误。应在'org.gradle.api.logging.Logger'之前。</td><td>35</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>51</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc 缩进级别错误，应为 4 个缩进符。</td><td>54</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc 缩进级别错误，应为 4 个缩进符。</td><td>55</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc 缩进级别错误，应为 4 个缩进符。</td><td>56</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>&lt;p&gt; 标签前应有空行。</td><td>56</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc 缩进级别错误，应为 4 个缩进符。</td><td>57</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc 缩进级别错误，应为 4 个缩进符。</td><td>58</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>第 3 个字符 '}'应该与当前多代码块的下一部分 （if/else-if/else, do/while 或 try/catch/finally）位于同一行。</td><td>81</td>
+                        </tr>
+                        <tr>
+                            <td>warning</td><td>Javadoc tag '@param' 前面应有一个空行。</td><td>90</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <p></p>
+            </p>
+        </div>
+        <hr align="left" width="95%" size="1">
+        <p>
+            Generated by <a href="https://gradle.org">Gradle 9.5.1</a> with <a href="https://checkstyle.sourceforge.io/">Checkstyle 10.20.1</a>.
+        </p>
+    </body>
+</html>

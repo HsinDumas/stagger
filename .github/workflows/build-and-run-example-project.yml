@@ -44,7 +44,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: stagger-maven-jar
-          path: ~/.m2/repository/com/ly/stagger
+          path: ~/.m2/repository/com/github/hsindumas
           if-no-files-found: error
 
       - name: Upload Build Log
@@ -85,11 +85,11 @@ jobs:
 
       - name: Move Files to Local Maven Repository
         run: |
-          mkdir -p ~/.m2/repository/com/ly/stagger
+          mkdir -p ~/.m2/repository/com/github/hsindumas
           echo "Overwriting target directory with new artifacts:"
-          rsync -av --delete ./artifacts/ ~/.m2/repository/com/ly/stagger/
+          rsync -av --delete ./artifacts/ ~/.m2/repository/com/github/hsindumas/
           echo "Listing files in target directory:"
-          ls -lh ~/.m2/repository/com/ly/stagger
+          ls -lh ~/.m2/repository/com/github/hsindumas
 
       - name: Update Version in pom.xml
         run: |
@@ -108,7 +108,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: stagger-maven-plugin-jar
-          path: ~/.m2/repository/com/ly/stagger
+          path: ~/.m2/repository/com/github/hsindumas
           if-no-files-found: error
 
       - name: Upload Plugin Build Log
@@ -152,11 +152,11 @@ jobs:
 
       - name: Move Files to Local Maven Repository
         run: |
-          mkdir -p ~/.m2/repository/com/ly/stagger
+          mkdir -p ~/.m2/repository/com/github/hsindumas
           echo "Overwriting target directory with new artifacts:"
-          rsync -av --delete ./artifacts/ ~/.m2/repository/com/ly/stagger/
+          rsync -av --delete ./artifacts/ ~/.m2/repository/com/github/hsindumas/
           echo "Listing files in target directory:"
-          ls -lh ~/.m2/repository/com/ly/stagger
+          ls -lh ~/.m2/repository/com/github/hsindumas
 
       - name: Update Smart-Doc Version in pom.xml
         run: |
@@ -283,7 +283,7 @@ jobs:
       - name: Move Files to Local Maven Repository
         run: |
           if [[ "${{ matrix.os }}" == "ubuntu-latest" || "${{ matrix.os }}" == "macos-latest" ]]; then
-            TARGET_DIR=~/.m2/repository/com/ly/stagger/
+            TARGET_DIR=~/.m2/repository/com/github/hsindumas/
             mkdir -p "$TARGET_DIR" || echo "Directory already exists"
             rsync -av --delete ./artifacts/ "$TARGET_DIR"
           elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then

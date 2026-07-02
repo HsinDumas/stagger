@@ -34,7 +34,7 @@ Stagger 继承了优秀的静态解析理念，彻底摒弃注解流：
 
 ```xml
 <plugin>
-    <groupId>com.github.shalousun</groupId>
+    <groupId>com.github.hsindumas</groupId>
     <artifactId>stagger-maven-plugin</artifactId>
     <version>4.0.1</version>
     <executions>
@@ -51,7 +51,7 @@ Stagger 继承了优秀的静态解析理念，彻底摒弃注解流：
 
 ```gradle
 plugins {
-    id 'com.ly.doc' version '4.0.1'
+    id 'com.github.hsindumas.stagger' version '4.0.1'
 }
 
 stagger {

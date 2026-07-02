@@ -34,7 +34,7 @@ Stagger embraces the elegant static analysis approach and completely abandons an
 
 ```xml
 <plugin>
-    <groupId>com.github.shalousun</groupId>
+    <groupId>com.github.hsindumas</groupId>
     <artifactId>stagger-maven-plugin</artifactId>
     <version>4.0.1</version>
     <executions>
@@ -51,7 +51,7 @@ Stagger embraces the elegant static analysis approach and completely abandons an
 
 ```gradle
 plugins {
-    id 'com.ly.doc' version '4.0.1'
+    id 'com.github.hsindumas.stagger' version '4.0.1'
 }
 
 stagger {

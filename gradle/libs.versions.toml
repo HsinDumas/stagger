@@ -1,0 +1,45 @@
+[versions]
+beetl = "3.20.0.RELEASE"
+gson = "2.13.2"
+datafaker = "1.9.0"
+slf4j = "2.0.17"
+jgit = "6.9.0.202403050737-r"
+commonUtil = "2.2.9"
+qdox = "2.2.0"
+javaparser = "3.26.4"
+junit = "5.14.1"
+mockito = "4.11.0"
+springJavaFormat = "0.0.47"
+checkstyle = "10.20.1"
+mavenPluginApi = "3.9.9"
+mavenPluginAnnotations = "3.13.1"
+mavenCore = "3.9.9"
+mavenModel = "3.9.9"
+mavenArtifact = "3.9.9"
+mavenDependencyTree = "3.3.0"
+pluginPublish = "1.3.1"
+
+[libraries]
+beetl = { module = "com.ibeetl:beetl", version.ref = "beetl" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+datafaker = { module = "net.datafaker:datafaker", version.ref = "datafaker" }
+slf4jApi = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version.ref = "jgit" }
+commonUtil = { module = "io.github.shalousun:common-util", version.ref = "commonUtil" }
+qdox = { module = "com.thoughtworks.qdox:qdox", version.ref = "qdox" }
+javaparserCore = { module = "com.github.javaparser:javaparser-core", version.ref = "javaparser" }
+javaparserSymbolSolver = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaparser" }
+mockito = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
+
+junitBom = { module = "org.junit:junit-bom", version.ref = "junit" }
+
+mavenPluginApi = { module = "org.apache.maven:maven-plugin-api", version.ref = "mavenPluginApi" }
+mavenPluginAnnotations = { module = "org.apache.maven.plugin-tools:maven-plugin-annotations", version.ref = "mavenPluginAnnotations" }
+mavenCore = { module = "org.apache.maven:maven-core", version.ref = "mavenCore" }
+mavenModel = { module = "org.apache.maven:maven-model", version.ref = "mavenModel" }
+mavenArtifact = { module = "org.apache.maven:maven-artifact", version.ref = "mavenArtifact" }
+mavenDependencyTree = { module = "org.apache.maven.shared:maven-dependency-tree", version.ref = "mavenDependencyTree" }
+
+[plugins]
+springJavaFormat = { id = "io.spring.javaformat", version.ref = "springJavaFormat" }
+pluginPublish = { id = "com.gradle.plugin-publish", version.ref = "pluginPublish" }

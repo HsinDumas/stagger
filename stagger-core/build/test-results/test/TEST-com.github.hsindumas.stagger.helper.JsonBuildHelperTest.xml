@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.github.hsindumas.stagger.helper.JsonBuildHelperTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-02T06:01:01.229Z" hostname="CN-CTQH19396R" time="0.805">
+  <properties/>
+  <testcase name="testBuildJsonWithNPE()" classname="com.github.hsindumas.stagger.helper.JsonBuildHelperTest" time="0.805"/>
+  <system-out><![CDATA[{"originalClass":{},"taskType":""}
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

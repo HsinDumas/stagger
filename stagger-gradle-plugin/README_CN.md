@@ -1,6 +1,6 @@
 <h1 align="center"><a href="https://github.com/shalousun/stagger-gradle-plugin" target="_blank">Smart-Doc Gradle Plugin</a></h1>
 
-![gradle](https://img.shields.io/gradle-plugin-portal/v/com.ly.stagger)
+![gradle](https://img.shields.io/gradle-plugin-portal/v/com.github.hsindumas)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 ![closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/shalousun/stagger-gradle-plugin)
 ![java version](https://img.shields.io/badge/JAVA-1.8+-green.svg)
@@ -23,7 +23,7 @@
 Using the plugins DSL:
 ```
 plugins {
-  id "com.ly.stagger" version "[最新版本]"
+  id "com.github.hsindumas" version "[最新版本]"
 }
 ```
 Using legacy plugin application:
@@ -35,10 +35,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.ly.stagger:stagger-gradle-plugin:[最新版本]'
+        classpath 'com.github.hsindumas:stagger-gradle-plugin:[最新版本]'
     }
 }
-apply(plugin = "com.ly.stagger")
+apply(plugin = "com.github.hsindumas")
 ```
 ### Plugin options
 
@@ -86,7 +86,7 @@ smartdoc {
 
 ```
 subprojects{
-    apply plugin: 'com.ly.stagger'
+    apply plugin: 'com.github.hsindumas'
     smartdoc {
         //
         configFile = file("src/main/resources/stagger.json")
