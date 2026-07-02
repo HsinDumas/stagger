@@ -23,6 +23,7 @@
 package com.github.hsindumas.stagger.maven.plugin.mojo;
 
 import com.github.hsindumas.stagger.builder.rpc.RpcWordDocBuilder;
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants;
 import org.apache.maven.plugins.annotations.Execute;
@@ -41,7 +42,8 @@ public class RpcWordMojo extends BaseDocsGeneratorMojo {
 	@Override
 	public void executeMojo(ApiConfig apiConfig) {
 		try {
-			RpcWordDocBuilder.buildApiDoc(apiConfig, javaProjectBuilder);
+			ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
+			RpcWordDocBuilder.buildApiDoc(apiConfig, configBuilder);
 		}
 		catch (Throwable e) {
 			getLog().error(e);

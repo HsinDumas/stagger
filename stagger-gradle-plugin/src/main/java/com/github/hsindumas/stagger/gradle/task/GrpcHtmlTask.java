@@ -24,8 +24,8 @@ package com.github.hsindumas.stagger.gradle.task;
 
 import org.gradle.work.DisableCachingByDefault;
 
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.builder.grpc.GrpcHtmlBuilder;
-import com.github.hsindumas.stagger.builder.rpc.RpcHtmlBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import org.gradle.api.logging.Logger;
 
@@ -44,7 +44,8 @@ public class GrpcHtmlTask extends DocBaseTask {
 	@Override
 	public void executeAction(ApiConfig apiConfig, Logger logger) {
 		try {
-			GrpcHtmlBuilder.buildApiDoc(apiConfig, javaProjectBuilder);
+			ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
+			GrpcHtmlBuilder.buildApiDoc(apiConfig, configBuilder);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

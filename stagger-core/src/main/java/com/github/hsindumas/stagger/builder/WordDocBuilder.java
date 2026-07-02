@@ -30,7 +30,6 @@ import com.github.hsindumas.stagger.template.IDocBuildTemplate;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.power.common.util.DateTimeUtil;
 import com.power.common.util.FileUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 import org.beetl.core.Template;
 
 import java.util.List;
@@ -78,21 +77,19 @@ public class WordDocBuilder {
 	 * @throws Exception exception
 	 */
 	public static void buildApiDoc(ApiConfig config) throws Exception {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildApiDoc(config, javaProjectBuilder);
+		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
 	}
 
 	/**
 	 * build controller api
 	 * @param config config
-	 * @param javaProjectBuilder javaProjectBuilder
+	 * @param configBuilder ProjectDocConfigBuilder
 	 * @throws Exception exception
 	 */
-	public static void buildApiDoc(ApiConfig config, JavaProjectBuilder javaProjectBuilder) throws Exception {
+	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) throws Exception {
 		DocBuilderTemplate builderTemplate = new DocBuilderTemplate();
 		builderTemplate.checkAndInit(config, Boolean.TRUE);
 		config.setParamsDataToTree(false);
-		ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(config, javaProjectBuilder);
 		IDocBuildTemplate<ApiDoc> docBuildTemplate = BuildTemplateFactory.getDocBuildTemplate(config.getFramework(),
 				config.getClassLoader());
 		Objects.requireNonNull(docBuildTemplate, "doc build template is null");
@@ -106,7 +103,8 @@ public class WordDocBuilder {
 			apiDocList = docBuildTemplate.handleApiGroup(apiDocList, config);
 			String outPath = config.getOutPath();
 			FileUtil.mkdirs(outPath);
-			Template tpl = builderTemplate.buildAllRenderDocTemplate(apiDocList, config, javaProjectBuilder,
+			Template tpl = builderTemplate.buildAllRenderDocTemplate(apiDocList, config,
+					configBuilder.getJavaProjectBuilder(),
 					DocGlobalConstants.ALL_IN_ONE_WORD_XML_TPL, null, null);
 			DocUtil.copyAndReplaceDocx(tpl.render(), outPath + DocGlobalConstants.FILE_SEPARATOR + docName,
 					TEMPLATE_DOCX);
@@ -120,12 +118,12 @@ public class WordDocBuilder {
 						TEMPLATE_DOCX);
 			}
 			Template errorCodeDocTemplate = builderTemplate.buildErrorCodeDocTemplate(config,
-					DocGlobalConstants.WORD_ERROR_XML_TPL, javaProjectBuilder);
+					DocGlobalConstants.WORD_ERROR_XML_TPL, configBuilder);
 			DocUtil.copyAndReplaceDocx(errorCodeDocTemplate.render(),
 					config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + BUILD_ERROR_DOCX, TEMPLATE_DOCX);
 
 			Template directoryDataDocTemplate = builderTemplate.buildDirectoryDataDocTemplate(config,
-					javaProjectBuilder, DocGlobalConstants.WORD_DICT_XML_TPL);
+					configBuilder, DocGlobalConstants.WORD_DICT_XML_TPL);
 			DocUtil.copyAndReplaceDocx(directoryDataDocTemplate.render(),
 					config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + BUILD_DICT_DOCX, TEMPLATE_DOCX);
 		}

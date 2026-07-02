@@ -20,6 +20,7 @@
  */
 package com.github.hsindumas.stagger.builder.rpc;
 
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.TornaConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
@@ -55,19 +56,19 @@ public class RpcTornaBuilder {
 	 * @param config config
 	 */
 	public static void buildApiDoc(ApiConfig config) {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildApiDoc(config, javaProjectBuilder);
+		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
 	}
 
 	/**
 	 * Only for stagger maven plugin and gradle plugin.
 	 * @param config ApiConfig
-	 * @param javaProjectBuilder ProjectDocConfigBuilder
+	 * @param configBuilder ProjectDocConfigBuilder
 	 */
-	public static void buildApiDoc(ApiConfig config, JavaProjectBuilder javaProjectBuilder) {
+	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		RpcDocBuilderTemplate builderTemplate = new RpcDocBuilderTemplate();
-		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, true, config, javaProjectBuilder);
-		buildTorna(apiDocList, config, javaProjectBuilder);
+		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, true, config,
+				configBuilder.getJavaProjectBuilder());
+		buildTorna(apiDocList, config, configBuilder.getJavaProjectBuilder());
 	}
 
 	/**

@@ -23,6 +23,7 @@
 package com.github.hsindumas.stagger.maven.plugin.mojo;
 
 import com.github.hsindumas.stagger.builder.javadoc.JavadocMarkdownBuilder;
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants;
 import org.apache.maven.plugins.annotations.Execute;
@@ -40,7 +41,8 @@ public class JavadocMarkdownMojo extends BaseDocsGeneratorMojo {
 	@Override
 	public void executeMojo(ApiConfig apiConfig) {
 		try {
-			JavadocMarkdownBuilder.buildApiDoc(apiConfig, javaProjectBuilder);
+			ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
+			JavadocMarkdownBuilder.buildApiDoc(apiConfig, configBuilder);
 		}
 		catch (Throwable e) {
 			getLog().error(e);

@@ -20,11 +20,11 @@
  */
 package com.github.hsindumas.stagger.builder.websocket;
 
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.WebSocketDoc;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 
 import java.util.List;
 
@@ -59,20 +59,19 @@ public class WebSocketAsciidocBuilder {
 	 * @param config ApiConfig
 	 */
 	public static void buildApiDoc(ApiConfig config) {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildApiDoc(config, javaProjectBuilder);
+		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
 	}
 
 	/**
 	 * Only for stagger maven plugin and gradle plugin.
 	 * @param config ApiConfig
-	 * @param javaProjectBuilder ProjectDocConfigBuilder
+	 * @param configBuilder ProjectDocConfigBuilder
 	 */
-	public static void buildApiDoc(ApiConfig config, JavaProjectBuilder javaProjectBuilder) {
+	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 
 		WebSocketDocBuilderTemplate webSocketDocBuilderTemplate = new WebSocketDocBuilderTemplate();
 		List<WebSocketDoc> webSocketDocList = webSocketDocBuilderTemplate.getWebSocketApiDoc(Boolean.TRUE, config,
-				javaProjectBuilder);
+				configBuilder.getJavaProjectBuilder());
 
 		if (null == webSocketDocList || webSocketDocList.isEmpty()) {
 			return;
@@ -81,14 +80,15 @@ public class WebSocketAsciidocBuilder {
 		if (config.isAllInOne()) {
 			String docName = webSocketDocBuilderTemplate.allInOneDocName(config, INDEX_DOC,
 					DocGlobalConstants.ASCIIDOC_EXTENSION);
-			webSocketDocBuilderTemplate.buildWebSocketAllInOne(webSocketDocList, config, javaProjectBuilder,
+			webSocketDocBuilderTemplate.buildWebSocketAllInOne(webSocketDocList, config,
+					configBuilder.getJavaProjectBuilder(),
 					DocGlobalConstants.WEBSOCKET_ALL_IN_ONE_ADOC_TPL, docName);
 		}
 		else {
 			webSocketDocBuilderTemplate.buildWebSocketApiDoc(webSocketDocList, config,
 					DocGlobalConstants.WEBSOCKET_API_DOC_ADOC_TPL, API_EXTENSION);
 			webSocketDocBuilderTemplate.buildErrorCodeDoc(config, DocGlobalConstants.ERROR_CODE_LIST_ADOC_TPL,
-					DocGlobalConstants.ERROR_CODE_LIST_ADOC, javaProjectBuilder);
+					DocGlobalConstants.ERROR_CODE_LIST_ADOC, configBuilder);
 		}
 	}
 

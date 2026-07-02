@@ -26,7 +26,6 @@ import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiDoc;
 import com.github.hsindumas.stagger.template.IDocBuildTemplate;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 
 import java.util.List;
 import java.util.Objects;
@@ -61,21 +60,19 @@ public class AdocDocBuilder {
 	 * @param config ApiConfig
 	 */
 	public static void buildApiDoc(ApiConfig config) {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildApiDoc(config, javaProjectBuilder);
+		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
 	}
 
 	/**
 	 * Only for stagger maven plugin and gradle plugin.
 	 * @param config ApiConfig
-	 * @param javaProjectBuilder ProjectDocConfigBuilder
+	 * @param configBuilder ProjectDocConfigBuilder
 	 */
-	public static void buildApiDoc(ApiConfig config, JavaProjectBuilder javaProjectBuilder) {
+	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		DocBuilderTemplate builderTemplate = new DocBuilderTemplate();
 		builderTemplate.checkAndInit(config, Boolean.TRUE);
 		config.setParamsDataToTree(false);
 		config.setAdoc(true);
-		ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(config, javaProjectBuilder);
 		IDocBuildTemplate<ApiDoc> docBuildTemplate = BuildTemplateFactory.getDocBuildTemplate(config.getFramework(),
 				config.getClassLoader());
 		Objects.requireNonNull(docBuildTemplate, "doc build template is null");
@@ -83,14 +80,14 @@ public class AdocDocBuilder {
 		if (config.isAllInOne()) {
 			String docName = builderTemplate.allInOneDocName(config, INDEX_DOC, DocGlobalConstants.ASCIIDOC_EXTENSION);
 			apiDocList = docBuildTemplate.handleApiGroup(apiDocList, config);
-			builderTemplate.buildAllInOne(apiDocList, config, javaProjectBuilder,
+			builderTemplate.buildAllInOne(apiDocList, config, configBuilder,
 					DocGlobalConstants.ALL_IN_ONE_ADOC_TPL, docName);
 		}
 		else {
 			builderTemplate.buildApiDoc(apiDocList, config, DocGlobalConstants.API_DOC_ADOC_TPL, API_EXTENSION);
 			builderTemplate.buildErrorCodeDoc(config, DocGlobalConstants.ERROR_CODE_LIST_ADOC_TPL,
-					DocGlobalConstants.ERROR_CODE_LIST_ADOC, javaProjectBuilder);
-			builderTemplate.buildDirectoryDataDoc(config, javaProjectBuilder, DocGlobalConstants.DICT_LIST_ADOC_TPL,
+					DocGlobalConstants.ERROR_CODE_LIST_ADOC, configBuilder);
+			builderTemplate.buildDirectoryDataDoc(config, configBuilder, DocGlobalConstants.DICT_LIST_ADOC_TPL,
 					DocGlobalConstants.DICT_LIST_ADOC);
 		}
 	}

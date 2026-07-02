@@ -23,6 +23,7 @@
 package com.github.hsindumas.stagger.maven.plugin.mojo;
 
 import com.github.hsindumas.stagger.builder.grpc.GrpcAsciidocBuilder;
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants;
 import org.apache.maven.plugins.annotations.Execute;
@@ -44,7 +45,8 @@ public class GrpcAdocMojo extends BaseDocsGeneratorMojo {
 	@Override
 	public void executeMojo(ApiConfig apiConfig) {
 		try {
-			GrpcAsciidocBuilder.buildApiDoc(apiConfig, javaProjectBuilder);
+			ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
+			GrpcAsciidocBuilder.buildApiDoc(apiConfig, configBuilder);
 		}
 		catch (Throwable e) {
 			getLog().error(e);

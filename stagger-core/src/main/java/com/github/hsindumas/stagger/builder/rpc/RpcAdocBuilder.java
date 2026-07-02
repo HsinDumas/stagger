@@ -20,11 +20,11 @@
  */
 package com.github.hsindumas.stagger.builder.rpc;
 
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.rpc.RpcApiDoc;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 
 import java.util.List;
 
@@ -59,27 +59,27 @@ public class RpcAdocBuilder {
 	 * @param config ApiConfig
 	 */
 	public static void buildApiDoc(ApiConfig config) {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildApiDoc(config, javaProjectBuilder);
+		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
 	}
 
 	/**
 	 * Only for stagger maven plugin and gradle plugin.
 	 * @param config ApiConfig
-	 * @param javaProjectBuilder ProjectDocConfigBuilder
+	 * @param configBuilder ProjectDocConfigBuilder
 	 */
-	public static void buildApiDoc(ApiConfig config, JavaProjectBuilder javaProjectBuilder) {
+	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		RpcDocBuilderTemplate builderTemplate = new RpcDocBuilderTemplate();
-		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(true, true, false, config, javaProjectBuilder);
+		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(true, true, false, config,
+				configBuilder.getJavaProjectBuilder());
 		if (config.isAllInOne()) {
 			String docName = builderTemplate.allInOneDocName(config, INDEX_DOC, DocGlobalConstants.ASCIIDOC_EXTENSION);
-			builderTemplate.buildAllInOne(apiDocList, config, javaProjectBuilder,
+			builderTemplate.buildAllInOne(apiDocList, config, configBuilder.getJavaProjectBuilder(),
 					DocGlobalConstants.RPC_ALL_IN_ONE_ADOC_TPL, docName);
 		}
 		else {
 			builderTemplate.buildApiDoc(apiDocList, config, DocGlobalConstants.RPC_API_DOC_ADOC_TPL, API_EXTENSION);
 			builderTemplate.buildErrorCodeDoc(config, DocGlobalConstants.ERROR_CODE_LIST_ADOC_TPL,
-					DocGlobalConstants.ERROR_CODE_LIST_ADOC, javaProjectBuilder);
+					DocGlobalConstants.ERROR_CODE_LIST_ADOC, configBuilder);
 		}
 	}
 

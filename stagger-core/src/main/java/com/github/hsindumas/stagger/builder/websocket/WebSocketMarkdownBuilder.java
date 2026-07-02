@@ -20,12 +20,12 @@
  */
 package com.github.hsindumas.stagger.builder.websocket;
 
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.WebSocketDoc;
 import com.power.common.util.DateTimeUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 
 import java.util.List;
 
@@ -50,19 +50,18 @@ public class WebSocketMarkdownBuilder {
 	 * @param config ApiConfig
 	 */
 	public static void buildApiDoc(ApiConfig config) {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildApiDoc(config, javaProjectBuilder);
+		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
 	}
 
 	/**
 	 * Only for stagger maven plugin and gradle plugin.
 	 * @param config ApiConfig
-	 * @param javaProjectBuilder ProjectDocConfigBuilder
+	 * @param configBuilder ProjectDocConfigBuilder
 	 */
-	public static void buildApiDoc(ApiConfig config, JavaProjectBuilder javaProjectBuilder) {
+	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		WebSocketDocBuilderTemplate webSocketDocBuilderTemplate = new WebSocketDocBuilderTemplate();
 		List<WebSocketDoc> webSocketDocList = webSocketDocBuilderTemplate.getWebSocketApiDoc(Boolean.FALSE, config,
-				javaProjectBuilder);
+				configBuilder.getJavaProjectBuilder());
 
 		if (null == webSocketDocList || webSocketDocList.isEmpty()) {
 			return;
@@ -73,7 +72,8 @@ public class WebSocketMarkdownBuilder {
 					DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
 			String docName = webSocketDocBuilderTemplate.allInOneDocName(config, "webSocket-all" + version,
 					DocGlobalConstants.MARKDOWN_EXTENSION);
-			webSocketDocBuilderTemplate.buildWebSocketAllInOne(webSocketDocList, config, javaProjectBuilder,
+			webSocketDocBuilderTemplate.buildWebSocketAllInOne(webSocketDocList, config,
+					configBuilder.getJavaProjectBuilder(),
 					DocGlobalConstants.WEBSOCKET_ALL_IN_ONE_MD_TPL, docName);
 		}
 		else {
@@ -81,7 +81,7 @@ public class WebSocketMarkdownBuilder {
 					DocGlobalConstants.WEBSOCKET_MD_TPL, DocGlobalConstants.MARKDOWN_API_FILE_EXTENSION);
 
 			webSocketDocBuilderTemplate.buildErrorCodeDoc(config, DocGlobalConstants.ERROR_CODE_LIST_MD_TPL,
-					DocGlobalConstants.ERROR_CODE_LIST_MD, javaProjectBuilder);
+					DocGlobalConstants.ERROR_CODE_LIST_MD, configBuilder);
 		}
 	}
 

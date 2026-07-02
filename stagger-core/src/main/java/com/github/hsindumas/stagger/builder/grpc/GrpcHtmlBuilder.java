@@ -20,11 +20,11 @@
  */
 package com.github.hsindumas.stagger.builder.grpc;
 
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.grpc.GrpcApiDoc;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 
 import java.util.List;
 
@@ -54,23 +54,22 @@ public class GrpcHtmlBuilder {
 	 * @param config config
 	 */
 	public static void buildApiDoc(ApiConfig config) {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildApiDoc(config, javaProjectBuilder);
+		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
 	}
 
 	/**
 	 * Only for stagger maven plugin and gradle plugin.
 	 * @param apiConfig ApiConfig
-	 * @param javaProjectBuilder ProjectDocConfigBuilder
+	 * @param configBuilder ProjectDocConfigBuilder
 	 */
-	public static void buildApiDoc(ApiConfig apiConfig, JavaProjectBuilder javaProjectBuilder) {
+	public static void buildApiDoc(ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
 		GrpcDocBuilderTemplate grpcDocBuilderTemplate = new GrpcDocBuilderTemplate();
 		List<GrpcApiDoc> apiDocList = grpcDocBuilderTemplate.getApiDoc(false, true, false, apiConfig,
-				javaProjectBuilder);
+				configBuilder.getJavaProjectBuilder());
 		grpcDocBuilderTemplate.copyJQueryAndCss(apiConfig);
-		grpcDocBuilderTemplate.buildAllInOne(apiDocList, apiConfig, javaProjectBuilder,
+		grpcDocBuilderTemplate.buildAllInOne(apiDocList, apiConfig, configBuilder.getJavaProjectBuilder(),
 				DocGlobalConstants.GRPC_ALL_IN_ONE_HTML_TPL, INDEX_HTML);
-		grpcDocBuilderTemplate.buildSearchJs(apiDocList, apiConfig, javaProjectBuilder,
+		grpcDocBuilderTemplate.buildSearchJs(apiDocList, apiConfig, configBuilder.getJavaProjectBuilder(),
 				DocGlobalConstants.GRPC_ALL_IN_ONE_SEARCH_TPL, DocGlobalConstants.SEARCH_JS_OUT);
 	}
 

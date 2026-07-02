@@ -60,19 +60,18 @@ public class TornaBuilder {
 	 * @param config config
 	 */
 	public static void buildApiDoc(ApiConfig config) {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildApiDoc(config, javaProjectBuilder);
+		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
 	}
 
 	/**
 	 * Only for stagger Maven plugin and Gradle plugin.
 	 * @param config ApiConfig
-	 * @param javaProjectBuilder JavaProjectBuilder
+	 * @param configBuilder ProjectDocConfigBuilder
 	 */
-	public static void buildApiDoc(ApiConfig config, JavaProjectBuilder javaProjectBuilder) {
+	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		config.setParamsDataToTree(true);
-		List<ApiDoc> apiDocList = generateApiDocs(config, javaProjectBuilder);
-		buildTorna(apiDocList, config, javaProjectBuilder);
+		List<ApiDoc> apiDocList = generateApiDocs(config, configBuilder.getJavaProjectBuilder());
+		buildTorna(apiDocList, config, configBuilder.getJavaProjectBuilder());
 	}
 
 	/**

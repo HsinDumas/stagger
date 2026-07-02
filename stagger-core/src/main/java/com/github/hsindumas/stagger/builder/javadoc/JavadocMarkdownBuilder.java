@@ -20,12 +20,12 @@
  */
 package com.github.hsindumas.stagger.builder.javadoc;
 
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.javadoc.JavadocApiDoc;
 import com.power.common.util.DateTimeUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 
 import java.util.List;
 
@@ -49,31 +49,31 @@ public class JavadocMarkdownBuilder {
 	 * @param config ApiConfig
 	 */
 	public static void buildApiDoc(ApiConfig config) {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildApiDoc(config, javaProjectBuilder);
+		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
 	}
 
 	/**
 	 * Only for stagger maven plugin and gradle plugin.
 	 * @param apiConfig ApiConfig
-	 * @param javaProjectBuilder ProjectDocConfigBuilder
+	 * @param configBuilder ProjectDocConfigBuilder
 	 */
-	public static void buildApiDoc(ApiConfig apiConfig, JavaProjectBuilder javaProjectBuilder) {
+	public static void buildApiDoc(ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
 		JavadocDocBuilderTemplate builderTemplate = new JavadocDocBuilderTemplate();
-		List<JavadocApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, apiConfig, javaProjectBuilder);
+		List<JavadocApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, apiConfig,
+				configBuilder.getJavaProjectBuilder());
 		if (apiConfig.isAllInOne()) {
 			String version = apiConfig.isCoverOld() ? "" : "-V" + DateTimeUtil.long2Str(System.currentTimeMillis(),
 					DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
 			String docName = builderTemplate.allInOneDocName(apiConfig, "javadoc-all" + version,
 					DocGlobalConstants.MARKDOWN_EXTENSION);
-			builderTemplate.buildAllInOne(apiDocList, apiConfig, javaProjectBuilder,
+			builderTemplate.buildAllInOne(apiDocList, apiConfig, configBuilder.getJavaProjectBuilder(),
 					DocGlobalConstants.JAVADOC_ALL_IN_ONE_MD_TPL, docName);
 		}
 		else {
 			builderTemplate.buildApiDoc(apiDocList, apiConfig, DocGlobalConstants.JAVADOC_API_DOC_MD_TPL,
 					DocGlobalConstants.MARKDOWN_API_FILE_EXTENSION);
 			builderTemplate.buildErrorCodeDoc(apiConfig, DocGlobalConstants.ERROR_CODE_LIST_MD_TPL,
-					DocGlobalConstants.ERROR_CODE_LIST_MD, javaProjectBuilder);
+					DocGlobalConstants.ERROR_CODE_LIST_MD, configBuilder);
 		}
 	}
 

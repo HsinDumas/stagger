@@ -25,6 +25,7 @@ package com.github.hsindumas.stagger.gradle.task;
 import org.gradle.work.DisableCachingByDefault;
 
 import com.github.hsindumas.stagger.builder.ApiDocBuilder;
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import org.gradle.api.logging.Logger;
 
@@ -40,7 +41,8 @@ public class RestMarkdownTask extends DocBaseTask {
 	@Override
 	public void executeAction(ApiConfig apiConfig, Logger logger) {
 		try {
-			ApiDocBuilder.buildApiDoc(apiConfig, javaProjectBuilder);
+			ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
+			ApiDocBuilder.buildApiDoc(apiConfig, configBuilder);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

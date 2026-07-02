@@ -23,6 +23,7 @@
 package com.github.hsindumas.stagger.maven.plugin.mojo;
 
 import com.github.hsindumas.stagger.builder.websocket.WebSocketAsciidocBuilder;
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -47,7 +48,8 @@ public class WebSocketAdocMojo extends BaseDocsGeneratorMojo {
 	public void executeMojo(ApiConfig apiConfig)
 			throws MojoExecutionException, MojoFailureException {
 		try {
-			WebSocketAsciidocBuilder.buildApiDoc(apiConfig, javaProjectBuilder);
+			ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
+			WebSocketAsciidocBuilder.buildApiDoc(apiConfig, configBuilder);
 		}
 		catch (Exception e) {
 			getLog().error(e);

@@ -24,6 +24,7 @@ package com.github.hsindumas.stagger.gradle.task;
 
 import org.gradle.work.DisableCachingByDefault;
 
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.builder.websocket.WebSocketMarkdownBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import org.gradle.api.logging.Logger;
@@ -43,7 +44,8 @@ public class WebSocketMarkdownTask extends DocBaseTask {
 	@Override
 	public void executeAction(ApiConfig apiConfig, Logger logger) {
 		try {
-			WebSocketMarkdownBuilder.buildApiDoc(apiConfig, javaProjectBuilder);
+			ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
+			WebSocketMarkdownBuilder.buildApiDoc(apiConfig, configBuilder);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

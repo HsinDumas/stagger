@@ -20,11 +20,11 @@
  */
 package com.github.hsindumas.stagger.builder.websocket;
 
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.WebSocketDoc;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 
 import java.util.List;
 
@@ -54,27 +54,27 @@ public class WebSocketHtmlBuilder {
 	 * @param config ApiConfig
 	 */
 	public static void buildApiDoc(ApiConfig config) {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildApiDoc(config, javaProjectBuilder);
+		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
 	}
 
 	/**
 	 * Only for stagger maven plugin and gradle plugin.
 	 * @param config ApiConfig
-	 * @param javaProjectBuilder ProjectDocConfigBuilder
+	 * @param configBuilder ProjectDocConfigBuilder
 	 */
-	public static void buildApiDoc(ApiConfig config, JavaProjectBuilder javaProjectBuilder) {
+	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		WebSocketDocBuilderTemplate webSocketDocBuilderTemplate = new WebSocketDocBuilderTemplate();
 		List<WebSocketDoc> webSocketDocList = webSocketDocBuilderTemplate.getWebSocketApiDoc(Boolean.FALSE, config,
-				javaProjectBuilder);
+				configBuilder.getJavaProjectBuilder());
 
 		if (null == webSocketDocList || webSocketDocList.isEmpty()) {
 			return;
 		}
 		webSocketDocBuilderTemplate.copyJQueryAndCss(config);
-		webSocketDocBuilderTemplate.buildWebSocketAllInOne(webSocketDocList, config, javaProjectBuilder,
+		webSocketDocBuilderTemplate.buildWebSocketAllInOne(webSocketDocList, config,
+				configBuilder.getJavaProjectBuilder(),
 				DocGlobalConstants.WEBSOCKET_ALL_IN_ONE_HTML_TPL, INDEX_HTML);
-		webSocketDocBuilderTemplate.buildSearchJs(webSocketDocList, config, javaProjectBuilder,
+		webSocketDocBuilderTemplate.buildSearchJs(webSocketDocList, config, configBuilder.getJavaProjectBuilder(),
 				DocGlobalConstants.WEBSOCKET_ALL_IN_ONE_SEARCH_TPL, DocGlobalConstants.SEARCH_JS_OUT);
 
 	}

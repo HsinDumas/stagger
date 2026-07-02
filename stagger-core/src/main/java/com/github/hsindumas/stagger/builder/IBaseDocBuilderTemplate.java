@@ -227,6 +227,21 @@ public interface IBaseDocBuilderTemplate<T extends IDoc> {
 	}
 
 	/**
+	 * Binds common variables to the specified template in preparation for document
+	 * generation.
+	 * @param config The API configuration object containing project name, version
+	 * details, etc.
+	 * @param configBuilder ProjectDocConfigBuilder
+	 * @param template The template object to which variables will be bound.
+	 * @param apiDocListEmpty A flag indicating whether the API documentation list is
+	 * empty.
+	 */
+	default void bindingCommonVariable(ApiConfig config, ProjectDocConfigBuilder configBuilder, Template template,
+			boolean apiDocListEmpty) {
+		this.bindingCommonVariable(config, configBuilder.getJavaProjectBuilder(), template, apiDocListEmpty);
+	}
+
+	/**
 	 * all in one doc name
 	 * @param apiConfig api config
 	 * @param fileName file name
@@ -318,6 +333,18 @@ public interface IBaseDocBuilderTemplate<T extends IDoc> {
 	}
 
 	/**
+	 * build error_code adoc.
+	 * @param config api config
+	 * @param template template
+	 * @param outPutFileName output file
+	 * @param configBuilder ProjectDocConfigBuilder
+	 */
+	default void buildErrorCodeDoc(ApiConfig config, String template, String outPutFileName,
+			ProjectDocConfigBuilder configBuilder) {
+		this.buildErrorCodeDoc(config, template, outPutFileName, configBuilder.getJavaProjectBuilder());
+	}
+
+	/**
 	 * build errorCode adoc template.
 	 * @param config api config
 	 * @param template template
@@ -333,6 +360,18 @@ public interface IBaseDocBuilderTemplate<T extends IDoc> {
 		tpl.binding(TemplateVariable.CREATE_TIME.getVariable(), strTime);
 		tpl.binding(TemplateVariable.LIST.getVariable(), errorCodeList);
 		return tpl;
+	}
+
+	/**
+	 * build errorCode adoc template.
+	 * @param config api config
+	 * @param template template
+	 * @param configBuilder ProjectDocConfigBuilder
+	 * @return template
+	 */
+	default Template buildErrorCodeDocTemplate(ApiConfig config, String template,
+			ProjectDocConfigBuilder configBuilder) {
+		return this.buildErrorCodeDocTemplate(config, template, configBuilder.getJavaProjectBuilder());
 	}
 
 }

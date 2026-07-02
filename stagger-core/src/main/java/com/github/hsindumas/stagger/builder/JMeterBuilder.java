@@ -29,7 +29,6 @@ import com.github.hsindumas.stagger.model.ApiDoc;
 import com.github.hsindumas.stagger.template.IDocBuildTemplate;
 import com.power.common.util.DateTimeUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 
 import java.util.List;
 import java.util.Objects;
@@ -58,22 +57,20 @@ public class JMeterBuilder {
 	 * @param config ApiConfig
 	 */
 	public static void buildApiDoc(ApiConfig config) {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildApiDoc(config, javaProjectBuilder);
+		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
 	}
 
 	/**
 	 * Only for stagger maven plugin and gradle plugin.
 	 * @param config ApiConfig
-	 * @param javaProjectBuilder ProjectDocConfigBuilder
+	 * @param configBuilder ProjectDocConfigBuilder
 	 */
-	public static void buildApiDoc(ApiConfig config, JavaProjectBuilder javaProjectBuilder) {
+	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		DocBuilderTemplate builderTemplate = new DocBuilderTemplate();
 		builderTemplate.checkAndInit(config, Boolean.TRUE);
 		config.setAdoc(false);
 		config.setShowJavaType(true);
 		config.setParamsDataToTree(Boolean.FALSE);
-		ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(config, javaProjectBuilder);
 		IDocBuildTemplate<ApiDoc> docBuildTemplate = BuildTemplateFactory.getDocBuildTemplate(config.getFramework(),
 				config.getClassLoader());
 		Objects.requireNonNull(docBuildTemplate, "doc build template is null");
@@ -87,7 +84,7 @@ public class JMeterBuilder {
 		else {
 			docName = "jmeter-script" + version + JMETER_SCRIPT_EXTENSION;
 		}
-		builderTemplate.buildAllInOne(apiDocList, config, javaProjectBuilder, DocGlobalConstants.JMETER_TPL, docName);
+		builderTemplate.buildAllInOne(apiDocList, config, configBuilder, DocGlobalConstants.JMETER_TPL, docName);
 	}
 
 }

@@ -21,12 +21,12 @@
  */
 package com.github.hsindumas.stagger.builder.grpc;
 
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.grpc.GrpcApiDoc;
 import com.power.common.util.DateTimeUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 
 import java.util.List;
 
@@ -51,25 +51,24 @@ public class GrpcMarkdownBuilder {
 	 * @param config ApiConfig
 	 */
 	public static void buildApiDoc(ApiConfig config) {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildApiDoc(config, javaProjectBuilder);
+		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
 	}
 
 	/**
 	 * Only for stagger maven plugin and gradle plugin.
 	 * @param apiConfig ApiConfig
-	 * @param javaProjectBuilder ProjectDocConfigBuilder
+	 * @param configBuilder ProjectDocConfigBuilder
 	 */
-	public static void buildApiDoc(ApiConfig apiConfig, JavaProjectBuilder javaProjectBuilder) {
+	public static void buildApiDoc(ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
 		GrpcDocBuilderTemplate grpcDocBuilderTemplate = new GrpcDocBuilderTemplate();
 		List<GrpcApiDoc> apiDocList = grpcDocBuilderTemplate.getApiDoc(false, true, false, apiConfig,
-				javaProjectBuilder);
+				configBuilder.getJavaProjectBuilder());
 		if (apiConfig.isAllInOne()) {
 			String version = apiConfig.isCoverOld() ? "" : "-V" + DateTimeUtil.long2Str(System.currentTimeMillis(),
 					DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
 			String docName = grpcDocBuilderTemplate.allInOneDocName(apiConfig, "grpc-all" + version,
 					DocGlobalConstants.MARKDOWN_EXTENSION);
-			grpcDocBuilderTemplate.buildAllInOne(apiDocList, apiConfig, javaProjectBuilder,
+			grpcDocBuilderTemplate.buildAllInOne(apiDocList, apiConfig, configBuilder.getJavaProjectBuilder(),
 					DocGlobalConstants.GRPC_ALL_IN_ONE_MD_TPL, docName);
 		}
 		else {
@@ -77,7 +76,7 @@ public class GrpcMarkdownBuilder {
 					DocGlobalConstants.MARKDOWN_API_FILE_EXTENSION);
 
 			grpcDocBuilderTemplate.buildErrorCodeDoc(apiConfig, DocGlobalConstants.ERROR_CODE_LIST_MD_TPL,
-					DocGlobalConstants.ERROR_CODE_LIST_MD, javaProjectBuilder);
+					DocGlobalConstants.ERROR_CODE_LIST_MD, configBuilder);
 		}
 	}
 

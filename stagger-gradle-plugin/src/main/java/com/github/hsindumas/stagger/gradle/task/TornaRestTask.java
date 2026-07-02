@@ -24,6 +24,7 @@ package com.github.hsindumas.stagger.gradle.task;
 
 import org.gradle.work.DisableCachingByDefault;
 
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.builder.TornaBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import org.gradle.api.logging.Logger;
@@ -40,7 +41,8 @@ public class TornaRestTask extends DocBaseTask {
 	@Override
 	public void executeAction(ApiConfig apiConfig, Logger logger) {
 		try {
-			TornaBuilder.buildApiDoc(apiConfig, javaProjectBuilder);
+			ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
+			TornaBuilder.buildApiDoc(apiConfig, configBuilder);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

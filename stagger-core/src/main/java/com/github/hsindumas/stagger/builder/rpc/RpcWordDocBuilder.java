@@ -20,12 +20,12 @@
  */
 package com.github.hsindumas.stagger.builder.rpc;
 
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.rpc.RpcApiDoc;
 import com.github.hsindumas.stagger.utils.DocUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 import org.beetl.core.Template;
 
 import java.util.List;
@@ -72,25 +72,26 @@ public class RpcWordDocBuilder {
 	 * @throws Exception exception
 	 */
 	public static void buildApiDoc(ApiConfig config) throws Exception {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildApiDoc(config, javaProjectBuilder);
+		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
 	}
 
 	/**
 	 * build dubbo api
 	 * @param config config
-	 * @param javaProjectBuilder javaProjectBuilder
+	 * @param configBuilder ProjectDocConfigBuilder
 	 * @throws Exception exception
 	 */
-	public static void buildApiDoc(ApiConfig config, JavaProjectBuilder javaProjectBuilder) throws Exception {
+	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) throws Exception {
 		RpcDocBuilderTemplate rpcDocBuilderTemplate = new RpcDocBuilderTemplate();
-		List<RpcApiDoc> apiDocList = rpcDocBuilderTemplate.getApiDoc(false, true, false, config, javaProjectBuilder);
+		List<RpcApiDoc> apiDocList = rpcDocBuilderTemplate.getApiDoc(false, true, false, config,
+				configBuilder.getJavaProjectBuilder());
 
 		if (config.isAllInOne()) {
 			String docName = rpcDocBuilderTemplate.allInOneDocName(config, INDEX_DOC,
 					DocGlobalConstants.WORD_DOC_EXTENSION);
 			apiDocList = rpcDocBuilderTemplate.handleApiGroup(apiDocList, config);
-			Template tpl = rpcDocBuilderTemplate.buildAllInOneWord(apiDocList, config, javaProjectBuilder,
+			Template tpl = rpcDocBuilderTemplate.buildAllInOneWord(apiDocList, config,
+					configBuilder.getJavaProjectBuilder(),
 					DocGlobalConstants.RPC_ALL_IN_ONE_WORD_TPL, docName);
 
 			String outPath = config.getOutPath();

@@ -68,6 +68,16 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	}
 
 	/**
+	 * get all api data
+	 * @param config ApiConfig
+	 * @param configBuilder ProjectDocConfigBuilder
+	 * @return ApiAllData
+	 */
+	public ApiAllData getApiData(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
+		return this.getApiData(config, configBuilder.getJavaProjectBuilder());
+	}
+
+	/**
 	 * Generate api documentation for all controllers.
 	 * @param apiDocList list of api doc
 	 * @param config api config
@@ -111,6 +121,19 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	public void buildAllInOne(List<ApiDoc> apiDocList, ApiConfig config, JavaProjectBuilder javaProjectBuilder,
 			String template, String outPutFileName) {
 		this.buildDoc(apiDocList, config, javaProjectBuilder, template, outPutFileName, null, null);
+	}
+
+	/**
+	 * Merge all api doc into one document
+	 * @param apiDocList list data of Api doc
+	 * @param config api config
+	 * @param configBuilder ProjectDocConfigBuilder
+	 * @param template template
+	 * @param outPutFileName output file
+	 */
+	public void buildAllInOne(List<ApiDoc> apiDocList, ApiConfig config, ProjectDocConfigBuilder configBuilder,
+			String template, String outPutFileName) {
+		this.buildAllInOne(apiDocList, config, configBuilder.getJavaProjectBuilder(), template, outPutFileName);
 	}
 
 	/**
@@ -203,6 +226,22 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 		FileUtil.mkdirs(outPath);
 		Template tpl = this.buildAllRenderDocTemplate(apiDocList, config, javaProjectBuilder, template, apiDoc, index);
 		FileUtil.nioWriteFile(tpl.render(), outPath + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
+	}
+
+	/**
+	 * Merge all api doc into one document.
+	 * @param apiDocList list data of Api doc
+	 * @param config api config
+	 * @param configBuilder ProjectDocConfigBuilder
+	 * @param template template
+	 * @param outPutFileName output file
+	 * @param apiDoc apiDoc
+	 * @param index index html
+	 */
+	public void buildDoc(List<ApiDoc> apiDocList, ApiConfig config, ProjectDocConfigBuilder configBuilder,
+			String template, String outPutFileName, ApiDoc apiDoc, String index) {
+		this.buildDoc(apiDocList, config, configBuilder.getJavaProjectBuilder(), template, outPutFileName, apiDoc,
+				index);
 	}
 
 	/**
@@ -304,6 +343,18 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	}
 
 	/**
+	 * build search js.
+	 * @param config api config
+	 * @param configBuilder ProjectDocConfigBuilder
+	 * @param apiDocList list data of Api doc
+	 * @param template template
+	 */
+	public void buildSearchJs(ApiConfig config, ProjectDocConfigBuilder configBuilder, List<ApiDoc> apiDocList,
+			String template) {
+		this.buildSearchJs(config, configBuilder.getJavaProjectBuilder(), apiDocList, template);
+	}
+
+	/**
 	 * build error_code html.
 	 * @param config api config
 	 * @param javaProjectBuilder javaProjectBuilder
@@ -341,6 +392,21 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 		FileUtil.nioWriteFile(errorTemplate.render(),
 				config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
 
+	}
+
+	/**
+	 * build error_code html.
+	 * @param config api config
+	 * @param configBuilder ProjectDocConfigBuilder
+	 * @param apiDocList list data of Api doc
+	 * @param template template
+	 * @param outPutFileName output file
+	 * @param indexAlias index alias
+	 */
+	public void buildErrorCodeDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder, List<ApiDoc> apiDocList,
+			String template, String outPutFileName, String indexAlias) {
+		this.buildErrorCodeDoc(config, configBuilder.getJavaProjectBuilder(), apiDocList, template, outPutFileName,
+				indexAlias);
 	}
 
 	/**
@@ -386,6 +452,21 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	/**
 	 * build common_data doc.
 	 * @param config api config
+	 * @param configBuilder ProjectDocConfigBuilder
+	 * @param apiDocList list data of Api doc
+	 * @param template template
+	 * @param outPutFileName output file
+	 * @param indexAlias index alias
+	 */
+	public void buildDirectoryDataDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder, List<ApiDoc> apiDocList,
+			String template, String outPutFileName, String indexAlias) {
+		this.buildDirectoryDataDoc(config, configBuilder.getJavaProjectBuilder(), apiDocList, template, outPutFileName,
+				indexAlias);
+	}
+
+	/**
+	 * build common_data doc.
+	 * @param config api config
 	 * @param javaProjectBuilder JavaProjectBuilder
 	 * @param template template
 	 * @param outPutFileName output file
@@ -395,6 +476,18 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 		Template mapper = buildDirectoryDataDocTemplate(config, javaProjectBuilder, template);
 		FileUtil.nioWriteFile(mapper.render(),
 				config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
+	}
+
+	/**
+	 * build common_data doc.
+	 * @param config api config
+	 * @param configBuilder ProjectDocConfigBuilder
+	 * @param template template
+	 * @param outPutFileName output file
+	 */
+	public void buildDirectoryDataDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder, String template,
+			String outPutFileName) {
+		this.buildDirectoryDataDoc(config, configBuilder.getJavaProjectBuilder(), template, outPutFileName);
 	}
 
 	/**
@@ -415,6 +508,18 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 		mapper.binding(TemplateVariable.CREATE_TIME.getVariable(), strTime);
 		mapper.binding(TemplateVariable.DICT_LIST.getVariable(), directoryList);
 		return mapper;
+	}
+
+	/**
+	 * build common_data doc Template.
+	 * @param config api config
+	 * @param configBuilder ProjectDocConfigBuilder
+	 * @param template template
+	 * @return Template
+	 */
+	public Template buildDirectoryDataDocTemplate(ApiConfig config, ProjectDocConfigBuilder configBuilder,
+			String template) {
+		return this.buildDirectoryDataDocTemplate(config, configBuilder.getJavaProjectBuilder(), template);
 	}
 
 	/**

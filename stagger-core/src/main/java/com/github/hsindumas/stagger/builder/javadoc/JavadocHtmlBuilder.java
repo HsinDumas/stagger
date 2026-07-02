@@ -20,11 +20,11 @@
  */
 package com.github.hsindumas.stagger.builder.javadoc;
 
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.javadoc.JavadocApiDoc;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 
 import java.util.List;
 
@@ -49,23 +49,23 @@ public class JavadocHtmlBuilder {
 	 * @param config config
 	 */
 	public static void buildApiDoc(ApiConfig config) {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildApiDoc(config, javaProjectBuilder);
+		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
 	}
 
 	/**
 	 * Only for stagger maven plugin and gradle plugin.
 	 * @param config ApiConfig
-	 * @param javaProjectBuilder ProjectDocConfigBuilder
+	 * @param configBuilder ProjectDocConfigBuilder
 	 */
-	public static void buildApiDoc(ApiConfig config, JavaProjectBuilder javaProjectBuilder) {
+	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		JavadocDocBuilderTemplate builderTemplate = new JavadocDocBuilderTemplate();
-		List<JavadocApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, config, javaProjectBuilder);
+		List<JavadocApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, config,
+				configBuilder.getJavaProjectBuilder());
 		builderTemplate.copyJQueryAndCss(config);
 		String INDEX_HTML = "javadoc-index.html";
-		builderTemplate.buildAllInOne(apiDocList, config, javaProjectBuilder,
+		builderTemplate.buildAllInOne(apiDocList, config, configBuilder.getJavaProjectBuilder(),
 				DocGlobalConstants.JAVADOC_ALL_IN_ONE_HTML_TPL, INDEX_HTML);
-		builderTemplate.buildSearchJs(apiDocList, config, javaProjectBuilder,
+		builderTemplate.buildSearchJs(apiDocList, config, configBuilder.getJavaProjectBuilder(),
 				DocGlobalConstants.JAVADOC_ALL_IN_ONE_SEARCH_TPL, DocGlobalConstants.SEARCH_JS_OUT);
 	}
 
