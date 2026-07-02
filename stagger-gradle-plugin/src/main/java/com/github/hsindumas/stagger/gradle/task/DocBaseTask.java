@@ -84,7 +84,7 @@ public abstract class DocBaseTask extends DefaultTask {
 	 * @param javaProjectBuilder JavaProjectBuilder
 	 * @param logger Logger
 	 */
-	public abstract void executeAction(ApiConfig apiConfig, JavaProjectBuilder javaProjectBuilder, Logger logger);
+	public abstract void executeAction(ApiConfig apiConfig, Logger logger);
 
 	/**
 	 * Task action
@@ -131,7 +131,7 @@ public abstract class DocBaseTask extends DefaultTask {
 			apiConfig.setOutPath(project.getProjectDir().getPath() + "/" + apiConfig.getOutPath());
 		}
 		logger.quiet(I18nMsgUtil.get("document_output_prompts") + apiConfig.getOutPath());
-		this.executeAction(apiConfig, javaProjectBuilder, logger);
+		this.executeAction(apiConfig, logger);
 	}
 
 	/**

@@ -129,8 +129,7 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${tornaToken}")
 	private String tornaToken;
 
-	public abstract void executeMojo(ApiConfig apiConfig, JavaProjectBuilder javaProjectBuilder)
-			throws MojoExecutionException, MojoFailureException;
+	public abstract void executeMojo(ApiConfig apiConfig) throws MojoExecutionException, MojoFailureException;
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
@@ -183,7 +182,7 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
 		if (!MojoConstants.TORNA_RPC_MOJO.equals(goal) && !MojoConstants.TORNA_REST_MOJO.equals(goal)) {
 			getLog().info("API documentation is output to => " + apiConfig.getOutPath().replace("\\", "/"));
 		}
-		this.executeMojo(apiConfig, javaProjectBuilder);
+		this.executeMojo(apiConfig);
 	}
 
 	/**

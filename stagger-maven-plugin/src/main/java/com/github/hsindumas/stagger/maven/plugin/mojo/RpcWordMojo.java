@@ -25,7 +25,6 @@ package com.github.hsindumas.stagger.maven.plugin.mojo;
 import com.github.hsindumas.stagger.builder.rpc.RpcWordDocBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -40,7 +39,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 public class RpcWordMojo extends BaseDocsGeneratorMojo {
 
 	@Override
-	public void executeMojo(ApiConfig apiConfig, JavaProjectBuilder javaProjectBuilder) {
+	public void executeMojo(ApiConfig apiConfig) {
 		try {
 			RpcWordDocBuilder.buildApiDoc(apiConfig, javaProjectBuilder);
 		}

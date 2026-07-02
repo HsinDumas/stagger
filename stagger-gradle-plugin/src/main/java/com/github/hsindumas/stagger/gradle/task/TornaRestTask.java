@@ -26,7 +26,6 @@ import org.gradle.work.DisableCachingByDefault;
 
 import com.github.hsindumas.stagger.builder.TornaBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 import org.gradle.api.logging.Logger;
 
 /**
@@ -39,7 +38,7 @@ import org.gradle.api.logging.Logger;
 public class TornaRestTask extends DocBaseTask {
 
 	@Override
-	public void executeAction(ApiConfig apiConfig, JavaProjectBuilder javaProjectBuilder, Logger logger) {
+	public void executeAction(ApiConfig apiConfig, Logger logger) {
 		try {
 			TornaBuilder.buildApiDoc(apiConfig, javaProjectBuilder);
 		}

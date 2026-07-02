@@ -27,7 +27,6 @@ import org.gradle.work.DisableCachingByDefault;
 import com.github.hsindumas.stagger.builder.grpc.GrpcAsciidocBuilder;
 import com.github.hsindumas.stagger.builder.rpc.RpcAdocBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 import org.gradle.api.logging.Logger;
 
 /**
@@ -43,7 +42,7 @@ import org.gradle.api.logging.Logger;
 public class GrpcAdocTask extends DocBaseTask {
 
 	@Override
-	public void executeAction(ApiConfig apiConfig, JavaProjectBuilder javaProjectBuilder, Logger logger) {
+	public void executeAction(ApiConfig apiConfig, Logger logger) {
 		try {
 			GrpcAsciidocBuilder.buildApiDoc(apiConfig, javaProjectBuilder);
 		}

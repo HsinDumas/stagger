@@ -25,7 +25,6 @@ package com.github.hsindumas.stagger.maven.plugin.mojo;
 import com.github.hsindumas.stagger.builder.HtmlApiDocBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Execute;
@@ -42,7 +41,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 public class HtmlMojo extends BaseDocsGeneratorMojo {
 
 	@Override
-	public void executeMojo(ApiConfig apiConfig, JavaProjectBuilder javaProjectBuilder)
+	public void executeMojo(ApiConfig apiConfig)
 			throws MojoExecutionException, MojoFailureException {
 		try {
 			HtmlApiDocBuilder.buildApiDoc(apiConfig, javaProjectBuilder);
