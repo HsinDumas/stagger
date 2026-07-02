@@ -28,6 +28,20 @@ Stagger 继承了优秀的静态解析理念，彻底摒弃注解流：
 | AI 增强 | ✅ | ❌ | ❌ |
 | OpenAPI 3.1 | ✅ | ✅ | ✅ |
 
+## 🔍 与 smart-doc 的差异
+
+本仓库是一个现代化维护分支，在保持稳定性的同时做增量架构升级。和 smart-doc 相比，当前差异主要是：
+
+| 维度 | smart-doc（上游） | Stagger（本仓库） |
+|------|--------------------|-------------------|
+| 构建体系 | Maven 为主 | Gradle Monorepo 为主 |
+| JDK 策略 | 传统基线 | 使用 JDK 25 toolchain 构建，产物保持向下兼容目标 |
+| 解析架构 | QDox 为中心 | `SourceModel` 抽象 + JavaParser Provider，并在迁移期保留兼容回退 |
+| Spring 侧重点 | 常规 Spring 生态 | 更强调 Spring Boot 4 与新注解形态兼容 |
+| 迁移透明度 | N/A | 公开迁移记录：`docs/CODEX_MIGRATION_PLAN.md` |
+
+关于 QDox 替换：本分支已经引入 JavaParser 的源码模型能力，并在关键链路逐步切换。当前仍保留部分 QDox 兼容路径，以确保迁移期间的行为稳定。
+
 ## 🚀 快速开始
 
 ### Maven
@@ -113,7 +127,8 @@ Apache License 2.0 - 详见 LICENSE 文件
 
 ## 👏 致谢
 
-- **原作者**: [shalousun](https://github.com/shalousun) ([stagger](https://github.com/HsinDumas/stagger))
+- **上游项目**: [smart-doc](https://github.com/smart-doc-group/smart-doc)
+- **特别致敬**: 感谢 [shalousun](https://github.com/shalousun) 与所有 smart-doc 贡献者开创了零侵入文档生成这条路。
 - **当前维护**: [HsinDumas](https://github.com/HsinDumas)
 
 ## 🤝 贡献
@@ -122,5 +137,5 @@ Apache License 2.0 - 详见 LICENSE 文件
 
 ---
 
-**基于**: [stagger](https://github.com/HsinDumas/stagger)  
-**增强**: Gradle 9.x 兼容性 + 现代化维护
+**基于**: [smart-doc](https://github.com/smart-doc-group/smart-doc)  
+**增强**: Gradle Monorepo + JDK 25 toolchain + 渐进式 JavaParser 迁移

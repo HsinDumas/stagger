@@ -28,6 +28,20 @@ Stagger embraces the elegant static analysis approach and completely abandons an
 | AI Enhancement | ✅ | ❌ | ❌ |
 | OpenAPI 3.1 | ✅ | ✅ | ✅ |
 
+## 🔍 Differences From smart-doc
+
+This repository is a modern maintenance fork with a gradual architecture upgrade path. The main differences from smart-doc are:
+
+| Area | smart-doc (upstream) | Stagger (this repository) |
+|------|-----------------------|----------------------------|
+| Build System | Maven-centric | Gradle monorepo-first |
+| JDK Strategy | Traditional baseline | Built with JDK 25 toolchain, release-compatible output target |
+| Parser Architecture | QDox-centric | `SourceModel` abstraction + JavaParser provider, with compatibility fallback during migration |
+| Spring Focus | Mainstream Spring stack | Extra focus on Spring Boot 4 / modern annotation compatibility |
+| Migration Transparency | N/A | Public migration notes in `docs/CODEX_MIGRATION_PLAN.md` |
+
+Note on QDox replacement: this fork has introduced JavaParser-based source modeling and is migrating call paths incrementally. QDox compatibility paths are still present in parts of the codebase for stability during transition.
+
 ## 🚀 Quick Start
 
 ### Maven
@@ -113,7 +127,8 @@ Apache License 2.0 - See LICENSE file
 
 ## 👏 Acknowledgments
 
-- **Original Author**: [shalousun](https://github.com/shalousun) ([stagger](https://github.com/HsinDumas/stagger))
+- **Upstream Inspiration**: [smart-doc](https://github.com/smart-doc-group/smart-doc)
+- **Tribute**: Respect to [shalousun](https://github.com/shalousun) and all smart-doc contributors for pioneering non-intrusive documentation generation.
 - **Current Maintainer**: [HsinDumas](https://github.com/HsinDumas)
 
 ## 🤝 Contributing
@@ -122,5 +137,5 @@ Pull requests welcome! Please open an issue first for major changes.
 
 ---
 
-**Based on**: [stagger](https://github.com/HsinDumas/stagger)  
-**Enhanced with**: Gradle 9.x compatibility + modern maintenance
+**Based on**: [smart-doc](https://github.com/smart-doc-group/smart-doc)  
+**Enhanced with**: Gradle monorepo + JDK 25 toolchain + incremental JavaParser migration
