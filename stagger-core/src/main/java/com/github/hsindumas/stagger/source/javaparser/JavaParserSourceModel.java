@@ -109,7 +109,8 @@ public class JavaParserSourceModel implements SourceModel {
 			sourceFiles.filter(Files::isRegularFile)
 				.filter(path -> path.toString().endsWith(".java"))
 				.forEach(path -> this.parseSource(javaParser, path, classes));
-		} catch (IOException ignored) {
+		}
+		catch (IOException ignored) {
 			// ignore unreadable source roots; caller can decide strictness later.
 		}
 	}
@@ -118,7 +119,8 @@ public class JavaParserSourceModel implements SourceModel {
 		ParseResult<CompilationUnit> parseResult;
 		try {
 			parseResult = javaParser.parse(sourceFile);
-		} catch (IOException ignored) {
+		}
+		catch (IOException ignored) {
 			return;
 		}
 		Optional<CompilationUnit> compilationUnitOptional = parseResult.getResult();
@@ -126,9 +128,7 @@ public class JavaParserSourceModel implements SourceModel {
 			return;
 		}
 		CompilationUnit compilationUnit = compilationUnitOptional.get();
-		String packageName = compilationUnit.getPackageDeclaration()
-			.map(pd -> pd.getNameAsString())
-			.orElse("");
+		String packageName = compilationUnit.getPackageDeclaration().map(pd -> pd.getNameAsString()).orElse("");
 
 		for (TypeDeclaration<?> typeDeclaration : compilationUnit.getTypes()) {
 			this.collectTypes(packageName, typeDeclaration, Collections.emptyList(), classes);
@@ -173,7 +173,7 @@ public class JavaParserSourceModel implements SourceModel {
 	}
 
 	private static List<SourceAnnotation> annotationsOf(Object nodeWithAnnotations) {
-		if (!(nodeWithAnnotations instanceof NodeWithAnnotations<?> annotationHolder)) {
+		if (!(nodeWithAnnotations instanceof NodeWithAnnotations<?>annotationHolder)) {
 			return Collections.emptyList();
 		}
 		return annotationHolder.getAnnotations()
@@ -183,7 +183,7 @@ public class JavaParserSourceModel implements SourceModel {
 	}
 
 	private static String javadocDescription(Object nodeWithJavadoc) {
-		if (!(nodeWithJavadoc instanceof NodeWithJavadoc<?> javadocHolder)) {
+		if (!(nodeWithJavadoc instanceof NodeWithJavadoc<?>javadocHolder)) {
 			return "";
 		}
 		Optional<Javadoc> javadocOptional = javadocHolder.getJavadoc();
@@ -194,7 +194,7 @@ public class JavaParserSourceModel implements SourceModel {
 	}
 
 	private static List<SourceDocletTag> docletTagsOf(Object nodeWithJavadoc) {
-		if (!(nodeWithJavadoc instanceof NodeWithJavadoc<?> javadocHolder)) {
+		if (!(nodeWithJavadoc instanceof NodeWithJavadoc<?>javadocHolder)) {
 			return Collections.emptyList();
 		}
 		Optional<Javadoc> javadocOptional = javadocHolder.getJavadoc();
@@ -267,7 +267,8 @@ public class JavaParserSourceModel implements SourceModel {
 			for (BodyDeclaration<?> member : nodeWithMembers.getMembers()) {
 				if (member.isMethodDeclaration()) {
 					methods.add(JavaParserSourceMethod.fromMethod(member.asMethodDeclaration()));
-				} else if (member.isConstructorDeclaration()) {
+				}
+				else if (member.isConstructorDeclaration()) {
 					methods.add(JavaParserSourceMethod.fromConstructor(member.asConstructorDeclaration()));
 				}
 			}
@@ -287,8 +288,9 @@ public class JavaParserSourceModel implements SourceModel {
 				}
 				FieldDeclaration fieldDeclaration = member.asFieldDeclaration();
 				fieldDeclaration.getVariables()
-					.forEach(variable -> fields.add(new JavaParserSourceField(fieldDeclaration, variable.getNameAsString(),
-							variable.getType(), variable.getInitializer().map(Expression::toString))));
+					.forEach(variable -> fields
+						.add(new JavaParserSourceField(fieldDeclaration, variable.getNameAsString(), variable.getType(),
+								variable.getInitializer().map(Expression::toString))));
 			}
 			return fields;
 		}
@@ -324,11 +326,12 @@ public class JavaParserSourceModel implements SourceModel {
 					classOrInterfaceDeclaration.getExtendedTypes()
 						.forEach(type -> interfaces.add(new JavaParserSourceType(type)));
 				}
-			} else if (this.declaration instanceof EnumDeclaration enumDeclaration) {
+			}
+			else if (this.declaration instanceof EnumDeclaration enumDeclaration) {
 				enumDeclaration.getImplementedTypes().forEach(type -> interfaces.add(new JavaParserSourceType(type)));
-			} else if (this.declaration instanceof RecordDeclaration recordDeclaration) {
-				recordDeclaration.getImplementedTypes()
-					.forEach(type -> interfaces.add(new JavaParserSourceType(type)));
+			}
+			else if (this.declaration instanceof RecordDeclaration recordDeclaration) {
+				recordDeclaration.getImplementedTypes().forEach(type -> interfaces.add(new JavaParserSourceType(type)));
 			}
 			return interfaces;
 		}
@@ -431,8 +434,8 @@ public class JavaParserSourceModel implements SourceModel {
 						.stream()
 						.map(JavaParserSourceParameter::new)
 						.collect(Collectors.toList()),
-					annotationsOf(methodDeclaration), javadocDescription(methodDeclaration), docletTagsOf(methodDeclaration),
-					false);
+					annotationsOf(methodDeclaration), javadocDescription(methodDeclaration),
+					docletTagsOf(methodDeclaration), false);
 		}
 
 		private static JavaParserSourceMethod fromConstructor(ConstructorDeclaration constructorDeclaration) {
@@ -569,7 +572,8 @@ public class JavaParserSourceModel implements SourceModel {
 		public String qualifiedName() {
 			try {
 				return this.annotationExpr.resolve().getQualifiedName();
-			} catch (RuntimeException ignored) {
+			}
+			catch (RuntimeException ignored) {
 				return this.annotationExpr.getNameAsString();
 			}
 		}
@@ -581,7 +585,8 @@ public class JavaParserSourceModel implements SourceModel {
 				for (MemberValuePair pair : normalAnnotationExpr.getPairs()) {
 					members.put(pair.getNameAsString(), new JavaParserSourceAnnotationValue(pair.getValue()));
 				}
-			} else if (this.annotationExpr instanceof SingleMemberAnnotationExpr singleMemberAnnotationExpr) {
+			}
+			else if (this.annotationExpr instanceof SingleMemberAnnotationExpr singleMemberAnnotationExpr) {
 				members.put("value", new JavaParserSourceAnnotationValue(singleMemberAnnotationExpr.getMemberValue()));
 			}
 			return members;
@@ -658,7 +663,8 @@ public class JavaParserSourceModel implements SourceModel {
 		public String qualifiedName() {
 			try {
 				return this.type.resolve().describe();
-			} catch (RuntimeException ignored) {
+			}
+			catch (RuntimeException ignored) {
 				return this.type.asString();
 			}
 		}

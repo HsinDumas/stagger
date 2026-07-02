@@ -57,18 +57,12 @@ class SpringMVCRequestHeaderHandlerTest {
 		Path javaRoot = this.tempDir.resolve("src/main/java");
 		Path packageRoot = javaRoot.resolve("sample/spring");
 		Files.createDirectories(packageRoot);
-		String source = "package sample.spring;\n\n"
-				+ "import org.springframework.web.bind.annotation.GetMapping;\n"
+		String source = "package sample.spring;\n\n" + "import org.springframework.web.bind.annotation.GetMapping;\n"
 				+ "import org.springframework.web.bind.annotation.RequestHeader;\n"
-				+ "import org.springframework.web.bind.annotation.RestController;\n\n"
-				+ "@RestController\n"
-				+ "public class SpringHeaderResource {\n"
-				+ "  enum Level { BASIC, PRO }\n\n"
-				+ "  @GetMapping(\"/header\")\n"
-				+ "  public String header(@RequestHeader(\"X-Level\") Level level) {\n"
-				+ "    return \"ok\";\n"
-				+ "  }\n"
-				+ "}\n";
+				+ "import org.springframework.web.bind.annotation.RestController;\n\n" + "@RestController\n"
+				+ "public class SpringHeaderResource {\n" + "  enum Level { BASIC, PRO }\n\n"
+				+ "  @GetMapping(\"/header\")\n" + "  public String header(@RequestHeader(\"X-Level\") Level level) {\n"
+				+ "    return \"ok\";\n" + "  }\n" + "}\n";
 		Files.writeString(packageRoot.resolve("SpringHeaderResource.java"), source, StandardCharsets.UTF_8);
 
 		ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
@@ -95,21 +89,15 @@ class SpringMVCRequestHeaderHandlerTest {
 		Path javaRoot = this.tempDir.resolve("src/main/java");
 		Path packageRoot = javaRoot.resolve("sample/spring");
 		Files.createDirectories(packageRoot);
-		String source = "package sample.spring;\n\n"
-				+ "import java.util.List;\n"
+		String source = "package sample.spring;\n\n" + "import java.util.List;\n"
 				+ "import org.springframework.web.bind.annotation.GetMapping;\n"
 				+ "import org.springframework.web.bind.annotation.RequestHeader;\n"
-				+ "import org.springframework.web.bind.annotation.RestController;\n\n"
-				+ "@RestController\n"
-				+ "public class SpringHeaderCollectionResource {\n"
-				+ "  enum Level { BASIC, PRO }\n\n"
+				+ "import org.springframework.web.bind.annotation.RestController;\n\n" + "@RestController\n"
+				+ "public class SpringHeaderCollectionResource {\n" + "  enum Level { BASIC, PRO }\n\n"
 				+ "  @GetMapping(\"/headers\")\n"
 				+ "  public String headers(@RequestHeader(\"X-Levels\") List<Level> levels) {\n"
-				+ "    return \"ok\";\n"
-				+ "  }\n"
-				+ "}\n";
-		Files.writeString(packageRoot.resolve("SpringHeaderCollectionResource.java"), source,
-				StandardCharsets.UTF_8);
+				+ "    return \"ok\";\n" + "  }\n" + "}\n";
+		Files.writeString(packageRoot.resolve("SpringHeaderCollectionResource.java"), source, StandardCharsets.UTF_8);
 
 		ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
 		JavaMethod method = this.findMethod(builder, "sample.spring.SpringHeaderCollectionResource", "headers");

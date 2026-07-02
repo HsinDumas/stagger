@@ -81,8 +81,10 @@ public class ApiDocTest {
 		assertTrue(Files.exists(markdownFile), "Markdown doc should be generated");
 		assertTrue(Files.size(markdownFile) > 0, "Markdown doc should not be empty");
 		String markdown = Files.readString(markdownFile, StandardCharsets.UTF_8);
-		String fixtureLines = markdown.lines().filter(line -> line.contains("fixture")).reduce((left, right) -> left
-				+ "\n" + right).orElse("<none>");
+		String fixtureLines = markdown.lines()
+			.filter(line -> line.contains("fixture"))
+			.reduce((left, right) -> left + "\n" + right)
+			.orElse("<none>");
 		assertTrue(markdown.contains("/fixture/exchange/{id}"),
 				"GetExchange endpoint should appear in markdown output. fixture lines:\n" + fixtureLines);
 		assertTrue(markdown.contains("X-Trace-Id"),
@@ -132,17 +134,16 @@ public class ApiDocTest {
 				+ "import org.springframework.web.bind.annotation.RestController;\n"
 				+ "import org.springframework.web.service.annotation.GetExchange;\n"
 				+ "import org.springframework.web.service.annotation.RequestHeader;\n"
-				+ "import org.springframework.web.service.annotation.RequestParam;\n\n"
-				+ "@RestController\n" + "public class FixtureController {\n\n"
-				+ "    @GetMapping(\"/fixture/hello/{id}\")\n" + "    public String hello(\n"
-				+ "            @PathVariable(\"id\") String id,\n"
+				+ "import org.springframework.web.service.annotation.RequestParam;\n\n" + "@RestController\n"
+				+ "public class FixtureController {\n\n" + "    @GetMapping(\"/fixture/hello/{id}\")\n"
+				+ "    public String hello(\n" + "            @PathVariable(\"id\") String id,\n"
 				+ "            @RequestParam(\"name\") String name,\n"
 				+ "            @RequestHeader(\"X-Trace-Id\") String traceId) {\n"
 				+ "        return \"hello-\" + name + \"-\" + traceId + \"-\" + id;\n" + "    }\n\n"
 				+ "    @GetExchange(url = \"/fixture/exchange/{id}\")\n" + "    public String exchange(\n"
 				+ "            @org.springframework.web.service.annotation.PathVariable(\"id\") String id,\n"
-				+ "            @RequestParam(\"name\") String name) {\n"
-				+ "        return id + \"-\" + name;\n" + "    }\n" + "}\n";
+				+ "            @RequestParam(\"name\") String name) {\n" + "        return id + \"-\" + name;\n"
+				+ "    }\n" + "}\n";
 		Files.writeString(sourceRoot.resolve("FixtureController.java"), controllerSource, StandardCharsets.UTF_8);
 		return projectRoot;
 	}

@@ -211,12 +211,10 @@ public interface IDocBuildBaseTemplate {
 	}
 
 	/**
-	 * Determine whether a changed class should be treated as entry-point candidate.
-	 * Falls back to SourceProject metadata when qdox lookup is unavailable.
-	 *
+	 * Determine whether a changed class should be treated as entry-point candidate. Falls
+	 * back to SourceProject metadata when qdox lookup is unavailable.
 	 * @param docBuilder doc builder
 	 * @param javaClassName class name
-	 *
 	 * @return true if class is entry point
 	 */
 	default boolean isEntryPoint(ProjectDocConfigBuilder docBuilder, String javaClassName) {
@@ -227,7 +225,8 @@ public interface IDocBuildBaseTemplate {
 		JavaClass javaClass = null;
 		try {
 			javaClass = docBuilder.getClassByName(javaClassName);
-		} catch (Exception ignore) {
+		}
+		catch (Exception ignore) {
 			// Ignore lookup failures and use SourceProject fallback below.
 		}
 
@@ -241,10 +240,8 @@ public interface IDocBuildBaseTemplate {
 
 	/**
 	 * Determine whether a SourceClass is entry point by registered entry annotations.
-	 *
 	 * @param sourceClass source class
 	 * @param frameworkAnnotations framework annotations
-	 *
 	 * @return true when source class matches entry annotation definitions
 	 */
 	default boolean isSourceEntryPoint(SourceClass sourceClass, FrameworkAnnotations frameworkAnnotations) {

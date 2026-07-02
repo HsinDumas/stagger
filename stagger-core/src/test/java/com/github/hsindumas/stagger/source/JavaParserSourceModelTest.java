@@ -50,30 +50,17 @@ class JavaParserSourceModelTest {
 	void shouldBuildProjectAndExtractClassMetadata() throws IOException {
 		Path sourceRoot = this.tempDir.resolve("src/main/java/sample");
 		Files.createDirectories(sourceRoot);
-		String source = "package sample;\n\n"
-				+ "import java.util.List;\n\n"
-				+ "/**\n"
-				+ " * Demo class.\n"
-				+ " * @author Demo\n"
-				+ " */\n"
-				+ "@Deprecated\n"
-				+ "@SuppressWarnings({\"unchecked\", \"rawtypes\"})\n"
-				+ "public sealed class Demo permits DemoChild {\n"
-				+ "\t/** field comment */\n"
-				+ "\tprivate List<String> names = List.of();\n\n"
-				+ "\t/**\n"
-				+ "\t * Hello method.\n"
-				+ "\t * @param id identifier\n"
-				+ "\t */\n"
-				+ "\tpublic String hello(String id) {\n"
-				+ "\t\treturn id;\n"
-				+ "\t}\n"
-				+ "}\n\n"
-				+ "final class DemoChild extends Demo {\n"
-				+ "}\n";
+		String source = "package sample;\n\n" + "import java.util.List;\n\n" + "/**\n" + " * Demo class.\n"
+				+ " * @author Demo\n" + " */\n" + "@Deprecated\n" + "@SuppressWarnings({\"unchecked\", \"rawtypes\"})\n"
+				+ "public sealed class Demo permits DemoChild {\n" + "\t/** field comment */\n"
+				+ "\tprivate List<String> names = List.of();\n\n" + "\t/**\n" + "\t * Hello method.\n"
+				+ "\t * @param id identifier\n" + "\t */\n" + "\tpublic String hello(String id) {\n"
+				+ "\t\treturn id;\n" + "\t}\n" + "}\n\n" + "final class DemoChild extends Demo {\n" + "}\n";
 		Files.writeString(sourceRoot.resolve("Demo.java"), source, StandardCharsets.UTF_8);
 
-		SourceScanRequest request = SourceScanRequest.builder().addSourceRoot(this.tempDir.resolve("src/main/java")).build();
+		SourceScanRequest request = SourceScanRequest.builder()
+			.addSourceRoot(this.tempDir.resolve("src/main/java"))
+			.build();
 		SourceProject project = SourceProjects.create().build(request);
 
 		Optional<SourceClass> demoOptional = project.findClass("sample.Demo");
@@ -84,7 +71,11 @@ class JavaParserSourceModelTest {
 		assertFalse(demo.permittedSubtypes().isEmpty(), "Permitted subtypes should be extracted");
 		assertTrue(demo.fields().stream().anyMatch(field -> "names".equals(field.name())));
 
-		SourceMethod helloMethod = demo.methods().stream().filter(method -> "hello".equals(method.name())).findFirst().orElseThrow();
+		SourceMethod helloMethod = demo.methods()
+			.stream()
+			.filter(method -> "hello".equals(method.name()))
+			.findFirst()
+			.orElseThrow();
 		assertTrue(helloMethod.returnType().isPresent());
 		assertEquals(1, helloMethod.parameters().size());
 		assertEquals("id", helloMethod.parameters().get(0).name());
@@ -105,14 +96,12 @@ class JavaParserSourceModelTest {
 	void shouldDiscoverNestedTypes() throws IOException {
 		Path sourceRoot = this.tempDir.resolve("src/main/java/sample");
 		Files.createDirectories(sourceRoot);
-		String source = "package sample;\n\n"
-				+ "class Outer {\n"
-				+ "\tstatic class Inner {\n"
-				+ "\t}\n"
-				+ "}\n";
+		String source = "package sample;\n\n" + "class Outer {\n" + "\tstatic class Inner {\n" + "\t}\n" + "}\n";
 		Files.writeString(sourceRoot.resolve("Outer.java"), source, StandardCharsets.UTF_8);
 
-		SourceScanRequest request = SourceScanRequest.builder().addSourceRoot(this.tempDir.resolve("src/main/java")).build();
+		SourceScanRequest request = SourceScanRequest.builder()
+			.addSourceRoot(this.tempDir.resolve("src/main/java"))
+			.build();
 		SourceProject project = SourceProjects.create().build(request);
 
 		Optional<SourceClass> outer = project.findClass("sample.Outer");

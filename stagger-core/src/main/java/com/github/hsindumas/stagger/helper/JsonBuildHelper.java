@@ -85,8 +85,8 @@ public class JsonBuildHelper extends BaseHelper {
 		JavaClass returnJavaClass = builder.getClassByName(returnTypeGenericCanonicalName);
 		if (builder.isEnumType(returnTypeGenericCanonicalName) && Objects.isNull(responseBodyAdvice)) {
 			if (Objects.nonNull(returnJavaClass) && returnJavaClass.isEnum()) {
-				return StringUtil.removeQuotes(
-						String.valueOf(JavaClassUtil.getEnumValue(returnJavaClass, builder, Boolean.TRUE)));
+				return StringUtil
+					.removeQuotes(String.valueOf(JavaClassUtil.getEnumValue(returnJavaClass, builder, Boolean.TRUE)));
 			}
 			String enumSampleValue = builder.getEnumSampleValue(returnTypeGenericCanonicalName);
 			if (StringUtil.isNotEmpty(enumSampleValue)) {
@@ -420,8 +420,10 @@ public class JsonBuildHelper extends BaseHelper {
 								if (projectBuilder.isEnumType(gicName)) {
 									Object enumValue = null;
 									if (Objects.nonNull(arraySubClass) && arraySubClass.isEnum()) {
-										enumValue = JavaClassUtil.getEnumValue(arraySubClass, projectBuilder, Boolean.TRUE);
-									} else {
+										enumValue = JavaClassUtil.getEnumValue(arraySubClass, projectBuilder,
+												Boolean.TRUE);
+									}
+									else {
 										String enumSampleValue = projectBuilder.getEnumSampleValue(gicName);
 										if (StringUtil.isNotEmpty(enumSampleValue)) {
 											enumValue = StringUtil.removeDoubleQuotes(enumSampleValue);
@@ -578,9 +580,8 @@ public class JsonBuildHelper extends BaseHelper {
 
 		if (builder.getApiConfig().isStrict()) {
 			boolean isStringKey = JavaTypeConstants.JAVA_STRING_FULLY.equals(keyType);
-			boolean isValidEnumKey = mapKeyIsEnum
-					&& (hasMapKeyClass ? !mapKeyClass.getEnumConstants().isEmpty()
-							: StringUtil.isNotEmpty(builder.getEnumSampleValue(keyType)));
+			boolean isValidEnumKey = mapKeyIsEnum && (hasMapKeyClass ? !mapKeyClass.getEnumConstants().isEmpty()
+					: StringUtil.isNotEmpty(builder.getEnumSampleValue(keyType)));
 			if (!isStringKey && !isValidEnumKey) {
 				throw new RuntimeException("Map's key can only use String or Enum for JSON, but you used: " + keyType);
 			}
@@ -602,10 +603,11 @@ public class JsonBuildHelper extends BaseHelper {
 										groupClasses, methodJsonViewClasses, builder))
 						.append(",");
 				}
-			} else {
+			}
+			else {
 				String enumSampleValue = builder.getEnumSampleValue(keyType);
-				String mapKeyName = StringUtil.isNotEmpty(enumSampleValue) ? StringUtil.removeDoubleQuotes(enumSampleValue)
-						: "mapKey";
+				String mapKeyName = StringUtil.isNotEmpty(enumSampleValue)
+						? StringUtil.removeDoubleQuotes(enumSampleValue) : "mapKey";
 				data.append("\"")
 					.append(mapKeyName)
 					.append("\":")

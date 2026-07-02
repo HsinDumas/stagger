@@ -56,19 +56,11 @@ class JaxrsHeaderHandlerTest {
 		Path javaRoot = this.tempDir.resolve("src/main/java");
 		Path packageRoot = javaRoot.resolve("sample/jaxrs");
 		Files.createDirectories(packageRoot);
-		String source = "package sample.jaxrs;\n\n"
-				+ "import jakarta.ws.rs.GET;\n"
-				+ "import jakarta.ws.rs.HeaderParam;\n"
-				+ "import jakarta.ws.rs.Path;\n\n"
-				+ "@Path(\"/fixture\")\n"
-				+ "public class NestedEnumHeaderResource {\n"
-				+ "  enum Level { BASIC, PRO }\n\n"
-				+ "  @GET\n"
-				+ "  @Path(\"/header\")\n"
-				+ "  public String header(@HeaderParam(\"X-Level\") Level level) {\n"
-				+ "    return \"ok\";\n"
-				+ "  }\n"
-				+ "}\n";
+		String source = "package sample.jaxrs;\n\n" + "import jakarta.ws.rs.GET;\n"
+				+ "import jakarta.ws.rs.HeaderParam;\n" + "import jakarta.ws.rs.Path;\n\n" + "@Path(\"/fixture\")\n"
+				+ "public class NestedEnumHeaderResource {\n" + "  enum Level { BASIC, PRO }\n\n" + "  @GET\n"
+				+ "  @Path(\"/header\")\n" + "  public String header(@HeaderParam(\"X-Level\") Level level) {\n"
+				+ "    return \"ok\";\n" + "  }\n" + "}\n";
 		Files.writeString(packageRoot.resolve("NestedEnumHeaderResource.java"), source, StandardCharsets.UTF_8);
 
 		ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
@@ -95,21 +87,13 @@ class JaxrsHeaderHandlerTest {
 		Path javaRoot = this.tempDir.resolve("src/main/java");
 		Path packageRoot = javaRoot.resolve("sample/jaxrs");
 		Files.createDirectories(packageRoot);
-		String source = "package sample.jaxrs;\n\n"
-				+ "import jakarta.ws.rs.DefaultValue;\n"
-				+ "import jakarta.ws.rs.GET;\n"
-				+ "import jakarta.ws.rs.HeaderParam;\n"
-				+ "import jakarta.ws.rs.Path;\n\n"
-				+ "@Path(\"/fixture\")\n"
-				+ "public class EnumDefaultHeaderResource {\n"
-				+ "  enum Level { BASIC, PRO }\n\n"
-				+ "  @GET\n"
-				+ "  @Path(\"/header-default\")\n"
-				+ "  public String headerDefault(\n"
-				+ "      @HeaderParam(\"X-Level\") @DefaultValue(\"PRO\") Level level) {\n"
-				+ "    return \"ok\";\n"
-				+ "  }\n"
-				+ "}\n";
+		String source = "package sample.jaxrs;\n\n" + "import jakarta.ws.rs.DefaultValue;\n"
+				+ "import jakarta.ws.rs.GET;\n" + "import jakarta.ws.rs.HeaderParam;\n"
+				+ "import jakarta.ws.rs.Path;\n\n" + "@Path(\"/fixture\")\n"
+				+ "public class EnumDefaultHeaderResource {\n" + "  enum Level { BASIC, PRO }\n\n" + "  @GET\n"
+				+ "  @Path(\"/header-default\")\n" + "  public String headerDefault(\n"
+				+ "      @HeaderParam(\"X-Level\") @DefaultValue(\"PRO\") Level level) {\n" + "    return \"ok\";\n"
+				+ "  }\n" + "}\n";
 		Files.writeString(packageRoot.resolve("EnumDefaultHeaderResource.java"), source, StandardCharsets.UTF_8);
 
 		ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);

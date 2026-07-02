@@ -74,8 +74,8 @@ class ProjectDocConfigBuilderSourceProjectTest {
 		Path javaRoot = this.tempDir.resolve("src/main/java");
 		Path packageRoot = javaRoot.resolve("demo");
 		Files.createDirectories(packageRoot);
-		String source = "package demo;\n\n" + "public class DemoController {\n"
-				+ "  enum Level { BASIC, PRO }\n" + "}\n";
+		String source = "package demo;\n\n" + "public class DemoController {\n" + "  enum Level { BASIC, PRO }\n"
+				+ "}\n";
 		Files.writeString(packageRoot.resolve("DemoController.java"), source, StandardCharsets.UTF_8);
 
 		ApiConfig config = new ApiConfig();
@@ -132,8 +132,9 @@ class ProjectDocConfigBuilderSourceProjectTest {
 		doReturn(null).when(fallbackBuilder).getClassByName("demo.Impl");
 
 		List<String> interfaces = fallbackBuilder.getImplementedInterfaceNames("demo.Impl");
-		assertTrue(interfaces.stream().anyMatch(name -> "demo.Api".equals(name) || "Api".equals(name)
-				|| name.endsWith(".Api")),
+		assertTrue(
+				interfaces.stream()
+					.anyMatch(name -> "demo.Api".equals(name) || "Api".equals(name) || name.endsWith(".Api")),
 				"Facade should fallback to SourceProject when QDox class lookup is unavailable");
 	}
 

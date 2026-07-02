@@ -37,13 +37,10 @@ public final class SourceProjects {
 
 	/**
 	 * Create default source model provider.
-	 *
 	 * @return source model
 	 */
 	public static SourceModel create() {
-		return ServiceLoader.load(SourceModel.class)
-			.findFirst()
-			.orElseGet(JavaParserSourceModel::new);
+		return ServiceLoader.load(SourceModel.class).findFirst().orElseGet(JavaParserSourceModel::new);
 	}
 
 }

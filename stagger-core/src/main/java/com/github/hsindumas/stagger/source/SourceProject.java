@@ -34,16 +34,13 @@ public interface SourceProject {
 
 	/**
 	 * Find class metadata by qualified name.
-	 *
 	 * @param qualifiedName class qualified name
-	 *
 	 * @return source class metadata if found
 	 */
 	Optional<SourceClass> findClass(String qualifiedName);
 
 	/**
 	 * Return all classes discovered in the project.
-	 *
 	 * @return source classes
 	 */
 	Collection<SourceClass> classes();

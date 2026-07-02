@@ -100,29 +100,30 @@ public class JaxrsHeaderHandler {
 						apiReqHeader.setType(ParamTypeConstants.PARAM_TYPE_ENUM);
 						boolean hasJavaEnumClass = Objects.nonNull(javaClass) && javaClass.isEnum();
 						if (hasJavaEnumClass) {
-							EnumInfoAndValues enumInfoAndValue = JavaClassUtil.getEnumInfoAndValue(javaClass, projectBuilder,
-									Boolean.FALSE);
+							EnumInfoAndValues enumInfoAndValue = JavaClassUtil.getEnumInfoAndValue(javaClass,
+									projectBuilder, Boolean.FALSE);
 							if (Objects.nonNull(enumInfoAndValue)) {
-								String enumValue = StringUtil.removeDoubleQuotes(
-										String.valueOf(enumInfoAndValue.getValue()));
+								String enumValue = StringUtil
+									.removeDoubleQuotes(String.valueOf(enumInfoAndValue.getValue()));
 								if (StringUtils.isBlank(apiReqHeader.getValue())) {
 									apiReqHeader.setValue(enumValue);
 								}
-								apiReqHeader.setEnumInfoAndValues(enumInfoAndValue)
-									.setType(enumInfoAndValue.getType());
+								apiReqHeader.setEnumInfoAndValues(enumInfoAndValue).setType(enumInfoAndValue.getType());
 							}
-						} else {
+						}
+						else {
 							String enumSampleValue = projectBuilder.getEnumSampleValue(genericFullyQualifiedName);
 							if (StringUtil.isNotEmpty(enumSampleValue)) {
 								String sampleValue = StringUtil.removeDoubleQuotes(enumSampleValue);
 								if (StringUtils.isBlank(apiReqHeader.getValue())) {
 									apiReqHeader.setValue(sampleValue);
 								}
-								apiReqHeader.setEnumInfoAndValues(
-										EnumInfoAndValues.builder().setEnumValues(Collections.singletonList(sampleValue)));
+								apiReqHeader.setEnumInfoAndValues(EnumInfoAndValues.builder()
+									.setEnumValues(Collections.singletonList(sampleValue)));
 							}
 						}
-					} else {
+					}
+					else {
 						apiReqHeader.setType(DocClassUtil.processTypeNameForParams(typeName));
 					}
 

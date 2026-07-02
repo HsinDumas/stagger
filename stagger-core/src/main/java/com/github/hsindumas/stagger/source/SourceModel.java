@@ -31,9 +31,7 @@ public interface SourceModel {
 
 	/**
 	 * Build source project metadata from the provided request.
-	 *
 	 * @param request source scan request
-	 *
 	 * @return built source project
 	 */
 	SourceProject build(SourceScanRequest request);

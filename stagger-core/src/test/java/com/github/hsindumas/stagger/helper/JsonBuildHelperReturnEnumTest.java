@@ -81,13 +81,9 @@ class JsonBuildHelperReturnEnumTest {
 		Path javaRoot = this.tempDir.resolve("src/main/java");
 		Path packageRoot = javaRoot.resolve("sample/json");
 		Files.createDirectories(packageRoot);
-		String source = "package sample.json;\n\n"
-				+ "public class EnumReturnResource {\n"
-				+ "  enum Level { BASIC, PRO }\n\n"
-				+ "  public Level getLevel() {\n"
-				+ "    return Level.BASIC;\n"
-				+ "  }\n"
-				+ "}\n";
+		String source = "package sample.json;\n\n" + "public class EnumReturnResource {\n"
+				+ "  enum Level { BASIC, PRO }\n\n" + "  public Level getLevel() {\n" + "    return Level.BASIC;\n"
+				+ "  }\n" + "}\n";
 		Files.writeString(packageRoot.resolve("EnumReturnResource.java"), source, StandardCharsets.UTF_8);
 		return javaRoot;
 	}

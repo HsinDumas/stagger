@@ -1041,9 +1041,7 @@ public class JavaClassUtil {
 
 	/**
 	 * Get implemented interfaces for the specified class.
-	 *
 	 * @param javaClass source class
-	 *
 	 * @return implemented interfaces, empty when unavailable
 	 */
 	public static List<JavaType> getImplementedInterfaces(JavaClass javaClass) {
@@ -1059,9 +1057,7 @@ public class JavaClassUtil {
 
 	/**
 	 * Get interface classes declared by the specified class.
-	 *
 	 * @param javaClass source class
-	 *
 	 * @return interface classes, empty when unavailable
 	 */
 	public static List<JavaClass> getInterfaceClasses(JavaClass javaClass) {
@@ -1082,7 +1078,8 @@ public class JavaClassUtil {
 			if (result instanceof List) {
 				return (List<T>) result;
 			}
-		} catch (ReflectiveOperationException | RuntimeException ignored) {
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
 			logger.fine(ignored.getMessage());
 		}
 		return Collections.emptyList();

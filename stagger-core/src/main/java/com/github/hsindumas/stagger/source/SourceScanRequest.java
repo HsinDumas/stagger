@@ -73,9 +73,7 @@ public final class SourceScanRequest {
 
 		/**
 		 * Add one source root.
-		 *
 		 * @param sourceRoot source root path
-		 *
 		 * @return this builder
 		 */
 		public Builder addSourceRoot(Path sourceRoot) {
@@ -85,9 +83,7 @@ public final class SourceScanRequest {
 
 		/**
 		 * Add multiple source roots.
-		 *
 		 * @param roots source root paths
-		 *
 		 * @return this builder
 		 */
 		public Builder addSourceRoots(Collection<Path> roots) {
@@ -102,9 +98,7 @@ public final class SourceScanRequest {
 
 		/**
 		 * Set source file charset.
-		 *
 		 * @param charset source charset
-		 *
 		 * @return this builder
 		 */
 		public Builder setCharset(Charset charset) {
@@ -114,7 +108,6 @@ public final class SourceScanRequest {
 
 		/**
 		 * Build immutable request instance.
-		 *
 		 * @return source scan request
 		 */
 		public SourceScanRequest build() {

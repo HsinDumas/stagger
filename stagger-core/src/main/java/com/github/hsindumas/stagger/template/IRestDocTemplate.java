@@ -510,11 +510,12 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	/**
 	 * Retrieves class annotations and inherited mapping annotations from superclasses and
 	 * interfaces.
-	 *
 	 * @param cls the class whose annotations are to be retrieved
 	 * @param frameworkAnnotations the framework annotations to be used for filtering
-	 * @param projectBuilder optional project builder for facade-based interface resolution
-	 * @return a list of annotations for the specified class, including inherited mapping annotations
+	 * @param projectBuilder optional project builder for facade-based interface
+	 * resolution
+	 * @return a list of annotations for the specified class, including inherited mapping
+	 * annotations
 	 */
 	default List<JavaAnnotation> getClassAnnotations(JavaClass cls, FrameworkAnnotations frameworkAnnotations,
 			ProjectDocConfigBuilder projectBuilder) {
@@ -591,14 +592,16 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	/**
 	 * Retrieves class annotations and inherited mapping annotations from superclasses and
 	 * interfaces.
-	 *
 	 * @param cls the class whose annotations are to be retrieved
-	 * @param mappingAnnotationMap the map of mapping annotations used to filter and inherit annotations
-	 * @param projectBuilder optional project builder for facade-based interface resolution
-	 * @return a list of annotations for the specified class, including inherited mapping annotations
+	 * @param mappingAnnotationMap the map of mapping annotations used to filter and
+	 * inherit annotations
+	 * @param projectBuilder optional project builder for facade-based interface
+	 * resolution
+	 * @return a list of annotations for the specified class, including inherited mapping
+	 * annotations
 	 */
-	default List<JavaAnnotation> getClassAnnotations(JavaClass cls,
-			Map<String, MappingAnnotation> mappingAnnotationMap, ProjectDocConfigBuilder projectBuilder) {
+	default List<JavaAnnotation> getClassAnnotations(JavaClass cls, Map<String, MappingAnnotation> mappingAnnotationMap,
+			ProjectDocConfigBuilder projectBuilder) {
 		// Retrieve the annotations of the specified class
 		List<JavaAnnotation> annotationsList = new ArrayList<>(cls.getAnnotations());
 
@@ -646,7 +649,6 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 
 	/**
 	 * Resolves interfaces implemented by the given class.
-	 *
 	 * @param projectBuilder optional project builder for facade resolution
 	 * @param cls source class
 	 * @return resolved interfaces
@@ -1281,11 +1283,13 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 							param.setValue(StringUtil.removeDoubleQuotes(String.valueOf(enumInfoAndValue.getValue())))
 								.setEnumInfoAndValues(enumInfoAndValue);
 						}
-					} else {
+					}
+					else {
 						String enumSampleValue = builder.getEnumSampleValue(gicName);
 						if (StringUtil.isNotEmpty(enumSampleValue)) {
 							param.setValue(StringUtil.removeDoubleQuotes(enumSampleValue))
-								.setEnumValues(Collections.singletonList(StringUtil.removeDoubleQuotes(enumSampleValue)));
+								.setEnumValues(
+										Collections.singletonList(StringUtil.removeDoubleQuotes(enumSampleValue)));
 						}
 					}
 
@@ -1402,7 +1406,8 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 							.setEnumInfoAndValues(enumInfoAndValue)
 							.setType(enumInfoAndValue.getType());
 					}
-				} else {
+				}
+				else {
 					String enumSampleValue = builder.getEnumSampleValue(genericFullyQualifiedName);
 					if (StringUtil.isNotEmpty(enumSampleValue)) {
 						param.setValue(StringUtil.removeDoubleQuotes(enumSampleValue))
@@ -1688,8 +1693,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 					gicName = gicName.substring(0, gicName.indexOf("["));
 				}
 				boolean collectionEnumType = configBuilder.isEnumType(gicName);
-				if (!JavaClassValidateUtil.isPrimitive(gicName)
-						&& !collectionEnumType && requestParam) {
+				if (!JavaClassValidateUtil.isPrimitive(gicName) && !collectionEnumType && requestParam) {
 					throw new RuntimeException("can't support binding Collection on method " + method.getName()
 							+ " Check it in " + method.getDeclaringClass().getCanonicalName());
 				}
@@ -1698,7 +1702,8 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 					String enumSampleValue = configBuilder.getEnumSampleValue(gicName);
 					if (StringUtil.isNotEmpty(enumSampleValue)) {
 						value = enumSampleValue;
-					} else {
+					}
+					else {
 						value = RandomUtil.randomValueByType(gicName);
 					}
 				}
@@ -1719,7 +1724,8 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			else if (enumType) {
 				String strVal = configBuilder.getEnumSampleValue(genericFullyQualifiedName);
 				if (StringUtil.isEmpty(strVal)) {
-					strVal = StringUtil.removeQuotes(String.valueOf(RandomUtil.randomValueByType(genericFullyQualifiedName)));
+					strVal = StringUtil
+						.removeQuotes(String.valueOf(RandomUtil.randomValueByType(genericFullyQualifiedName)));
 				}
 				FormData formData = new FormData();
 				formData.setKey(paramName);

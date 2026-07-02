@@ -460,7 +460,8 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 					boolean hasJavaEnumClass = Objects.nonNull(gicJavaClass) && gicJavaClass.isEnum();
 					if (hasJavaEnumClass) {
 						enumValue = String.valueOf(JavaClassUtil.getEnumValue(gicJavaClass, builder, Boolean.FALSE));
-					} else {
+					}
+					else {
 						enumValue = builder.getEnumSampleValue(gicName);
 					}
 					ApiParam param = ApiParam.of()
@@ -581,7 +582,8 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 				if (hasJavaEnumClass) {
 					enumDesc = StringUtil.removeQuotes(JavaClassUtil.getEnumParams(javaClass));
 					enumValue = String.valueOf(JavaClassUtil.getEnumValue(javaClass, builder, Boolean.FALSE));
-				} else {
+				}
+				else {
 					enumValue = builder.getEnumSampleValue(genericFullyQualifiedName);
 				}
 				ApiParam param = ApiParam.of()
@@ -596,7 +598,8 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 					.setVersion(DocGlobalConstants.DEFAULT_VERSION)
 					.setEnumValues(hasJavaEnumClass ? JavaClassUtil.getEnumValues(javaClass)
 							: StringUtil.isNotEmpty(enumValue)
-									? Collections.singletonList(StringUtil.removeDoubleQuotes(enumValue)) : Collections.emptyList());
+									? Collections.singletonList(StringUtil.removeDoubleQuotes(enumValue))
+									: Collections.emptyList());
 				paramList.add(param);
 			}
 			else {

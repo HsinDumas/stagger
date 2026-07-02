@@ -450,7 +450,8 @@ public class ParamsBuildHelper extends BaseHelper {
 						comment.append(handleEnumComment(javaClass, projectBuilder));
 						ParamUtil.handleSeeEnum(param, field, projectBuilder, isResp || jsonRequest, tagsMap,
 								fieldJsonFormatValue);
-					} else {
+					}
+					else {
 						param.setType(ParamTypeConstants.PARAM_TYPE_ENUM);
 						String enumSampleValue = projectBuilder.getEnumSampleValue(subTypeName);
 						if (StringUtil.isNotEmpty(enumSampleValue)) {
@@ -512,13 +513,14 @@ public class ParamsBuildHelper extends BaseHelper {
 									param.setDesc(comment.toString());
 									param.setType(ParamTypeConstants.PARAM_TYPE_ARRAY);
 
-									EnumInfoAndValues enumInfoAndValue = JavaClassUtil.getEnumInfoAndValue(arraySubClass,
-											projectBuilder, jsonRequest || isResp);
+									EnumInfoAndValues enumInfoAndValue = JavaClassUtil
+										.getEnumInfoAndValue(arraySubClass, projectBuilder, jsonRequest || isResp);
 									if (Objects.nonNull(enumInfoAndValue)) {
 										param.setValue("[" + enumInfoAndValue.getValue() + "]")
 											.setEnumInfoAndValues(enumInfoAndValue);
 									}
-								} else {
+								}
+								else {
 									String enumSampleValue = projectBuilder.getEnumSampleValue(gName);
 									if (StringUtil.isNotEmpty(enumSampleValue)) {
 										param.setType(ParamTypeConstants.PARAM_TYPE_ARRAY)

@@ -179,7 +179,8 @@ public class FormDataBuildHelper extends BaseHelper {
 				Object value;
 				if (Objects.nonNull(javaClass) && javaClass.isEnum()) {
 					value = JavaClassUtil.getEnumValue(javaClass, builder, Boolean.FALSE);
-				} else {
+				}
+				else {
 					String enumSampleValue = builder.getEnumSampleValue(subTypeName);
 					value = StringUtil.isNotEmpty(enumSampleValue) ? enumSampleValue : "";
 				}

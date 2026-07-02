@@ -169,7 +169,8 @@ public class ProjectDocConfigBuilder {
 		SourceProject builtSourceProject;
 		try {
 			builtSourceProject = this.loadSourceProject(apiConfig);
-		} catch (RuntimeException e) {
+		}
+		catch (RuntimeException e) {
 			log.warning(e.getMessage());
 			builtSourceProject = SourceProjects.create().build(SourceScanRequest.builder().build());
 		}
@@ -259,9 +260,7 @@ public class ProjectDocConfigBuilder {
 
 	/**
 	 * Determine whether type is enum.
-	 *
 	 * @param typeName type name
-	 *
 	 * @return true if enum
 	 */
 	public boolean isEnumType(String typeName) {
@@ -277,9 +276,7 @@ public class ProjectDocConfigBuilder {
 
 	/**
 	 * Get sample enum value for type.
-	 *
 	 * @param typeName type name
-	 *
 	 * @return sample enum value, or null when unavailable
 	 */
 	public String getEnumSampleValue(String typeName) {
@@ -309,9 +306,7 @@ public class ProjectDocConfigBuilder {
 
 	/**
 	 * Resolve implemented interface names for a class.
-	 *
 	 * @param className class name
-	 *
 	 * @return implemented interface names, preserving insertion order
 	 */
 	public List<String> getImplementedInterfaceNames(String className) {
@@ -354,11 +349,9 @@ public class ProjectDocConfigBuilder {
 
 	/**
 	 * Resolve generic type argument for an implemented interface.
-	 *
 	 * @param className class name
 	 * @param argIndex generic argument index
 	 * @param interfaceNames candidate interface names
-	 *
 	 * @return resolved type argument name
 	 */
 	public Optional<String> getImplementedInterfaceTypeArgument(String className, int argIndex,
@@ -380,7 +373,8 @@ public class ProjectDocConfigBuilder {
 							|| !this.matchesImplementedInterface(javaType, normalizedInterfaceNames)) {
 						continue;
 					}
-					Optional<String> typeArgument = this.resolveQdoxImplementedInterfaceTypeArgument(javaType, argIndex);
+					Optional<String> typeArgument = this.resolveQdoxImplementedInterfaceTypeArgument(javaType,
+							argIndex);
 					if (typeArgument.isPresent()) {
 						return typeArgument;
 					}
@@ -565,27 +559,28 @@ public class ProjectDocConfigBuilder {
 			sourceFiles.filter(Files::isRegularFile).filter(path -> path.toString().endsWith(".java")).forEach(path -> {
 				try {
 					builder.addSource(path.toFile());
-				} catch (IOException | RuntimeException e) {
+				}
+				catch (IOException | RuntimeException e) {
 					log.warning(e.getMessage());
 				}
 			});
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			log.warning(e.getMessage());
 		}
 	}
 
 	/**
 	 * Build JavaParser-backed source project from configured source roots.
-	 *
 	 * @param config api config
-	 *
 	 * @return source project
 	 */
 	private SourceProject loadSourceProject(ApiConfig config) {
 		SourceScanRequest.Builder requestBuilder = SourceScanRequest.builder().setCharset(StandardCharsets.UTF_8);
 		if (CollectionUtil.isEmpty(config.getSourceCodePaths())) {
 			this.addSourceRoot(requestBuilder, DocGlobalConstants.PROJECT_CODE_PATH);
-		} else {
+		}
+		else {
 			for (SourceCodePath sourceCodePath : config.getSourceCodePaths()) {
 				if (Objects.isNull(sourceCodePath) || StringUtil.isEmpty(sourceCodePath.getPath())) {
 					continue;

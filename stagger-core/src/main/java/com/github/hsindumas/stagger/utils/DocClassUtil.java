@@ -47,9 +47,7 @@ public class DocClassUtil {
 
 	/**
 	 * Determine whether class metadata represents annotation or enum type.
-	 *
 	 * @param javaClass class metadata
-	 *
 	 * @return true when class is annotation or enum
 	 */
 	public static boolean isAnnotationOrEnum(JavaClass javaClass) {
@@ -58,9 +56,7 @@ public class DocClassUtil {
 
 	/**
 	 * Determine whether source class metadata represents annotation or enum type.
-	 *
 	 * @param sourceClass source class metadata
-	 *
 	 * @return true when source class is annotation or enum
 	 */
 	public static boolean isAnnotationOrEnum(SourceClass sourceClass) {

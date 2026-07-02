@@ -54,17 +54,10 @@ class IRequestMappingHandlerTest {
 		Path javaRoot = this.tempDir.resolve("src/main/java");
 		Path packageRoot = javaRoot.resolve("sample/mapping");
 		Files.createDirectories(packageRoot);
-		String api = "package sample.mapping;\n\n"
-				+ "public interface MappingApi {\n"
-				+ "  @Deprecated\n"
-				+ "  String ping(String id);\n"
-				+ "}\n";
-		String impl = "package sample.mapping;\n\n"
-				+ "public class MappingApiImpl implements MappingApi {\n"
-				+ "  public String ping(String id) {\n"
-				+ "    return id;\n"
-				+ "  }\n"
-				+ "}\n";
+		String api = "package sample.mapping;\n\n" + "public interface MappingApi {\n" + "  @Deprecated\n"
+				+ "  String ping(String id);\n" + "}\n";
+		String impl = "package sample.mapping;\n\n" + "public class MappingApiImpl implements MappingApi {\n"
+				+ "  public String ping(String id) {\n" + "    return id;\n" + "  }\n" + "}\n";
 		Files.writeString(packageRoot.resolve("MappingApi.java"), api, StandardCharsets.UTF_8);
 		Files.writeString(packageRoot.resolve("MappingApiImpl.java"), impl, StandardCharsets.UTF_8);
 
@@ -72,8 +65,7 @@ class IRequestMappingHandlerTest {
 		JavaMethod method = this.findMethod(builder, "sample.mapping.MappingApiImpl", "ping");
 
 		List<JavaAnnotation> annotations = new SpringMVCRequestMappingHandler().getAnnotations(method);
-		assertTrue(annotations.stream().anyMatch(this::isDeprecated),
-				"Interface method annotation should be included");
+		assertTrue(annotations.stream().anyMatch(this::isDeprecated), "Interface method annotation should be included");
 	}
 
 	@Test
@@ -81,20 +73,11 @@ class IRequestMappingHandlerTest {
 		Path javaRoot = this.tempDir.resolve("src/main/java");
 		Path packageRoot = javaRoot.resolve("sample/mapping");
 		Files.createDirectories(packageRoot);
-		String marker = "package sample.mapping;\n\n"
-				+ "public @interface Marker {}\n";
-		String api = "package sample.mapping;\n\n"
-				+ "public interface MappingApi {\n"
-				+ "  @Deprecated\n"
-				+ "  String ping(String id);\n"
-				+ "}\n";
-		String impl = "package sample.mapping;\n\n"
-				+ "public class MappingApiImpl implements MappingApi {\n"
-				+ "  @Marker\n"
-				+ "  public String ping(String id) {\n"
-				+ "    return id;\n"
-				+ "  }\n"
-				+ "}\n";
+		String marker = "package sample.mapping;\n\n" + "public @interface Marker {}\n";
+		String api = "package sample.mapping;\n\n" + "public interface MappingApi {\n" + "  @Deprecated\n"
+				+ "  String ping(String id);\n" + "}\n";
+		String impl = "package sample.mapping;\n\n" + "public class MappingApiImpl implements MappingApi {\n"
+				+ "  @Marker\n" + "  public String ping(String id) {\n" + "    return id;\n" + "  }\n" + "}\n";
 		Files.writeString(packageRoot.resolve("Marker.java"), marker, StandardCharsets.UTF_8);
 		Files.writeString(packageRoot.resolve("MappingApi.java"), api, StandardCharsets.UTF_8);
 		Files.writeString(packageRoot.resolve("MappingApiImpl.java"), impl, StandardCharsets.UTF_8);
@@ -103,8 +86,9 @@ class IRequestMappingHandlerTest {
 		JavaMethod method = this.findMethod(builder, "sample.mapping.MappingApiImpl", "ping");
 
 		List<JavaAnnotation> annotations = new SpringMVCRequestMappingHandler().getAnnotations(method);
-		Set<String> annotationNames = annotations.stream().map(annotation -> annotation.getType().getValue())
-				.collect(Collectors.toSet());
+		Set<String> annotationNames = annotations.stream()
+			.map(annotation -> annotation.getType().getValue())
+			.collect(Collectors.toSet());
 		assertTrue(annotationNames.contains("Deprecated"),
 				"Interface annotation should still be present after merging");
 		assertTrue(annotationNames.contains("Marker"),
