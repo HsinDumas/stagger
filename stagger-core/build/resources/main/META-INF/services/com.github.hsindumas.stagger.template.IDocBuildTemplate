@@ -1,6 +1,0 @@
-com.github.hsindumas.stagger.template.SpringBootDocBuildTemplate
-com.github.hsindumas.stagger.template.JAXRSDocBuildTemplate
-com.github.hsindumas.stagger.template.JavadocDocBuildTemplate
-com.github.hsindumas.stagger.template.RpcDocBuildTemplate
-com.github.hsindumas.stagger.template.SolonDocBuildTemplate
-com.github.hsindumas.stagger.template.GRpcDocBuildTemplate
