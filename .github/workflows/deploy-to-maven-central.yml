@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout Plugin Repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Set Up JDK
         uses: actions/setup-java@v5
@@ -36,6 +38,87 @@ jobs:
             exit 1
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build conventional release notes
+        id: release_notes
+        shell: bash
+        env:
+          CURRENT_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+
+          git fetch --tags --force
+          PREV_TAG="$(git tag --sort=-v:refname | grep -v "^${CURRENT_TAG}$" | head -n 1 || true)"
+          if [[ -n "$PREV_TAG" ]]; then
+            RANGE="${PREV_TAG}..${CURRENT_TAG}"
+          else
+            RANGE="$CURRENT_TAG"
+          fi
+
+          SUBJECTS_FILE="$(mktemp)"
+          FEATURES_FILE="$(mktemp)"
+          FIXES_FILE="$(mktemp)"
+          BREAKING_FILE="$(mktemp)"
+          OTHERS_FILE="$(mktemp)"
+          NOTES_FILE="$(mktemp)"
+
+          git log "$RANGE" --pretty=format:'%s' > "$SUBJECTS_FILE"
+
+          while IFS= read -r subject; do
+            [[ -z "$subject" ]] && continue
+
+            if [[ "$subject" =~ ^[A-Za-z]+(\([^)]+\))?!: ]]; then
+              printf -- '- %s\n' "$subject" >> "$BREAKING_FILE"
+            fi
+
+            if [[ "$subject" =~ ^feat(\([^)]+\))?!?: ]]; then
+              printf -- '- %s\n' "$subject" >> "$FEATURES_FILE"
+            elif [[ "$subject" =~ ^fix(\([^)]+\))?!?: ]]; then
+              printf -- '- %s\n' "$subject" >> "$FIXES_FILE"
+            else
+              printf -- '- %s\n' "$subject" >> "$OTHERS_FILE"
+            fi
+          done < "$SUBJECTS_FILE"
+
+          {
+            echo "## Changes"
+            echo ""
+            if [[ -n "$PREV_TAG" ]]; then
+              echo "- Compared Range: ${PREV_TAG}..${CURRENT_TAG}"
+            else
+              echo "- Compared Range: ${CURRENT_TAG}"
+            fi
+            echo ""
+
+            if [[ -s "$BREAKING_FILE" ]]; then
+              echo "### Breaking Changes"
+              cat "$BREAKING_FILE"
+              echo ""
+            fi
+
+            if [[ -s "$FEATURES_FILE" ]]; then
+              echo "### Features"
+              cat "$FEATURES_FILE"
+              echo ""
+            fi
+
+            if [[ -s "$FIXES_FILE" ]]; then
+              echo "### Bug Fixes"
+              cat "$FIXES_FILE"
+              echo ""
+            fi
+
+            if [[ -s "$OTHERS_FILE" ]]; then
+              echo "### Other Changes"
+              cat "$OTHERS_FILE"
+            fi
+          } > "$NOTES_FILE"
+
+          {
+            echo "content<<EOF"
+            cat "$NOTES_FILE"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Publish and release artifacts to Maven Central
         id: publish_central
@@ -94,6 +177,8 @@ jobs:
           generate_release_notes: true
           append_body: true
           body: |
+            ${{ steps.release_notes.outputs.content }}
+
             ## Publish metadata
             - Maven Central Deployment ID: ${{ steps.publish_central.outputs.deployment_id || 'N/A' }}
             - Workflow Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}

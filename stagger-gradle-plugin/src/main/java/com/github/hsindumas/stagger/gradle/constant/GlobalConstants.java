@@ -41,82 +41,82 @@ public interface GlobalConstants {
 	/**
 	 * Task group
 	 */
-	String TASK_GROUP = "Documentation";
+	String TASK_GROUP = "stagger";
 
 	/**
 	 * Generate Rest html document
 	 */
-	String REST_HTML_TASK = "staggerRestHtml";
+	String REST_HTML_TASK = "restHtml";
 
 	/**
 	 * Generate Rest markdown document
 	 */
-	String REST_MARKDOWN_TASK = "staggerRestMarkdown";
+	String REST_MARKDOWN_TASK = "restMarkdown";
 
 	/**
 	 * Generate JMeter test document
 	 */
-	String JMETER_TASK = "staggerJmeter";
+	String JMETER_TASK = "jmeter";
 
 	/**
 	 * Generate Postman document
 	 */
-	String POSTMAN_TASK = "staggerPostman";
+	String POSTMAN_TASK = "postman";
 
 	/**
 	 * Generate OpenAPI document
 	 */
-	String OPEN_API_TASK = "staggerOpenApi";
+	String OPEN_API_TASK = "openApi";
 
 	/**
 	 * Generate Rpc html document
 	 */
-	String RPC_HTML_TASK = "staggerRpcHtml";
+	String RPC_HTML_TASK = "rpcHtml";
 
 	/**
 	 * Generate Rpc markdown document
 	 */
-	String RPC_MARKDOWN_TASK = "staggerRpcMarkdown";
+	String RPC_MARKDOWN_TASK = "rpcMarkdown";
 
 	/**
 	 * Generate rest document push to word
 	 */
-	String WORD_TASK = "staggerWord";
+	String WORD_TASK = "word";
 
 	/**
 	 * Generate Swagger document
 	 */
-	String SWAGGER_TASK = "staggerSwagger";
+	String SWAGGER_TASK = "swagger";
 
 	/**
 	 * Generate WebSocket markdown document
 	 */
-	String WEBSOCKET_MARKDOWN_TASK = "staggerWebSocketMarkdown";
+	String WEBSOCKET_MARKDOWN_TASK = "webSocketMarkdown";
 
 	/**
 	 * Generate WebSocket html document
 	 */
-	String WEBSOCKET_HTML_TASK = "staggerWebSocketHtml";
+	String WEBSOCKET_HTML_TASK = "webSocketHtml";
 
 	/**
 	 * Generate JavaDoc html document
 	 */
-	String JAVADOC_HTML_TASK = "staggerJavadocHtml";
+	String JAVADOC_HTML_TASK = "javadocHtml";
 
 	/**
 	 * Generate JavaDoc markdown document
 	 */
-	String JAVADOC_MARKDOWN_TASK = "staggerJavadocMarkdown";
+	String JAVADOC_MARKDOWN_TASK = "javadocMarkdown";
 
 	/**
 	 * Generate gRPC html document
 	 */
-	String GRPC_HTML_TASK = "staggerGrpcHtml";
+	String GRPC_HTML_TASK = "grpcHtml";
 
 	/**
 	 * Generate gRPC markdown document
 	 */
-	String GRPC_MARKDOWN_TASK = "staggerGrpcMarkdown";
+	String GRPC_MARKDOWN_TASK = "grpcMarkdown";
 
 	/**
 	 * Plugin extension name

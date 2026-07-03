@@ -86,7 +86,7 @@ stagger {
 After configuring, you can directly override it through the command line:
 
 ```shell
-gradle staggerRestHtml -Pstagger.configFile=src/main/resources/stagger.json
+gradle restHtml -Pstagger.configFile=src/main/resources/stagger.json
 ```
 
 From version `3.0.3` onwards, the configuration of dynamically configuring `configFile` in `build.gradle` is very
@@ -151,23 +151,23 @@ please refer to the [official documentation](https://HsinDumas.github.io/guide/a
 
 ```
 // Generate documentation into HTML
-gradle staggerRestHtml
+gradle restHtml
 // Generate markdown
-gradle staggerRestMarkdown
+gradle restMarkdown
 // Generate Postman JSON data
-gradle staggerPostman
+gradle postman
 // Generate Open API 3.0 + specification JSON documentation, since stagger-gradle-plugin 1.1.4
-gradle staggerOpenApi
+gradle openApi
 // Generate JMeter performance test scripts, since 3.0.0
-gradle staggerJmeter
+gradle jmeter
 // Generate documentation output to Word, since 3.0.0
-gradle staggerWord
+gradle word
 
 // Apache Dubbo RPC generation
 // Generate html
-gradle staggerRpcHtml
+gradle rpcHtml
 // Generate markdown
-gradle staggerRpcMarkdown
+gradle rpcMarkdown
 ```
 
 #### Use In IntelliJ IDEA

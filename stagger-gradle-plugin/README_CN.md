@@ -78,7 +78,7 @@ stagger {
 配置好后直接通过命令行覆盖：
 
 ```shell
-gradle staggerRestHtml -Pstagger.configFile=src/main/resources/stagger.json
+gradle restHtml -Pstagger.configFile=src/main/resources/stagger.json
 ```
 
 在`3.0.3`之后，`build.gradle`中配置动态配置`configFile`很简单，插件完全具备覆盖的功能。
@@ -143,24 +143,24 @@ https://gitee.com/devin-alan/stagger-gradle-plugin-demo
 
 ```
 //生成文档到html中
-gradle staggerRestHtml
+gradle restHtml
 //生成markdown
-gradle staggerRestMarkdown
+gradle restMarkdown
 //生成postmanjson数据
-gradle staggerPostman
+gradle postman
 //生成Open Api 3.0 +规范的json文档,since stagger-gradle-plugin 1.1.4
-gradle staggerOpenApi
+gradle openApi
 //生成Jmeter性能压测脚本,since 3.0.0
-gradle staggerJmeter
+gradle jmeter
 //生成文档输出到Word,since 3.0.0
-gradle staggerWord
+gradle word
 
 
 // Apache Dubbo Rpc生成
 // Generate html
-gradle staggerRpcHtml
+gradle rpcHtml
 // Generate markdown
-gradle staggerRpcMarkdown
+gradle rpcMarkdown
 ```
 
 #### Use IDEA
