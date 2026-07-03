@@ -56,6 +56,7 @@ jobs:
           fi
 
           SUBJECTS_FILE="$(mktemp)"
+          COMMITS_FILE="$(mktemp)"
           FEATURES_FILE="$(mktemp)"
           FIXES_FILE="$(mktemp)"
           BREAKING_FILE="$(mktemp)"
@@ -63,8 +64,9 @@ jobs:
           NOTES_FILE="$(mktemp)"
 
           git log "$RANGE" --pretty=format:'%s' > "$SUBJECTS_FILE"
+          git log "$RANGE" --pretty=format:'- %h %s' > "$COMMITS_FILE"
 
-          while IFS= read -r subject; do
+          while IFS= read -r subject || [[ -n "$subject" ]]; do
             [[ -z "$subject" ]] && continue
 
             if printf '%s' "$subject" | grep -Eq '^[A-Za-z]+(\([^)]+\))?!:'; then
@@ -111,6 +113,12 @@ jobs:
             if [[ -s "$OTHERS_FILE" ]]; then
               echo "### Other Changes"
               cat "$OTHERS_FILE"
+              echo ""
+            fi
+
+            if [[ ! -s "$BREAKING_FILE" && ! -s "$FEATURES_FILE" && ! -s "$FIXES_FILE" && ! -s "$OTHERS_FILE" && -s "$COMMITS_FILE" ]]; then
+              echo "### Commits"
+              cat "$COMMITS_FILE"
             fi
           } > "$NOTES_FILE"
 
