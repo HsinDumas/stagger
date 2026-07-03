@@ -48,11 +48,21 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Some exports include armor checksum lines (e.g. '=abcd') or escaped newlines.
+          # Support both armored and base64-encoded private keys from secrets.
           SANITIZED_KEY="${SIGNING_IN_MEMORY_KEY//$'\\r'/}"
           SANITIZED_KEY="${SANITIZED_KEY//\\n/$'\n'}"
+
+          if [[ "$SANITIZED_KEY" != *"BEGIN PGP PRIVATE KEY BLOCK"* ]]; then
+            DECODED_KEY="$(printf '%s' "$SANITIZED_KEY" | base64 -d 2>/dev/null || true)"
+            if [[ "$DECODED_KEY" == *"BEGIN PGP PRIVATE KEY BLOCK"* ]]; then
+              SANITIZED_KEY="$DECODED_KEY"
+            fi
+          fi
+
           SANITIZED_KEY="$(printf '%s\n' "$SANITIZED_KEY" | sed '/^=/d')"
           export ORG_GRADLE_PROJECT_signingInMemoryKey="$SANITIZED_KEY"
+          echo "Signing key header: $(printf '%s' "$SANITIZED_KEY" | head -n 1)"
+          echo "Signing key size(bytes): $(printf '%s' "$SANITIZED_KEY" | wc -c)"
 
           LOG_FILE="$(mktemp)"
           ./gradlew --no-daemon -PreleaseVersion=${{ steps.release_version.outputs.version }} publishReleaseToMavenCentral | tee "$LOG_FILE"
