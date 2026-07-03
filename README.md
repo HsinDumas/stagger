@@ -142,4 +142,4 @@ Pull requests welcome! Please open an issue first for major changes.
 ---
 
 **Based on**: [smart-doc](https://github.com/smart-doc-group/smart-doc)  
-**Enhanced with**: Gradle monorepo + JDK 25 toolchain + incremental JavaParser migration
+**Enhanced with**: Gradle monorepo + JDK 25 toolchain + complete JavaParser integration

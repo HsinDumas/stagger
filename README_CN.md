@@ -142,4 +142,4 @@ Apache License 2.0 - 详见 LICENSE 文件
 ---
 
 **基于**: [smart-doc](https://github.com/smart-doc-group/smart-doc)  
-**增强**: Gradle Monorepo + JDK 25 toolchain + 渐进式 JavaParser 迁移
+**增强**: Gradle Monorepo + JDK 25 toolchain + 完整 JavaParser 集成
