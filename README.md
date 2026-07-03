@@ -2,9 +2,9 @@
 
 [中文版本](./README_CN.md)
 
-> **Let Swagger stagger. Keep your code pure.**
+> **Let Swagger stagger. Keep your source code pristine.**
 
-Stagger is a **zero-intrusion, zero-annotation** API documentation generation tool built for the future (JDK 25+ / Spring Boot 4.x+).
+Stagger is a **zero-intrusion, zero-annotation** API documentation generation tool built for the future (JDK 25+ / Spring Boot 4.x+) and designed to keep your source code pristine.
 
 ## 💡 Why Stagger?
 
@@ -13,7 +13,8 @@ When Swagger floods your business code with `@Schema` and `@Operation` annotatio
 Stagger embraces the elegant static analysis approach and completely abandons annotation hell:
 
 - 🚫 **Zero Intrusion** - No third-party annotations in your codebase.
-- 📝 **Standard JavaDoc + AI** - Reads pure JavaDoc comments and auto-enhances with LLMs.
+- 📝 **Standard JavaDoc First** - Uses pure JavaDoc comments as the primary source of truth.
+- 🤖 **AI Assistance (Roadmap)** - Planned optional LLM-based enhancement for quality and consistency.
 - ⚡ **Future-Ready** - Native support for JDK 25 features (Records, Pattern Matching) & Spring Boot 4.x.
 - 🔄 **Multiple Formats** - Generate OpenAPI 3.1, Markdown, offline HTML in one command.
 
@@ -25,7 +26,7 @@ Stagger embraces the elegant static analysis approach and completely abandons an
 | Pure JavaDoc | ✅ | ❌ | ❌ |
 | Build-time Generation | ✅ | ❌ | ❌ |
 | Gradle 9.x Support | ✅ | ✅ | ✅ |
-| AI Enhancement | ✅ | ❌ | ❌ |
+| AI Enhancement (Roadmap) | 🛠️ Planned | ❌ | ❌ |
 | OpenAPI 3.1 | ✅ | ✅ | ✅ |
 
 ## 🔍 Differences From smart-doc
@@ -34,19 +35,17 @@ This repository is a modern maintenance fork with a gradual architecture upgrade
 
 | Area | smart-doc (upstream) | Stagger (this repository) |
 |------|-----------------------|----------------------------|
-| Build System | Maven-centric | Gradle monorepo-first |
+| Build System | Maven-centric | Gradle monorepo-first (with first-class Maven and Gradle plugins for users) |
 | JDK Strategy | Traditional baseline | Built with JDK 25 toolchain, release-compatible output target |
-| Parser Architecture | QDox-centric | `SourceModel` abstraction + JavaParser provider, with source/runtime fallback delegates and no QDox dependency |
+| Parser Architecture | QDox-centric | JavaParser-based SourceModel abstraction |
 | Spring Focus | Mainstream Spring stack | Extra focus on Spring Boot 4 / modern annotation compatibility |
 | Migration Transparency | N/A | Public migration notes in `docs/CODEX_MIGRATION_PLAN.md` |
 
-Note on QDox replacement: this fork has introduced JavaParser-based source modeling and migrated key call paths to the new abstraction. As of 2026-07-03, QDox dependency declarations have been removed from core/plugin build configuration, while parser compatibility is preserved through SourceModel-backed fallback delegates.
+Stagger uses Gradle internally to build its monorepo, but provides first-class, fully production-ready plugins for both Maven and Gradle users.
 
-Focused validation command used in migration loops:
+We have fully replaced QDox with a JavaParser-based source model to ensure better compatibility with modern Java features.
 
-```bash
-./gradlew --no-daemon :stagger-core:compileJava :stagger-gradle-plugin:compileJava :stagger-maven-plugin:compileJava :stagger-core:test --tests "*ApiDocTest" --tests "*DocUtilTest" --tests "*IRequestMappingHandlerTest"
-```
+Detailed migration logs and contributor-oriented validation commands are documented in `docs/CODEX_MIGRATION_PLAN.md` and `CONTRIBUTING.md`.
 
 ## 🚀 Quick Start
 
@@ -79,6 +78,8 @@ stagger {
     classAbsPath = "build/classes/java/main"
 }
 ```
+
+AI note: AI enhancement is currently a roadmap item and is not required for documentation generation in current releases.
 
 ## 📦 Monorepo Structure
 
