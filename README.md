@@ -4,7 +4,8 @@
 
 > **Let Swagger stagger. Keep your source code pristine.**
 
-Stagger is a **zero-intrusion, zero-annotation** API documentation generation tool built for the future (JDK 25+ / Spring Boot 4.x+) and designed to keep your source code pristine.
+Stagger is a **zero-intrusion, zero-annotation** API documentation generator built on JavaParser-powered static analysis.
+It targets modern Java stacks (JDK 25+ / Spring Boot 4.x+) while keeping your source code pristine.
 
 ## 💡 Why Stagger?
 
@@ -13,8 +14,7 @@ When Swagger floods your business code with `@Schema` and `@Operation` annotatio
 Stagger embraces the elegant static analysis approach and completely abandons annotation hell:
 
 - 🚫 **Zero Intrusion** - No third-party annotations in your codebase.
-- 📝 **Standard JavaDoc First** - Uses pure JavaDoc comments as the primary source of truth.
-- 🤖 **AI Assistance (Roadmap)** - Planned optional LLM-based enhancement for quality and consistency.
+- 📝 **Pure JavaDoc Parsing** - Reads standard JavaDoc comments and source metadata directly.
 - ⚡ **Future-Ready** - Native support for JDK 25 features (Records, Pattern Matching) & Spring Boot 4.x.
 - 🔄 **Multiple Formats** - Generate OpenAPI 3.1, Markdown, offline HTML in one command.
 
@@ -26,7 +26,6 @@ Stagger embraces the elegant static analysis approach and completely abandons an
 | Pure JavaDoc | ✅ | ❌ | ❌ |
 | Build-time Generation | ✅ | ❌ | ❌ |
 | Gradle 9.x Support | ✅ | ✅ | ✅ |
-| AI Enhancement (Roadmap) | 🛠️ Planned | ❌ | ❌ |
 | OpenAPI 3.1 | ✅ | ✅ | ✅ |
 
 ## 🔍 Differences From smart-doc
@@ -78,8 +77,6 @@ stagger {
     classAbsPath = "build/classes/java/main"
 }
 ```
-
-AI note: AI enhancement is currently a roadmap item and is not required for documentation generation in current releases.
 
 ## 📦 Monorepo Structure
 
