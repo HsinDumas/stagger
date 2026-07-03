@@ -122,7 +122,7 @@ rg -l 'import com\.ly\.doc\.gradle'        -g '*.java' | xargs sed -i '' 's/impo
   - `implementation group: 'com.ly.stagger', name: 'stagger', version: '3.1.2'` → `implementation "com.github.hsindumas:stagger-core:${version}"`。
   - `gradlePlugin.plugins.smartdocPlugin` 重命名为 `staggerPlugin`；`id = 'com.ly.stagger'` → `id = 'com.github.hsindumas.stagger'`；`implementationClass = 'com.github.hsindumas.stagger.gradle.plugin.SmartDocPlugin'` → `'com.github.hsindumas.stagger.gradle.plugin.StaggerPlugin'`（同时 `SmartDocPlugin.java` 类名重命名为 `StaggerPlugin`）。
 - `META-INF/services/*`：更新 SPI 文件里的实现类全限定名（`com.github.hsindumas.stagger.template.IDocBuildTemplate` → `com.github.hsindumas.stagger.template.IDocBuildTemplate`），文件名也一并 rename。
-- 资源模板里若引用了旧类名（Beetl / properties / html），一并搜索替换：
+- 资源模板里若引用了旧命名或模板引擎相关标识（FreeMarker / properties / html），一并搜索替换：
   ```bash
   rg 'io\.github\.smartdoc|io\.github\.stagger|com\.ly\.doc\.gradle' -g '!*.md' -g '!*.txt'
   ```
@@ -229,7 +229,7 @@ gradlePlugin {
 ```toml
 [versions]
 javaparser        = "3.26.4"
-beetl             = "3.20.0.RELEASE"
+freemarker        = "2.3.34"
 gson              = "2.13.2"
 datafaker         = "1.9.0"
 slf4j             = "2.0.17"
@@ -242,7 +242,7 @@ springBoot4Sample = "4.0.0-M2"                # 仅样例项目用
 [libraries]
 javaparser-core         = { module = "com.github.javaparser:javaparser-core",              version.ref = "javaparser" }
 javaparser-symbolsolver = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaparser" }
-beetl        = { module = "com.ibeetl:beetl",                       version.ref = "beetl" }
+freemarker   = { module = "org.freemarker:freemarker",              version.ref = "freemarker" }
 gson         = { module = "com.google.code.gson:gson",              version.ref = "gson" }
 datafaker    = { module = "net.datafaker:datafaker",                version.ref = "datafaker" }
 slf4j-api    = { module = "org.slf4j:slf4j-api",                    version.ref = "slf4j" }
@@ -273,7 +273,7 @@ mockito      = { module = "org.mockito:mockito-junit-jupiter",      version.ref 
 - **JavaParser 语言级别** 独立设置：`ParserConfiguration.setLanguageLevel(LanguageLevel.JAVA_25)`（如 JavaParser 尚未支持 JAVA_25，用最新可用的 `BLEEDING_EDGE`）。这样即使 stagger 自身跑在 JDK 17，也能解析用户 JDK 25 源码。
 - 关闭对 `sun.*` / `Unsafe` 的引用（`Xlint:all` 已覆盖）。
 - 三方库排查（在 JDK 25 运行时）：
-  - `beetl 3.20`：跑一个 smoke test。若反射受限，通过 `application.jvmArgs`/`test.jvmArgs` 加 `--add-opens java.base/java.lang=ALL-UNNAMED`。
+  - `freemarker 2.3.x`：跑一个 smoke test，覆盖 html/md/xml 模板渲染路径。
   - `jgit 6.9.x`：升级到 6.x（旧的 5.13 在高 JDK 有告警）。
   - `common-util 2.2.9`：跑 smoke test；如遇 Unsafe 问题按需升级/替换。
 
@@ -462,8 +462,8 @@ public interface SourceDocletTag {
    - `JavaParameterizedType / JavaTypeVariable / WildcardType` 与 JavaParser 的 `ClassOrInterfaceType / TypeParameter / WildcardType` 不完全一一对应。抽象层给出统一的 `SourceType` + `SourceTypeParam`。
 4. **Record / Sealed / Pattern**
    - JavaParser 原生支持；抽象层暴露 `isRecord / isSealed / permittedSubtypes`；这也是切换的核心收益。
-5. **Beetl / JGit / Unsafe 在 JDK 25**
-   - Beetl 3.20 需 smoke test；如反射受限，加 `--add-opens java.base/java.lang=ALL-UNNAMED`。
+5. **FreeMarker / JGit / Unsafe 在 JDK 25**
+  - FreeMarker 2.3.x 需 smoke test，重点覆盖模板语法兼容层与输出一致性。
    - JGit 升到 6.9.x。
 6. **Maven 插件产物 packaging**
    - Gradle 侧用 `de.benediktritter.maven-plugin-development` 或 `com.gradleup.maven-plugin`（选社区活跃的一个）生成 `plugin.xml`，产物 packaging 保持 `maven-plugin`。
