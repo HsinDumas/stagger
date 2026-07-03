@@ -54,7 +54,7 @@ Detailed migration logs and contributor-oriented validation commands are documen
 <plugin>
     <groupId>com.github.hsindumas</groupId>
     <artifactId>stagger-maven-plugin</artifactId>
-    <version>4.0.1</version>
+    <version>1.0.0-SNAPSHOT</version>
     <executions>
         <execution>
             <goals>
@@ -69,7 +69,7 @@ Detailed migration logs and contributor-oriented validation commands are documen
 
 ```gradle
 plugins {
-    id 'com.github.hsindumas.stagger' version '4.0.1'
+    id 'com.github.hsindumas.stagger' version '1.0.0-SNAPSHOT'
 }
 
 stagger {
