@@ -1,4 +1,4 @@
-<h1 align="center">Smart-Doc Gradle Plugin</h1>
+<h1 align="center">stagger Gradle Plugin</h1>
 
 ![gradle](https://img.shields.io/gradle-plugin-portal/v/com.github.hsindumas)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
@@ -28,7 +28,7 @@ Using the plugins DSL:
 
 ```
 plugins {
-  id "com.github.hsindumas" version "[latest]"
+  id "com.github.hsindumas.stagger" version "[latest]"
 }
 ```
 
@@ -46,7 +46,7 @@ buildscript {
   }
 }
 
-apply plugin: "com.github.hsindumas"
+apply plugin: "com.github.hsindumas.stagger"
 ```
 
 ### Plugin options
@@ -60,7 +60,7 @@ apply plugin: "com.github.hsindumas"
 Example setting of options:
 
 ```
-smartdoc {
+stagger {
     configFile = file("src/main/resources/default.json")
     
     // exclude example
@@ -78,27 +78,27 @@ For the configuration of `configFile`, you can also dynamically override it thro
 version `3.0.3`, you can add dynamic configuration to get the `configFile` in `build.gradle`, for example:
 
 ```groovy
-smartdoc {
-	configFile = project.hasProperty('smartdoc.configFile') ? file(project.getProperty('smartdoc.configFile')) : file("src/main/resources/stagger.json")
+stagger {
+	configFile = project.hasProperty('stagger.configFile') ? file(project.getProperty('stagger.configFile')) : file("src/main/resources/stagger.json")
 }
 ```
 
 After configuring, you can directly override it through the command line:
 
 ```shell
-gradle smartdoc -Psmartdoc.configFile=src/main/resources/stagger.json
+gradle staggerRestHtml -Pstagger.configFile=src/main/resources/stagger.json
 ```
 
 From version `3.0.3` onwards, the configuration of dynamically configuring `configFile` in `build.gradle` is very
 simple, and the plugin has the ability to completely override it.
 
 ```groovy
-smartdoc {
+stagger {
 	configFile = file("src/main/resources/stagger.json")
 }
 ```
 
-After configuration, you can directly use `-Psmartdoc.configFile` to override it.
+After configuration, you can directly use `-Pstagger.configFile` to override it.
 
 For multi-module gradle projects, if you do not want to configure in each module, you can put the `stagger` plugin
 related configuration into subprojects.
@@ -106,7 +106,7 @@ related configuration into subprojects.
 ```
 subprojects{
     apply plugin: 'com.github.hsindumas.stagger'
-    smartdoc {
+    stagger {
         //
         configFile = file("src/main/resources/stagger.json")
         // exclude artifact
@@ -151,27 +151,27 @@ please refer to the [official documentation](https://HsinDumas.github.io/guide/a
 
 ```
 // Generate documentation into HTML
-gradle smartDocRestHtml
+gradle staggerRestHtml
 // Generate markdown
-gradle smartDocRestMarkdown
+gradle staggerRestMarkdown
 // Generate adoc
-gradle smartDocRestAdoc
+gradle staggerRestAdoc
 // Generate Postman JSON data
-gradle smartDocPostman
+gradle staggerPostman
 // Generate Open API 3.0 + specification JSON documentation, since stagger-gradle-plugin 1.1.4
-gradle smartDocOpenApi
+gradle staggerOpenApi
 // Generate JMeter performance test scripts, since 3.0.0
-gradle smartDocJmeter
+gradle staggerJmeter
 // Generate documentation output to Word, since 3.0.0
 gradle word
 
 // Apache Dubbo RPC generation
 // Generate html
-gradle smartDocRpcHtml
+gradle staggerRpcHtml
 // Generate markdown
-gradle smartDocRpcMarkdown
+gradle staggerRpcMarkdown
 // Generate adoc
-gradle smartDocRpcAdoc
+gradle staggerRpcAdoc
 ```
 
 #### Use In IntelliJ IDEA
@@ -231,7 +231,7 @@ make publishToPortal
 
 ## Other reference
 
-- [Smart-doc manual](https://HsinDumas.github.io)
+- [stagger manual](https://HsinDumas.github.io)
 
 ## License
 

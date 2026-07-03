@@ -46,47 +46,47 @@ public interface GlobalConstants {
 	/**
 	 * Generate Rest html document
 	 */
-	String REST_HTML_TASK = "smartDocRestHtml";
+	String REST_HTML_TASK = "staggerRestHtml";
 
 	/**
 	 * Generate Rest Adoc document
 	 */
-	String REST_ADOC_TASK = "smartDocRestAdoc";
+	String REST_ADOC_TASK = "staggerRestAdoc";
 
 	/**
 	 * Generate Rest markdown document
 	 */
-	String REST_MARKDOWN_TASK = "smartDocRestMarkdown";
+	String REST_MARKDOWN_TASK = "staggerRestMarkdown";
 
 	/**
 	 * Generate JMeter test document
 	 */
-	String JMETER_TASK = "smartDocJmeter";
+	String JMETER_TASK = "staggerJmeter";
 
 	/**
 	 * Generate Postman document
 	 */
-	String POSTMAN_TASK = "smartDocPostman";
+	String POSTMAN_TASK = "staggerPostman";
 
 	/**
 	 * Generate OpenAPI document
 	 */
-	String OPEN_API_TASK = "smartDocOpenApi";
+	String OPEN_API_TASK = "staggerOpenApi";
 
 	/**
 	 * Generate Rpc html document
 	 */
-	String RPC_HTML_TASK = "smartDocRpcHtml";
+	String RPC_HTML_TASK = "staggerRpcHtml";
 
 	/**
 	 * Generate Rpc adoc document
 	 */
-	String RPC_ADOC_TASK = "smartDocRpcAdoc";
+	String RPC_ADOC_TASK = "staggerRpcAdoc";
 
 	/**
 	 * Generate Rpc markdown document
 	 */
-	String RPC_MARKDOWN_TASK = "smartDocRpcMarkdown";
+	String RPC_MARKDOWN_TASK = "staggerRpcMarkdown";
 
 	/**
 	 * Generate rest document push to word
@@ -146,13 +146,13 @@ public interface GlobalConstants {
 	/**
 	 * Plugin extension name
 	 */
-	String EXTENSION_NAME = "smartdoc";
+	String EXTENSION_NAME = "stagger";
 
 	/**
 	 * default java source dir
 	 */
 	String SRC_MAIN_JAVA_PATH = "src/main/java";
 
-	String CONFIG_FILE = "smartdoc.configFile";
+	String CONFIG_FILE = "stagger.configFile";
 
 }

@@ -1,4 +1,4 @@
-<h1 align="center"><a href="https://github.com/shalousun/stagger-gradle-plugin" target="_blank">Smart-Doc Gradle Plugin</a></h1>
+<h1 align="center"><a href="https://github.com/shalousun/stagger-gradle-plugin" target="_blank">stagger Gradle Plugin</a></h1>
 
 ![gradle](https://img.shields.io/gradle-plugin-portal/v/com.github.hsindumas)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
@@ -22,7 +22,7 @@ Using the plugins DSL:
 
 ```
 plugins {
-  id "com.github.hsindumas" version "[最新版本]"
+    id "com.github.hsindumas.stagger" version "[最新版本]"
 }
 ```
 
@@ -39,7 +39,7 @@ buildscript {
         classpath 'com.github.hsindumas:stagger-gradle-plugin:[最新版本]'
     }
 }
-apply(plugin = "com.github.hsindumas")
+apply(plugin = "com.github.hsindumas.stagger")
 ```
 
 ### Plugin options
@@ -53,7 +53,7 @@ apply(plugin = "com.github.hsindumas")
 Example setting of options:
 
 ```
-smartdoc {
+stagger {
     configFile = file("src/main/resources/stagger.json")
     
     // exclude example
@@ -70,33 +70,33 @@ smartdoc {
 可以在`build.gradle`中添加动态获取`configFile`的配置, 例如：
 
 ```groovy
-smartdoc {
-	configFile = project.hasProperty('smartdoc.configFile') ? file(project.getProperty('smartdoc.configFile')) : file("src/main/resources/stagger.json")
+stagger {
+	configFile = project.hasProperty('stagger.configFile') ? file(project.getProperty('stagger.configFile')) : file("src/main/resources/stagger.json")
 }
 ```
 
 配置好后直接通过命令行覆盖：
 
 ```shell
-gradle smartdoc -Psmartdoc.configFile=src/main/resources/stagger.json
+gradle staggerRestHtml -Pstagger.configFile=src/main/resources/stagger.json
 ```
 
 在`3.0.3`之后，`build.gradle`中配置动态配置`configFile`很简单，插件完全具备覆盖的功能。
 
 ```groovy
-smartdoc {
+stagger {
 	configFile = file("src/main/resources/stagger.json")
 }
 ```
 
-配置后直接使用`-Psmartdoc.configFile`即可覆盖
+配置后直接使用`-Pstagger.configFile`即可覆盖
 
 对于多模块的`Gradle`，把`stagger`插件相关配置放到根目录`build.gradle`的`subprojects`中。
 
 ```
 subprojects{
-    apply plugin: 'com.github.hsindumas'
-    smartdoc {
+    apply plugin: 'com.github.hsindumas.stagger'
+    stagger {
         //
         configFile = file("src/main/resources/stagger.json")
         // exclude artifact
@@ -143,28 +143,28 @@ https://gitee.com/devin-alan/stagger-gradle-plugin-demo
 
 ```
 //生成文档到html中
-gradle smartDocRestHtml
+gradle staggerRestHtml
 //生成markdown
-gradle smartDocRestMarkdown
+gradle staggerRestMarkdown
 //生成adoc
-gradle smartDocRestAdoc
+gradle staggerRestAdoc
 //生成postmanjson数据
-gradle smartDocPostman
+gradle staggerPostman
 //生成Open Api 3.0 +规范的json文档,since stagger-gradle-plugin 1.1.4
-gradle smartDocOpenApi
+gradle staggerOpenApi
 //生成Jmeter性能压测脚本,since 3.0.0
-gradle smartDocJmeter
+gradle staggerJmeter
 //生成文档输出到Word,since 3.0.0
 gradle word
 
 
 // Apache Dubbo Rpc生成
 // Generate html
-gradle smartDocRpcHtml
+gradle staggerRpcHtml
 // Generate markdown
-gradle smartDocRpcMarkdown
+gradle staggerRpcMarkdown
 // Generate adoc
-gradle smartDocRpcAdoc
+gradle staggerRpcAdoc
 ```
 
 #### Use IDEA

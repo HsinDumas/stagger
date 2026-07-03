@@ -52,7 +52,7 @@ public interface SourceSetUtil {
 	 * @return source code root directory
 	 * @implNote limited support: not supported {@code SourceSet} inclusions and
 	 * exclusions are configured in {@link SourceDirectorySet#getExcludes()}
-	 * {@link SourceDirectorySet#getIncludes()} if {@code SmartDoc} Support for passing
+	 * {@link SourceDirectorySet#getIncludes()} if {@code Stagger} support for passing
 	 * file trees, which can be used directly{@link SourceDirectorySet#getFiles()}
 	 * @see <a href=
 	 * "https://docs.gradle.org/current/userguide/building_java_projects.html#sec:java_source_sets">declare

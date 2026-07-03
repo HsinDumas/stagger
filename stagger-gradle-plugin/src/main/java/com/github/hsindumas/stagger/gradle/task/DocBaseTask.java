@@ -30,7 +30,7 @@ import com.power.common.util.RegexUtil;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.gradle.constant.GlobalConstants;
-import com.github.hsindumas.stagger.gradle.extension.SmartDocPluginExtension;
+import com.github.hsindumas.stagger.gradle.extension.StaggerPluginExtension;
 import com.github.hsindumas.stagger.gradle.model.CustomArtifact;
 import com.github.hsindumas.stagger.gradle.util.ArtifactFilterUtil;
 import com.github.hsindumas.stagger.gradle.util.GradleUtil;
@@ -98,13 +98,13 @@ public abstract class DocBaseTask extends DefaultTask {
 		Logger logger = getLogger();
 		Project project = getProject();
 		logger.quiet(I18nMsgUtil.get("launch_the_welcome_message"));
-		SmartDocPluginExtension pluginExtension = project.getExtensions().getByType(SmartDocPluginExtension.class);
+		StaggerPluginExtension pluginExtension = project.getExtensions().getByType(StaggerPluginExtension.class);
 		Set<String> excludes = pluginExtension.getExclude();
 		Set<String> includes = pluginExtension.getInclude();
 		javaProjectBuilder = buildJavaProjectBuilder(project, excludes, includes);
 		javaProjectBuilder.setEncoding(Charset.DEFAULT_CHARSET);
 		File file;
-		// Also configurable with Gradle or System Property: ${smartdoc.configFile}
+		// Also configurable with Gradle or System Property: ${stagger.configFile}
 		if (project.hasProperty(GlobalConstants.CONFIG_FILE)) {
 			file = new File((String) project.findProperty(GlobalConstants.CONFIG_FILE));
 		}

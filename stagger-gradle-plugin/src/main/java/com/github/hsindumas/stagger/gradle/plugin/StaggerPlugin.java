@@ -24,7 +24,7 @@ package com.github.hsindumas.stagger.gradle.plugin;
 
 import com.github.hsindumas.stagger.gradle.constant.GlobalConstants;
 import com.github.hsindumas.stagger.gradle.constant.TaskConstants;
-import com.github.hsindumas.stagger.gradle.extension.SmartDocPluginExtension;
+import com.github.hsindumas.stagger.gradle.extension.StaggerPluginExtension;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
@@ -45,7 +45,7 @@ public class StaggerPlugin implements Plugin<Project> {
 			.forEach((taskName, taskClass) -> this.createTask(project, taskName, taskClass, javaCompileTask));
 
 		// extend project-model to get our settings/configuration via nice configuration
-		project.getExtensions().create(GlobalConstants.EXTENSION_NAME, SmartDocPluginExtension.class);
+		project.getExtensions().create(GlobalConstants.EXTENSION_NAME, StaggerPluginExtension.class);
 	}
 
 	private <T extends Task> void createTask(Project project, String taskName, Class<T> taskClass,

@@ -31,7 +31,7 @@ import java.util.Set;
  * @author yu 2020/4/8.
  * @author HsinDumas
  */
-public class SmartDocPluginExtension {
+public class StaggerPluginExtension {
 
 	/**
 	 * get config file
@@ -54,7 +54,7 @@ public class SmartDocPluginExtension {
 	private Boolean increment = false;
 
 	/**
-	 * Smart doc config file, like stagger.json
+	 * Stagger config file, like stagger.json
 	 * @return Config File
 	 */
 	public File getConfigFile() {
@@ -68,9 +68,9 @@ public class SmartDocPluginExtension {
 	/**
 	 * Excludes artifacts
 	 * @param excludes Array of artifact
-	 * @return SmartDocPluginExtension
+	 * @return StaggerPluginExtension
 	 */
-	public SmartDocPluginExtension exclude(String... excludes) {
+	public StaggerPluginExtension exclude(String... excludes) {
 		this.exclude.addAll(Arrays.asList(excludes));
 		return this;
 	}
@@ -86,9 +86,9 @@ public class SmartDocPluginExtension {
 	/**
 	 * Includes artifacts
 	 * @param includes Array of artifact
-	 * @return SmartDocPluginExtension
+	 * @return StaggerPluginExtension
 	 */
-	public SmartDocPluginExtension include(String... includes) {
+	public StaggerPluginExtension include(String... includes) {
 		this.include.addAll(Arrays.asList(includes));
 		return this;
 	}
