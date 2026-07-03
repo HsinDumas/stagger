@@ -2,6 +2,8 @@
 *.class
 
 .idea
+.vscode/
+.gitee/
 *.iml
 target
 
