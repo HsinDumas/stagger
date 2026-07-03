@@ -28,11 +28,11 @@ Stagger 继承了优秀的静态解析理念，彻底摒弃注解流：
 | Gradle 9.x | ✅ | ✅ | ✅ |
 | OpenAPI 3.1 | ✅ | ✅ | ✅ |
 
-## 🔍 与 smart-doc 的差异
+## 🔍 上游沿革与差异
 
-本仓库是一个现代化维护分支，在保持稳定性的同时做增量架构升级。和 smart-doc 相比，当前差异主要是：
+Stagger 源于 smart-doc 上游项目，目前以独立项目方式持续维护，并在保持稳定性的同时做增量架构升级。当前差异主要是：
 
-| 维度 | smart-doc（上游） | Stagger（本仓库） |
+| 维度 | 上游基线 | Stagger（本仓库） |
 |------|--------------------|-------------------|
 | 构建体系 | Maven 为主 | Gradle Monorepo 为主（对用户同时提供 Maven 与 Gradle 一等插件） |
 | JDK 策略 | 传统基线 | 使用 JDK 25 toolchain 构建，产物保持向下兼容目标 |
@@ -141,5 +141,5 @@ Apache License 2.0 - 详见 LICENSE 文件
 
 ---
 
-**基于**: [smart-doc](https://github.com/smart-doc-group/smart-doc)  
+**项目沿革**: Fork 自 [smart-doc](https://github.com/smart-doc-group/smart-doc)  
 **增强**: Gradle Monorepo + JDK 25 toolchain + 完整 JavaParser 集成

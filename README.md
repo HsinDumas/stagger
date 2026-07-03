@@ -28,11 +28,11 @@ Stagger embraces the elegant static analysis approach and completely abandons an
 | Gradle 9.x Support | ✅ | ✅ | ✅ |
 | OpenAPI 3.1 | ✅ | ✅ | ✅ |
 
-## 🔍 Differences From smart-doc
+## 🔍 Upstream Lineage and Differences
 
-This repository is a modern maintenance fork with a gradual architecture upgrade path. The main differences from smart-doc are:
+Stagger originated from the smart-doc upstream and is now maintained as an independent project with a gradual architecture upgrade path. The main differences are:
 
-| Area | smart-doc (upstream) | Stagger (this repository) |
+| Area | Upstream Baseline | Stagger (this repository) |
 |------|-----------------------|----------------------------|
 | Build System | Maven-centric | Gradle monorepo-first (with first-class Maven and Gradle plugins for users) |
 | JDK Strategy | Traditional baseline | Built with JDK 25 toolchain, release-compatible output target |
@@ -141,5 +141,5 @@ Pull requests welcome! Please open an issue first for major changes.
 
 ---
 
-**Based on**: [smart-doc](https://github.com/smart-doc-group/smart-doc)  
+**Project Lineage**: Forked from [smart-doc](https://github.com/smart-doc-group/smart-doc)  
 **Enhanced with**: Gradle monorepo + JDK 25 toolchain + complete JavaParser integration
