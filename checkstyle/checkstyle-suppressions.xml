@@ -24,16 +24,35 @@
     <suppress checks="CustomImportOrderCheck" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
     <suppress checks="EmptyLineSeparatorCheck" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
     <suppress checks="JavadocTagContinuationIndentationCheck" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
-    <suppress checks="JavadocParagraph" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
-    <suppress checks="MissingJavadocMethod" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
-    <suppress checks="MissingJavadocType" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
-    <suppress checks="VariableDeclarationUsageDistance" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
-    <suppress checks="LocalVariableName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
-    <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
-    <suppress checks="NonEmptyAtclauseDescription" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
-    <suppress checks="SingleLineJavadoc" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
-    <suppress checks="InvalidJavadocPosition" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
-    <suppress checks="AtclauseOrder" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
-    <suppress checks="OverloadMethodsDeclarationOrder" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
     <suppress checks="GenericWhitespace" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+
+    <!-- Targeted core suppressions for migration hotspots (replace old module-wide blanket suppressions). -->
+    <suppress checks="MissingJavadocMethod" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]power[/\\]common[/\\]util[/\\].*"/>
+    <suppress checks="MissingJavadocMethod" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]model[/\\].*"/>
+    <suppress checks="MissingJavadocMethod" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]helper[/\\].*"/>
+    <suppress checks="MissingJavadocMethod" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]utils[/\\].*"/>
+    <suppress checks="JavadocParagraph" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]constants[/\\].*"/>
+    <suppress checks="JavadocParagraph" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]utils[/\\].*"/>
+    <suppress checks="VariableDeclarationUsageDistance" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]helper[/\\].*"/>
+    <suppress checks="VariableDeclarationUsageDistance" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]template[/\\].*"/>
+    <suppress checks="VariableDeclarationUsageDistance" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]builder[/\\].*"/>
+    <suppress checks="MissingJavadocType" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]helper[/\\].*"/>
+    <suppress checks="LocalVariableName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]helper[/\\].*"/>
+    <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]template[/\\].*"/>
+    <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]model[/\\].*"/>
+    <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]handler[/\\].*"/>
+    <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]builder[/\\].*"/>
+    <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]constants[/\\].*"/>
+    <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]helper[/\\].*"/>
+    <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]utils[/\\].*"/>
+    <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]power[/\\]common[/\\]util[/\\].*"/>
+    <suppress checks="JavadocParagraph" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]function[/\\].*"/>
+    <suppress checks="JavadocParagraph" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]helper[/\\].*"/>
+    <suppress checks="JavadocParagraph" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]template[/\\].*"/>
+    <suppress checks="JavadocParagraph" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]extension[/\\]json[/\\].*"/>
+    <suppress checks="JavadocParagraph" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]model[/\\].*"/>
+    <suppress checks="JavadocParagraph" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]builder[/\\].*"/>
+    <suppress checks="AtclauseOrder" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]utils[/\\]DocClassUtil\.java"/>
+    <suppress checks="NonEmptyAtclauseDescription" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]utils[/\\]DocClassUtil\.java"/>
+    <suppress checks="SingleLineJavadoc" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]github[/\\]hsindumas[/\\]stagger[/\\]utils[/\\]DocClassUtil\.java"/>
 </suppressions>
