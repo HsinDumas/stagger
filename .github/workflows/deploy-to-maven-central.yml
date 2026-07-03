@@ -43,10 +43,17 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_IN_MEMORY_KEY }}
+          SIGNING_IN_MEMORY_KEY: ${{ secrets.SIGNING_IN_MEMORY_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_IN_MEMORY_KEY_PASSWORD }}
         run: |
           set -euo pipefail
+
+          # Some exports include armor checksum lines (e.g. '=abcd') or escaped newlines.
+          SANITIZED_KEY="${SIGNING_IN_MEMORY_KEY//$'\\r'/}"
+          SANITIZED_KEY="${SANITIZED_KEY//\\n/$'\n'}"
+          SANITIZED_KEY="$(printf '%s\n' "$SANITIZED_KEY" | sed '/^=/d')"
+          export ORG_GRADLE_PROJECT_signingInMemoryKey="$SANITIZED_KEY"
+
           LOG_FILE="$(mktemp)"
           ./gradlew --no-daemon -PreleaseVersion=${{ steps.release_version.outputs.version }} publishReleaseToMavenCentral | tee "$LOG_FILE"
 
