@@ -1,8 +1,15 @@
-name: Release Publish (Central)
+name: Release Publish (Central Tag)
 
 on:
-  release:
-    types: [created]
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. 1.0.1 or v1.0.1)'
+        required: true
+        type: string
 
 jobs:
   publish:
@@ -20,6 +27,19 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      - name: Resolve release version
+        id: release_version
+        shell: bash
+        env:
+          RAW_VERSION: ${{ github.event_name == 'workflow_dispatch' && inputs.version || github.ref_name }}
+        run: |
+          VERSION="${RAW_VERSION#v}"
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
+            echo "Invalid release version: $VERSION"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
       - name: Publish and release artifacts to Maven Central
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
@@ -27,4 +47,4 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_IN_MEMORY_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_IN_MEMORY_KEY_PASSWORD }}
         run: |
-          ./gradlew --no-daemon publishReleaseToMavenCentral
+          ./gradlew --no-daemon -PreleaseVersion=${{ steps.release_version.outputs.version }} publishReleaseToMavenCentral

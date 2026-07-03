@@ -4,7 +4,11 @@ plugins {
 }
 
 group = "com.github.hsindumas"
-version = "1.0.0"
+val resolvedVersion = providers.gradleProperty("releaseVersion")
+    .orElse(providers.environmentVariable("RELEASE_VERSION"))
+    .orElse("1.0.1-SNAPSHOT")
+
+version = resolvedVersion.get()
 
 allprojects {
     version = rootProject.version
