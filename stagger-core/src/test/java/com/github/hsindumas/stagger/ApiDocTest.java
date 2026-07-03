@@ -106,16 +106,14 @@ public class ApiDocTest {
 		Path openApiFile = outPath.resolve("openapi.json");
 		assertTrue(Files.exists(openApiFile), "openapi.json should be generated");
 		String openApiContent = Files.readString(openApiFile, StandardCharsets.UTF_8);
-		assertTrue(openApiContent.contains("\"openapi\": \"3.1.0\""),
-				"openapi.json should contain OpenAPI 3.1 marker");
+		assertTrue(openApiContent.contains("\"openapi\": \"3.1.0\""), "openapi.json should contain OpenAPI 3.1 marker");
 
 		SwaggerBuilder.buildOpenApi(config);
 
 		Path swaggerFile = outPath.resolve("swagger.json");
 		assertTrue(Files.exists(swaggerFile), "swagger.json should be generated");
 		String swaggerContent = Files.readString(swaggerFile, StandardCharsets.UTF_8);
-		assertTrue(swaggerContent.contains("\"swagger\": \"2.0\""),
-				"swagger.json should contain Swagger 2.0 marker");
+		assertTrue(swaggerContent.contains("\"swagger\": \"2.0\""), "swagger.json should contain Swagger 2.0 marker");
 
 		String openApiContentAfterSwagger = Files.readString(openApiFile, StandardCharsets.UTF_8);
 		assertTrue(openApiContentAfterSwagger.contains("\"openapi\": \"3.1.0\""),
