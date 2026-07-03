@@ -54,7 +54,7 @@ Stagger 在仓库内部使用 Gradle 构建 monorepo，但对 Maven 与 Gradle �
 <plugin>
     <groupId>com.github.hsindumas</groupId>
     <artifactId>stagger-maven-plugin</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <executions>
         <execution>
             <goals>
@@ -69,7 +69,7 @@ Stagger 在仓库内部使用 Gradle 构建 monorepo，但对 Maven 与 Gradle �
 
 ```gradle
 plugins {
-    id 'com.github.hsindumas.stagger' version '1.0.0-SNAPSHOT'
+    id 'com.github.hsindumas.stagger' version '1.0.0'
 }
 
 stagger {

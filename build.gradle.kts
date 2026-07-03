@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.github.hsindumas"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0"
 
 allprojects {
     version = rootProject.version
