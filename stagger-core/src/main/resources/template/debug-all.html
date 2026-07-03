@@ -223,7 +223,7 @@
             </td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.field}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock"><input name="${param.field}" type="text"
-                                                                                       value="${param.value}"/></p></td>
+                                                                                       value="${param.value!''}"/></p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.type}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.required}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.desc}</p></td>
@@ -266,10 +266,10 @@
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.field}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">
               <%if(param.type=="file"&&!param.hasItems){%><input name="${param.field}" type="file"
-                                                                 value="${htmlEscape(param.value)}"/><%}else
+                                                                 value="${htmlEscape(param.value!'')}"/><%}else
               if(param.type=="file"&&param.hasItems){%><input name="${param.field}" type="file" multiple="multiple"
-                                                              value="${htmlEscape(param.value)}"/><%}else{%><input
-                name="${param.field}" type="text" value="${htmlEscape(param.value)}"/><%}%></p></td>
+                                                              value="${htmlEscape(param.value!'')}"/><%}else{%><input
+                name="${param.field}" type="text" value="${htmlEscape(param.value!'')}"/><%}%></p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.type}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.required}</p></td>
             <%if(param.version!='-'){%>
@@ -317,10 +317,10 @@
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.field}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">
               <%if(param.type=="file"&&!param.hasItems){%><input name="${param.field}" type="file"
-                                                                 value="${htmlEscape(param.value)}"/><%}else
+                                                                 value="${htmlEscape(param.value!'')}"/><%}else
               if(param.type=="file"&&param.hasItems){%><input name="${param.field}" type="file" multiple="multiple"
-                                                              value="${htmlEscape(param.value)}"/><%}else{%><input
-                name="${param.field}" type="text" value="${htmlEscape(param.value)}"/><%}%></p></td>
+                                                              value="${htmlEscape(param.value!'')}"/><%}else{%><input
+                name="${param.field}" type="text" value="${htmlEscape(param.value!'')}"/><%}%></p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.type}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.required}</p></td>
             <%if(param.version!='-'){%>
