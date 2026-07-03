@@ -33,6 +33,7 @@ import java.util.Map;
  * values for validation annotation attributes. These defaults are used for placeholder
  * resolution in validation messages (e.g., replacing {min} with the actual default value
  * from the annotation).
+ *
  * @author HsinDumas
  */
 public interface ValidationAnnotationDefaultsProvider {
