@@ -20,12 +20,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.github.hsindumas.stagger.maven.plugin.mojo;
 
-import com.github.hsindumas.stagger.builder.javadoc.JavadocHtmlBuilder;
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
-import com.github.hsindumas.stagger.model.ApiConfig;
+import com.github.hsindumas.stagger.builder.javadoc.JavadocHtmlBuilder;
 import com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants;
+import com.github.hsindumas.stagger.model.ApiConfig;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;

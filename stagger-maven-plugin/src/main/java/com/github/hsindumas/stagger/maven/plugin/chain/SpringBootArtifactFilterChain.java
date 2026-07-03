@@ -20,6 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.github.hsindumas.stagger.maven.plugin.chain;
 
 import org.apache.maven.artifact.Artifact;

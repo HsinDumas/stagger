@@ -36,11 +36,17 @@ This repository is a modern maintenance fork with a gradual architecture upgrade
 |------|-----------------------|----------------------------|
 | Build System | Maven-centric | Gradle monorepo-first |
 | JDK Strategy | Traditional baseline | Built with JDK 25 toolchain, release-compatible output target |
-| Parser Architecture | QDox-centric | `SourceModel` abstraction + JavaParser provider, with compatibility fallback during migration |
+| Parser Architecture | QDox-centric | `SourceModel` abstraction + JavaParser provider, with source/runtime fallback delegates and no QDox dependency |
 | Spring Focus | Mainstream Spring stack | Extra focus on Spring Boot 4 / modern annotation compatibility |
 | Migration Transparency | N/A | Public migration notes in `docs/CODEX_MIGRATION_PLAN.md` |
 
-Note on QDox replacement: this fork has introduced JavaParser-based source modeling and is migrating call paths incrementally. QDox compatibility paths are still present in parts of the codebase for stability during transition.
+Note on QDox replacement: this fork has introduced JavaParser-based source modeling and migrated key call paths to the new abstraction. As of 2026-07-03, QDox dependency declarations have been removed from core/plugin build configuration, while parser compatibility is preserved through SourceModel-backed fallback delegates.
+
+Focused validation command used in migration loops:
+
+```bash
+./gradlew --no-daemon :stagger-core:compileJava :stagger-gradle-plugin:compileJava :stagger-maven-plugin:compileJava :stagger-core:test --tests "*ApiDocTest" --tests "*DocUtilTest" --tests "*IRequestMappingHandlerTest"
+```
 
 ## 🚀 Quick Start
 

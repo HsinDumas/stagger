@@ -33,7 +33,7 @@ import java.util.Set;
  */
 public class ContainsFilterChain implements FilterChain {
 
-	private final static Set<String> CONTAINS_SET = new HashSet<>();
+	private static final Set<String> CONTAINS_SET = new HashSet<>();
 
 	static {
 		CONTAINS_SET.add("log4j");

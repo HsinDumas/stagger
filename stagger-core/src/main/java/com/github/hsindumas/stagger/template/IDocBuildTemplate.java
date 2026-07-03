@@ -25,7 +25,6 @@ import com.github.hsindumas.stagger.helper.DocBuildHelper;
 import com.github.hsindumas.stagger.model.ApiSchema;
 import com.github.hsindumas.stagger.model.DocMapping;
 import com.github.hsindumas.stagger.model.IDoc;
-import com.thoughtworks.qdox.model.JavaClass;
 
 import java.util.Collection;
 import java.util.List;
@@ -53,7 +52,7 @@ public interface IDocBuildTemplate<T extends IDoc> extends IDocBuildBaseTemplate
 
 		this.preRender(docBuildHelper);
 		// get candidate classes
-		Collection<JavaClass> candidateClasses = this.getCandidateClasses(projectBuilder, docBuildHelper);
+		Collection<?> candidateClasses = this.getCandidateClasses(projectBuilder, docBuildHelper);
 		ApiSchema<T> apiSchema = this.renderApi(projectBuilder, candidateClasses);
 
 		if (Objects.isNull(apiSchema)) {
@@ -70,7 +69,7 @@ public interface IDocBuildTemplate<T extends IDoc> extends IDocBuildBaseTemplate
 	 * @param candidateClasses candidate classes
 	 * @return api ApiSchema
 	 */
-	ApiSchema<T> renderApi(ProjectDocConfigBuilder projectBuilder, Collection<JavaClass> candidateClasses);
+	ApiSchema<T> renderApi(ProjectDocConfigBuilder projectBuilder, Collection<?> candidateClasses);
 
 	/**
 	 * post render

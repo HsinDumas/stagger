@@ -40,7 +40,7 @@ public class GrpcHtmlBuilder {
 	/**
 	 * index.html
 	 */
-	private final static String INDEX_HTML = "grpc-index.html";
+	private static final String INDEX_HTML = "grpc-index.html";
 
 	/**
 	 * private constructor
@@ -64,12 +64,11 @@ public class GrpcHtmlBuilder {
 	 */
 	public static void buildApiDoc(ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
 		GrpcDocBuilderTemplate grpcDocBuilderTemplate = new GrpcDocBuilderTemplate();
-		List<GrpcApiDoc> apiDocList = grpcDocBuilderTemplate.getApiDoc(false, true, false, apiConfig,
-				configBuilder.getJavaProjectBuilder());
+		List<GrpcApiDoc> apiDocList = grpcDocBuilderTemplate.getApiDoc(false, true, false, apiConfig, configBuilder);
 		grpcDocBuilderTemplate.copyJQueryAndCss(apiConfig);
-		grpcDocBuilderTemplate.buildAllInOne(apiDocList, apiConfig, configBuilder.getJavaProjectBuilder(),
+		grpcDocBuilderTemplate.buildAllInOne(apiDocList, apiConfig, configBuilder,
 				DocGlobalConstants.GRPC_ALL_IN_ONE_HTML_TPL, INDEX_HTML);
-		grpcDocBuilderTemplate.buildSearchJs(apiDocList, apiConfig, configBuilder.getJavaProjectBuilder(),
+		grpcDocBuilderTemplate.buildSearchJs(apiDocList, apiConfig, configBuilder,
 				DocGlobalConstants.GRPC_ALL_IN_ONE_SEARCH_TPL, DocGlobalConstants.SEARCH_JS_OUT);
 	}
 

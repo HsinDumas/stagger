@@ -94,8 +94,8 @@ public class HtmlApiDocBuilder {
 				if (StringUtils.isNotEmpty(config.getAllInOneDocFileName())) {
 					INDEX_HTML = config.getAllInOneDocFileName();
 				}
-				builderTemplate.buildAllInOne(apiDocList, config, configBuilder,
-						DocGlobalConstants.DEBUG_PAGE_ALL_TPL, INDEX_HTML);
+				builderTemplate.buildAllInOne(apiDocList, config, configBuilder, DocGlobalConstants.DEBUG_PAGE_ALL_TPL,
+						INDEX_HTML);
 				Template mockJs = BeetlTemplateUtil.getByName(DocGlobalConstants.DEBUG_JS_TPL);
 				FileUtil.nioWriteFile(mockJs.render(),
 						config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + DocGlobalConstants.DEBUG_JS_OUT);
@@ -104,8 +104,8 @@ public class HtmlApiDocBuilder {
 				if (StringUtils.isNotEmpty(config.getAllInOneDocFileName())) {
 					INDEX_HTML = config.getAllInOneDocFileName();
 				}
-				builderTemplate.buildAllInOne(apiDocList, config, configBuilder,
-						DocGlobalConstants.ALL_IN_ONE_HTML_TPL, INDEX_HTML);
+				builderTemplate.buildAllInOne(apiDocList, config, configBuilder, DocGlobalConstants.ALL_IN_ONE_HTML_TPL,
+						INDEX_HTML);
 			}
 			builderTemplate.buildSearchJs(config, configBuilder, apiDocList, DocGlobalConstants.SEARCH_ALL_JS_TPL);
 		}
@@ -113,16 +113,16 @@ public class HtmlApiDocBuilder {
 			String indexAlias;
 			if (config.isCreateDebugPage()) {
 				indexAlias = "debug";
-				buildDoc(builderTemplate, apiDocList, config, configBuilder,
-						DocGlobalConstants.DEBUG_PAGE_SINGLE_TPL, indexAlias);
+				buildDoc(builderTemplate, apiDocList, config, configBuilder, DocGlobalConstants.DEBUG_PAGE_SINGLE_TPL,
+						indexAlias);
 				Template mockJs = BeetlTemplateUtil.getByName(DocGlobalConstants.DEBUG_JS_TPL);
 				FileUtil.nioWriteFile(mockJs.render(),
 						config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + DocGlobalConstants.DEBUG_JS_OUT);
 			}
 			else {
 				indexAlias = "api";
-				buildDoc(builderTemplate, apiDocList, config, configBuilder,
-						DocGlobalConstants.SINGLE_INDEX_HTML_TPL, indexAlias);
+				buildDoc(builderTemplate, apiDocList, config, configBuilder, DocGlobalConstants.SINGLE_INDEX_HTML_TPL,
+						indexAlias);
 			}
 			builderTemplate.buildErrorCodeDoc(config, configBuilder, apiDocList,
 					DocGlobalConstants.SINGLE_ERROR_HTML_TPL, ERROR_CODE_HTML, indexAlias);

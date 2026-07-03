@@ -20,23 +20,35 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.github.hsindumas.stagger.maven.plugin.mojo;
 
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
-import com.github.hsindumas.stagger.model.ApiConfig;
+import com.github.hsindumas.stagger.helper.SortedClassLibraryBuilder;
 import com.github.hsindumas.stagger.maven.plugin.constant.GlobalConstants;
 import com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants;
 import com.github.hsindumas.stagger.maven.plugin.util.ArtifactFilterUtil;
 import com.github.hsindumas.stagger.maven.plugin.util.ClassLoaderUtil;
 import com.github.hsindumas.stagger.maven.plugin.util.FileUtil;
 import com.github.hsindumas.stagger.maven.plugin.util.MojoUtils;
+import com.github.hsindumas.stagger.model.ApiConfig;
 import com.power.common.constants.Charset;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.DateTimeUtil;
 import com.power.common.util.RegexUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.library.SortedClassLibraryBuilder;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -58,14 +70,6 @@ import org.apache.maven.repository.RepositorySystem;
 import org.apache.maven.shared.dependency.graph.DependencyGraphBuilder;
 import org.apache.maven.shared.dependency.graph.DependencyGraphBuilderException;
 import org.apache.maven.shared.dependency.graph.DependencyNode;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.stream.Collectors;
 
 /**
  * reference https://github.com/jboz/living-documentation
@@ -263,11 +267,11 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
 		// load java source file into javadoc builder
 		result.getArtifacts().forEach(artifact -> {
 			JarFile jarFile;
-			String sourceURL;
+			String sourceUrl;
 			try {
-				sourceURL = artifact.getFile().toURI().toURL().toString();
+				sourceUrl = artifact.getFile().toURI().toURL().toString();
 				if (getLog().isDebugEnabled()) {
-					getLog().debug("stagger loaded jar source:" + sourceURL);
+					getLog().debug("stagger loaded jar source:" + sourceUrl);
 				}
 				jarFile = new JarFile(artifact.getFile());
 			}
@@ -281,7 +285,7 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
 				String name = entry.getName();
 				try {
 					if (name.endsWith(".java") && !name.endsWith("/package-info.java")) {
-						String uri = "jar:" + sourceURL + "!/" + name;
+						String uri = "jar:" + sourceUrl + "!/" + name;
 						if (getLog().isDebugEnabled()) {
 							getLog().debug(uri);
 						}
@@ -289,7 +293,7 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
 					}
 				}
 				catch (Throwable e) {
-					getLog().warn("syntax error in jar :" + sourceURL);
+					getLog().warn("syntax error in jar :" + sourceUrl);
 					getLog().warn(e.getMessage());
 				}
 			}

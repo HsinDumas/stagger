@@ -20,10 +20,6 @@
  */
 package com.github.hsindumas.stagger.model;
 
-import com.thoughtworks.qdox.model.DocletTag;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaField;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +34,7 @@ public class DocJavaField {
 	/**
 	 * field info
 	 */
-	private JavaField javaField;
+	private Object javaField;
 
 	/**
 	 * comment
@@ -48,12 +44,12 @@ public class DocJavaField {
 	/**
 	 * tags
 	 */
-	private List<DocletTag> docletTags;
+	private List<?> docletTags;
 
 	/**
 	 * annotations
 	 */
-	private List<JavaAnnotation> annotations;
+	private List<?> annotations;
 
 	/**
 	 * field fullyQualifiedName
@@ -101,11 +97,12 @@ public class DocJavaField {
 		return new DocJavaField();
 	}
 
-	public JavaField getJavaField() {
-		return javaField;
+	@SuppressWarnings("unchecked")
+	public <T> T getJavaField() {
+		return (T) javaField;
 	}
 
-	public DocJavaField setJavaField(JavaField javaField) {
+	public DocJavaField setJavaField(Object javaField) {
 		this.javaField = javaField;
 		return this;
 	}
@@ -146,20 +143,20 @@ public class DocJavaField {
 		return this;
 	}
 
-	public List<DocletTag> getDocletTags() {
+	public List<?> getDocletTags() {
 		if (docletTags == null) {
 			return new ArrayList<>();
 		}
 		return docletTags;
 	}
 
-	public DocJavaField setDocletTags(List<DocletTag> docletTags) {
+	public DocJavaField setDocletTags(List<?> docletTags) {
 		this.docletTags = docletTags;
 		return this;
 	}
 
-	public List<JavaAnnotation> getAnnotations() {
-		List<JavaAnnotation> fieldAnnotations = javaField.getAnnotations();
+	public List<?> getAnnotations() {
+		List<?> fieldAnnotations = getJavaFieldAnnotations(javaField);
 		if (fieldAnnotations != null && !fieldAnnotations.isEmpty()) {
 			return fieldAnnotations;
 		}
@@ -169,7 +166,25 @@ public class DocJavaField {
 		return this.annotations;
 	}
 
-	public DocJavaField setAnnotations(List<JavaAnnotation> annotations) {
+	@SuppressWarnings("unchecked")
+	private static List<?> getJavaFieldAnnotations(Object field) {
+		if (field == null) {
+			return null;
+		}
+		try {
+			Object value = field.getClass().getMethod("getAnnotations").invoke(field);
+			if (value instanceof List<?>) {
+				return (List<?>) value;
+			}
+		}
+		catch (ReflectiveOperationException ignore) {
+			// Keep compatibility with parser implementations that do not expose
+			// annotations.
+		}
+		return null;
+	}
+
+	public DocJavaField setAnnotations(List<?> annotations) {
 		this.annotations = annotations;
 		return this;
 	}

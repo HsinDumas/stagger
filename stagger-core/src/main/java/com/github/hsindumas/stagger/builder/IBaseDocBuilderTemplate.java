@@ -34,7 +34,7 @@ import com.power.common.util.CollectionUtil;
 import com.power.common.util.DateTimeUtil;
 import com.power.common.util.FileUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.beetl.core.Resource;
 import org.beetl.core.Template;
@@ -84,6 +84,27 @@ public interface IBaseDocBuilderTemplate<T extends IDoc> {
 		config.setParamsDataToTree(paramsDataToTree);
 		this.checkAndInit(config, Boolean.TRUE);
 		ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(config, javaProjectBuilder);
+		IDocBuildTemplate<T> docBuildTemplate = BuildTemplateFactory.getDocBuildTemplate(config.getFramework(),
+				config.getClassLoader());
+		Objects.requireNonNull(docBuildTemplate, "doc build template is null");
+		return docBuildTemplate.getApiData(configBuilder).getApiDatas();
+	}
+
+	/**
+	 * get all doc api data
+	 * @param isAsciidoc is Asciidoc
+	 * @param showJavaType show java type
+	 * @param paramsDataToTree params data to tree
+	 * @param config ApiConfig
+	 * @param configBuilder ProjectDocConfigBuilder
+	 * @return ApiAllData
+	 */
+	default List<T> getApiDoc(boolean isAsciidoc, boolean showJavaType, boolean paramsDataToTree, ApiConfig config,
+			ProjectDocConfigBuilder configBuilder) {
+		config.setAdoc(isAsciidoc);
+		config.setShowJavaType(showJavaType);
+		config.setParamsDataToTree(paramsDataToTree);
+		this.checkAndInit(config, Boolean.TRUE);
 		IDocBuildTemplate<T> docBuildTemplate = BuildTemplateFactory.getDocBuildTemplate(config.getFramework(),
 				config.getClassLoader());
 		Objects.requireNonNull(docBuildTemplate, "doc build template is null");
@@ -238,7 +259,25 @@ public interface IBaseDocBuilderTemplate<T extends IDoc> {
 	 */
 	default void bindingCommonVariable(ApiConfig config, ProjectDocConfigBuilder configBuilder, Template template,
 			boolean apiDocListEmpty) {
-		this.bindingCommonVariable(config, configBuilder.getJavaProjectBuilder(), template, apiDocListEmpty);
+		String strTime = DateTimeUtil.long2Str(NOW, DateTimeUtil.DATE_FORMAT_SECOND);
+		List<ApiErrorCode> errorCodeList = DocUtil.errorCodeDictToList(config, configBuilder);
+		template.binding(TemplateVariable.ERROR_CODE_LIST.getVariable(), errorCodeList);
+		template.binding(TemplateVariable.VERSION_LIST.getVariable(), config.getRevisionLogs());
+		template.binding(TemplateVariable.DEPENDENCY_LIST.getVariable(), config.getRpcApiDependencies());
+		template.binding(TemplateVariable.VERSION.getVariable(), NOW);
+		template.binding(TemplateVariable.CREATE_TIME.getVariable(), strTime);
+		template.binding(TemplateVariable.PROJECT_NAME.getVariable(), config.getProjectName());
+		List<ApiDocDict> apiDocDictList = DocUtil.buildDictionary(config, configBuilder);
+		template.binding(TemplateVariable.DICT_LIST.getVariable(), apiDocDictList);
+		int codeIndex = apiDocListEmpty ? 1 : apiDocDictList.size();
+		if (CollectionUtil.isNotEmpty(errorCodeList)) {
+			template.binding(TemplateVariable.ERROR_CODE_ORDER.getVariable(), ++codeIndex);
+		}
+		if (CollectionUtil.isNotEmpty(apiDocDictList)) {
+			template.binding(TemplateVariable.DICT_ORDER.getVariable(), ++codeIndex);
+		}
+		this.setDirectoryLanguageVariable(config, template);
+		this.setCssCDN(config, template);
 	}
 
 	/**
@@ -341,7 +380,8 @@ public interface IBaseDocBuilderTemplate<T extends IDoc> {
 	 */
 	default void buildErrorCodeDoc(ApiConfig config, String template, String outPutFileName,
 			ProjectDocConfigBuilder configBuilder) {
-		this.buildErrorCodeDoc(config, template, outPutFileName, configBuilder.getJavaProjectBuilder());
+		Template tpl = this.buildErrorCodeDocTemplate(config, template, configBuilder);
+		FileUtil.nioWriteFile(tpl.render(), config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
 	}
 
 	/**
@@ -371,7 +411,13 @@ public interface IBaseDocBuilderTemplate<T extends IDoc> {
 	 */
 	default Template buildErrorCodeDocTemplate(ApiConfig config, String template,
 			ProjectDocConfigBuilder configBuilder) {
-		return this.buildErrorCodeDocTemplate(config, template, configBuilder.getJavaProjectBuilder());
+		List<ApiErrorCode> errorCodeList = DocUtil.errorCodeDictToList(config, configBuilder);
+		String strTime = DateTimeUtil.long2Str(NOW, DateTimeUtil.DATE_FORMAT_SECOND);
+		Template tpl = BeetlTemplateUtil.getByName(template);
+		this.setCssCDN(config, tpl);
+		tpl.binding(TemplateVariable.CREATE_TIME.getVariable(), strTime);
+		tpl.binding(TemplateVariable.LIST.getVariable(), errorCodeList);
+		return tpl;
 	}
 
 }

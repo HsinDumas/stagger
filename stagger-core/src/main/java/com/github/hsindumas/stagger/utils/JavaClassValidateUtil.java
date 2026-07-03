@@ -29,8 +29,6 @@ import com.github.hsindumas.stagger.constants.SpringMvcAnnotations;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
 import com.power.common.util.ValidateUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.expression.AnnotationValue;
 
 import java.util.List;
 import java.util.Objects;
@@ -416,25 +414,27 @@ public class JavaClassValidateUtil {
 	 * @param isResp isResp
 	 * @return true or false
 	 */
-	public static boolean isIgnoreFieldJson(JavaAnnotation annotation, Boolean isResp) {
-		String simpleAnnotationName = annotation.getType().getValue();
+	public static boolean isIgnoreFieldJson(Object annotation, Boolean isResp) {
+		String simpleAnnotationName = DocUtil.getAnnotationTypeValue(annotation);
 		if (DocAnnotationConstants.SHORT_JSON_IGNORE.equals(simpleAnnotationName)) {
 			return true;
 		}
 		if (DocAnnotationConstants.JSON_PROPERTY.equalsIgnoreCase(simpleAnnotationName)) {
-			AnnotationValue value = annotation.getProperty("access");
+			Object value = DocUtil.getAnnotationProperty(annotation, "access");
 			if (Objects.nonNull(value)) {
-				if (JSON_PROPERTY_READ_ONLY.equals(value.getParameterValue()) && !isResp) {
+				String resolvedValue = DocUtil.resolveAnnotationValue(Thread.currentThread().getContextClassLoader(),
+						value);
+				if (JSON_PROPERTY_READ_ONLY.equals(resolvedValue) && !isResp) {
 					return true;
 				}
-				if (JSON_PROPERTY_WRITE_ONLY.equals(value.getParameterValue()) && isResp) {
+				if (JSON_PROPERTY_WRITE_ONLY.equals(resolvedValue) && isResp) {
 					return true;
 				}
 			}
 		}
 		if (DocAnnotationConstants.SHORT_JSON_FIELD.equals(simpleAnnotationName)) {
-			AnnotationValue serialize = annotation.getProperty(DocAnnotationConstants.SERIALIZE_PROP);
-			AnnotationValue deserialize = annotation.getProperty(DocAnnotationConstants.DESERIALIZE_PROP);
+			Object serialize = DocUtil.getAnnotationProperty(annotation, DocAnnotationConstants.SERIALIZE_PROP);
+			Object deserialize = DocUtil.getAnnotationProperty(annotation, DocAnnotationConstants.DESERIALIZE_PROP);
 			if (!isResp && Objects.nonNull(deserialize) && Boolean.FALSE.toString().equals(deserialize.toString())) {
 				return true;
 			}

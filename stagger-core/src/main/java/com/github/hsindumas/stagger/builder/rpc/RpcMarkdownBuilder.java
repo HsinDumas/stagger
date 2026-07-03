@@ -56,14 +56,13 @@ public class RpcMarkdownBuilder {
 	 */
 	public static void buildApiDoc(ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
 		RpcDocBuilderTemplate builderTemplate = new RpcDocBuilderTemplate();
-		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, apiConfig,
-				configBuilder.getJavaProjectBuilder());
+		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, apiConfig, configBuilder);
 		if (apiConfig.isAllInOne()) {
 			String version = apiConfig.isCoverOld() ? "" : "-V" + DateTimeUtil.long2Str(System.currentTimeMillis(),
 					DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
 			String docName = builderTemplate.allInOneDocName(apiConfig, "rpc-all" + version,
 					DocGlobalConstants.MARKDOWN_EXTENSION);
-			builderTemplate.buildAllInOne(apiDocList, apiConfig, configBuilder.getJavaProjectBuilder(),
+			builderTemplate.buildAllInOne(apiDocList, apiConfig, configBuilder,
 					DocGlobalConstants.RPC_ALL_IN_ONE_MD_TPL, docName);
 		}
 		else {

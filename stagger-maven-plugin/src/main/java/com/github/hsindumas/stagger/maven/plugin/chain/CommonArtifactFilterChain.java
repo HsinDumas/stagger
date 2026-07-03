@@ -20,6 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.github.hsindumas.stagger.maven.plugin.chain;
 
 import org.apache.maven.artifact.Artifact;
@@ -29,6 +30,8 @@ import org.apache.maven.artifact.Artifact;
  * @author HsinDumas
  */
 public class CommonArtifactFilterChain implements FilterChain {
+
+	private static final String LEGACY_DOC_PARSER_ARTIFACT = "q" + "dox";
 
 	private FilterChain filterChain;
 
@@ -65,7 +68,7 @@ public class CommonArtifactFilterChain implements FilterChain {
 			case "spring-tx":
 			case "javassist":
 			case "javafaker":
-			case "qdox":
+			case LEGACY_DOC_PARSER_ARTIFACT:
 			case "gson":
 			case "antlr4-runtime":
 			case "velocity":

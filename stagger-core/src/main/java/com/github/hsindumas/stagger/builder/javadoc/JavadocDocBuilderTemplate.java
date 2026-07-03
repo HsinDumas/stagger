@@ -38,7 +38,7 @@ import com.github.hsindumas.stagger.utils.BeetlTemplateUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.FileUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import org.beetl.core.Template;
 
 import java.util.ArrayList;
@@ -108,6 +108,24 @@ public class JavadocDocBuilderTemplate implements IBaseDocBuilderTemplate<Javado
 	}
 
 	/**
+	 * Merge all api doc into one document
+	 * @param apiDocList list data of Api doc
+	 * @param config api config
+	 * @param configBuilder project doc config builder
+	 * @param template template
+	 * @param outPutFileName output file
+	 */
+	public void buildAllInOne(List<JavadocApiDoc> apiDocList, ApiConfig config, ProjectDocConfigBuilder configBuilder,
+			String template, String outPutFileName) {
+		String outPath = config.getOutPath();
+		FileUtil.mkdirs(outPath);
+		Template tpl = BeetlTemplateUtil.getByName(template);
+		tpl.binding(TemplateVariable.API_DOC_LIST.getVariable(), apiDocList);
+		this.bindingCommonVariable(config, configBuilder, tpl, apiDocList.isEmpty());
+		FileUtil.nioWriteFile(tpl.render(), outPath + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
+	}
+
+	/**
 	 * Build search js
 	 * @param apiDocList list data of Api doc
 	 * @param config api config
@@ -142,6 +160,44 @@ public class JavadocDocBuilderTemplate implements IBaseDocBuilderTemplate<Javado
 
 		// set dict list
 		List<ApiDocDict> apiDocDictList = DocUtil.buildDictionary(config, javaProjectBuilder);
+		tpl.binding(TemplateVariable.DICT_LIST.getVariable(), apiDocDictList);
+		tpl.binding(TemplateVariable.DIRECTORY_TREE.getVariable(), apiDocs);
+		FileUtil.nioWriteFile(tpl.render(), config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
+	}
+
+	/**
+	 * Build search js
+	 * @param apiDocList list data of Api doc
+	 * @param config api config
+	 * @param configBuilder project doc config builder
+	 * @param template template
+	 * @param outPutFileName output file
+	 */
+	public void buildSearchJs(List<JavadocApiDoc> apiDocList, ApiConfig config, ProjectDocConfigBuilder configBuilder,
+			String template, String outPutFileName) {
+		List<ApiErrorCode> errorCodeList = DocUtil.errorCodeDictToList(config, configBuilder);
+		Template tpl = BeetlTemplateUtil.getByName(template);
+		List<JavadocApiDoc> apiDocs = new ArrayList<>();
+		JavadocApiDoc apiDoc = new JavadocApiDoc();
+		apiDoc.setAlias(DEPENDENCY_TITLE);
+		apiDoc.setOrder(1);
+		apiDoc.setDesc(DEPENDENCY_TITLE);
+		apiDoc.setList(new ArrayList<>(0));
+		apiDocs.add(apiDoc);
+		for (JavadocApiDoc apiDoc1 : apiDocList) {
+			apiDoc1.setOrder(apiDocs.size() + 1);
+			apiDocs.add(apiDoc1);
+		}
+		Map<String, String> titleMap = setDirectoryLanguageVariable(config, tpl);
+		if (CollectionUtil.isNotEmpty(errorCodeList)) {
+			JavadocApiDoc apiDoc1 = new JavadocApiDoc();
+			apiDoc1.setOrder(apiDocs.size() + 1);
+			apiDoc1.setDesc(titleMap.get(TemplateVariable.ERROR_LIST_TITLE.getVariable()));
+			apiDoc1.setList(new ArrayList<>(0));
+			apiDocs.add(apiDoc1);
+		}
+
+		List<ApiDocDict> apiDocDictList = DocUtil.buildDictionary(config, configBuilder);
 		tpl.binding(TemplateVariable.DICT_LIST.getVariable(), apiDocDictList);
 		tpl.binding(TemplateVariable.DIRECTORY_TREE.getVariable(), apiDocs);
 		FileUtil.nioWriteFile(tpl.render(), config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);

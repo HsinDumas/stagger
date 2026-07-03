@@ -46,7 +46,7 @@ import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.OpenApiSchemaUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -150,7 +150,7 @@ public abstract class AbstractOpenApiBuilder {
 	 * @param apiSchema API schema
 	 * @return component schema Map
 	 */
-	abstract public Map<String, Object> buildComponentsSchema(ApiSchema<ApiDoc> apiSchema);
+	public abstract Map<String, Object> buildComponentsSchema(ApiSchema<ApiDoc> apiSchema);
 
 	/**
 	 * String component
@@ -635,14 +635,24 @@ public abstract class AbstractOpenApiBuilder {
 	/**
 	 * Get a list of OpenAPI's document data
 	 * @param config Configuration of stagger
-	 * @param projectBuilder JavaDocBuilder of QDox
+	 * @param projectBuilder Java source project builder
 	 * @return List of OpenAPI's document data
 	 */
 	public ApiSchema<ApiDoc> getOpenApiDocs(ApiConfig config, JavaProjectBuilder projectBuilder) {
+		ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(config, projectBuilder);
+		return getOpenApiDocs(config, configBuilder);
+	}
+
+	/**
+	 * Get a list of OpenAPI's document data.
+	 * @param config Configuration of stagger
+	 * @param configBuilder Project doc config builder
+	 * @return List of OpenAPI's document data
+	 */
+	public ApiSchema<ApiDoc> getOpenApiDocs(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		config.setShowJavaType(false);
 		DocBuilderTemplate builderTemplate = new DocBuilderTemplate();
 		builderTemplate.checkAndInit(config, Boolean.TRUE);
-		ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(config, projectBuilder);
 		config.setParamsDataToTree(true);
 		IDocBuildTemplate<ApiDoc> docBuildTemplate = BuildTemplateFactory.getDocBuildTemplate(config.getFramework(),
 				config.getClassLoader());
@@ -702,10 +712,12 @@ public abstract class AbstractOpenApiBuilder {
 							return new BigInteger(originalValue);
 						case "java.math.bigdecimal":
 							return new BigDecimal(originalValue);
+						default:
+							return originalValue;
 					}
+				default:
 					return originalValue;
 			}
-			return originalValue;
 		}
 		catch (Exception e) {
 			// if there is an exception, return the original value

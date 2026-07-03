@@ -25,6 +25,7 @@ import com.github.hsindumas.stagger.constants.HighlightStyle;
 import com.github.hsindumas.stagger.constants.TemplateVariable;
 import com.github.hsindumas.stagger.constants.TornaConstants;
 import com.github.hsindumas.stagger.factory.BuildTemplateFactory;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import com.github.hsindumas.stagger.model.*;
 import com.github.hsindumas.stagger.template.IDocBuildTemplate;
 import com.github.hsindumas.stagger.utils.BeetlTemplateUtil;
@@ -33,7 +34,6 @@ import com.power.common.util.CollectionUtil;
 import com.power.common.util.DateTimeUtil;
 import com.power.common.util.FileUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
 import org.beetl.core.Template;
 
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 		apiAllData.setProjectName(config.getProjectName());
 		apiAllData.setProjectId(DocUtil.generateId(config.getProjectName()));
 		apiAllData.setLanguage(config.getLanguage().getCode());
-		apiAllData.setApiDocList(listOfApiData(config, javaProjectBuilder));
+		apiAllData.setApiDocList(listOfApiData(config, new ProjectDocConfigBuilder(config, javaProjectBuilder)));
 		apiAllData.setErrorCodeList(DocUtil.errorCodeDictToList(config, javaProjectBuilder));
 		apiAllData.setRevisionLogs(config.getRevisionLogs());
 		apiAllData.setApiDocDictList(DocUtil.buildDictionary(config, javaProjectBuilder));
@@ -74,7 +74,15 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	 * @return ApiAllData
 	 */
 	public ApiAllData getApiData(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
-		return this.getApiData(config, configBuilder.getJavaProjectBuilder());
+		ApiAllData apiAllData = new ApiAllData();
+		apiAllData.setProjectName(config.getProjectName());
+		apiAllData.setProjectId(DocUtil.generateId(config.getProjectName()));
+		apiAllData.setLanguage(config.getLanguage().getCode());
+		apiAllData.setApiDocList(listOfApiData(config, configBuilder));
+		apiAllData.setErrorCodeList(DocUtil.errorCodeDictToList(config, configBuilder));
+		apiAllData.setRevisionLogs(config.getRevisionLogs());
+		apiAllData.setApiDocDictList(DocUtil.buildDictionary(config, configBuilder));
+		return apiAllData;
 	}
 
 	/**
@@ -133,7 +141,7 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	 */
 	public void buildAllInOne(List<ApiDoc> apiDocList, ApiConfig config, ProjectDocConfigBuilder configBuilder,
 			String template, String outPutFileName) {
-		this.buildAllInOne(apiDocList, config, configBuilder.getJavaProjectBuilder(), template, outPutFileName);
+		this.buildDoc(apiDocList, config, configBuilder, template, outPutFileName, null, null);
 	}
 
 	/**
@@ -211,6 +219,80 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	}
 
 	/**
+	 * get render doc template.
+	 * @param apiDocList list data of Api doc
+	 * @param config api config
+	 * @param configBuilder ProjectDocConfigBuilder
+	 * @param template template
+	 * @param apiDoc apiDoc
+	 * @param index index html
+	 * @return Template
+	 */
+	public Template buildAllRenderDocTemplate(List<ApiDoc> apiDocList, ApiConfig config,
+			ProjectDocConfigBuilder configBuilder, String template, ApiDoc apiDoc, String index) {
+		String strTime = DateTimeUtil.long2Str(NOW, DateTimeUtil.DATE_FORMAT_SECOND);
+		List<ApiErrorCode> errorCodeList = DocUtil.errorCodeDictToList(config, configBuilder);
+		Template tpl = BeetlTemplateUtil.getByName(template);
+		String style = config.getStyle();
+		tpl.binding(TemplateVariable.STYLE.getVariable(), style);
+		tpl.binding(TemplateVariable.HIGH_LIGHT_CSS_LINK.getVariable(), config.getHighlightStyleLink());
+		tpl.binding(TemplateVariable.BACKGROUND.getVariable(), HighlightStyle.getBackgroundColor(style));
+		tpl.binding(TemplateVariable.API_DOC_LIST.getVariable(), apiDocList);
+		tpl.binding(TemplateVariable.ERROR_CODE_LIST.getVariable(), errorCodeList);
+		tpl.binding(TemplateVariable.VERSION_LIST.getVariable(), config.getRevisionLogs());
+		tpl.binding(TemplateVariable.LANGUAGE.getVariable(), config.getLanguage());
+		tpl.binding(TemplateVariable.VERSION.getVariable(), NOW);
+		tpl.binding(TemplateVariable.INDEX_ALIAS.getVariable(), index);
+		tpl.binding(TemplateVariable.CREATE_TIME.getVariable(), strTime);
+		tpl.binding(TemplateVariable.PROJECT_NAME.getVariable(), config.getProjectName());
+		tpl.binding(TemplateVariable.REQUEST_EXAMPLE.getVariable(), config.isRequestExample());
+		tpl.binding(TemplateVariable.RESPONSE_EXAMPLE.getVariable(), config.isResponseExample());
+		tpl.binding(TemplateVariable.DISPLAY_REQUEST_PARAMS.getVariable(), config.isRequestParamsTable());
+		tpl.binding(TemplateVariable.DISPLAY_RESPONSE_PARAMS.getVariable(), config.isResponseParamsTable());
+		this.setCssCDN(config, tpl);
+
+		this.setDirectoryLanguageVariable(config, tpl);
+		List<ApiDocDict> apiDocDictList = DocUtil.buildDictionary(config, configBuilder);
+		tpl.binding(TemplateVariable.DICT_LIST.getVariable(), apiDocDictList);
+
+		boolean onlyHasDefaultGroup = apiDocList.stream()
+			.allMatch(doc -> Objects.equals(TornaConstants.DEFAULT_GROUP_CODE, doc.getGroup()));
+		int codeIndex = 0;
+		if (onlyHasDefaultGroup) {
+			if (!apiDocList.isEmpty()) {
+				codeIndex = apiDocList.get(0).getChildrenApiDocs().size();
+			}
+		}
+		else {
+			codeIndex = apiDocList.size();
+		}
+		tpl.binding(TemplateVariable.API_DOC_LIST_ONLY_HAS_DEFAULT_GROUP.getVariable(), onlyHasDefaultGroup);
+
+		if (CollectionUtil.isNotEmpty(errorCodeList)) {
+			tpl.binding(TemplateVariable.ERROR_CODE_ORDER.getVariable(), ++codeIndex);
+		}
+
+		if (CollectionUtil.isNotEmpty(apiDocDictList)) {
+			tpl.binding(TemplateVariable.DICT_ORDER.getVariable(), ++codeIndex);
+		}
+
+		if (Objects.nonNull(apiDoc)) {
+			tpl.binding(TemplateVariable.DESC.getVariable(), apiDoc.getDesc());
+			tpl.binding(TemplateVariable.ORDER.getVariable(), apiDoc.getOrder());
+			tpl.binding(TemplateVariable.LIST.getVariable(), apiDoc.getList());
+		}
+		// add jmeter prometheus listener
+		if (Objects.nonNull(config.getJmeter())) {
+			tpl.binding(TemplateVariable.JMETER_PROMETHEUS_LISTENER.getVariable(),
+					config.getJmeter().getAddPrometheusListener());
+		}
+		else {
+			tpl.binding(TemplateVariable.JMETER_PROMETHEUS_LISTENER.getVariable(), Boolean.FALSE);
+		}
+		return tpl;
+	}
+
+	/**
 	 * Merge all api doc into one document.
 	 * @param apiDocList list data of Api doc
 	 * @param config api config
@@ -240,8 +322,10 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	 */
 	public void buildDoc(List<ApiDoc> apiDocList, ApiConfig config, ProjectDocConfigBuilder configBuilder,
 			String template, String outPutFileName, ApiDoc apiDoc, String index) {
-		this.buildDoc(apiDocList, config, configBuilder.getJavaProjectBuilder(), template, outPutFileName, apiDoc,
-				index);
+		String outPath = config.getOutPath();
+		FileUtil.mkdirs(outPath);
+		Template tpl = this.buildAllRenderDocTemplate(apiDocList, config, configBuilder, template, apiDoc, index);
+		FileUtil.nioWriteFile(tpl.render(), outPath + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
 	}
 
 	/**
@@ -351,7 +435,93 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	 */
 	public void buildSearchJs(ApiConfig config, ProjectDocConfigBuilder configBuilder, List<ApiDoc> apiDocList,
 			String template) {
-		this.buildSearchJs(config, configBuilder.getJavaProjectBuilder(), apiDocList, template);
+		List<ApiErrorCode> errorCodeList = DocUtil.errorCodeDictToList(config, configBuilder);
+		Template tpl = BeetlTemplateUtil.getByName(template);
+		// directory tree
+		List<ApiDoc> apiDocs = new ArrayList<>();
+		for (ApiDoc apiDoc1 : apiDocList) {
+			apiDoc1.setOrder(apiDocs.size() + 1);
+			apiDocs.add(apiDoc1);
+		}
+
+		boolean isOnlyDefaultGroup = apiDocList.size() == 1;
+		Map<String, String> titleMap = this.setDirectoryLanguageVariable(config, tpl);
+		// set error code
+		if (CollectionUtil.isNotEmpty(errorCodeList)) {
+			ApiDoc apiDoc1 = new ApiDoc();
+			int codeIndex = 0;
+			if (isOnlyDefaultGroup) {
+				codeIndex = apiDocs.get(0).getChildrenApiDocs().size();
+			}
+			else {
+				codeIndex = apiDocList.size();
+			}
+			apiDoc1.setOrder(codeIndex + 1);
+			apiDoc1.setDesc(titleMap.get(TemplateVariable.ERROR_LIST_TITLE.getVariable()));
+			apiDoc1.setList(new ArrayList<>(0));
+			apiDoc1.setLink("error_code_list");
+			apiDoc1.setAlias("error");
+			apiDoc1.setGroup(apiDoc1.getDesc());
+			if (isOnlyDefaultGroup) {
+				apiDocs.get(0).getChildrenApiDocs().add(apiDoc1);
+			}
+			else {
+				apiDocs.add(apiDoc1);
+			}
+		}
+		// set dict list
+		List<ApiDocDict> apiDocDictList = DocUtil.buildDictionary(config, configBuilder);
+		if (CollectionUtil.isNotEmpty(apiDocDictList)) {
+			ApiDoc apiDoc1 = new ApiDoc();
+			int codeIndex = 0;
+			if (isOnlyDefaultGroup) {
+				if (!apiDocs.isEmpty()) {
+					codeIndex = apiDocs.get(0).getChildrenApiDocs().size();
+				}
+			}
+			else {
+				codeIndex = apiDocList.size();
+			}
+			apiDoc1.setOrder(codeIndex + 1);
+			apiDoc1.setLink("dict_list");
+			apiDoc1.setAlias("dict");
+			apiDoc1.setDesc(titleMap.get(TemplateVariable.DICT_LIST_TITLE.getVariable()));
+			apiDoc1.setGroup(apiDoc1.getDesc());
+			List<ApiMethodDoc> methodDocs = new ArrayList<>();
+			List<ApiDoc> childrenApiDocs = new ArrayList<>();
+			for (ApiDocDict apiDocDict : apiDocDictList) {
+				ApiMethodDoc methodDoc = new ApiMethodDoc();
+				methodDoc.setOrder(apiDocDict.getOrder());
+				String title = "";
+				if (StringUtil.isNotEmpty(apiDocDict.getTitle())) {
+					title = apiDocDict.getTitle();
+				}
+				methodDoc.setDesc(title);
+				methodDocs.add(methodDoc);
+
+				ApiDoc childrenApiDoc = new ApiDoc();
+				childrenApiDoc.setOrder(apiDocDict.getOrder());
+				childrenApiDoc.setAlias(title);
+				childrenApiDoc.setDesc(title);
+				childrenApiDoc.setName(title);
+				childrenApiDoc.setList(new ArrayList<>(0));
+				childrenApiDocs.add(childrenApiDoc);
+
+			}
+			apiDoc1.setChildrenApiDocs(childrenApiDocs);
+			apiDoc1.setList(methodDocs);
+			if (isOnlyDefaultGroup) {
+				if (!apiDocs.isEmpty()) {
+					apiDocs.get(0).getChildrenApiDocs().add(apiDoc1);
+				}
+			}
+			else {
+				apiDocs.add(apiDoc1);
+			}
+		}
+		tpl.binding(TemplateVariable.API_DOC_LIST.getVariable(), apiDocs);
+		FileUtil.nioWriteFile(tpl.render(),
+				config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + DocGlobalConstants.SEARCH_JS_OUT);
 	}
 
 	/**
@@ -405,8 +575,33 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	 */
 	public void buildErrorCodeDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder, List<ApiDoc> apiDocList,
 			String template, String outPutFileName, String indexAlias) {
-		this.buildErrorCodeDoc(config, configBuilder.getJavaProjectBuilder(), apiDocList, template, outPutFileName,
-				indexAlias);
+		List<ApiErrorCode> errorCodeList = DocUtil.errorCodeDictToList(config, configBuilder);
+		String strTime = DateTimeUtil.long2Str(NOW, DateTimeUtil.DATE_FORMAT_SECOND);
+		Template errorTemplate = BeetlTemplateUtil.getByName(template);
+		errorTemplate.binding(TemplateVariable.PROJECT_NAME.getVariable(), config.getProjectName());
+		String style = config.getStyle();
+		errorTemplate.binding(TemplateVariable.HIGH_LIGHT_CSS_LINK.getVariable(), config.getHighlightStyleLink());
+		errorTemplate.binding(TemplateVariable.STYLE.getVariable(), style);
+		if (CollectionUtil.isEmpty(errorCodeList)) {
+			errorTemplate.binding(TemplateVariable.DICT_ORDER.getVariable(), apiDocList.size() + 1);
+		}
+		else {
+			errorTemplate.binding(TemplateVariable.DICT_ORDER.getVariable(), apiDocList.size() + 2);
+		}
+		// set css cdn
+		this.setCssCDN(config, errorTemplate);
+		List<ApiDocDict> apiDocDictList = DocUtil.buildDictionary(config, configBuilder);
+		errorTemplate.binding(TemplateVariable.CREATE_TIME.getVariable(), strTime);
+		errorTemplate.binding(TemplateVariable.VERSION.getVariable(), NOW);
+		errorTemplate.binding(TemplateVariable.DICT_LIST.getVariable(), apiDocDictList);
+		errorTemplate.binding(TemplateVariable.INDEX_ALIAS.getVariable(), indexAlias);
+		errorTemplate.binding(TemplateVariable.API_DOC_LIST.getVariable(), apiDocList);
+		errorTemplate.binding(TemplateVariable.BACKGROUND.getVariable(), HighlightStyle.getBackgroundColor(style));
+		errorTemplate.binding(TemplateVariable.ERROR_CODE_LIST.getVariable(), errorCodeList);
+		setDirectoryLanguageVariable(config, errorTemplate);
+		FileUtil.nioWriteFile(errorTemplate.render(),
+				config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
+
 	}
 
 	/**
@@ -460,8 +655,33 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	 */
 	public void buildDirectoryDataDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder, List<ApiDoc> apiDocList,
 			String template, String outPutFileName, String indexAlias) {
-		this.buildDirectoryDataDoc(config, configBuilder.getJavaProjectBuilder(), apiDocList, template, outPutFileName,
-				indexAlias);
+		List<ApiDocDict> directoryList = DocUtil.buildDictionary(config, configBuilder);
+		Template mapper = BeetlTemplateUtil.getByName(template);
+		String strTime = DateTimeUtil.long2Str(NOW, DateTimeUtil.DATE_FORMAT_SECOND);
+		mapper.binding(TemplateVariable.PROJECT_NAME.getVariable(), config.getProjectName());
+		String style = config.getStyle();
+		mapper.binding(TemplateVariable.HIGH_LIGHT_CSS_LINK.getVariable(), config.getHighlightStyleLink());
+		mapper.binding(TemplateVariable.STYLE.getVariable(), style);
+		List<ApiErrorCode> errorCodeList = DocUtil.errorCodeDictToList(config, configBuilder);
+		// set css cdn
+		this.setCssCDN(config, mapper);
+		if (CollectionUtil.isNotEmpty(errorCodeList)) {
+			mapper.binding(TemplateVariable.DICT_ORDER.getVariable(), apiDocList.size() + 2);
+		}
+		else {
+			mapper.binding(TemplateVariable.DICT_ORDER.getVariable(), apiDocList.size() + 1);
+		}
+
+		mapper.binding(TemplateVariable.CREATE_TIME.getVariable(), strTime);
+		mapper.binding(TemplateVariable.VERSION.getVariable(), NOW);
+		mapper.binding(TemplateVariable.API_DOC_LIST.getVariable(), apiDocList);
+		mapper.binding(TemplateVariable.INDEX_ALIAS.getVariable(), indexAlias);
+		mapper.binding(TemplateVariable.BACKGROUND.getVariable(), HighlightStyle.getBackgroundColor(style));
+		mapper.binding(TemplateVariable.ERROR_CODE_LIST.getVariable(), errorCodeList);
+		this.setDirectoryLanguageVariable(config, mapper);
+		mapper.binding(TemplateVariable.DICT_LIST.getVariable(), directoryList);
+		FileUtil.nioWriteFile(mapper.render(),
+				config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
 	}
 
 	/**
@@ -487,7 +707,9 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	 */
 	public void buildDirectoryDataDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder, String template,
 			String outPutFileName) {
-		this.buildDirectoryDataDoc(config, configBuilder.getJavaProjectBuilder(), template, outPutFileName);
+		Template mapper = buildDirectoryDataDocTemplate(config, configBuilder, template);
+		FileUtil.nioWriteFile(mapper.render(),
+				config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
 	}
 
 	/**
@@ -519,7 +741,15 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	 */
 	public Template buildDirectoryDataDocTemplate(ApiConfig config, ProjectDocConfigBuilder configBuilder,
 			String template) {
-		return this.buildDirectoryDataDocTemplate(config, configBuilder.getJavaProjectBuilder(), template);
+		List<ApiDocDict> directoryList = DocUtil.buildDictionary(config, configBuilder);
+		Template mapper = BeetlTemplateUtil.getByName(template);
+		this.setDirectoryLanguageVariable(config, mapper);
+		// set css cdn
+		this.setCssCDN(config, mapper);
+		String strTime = DateTimeUtil.long2Str(NOW, DateTimeUtil.DATE_FORMAT_SECOND);
+		mapper.binding(TemplateVariable.CREATE_TIME.getVariable(), strTime);
+		mapper.binding(TemplateVariable.DICT_LIST.getVariable(), directoryList);
+		return mapper;
 	}
 
 	/**
@@ -528,10 +758,9 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	 * @param javaProjectBuilder JavaProjectBuilder
 	 * @return ApiData list
 	 */
-	private List<ApiDoc> listOfApiData(ApiConfig config, JavaProjectBuilder javaProjectBuilder) {
+	private List<ApiDoc> listOfApiData(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		this.checkAndInitForGetApiData(config);
 		config.setMd5EncryptedHtmlName(true);
-		ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(config, javaProjectBuilder);
 		IDocBuildTemplate<ApiDoc> docBuildTemplate = BuildTemplateFactory.getDocBuildTemplate(config.getFramework(),
 				config.getClassLoader());
 		Objects.requireNonNull(docBuildTemplate, "doc build template is null");

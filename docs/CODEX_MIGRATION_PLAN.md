@@ -11,6 +11,8 @@
 > - **groupId / packageName 全部改为 `com.github.hsindumas`**。
 > - **改动过的文件更新 `@author HsinDumas`**（保留原作者行）。
 
+> 状态补充（2026-07-03）：core/plugin 构建配置中的 QDox 依赖声明已移除；解析兼容路径由 SourceModel 驱动的 fallback delegate 承接，不再要求运行期提供 QDox。
+
 ---
 
 ## 0. 现状快照（Codex 请先阅读）

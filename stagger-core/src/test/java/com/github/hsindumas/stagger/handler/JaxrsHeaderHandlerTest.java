@@ -26,8 +26,7 @@ import com.github.hsindumas.stagger.constants.ParamTypeConstants;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiReqParam;
 import com.github.hsindumas.stagger.model.SourceCodePath;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaMethod;
+import com.github.hsindumas.stagger.utils.DocUtil;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -64,8 +63,9 @@ class JaxrsHeaderHandlerTest {
 		Files.writeString(packageRoot.resolve("NestedEnumHeaderResource.java"), source, StandardCharsets.UTF_8);
 
 		ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
-		JavaMethod method = this.findMethod(builder, "sample.jaxrs.NestedEnumHeaderResource", "header");
-		String enumType = method.getParameters().get(0).getGenericFullyQualifiedName();
+		Object method = this.findMethod(builder, "sample.jaxrs.NestedEnumHeaderResource", "header");
+		Object parameter = DocUtil.getMethodParameters(method).get(0);
+		String enumType = DocUtil.getParameterGenericFullyQualifiedName(parameter);
 
 		ProjectDocConfigBuilder fallbackBuilder = Mockito.spy(builder);
 		doReturn(true).when(fallbackBuilder).isEnumType(enumType);
@@ -97,8 +97,9 @@ class JaxrsHeaderHandlerTest {
 		Files.writeString(packageRoot.resolve("EnumDefaultHeaderResource.java"), source, StandardCharsets.UTF_8);
 
 		ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
-		JavaMethod method = this.findMethod(builder, "sample.jaxrs.EnumDefaultHeaderResource", "headerDefault");
-		String enumType = method.getParameters().get(0).getGenericFullyQualifiedName();
+		Object method = this.findMethod(builder, "sample.jaxrs.EnumDefaultHeaderResource", "headerDefault");
+		Object parameter = DocUtil.getMethodParameters(method).get(0);
+		String enumType = DocUtil.getParameterGenericFullyQualifiedName(parameter);
 
 		ProjectDocConfigBuilder fallbackBuilder = Mockito.spy(builder);
 		doReturn(true).when(fallbackBuilder).isEnumType(enumType);
@@ -121,12 +122,12 @@ class JaxrsHeaderHandlerTest {
 		return new ProjectDocConfigBuilder(config, null);
 	}
 
-	private JavaMethod findMethod(ProjectDocConfigBuilder builder, String className, String methodName) {
-		JavaClass javaClass = builder.getClassByName(className);
+	private Object findMethod(ProjectDocConfigBuilder builder, String className, String methodName) {
+		Object javaClass = builder.getClassByName(className);
 		assertNotNull(javaClass, "Expected class to be loaded: " + className);
-		return javaClass.getMethods()
+		return DocUtil.getClassMethods(javaClass)
 			.stream()
-			.filter(method -> methodName.equals(method.getName()))
+			.filter(method -> methodName.equals(DocUtil.getMethodName(method)))
 			.findFirst()
 			.orElseThrow(() -> new IllegalStateException("Method not found: " + methodName));
 	}

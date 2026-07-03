@@ -33,10 +33,6 @@ import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.github.hsindumas.stagger.utils.JavaFieldUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.JavaParameter;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -58,13 +54,13 @@ public interface IHeaderHandler {
 	 * @return {@code List<ApiReqParam>}
 	 */
 	@SuppressWarnings("unchecked")
-	default List<ApiReqParam> handle(JavaMethod method, ProjectDocConfigBuilder projectBuilder) {
+	default List<ApiReqParam> handle(Object method, ProjectDocConfigBuilder projectBuilder) {
 		List<ApiReqParam> mappingHeaders = new ArrayList<>();
-		List<JavaAnnotation> annotations = method.getAnnotations();
+		List<?> annotations = DocUtil.getMethodAnnotations(method);
 		HeaderAnnotation headerAnnotation = getHeaderAnnotation();
-		for (JavaAnnotation annotation : annotations) {
-			String annotationName = annotation.getType().getValue();
-			Object headersObject = annotation.getNamedParameter("headers");
+		for (Object annotation : annotations) {
+			String annotationName = DocUtil.getAnnotationTypeValue(annotation);
+			Object headersObject = DocUtil.getAnnotationNamedParameter(annotation, "headers");
 			if (!isMapping(annotationName) || Objects.isNull(headersObject)) {
 				continue;
 			}
@@ -83,14 +79,14 @@ public interface IHeaderHandler {
 			}
 		}
 		List<ApiReqParam> reqHeaders = new ArrayList<>();
-		for (JavaParameter javaParameter : method.getParameters()) {
-			List<JavaAnnotation> javaAnnotations = javaParameter.getAnnotations();
-			String className = method.getDeclaringClass().getCanonicalName();
-			String parameterName = javaParameter.getName();
+		for (Object javaParameter : DocUtil.getMethodParameters(method)) {
+			List<?> javaAnnotations = DocUtil.getParameterAnnotations(javaParameter);
+			String className = DocUtil.getMethodDeclaringClassCanonicalName(method);
+			String parameterName = DocUtil.getParameterName(javaParameter);
 			Map<String, String> paramCommentMap = DocUtil.getCommentsByTag(method, DocTags.PARAM, className);
 
-			for (JavaAnnotation annotation : javaAnnotations) {
-				String annotationName = JavaClassUtil.getClassSimpleName(annotation.getType().getValue());
+			for (Object annotation : javaAnnotations) {
+				String annotationName = JavaClassUtil.getClassSimpleName(DocUtil.getAnnotationTypeValue(annotation));
 				if (!headerAnnotation.getAnnotationName().equals(annotationName)) {
 					continue;
 				}
@@ -119,14 +115,14 @@ public interface IHeaderHandler {
 	 * @param builder builder
 	 * @param paramCommentMap paramCommentMap
 	 */
-	default void handleParamTypeAndValue(JavaParameter javaParameter, ApiReqParam apiReqHeader,
+	default void handleParamTypeAndValue(Object javaParameter, ApiReqParam apiReqHeader,
 			ProjectDocConfigBuilder builder, Map<String, String> paramCommentMap) {
-		String fullyQualifiedName = javaParameter.getFullyQualifiedName();
-		String genericFullyQualifiedName = javaParameter.getGenericFullyQualifiedName();
-		String paramName = javaParameter.getName();
-		JavaClass javaClass = builder.getClassByName(genericFullyQualifiedName);
+		String fullyQualifiedName = DocUtil.getParameterFullyQualifiedName(javaParameter);
+		String genericFullyQualifiedName = DocUtil.getParameterGenericFullyQualifiedName(javaParameter);
+		String paramName = DocUtil.getParameterName(javaParameter);
+		Object javaClass = builder.getClassByName(genericFullyQualifiedName);
 		boolean enumType = builder.isEnumType(genericFullyQualifiedName);
-		String simpleTypeName = javaParameter.getType().getValue();
+		String simpleTypeName = DocUtil.getParameterTypeValue(javaParameter);
 
 		if (JavaClassValidateUtil.isCollection(fullyQualifiedName)
 				|| JavaClassValidateUtil.isArray(fullyQualifiedName)) {
@@ -136,10 +132,10 @@ public interface IHeaderHandler {
 				gicName = gicName.substring(0, gicName.indexOf("["));
 			}
 			// handle array and list mock value
-			JavaClass gicJavaClass = builder.getClassByName(gicName);
+			Object gicJavaClass = builder.getClassByName(gicName);
 			boolean gicEnumType = builder.isEnumType(gicName);
 			if (gicEnumType) {
-				boolean hasGicJavaEnumClass = Objects.nonNull(gicJavaClass) && gicJavaClass.isEnum();
+				boolean hasGicJavaEnumClass = DocUtil.isClassEnum(gicJavaClass);
 				if (Objects.nonNull(gicJavaClass)) {
 					String enumComment = ParamsBuildHelper.handleEnumComment(gicJavaClass, builder);
 					apiReqHeader.setDesc(apiReqHeader.getDesc() + enumComment);
@@ -178,15 +174,15 @@ public interface IHeaderHandler {
 			}
 		}
 		else if (JavaClassValidateUtil.isPrimitive(fullyQualifiedName)) {
-			String mockValue = JavaFieldUtil.createMockValue(paramCommentMap, paramName,
-					javaParameter.getFullyQualifiedName(), simpleTypeName);
+			String mockValue = JavaFieldUtil.createMockValue(paramCommentMap, paramName, fullyQualifiedName,
+					simpleTypeName);
 
 			apiReqHeader.setType(DocClassUtil.processTypeNameForParams(simpleTypeName));
 			apiReqHeader.setValue(mockValue);
 		}
 		// Handle if it is enum types
 		else if (enumType) {
-			boolean hasJavaEnumClass = Objects.nonNull(javaClass) && javaClass.isEnum();
+			boolean hasJavaEnumClass = DocUtil.isClassEnum(javaClass);
 			if (Objects.nonNull(javaClass)) {
 				String enumComment = ParamsBuildHelper.handleEnumComment(javaClass, builder);
 				apiReqHeader.setDesc(apiReqHeader.getDesc() + enumComment);
@@ -223,11 +219,11 @@ public interface IHeaderHandler {
 	 * @param apiReqHeader apiReqHeader
 	 * @param projectBuilder projectBuilder
 	 */
-	default void handleParamAnnotation(JavaAnnotation annotation, ApiReqParam apiReqHeader,
+	default void handleParamAnnotation(Object annotation, ApiReqParam apiReqHeader,
 			ProjectDocConfigBuilder projectBuilder) {
 		HeaderAnnotation headerAnnotation = getHeaderAnnotation();
 		Map<String, String> constantsMap = projectBuilder.getConstantsMap();
-		Map<String, Object> requestHeaderMap = annotation.getNamedParameterMap();
+		Map<String, Object> requestHeaderMap = DocUtil.getAnnotationNamedParameterMap(annotation);
 		if (requestHeaderMap != null && requestHeaderMap.size() > 0) {
 			// Obtain header value
 			if (requestHeaderMap.containsKey(headerAnnotation.getValueProp())) {

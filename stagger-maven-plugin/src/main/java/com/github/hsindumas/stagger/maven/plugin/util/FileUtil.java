@@ -20,10 +20,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.github.hsindumas.stagger.maven.plugin.util;
 
 import com.power.common.util.StringUtil;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,6 +37,11 @@ public class FileUtil {
 
 	private static Pattern pattern = Pattern.compile(regex);
 
+	/**
+	 * Determine whether a path is absolute on current platform.
+	 * @param path input path
+	 * @return true when absolute
+	 */
 	public static boolean isAbsPath(String path) {
 		if (StringUtil.isEmpty(path)) {
 			return false;

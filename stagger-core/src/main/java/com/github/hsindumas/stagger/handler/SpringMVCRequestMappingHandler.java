@@ -31,8 +31,6 @@ import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaMethod;
 
 import java.util.List;
 import java.util.Map;
@@ -50,21 +48,20 @@ import static com.github.hsindumas.stagger.constants.DocTags.IGNORE;
 public class SpringMVCRequestMappingHandler implements IRequestMappingHandler, IWebSocketRequestHandler {
 
 	@Override
-	public RequestMapping handle(ProjectDocConfigBuilder projectBuilder, String controllerBaseUrl, JavaMethod method,
+	public RequestMapping handle(ProjectDocConfigBuilder projectBuilder, String controllerBaseUrl, Object method,
 			FrameworkAnnotations frameworkAnnotations, RequestMappingFunc requestMappingFunc) {
 
-		if (Objects.nonNull(method.getTagByName(IGNORE))) {
+		if (Objects.nonNull(DocUtil.getMethodTagByName(method, IGNORE))) {
 			return null;
 		}
-		List<JavaAnnotation> annotations = getAnnotations(method);
+		List<?> annotations = getAnnotations(method);
 		String methodType = null;
 		String shortUrl = null;
 		String mediaType = null;
-		boolean deprecated = Objects.nonNull(method.getTagByName(DEPRECATED));
+		boolean deprecated = Objects.nonNull(DocUtil.getMethodTagByName(method, DEPRECATED));
 		Map<String, MappingAnnotation> mappingAnnotationMap = frameworkAnnotations.getMappingAnnotations();
-		for (JavaAnnotation annotation : annotations) {
-			String annotationName = annotation.getType().getName();
-			annotationName = JavaClassUtil.getClassSimpleName(annotationName);
+		for (Object annotation : annotations) {
+			String annotationName = JavaClassUtil.getClassSimpleName(DocUtil.getAnnotationTypeSimpleName(annotation));
 			if (DocAnnotationConstants.DEPRECATED.equals(annotationName)) {
 				deprecated = true;
 			}
@@ -73,7 +70,7 @@ public class SpringMVCRequestMappingHandler implements IRequestMappingHandler, I
 				continue;
 			}
 			// get consumes of annotation
-			Object consumes = annotation.getNamedParameter("consumes");
+			Object consumes = DocUtil.getAnnotationNamedParameter(annotation, "consumes");
 			if (Objects.nonNull(consumes)) {
 				mediaType = consumes.toString();
 			}
@@ -86,7 +83,7 @@ public class SpringMVCRequestMappingHandler implements IRequestMappingHandler, I
 				methodType = mappingAnnotation.getMethodType();
 			}
 			else {
-				Object nameParam = annotation.getNamedParameter(mappingAnnotation.getMethodProp());
+				Object nameParam = DocUtil.getAnnotationNamedParameter(annotation, mappingAnnotation.getMethodProp());
 				if (Objects.nonNull(nameParam)) {
 					methodType = nameParam.toString();
 					methodType = DocUtil.handleHttpMethod(methodType);
@@ -102,7 +99,7 @@ public class SpringMVCRequestMappingHandler implements IRequestMappingHandler, I
 			.setDeprecated(deprecated)
 			.setShortUrl(shortUrl);
 		requestMapping = formatMappingData(projectBuilder, controllerBaseUrl, requestMapping);
-		requestMappingFunc.process(method.getDeclaringClass(), requestMapping);
+		requestMappingFunc.process(DocUtil.getMethodDeclaringClassCanonicalName(method), requestMapping);
 		return requestMapping;
 	}
 

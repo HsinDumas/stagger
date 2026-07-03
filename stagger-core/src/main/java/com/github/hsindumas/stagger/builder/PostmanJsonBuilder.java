@@ -45,7 +45,7 @@ import com.github.hsindumas.stagger.utils.JsonUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.FileUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -89,16 +89,25 @@ public class PostmanJsonBuilder {
 	/**
 	 * Only for stagger maven plugin and gradle plugin.
 	 * @param config ApiConfig Object
-	 * @param projectBuilder QDOX avaProjectBuilder
+	 * @param projectBuilder Java source project builder
 	 */
 	public static void buildPostmanCollection(ApiConfig config, JavaProjectBuilder projectBuilder) {
+		ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(config, projectBuilder);
+		buildPostmanCollection(config, configBuilder);
+	}
+
+	/**
+	 * Only for stagger maven plugin and gradle plugin.
+	 * @param config ApiConfig Object
+	 * @param configBuilder Project doc config builder
+	 */
+	public static void buildPostmanCollection(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		DocBuilderTemplate builderTemplate = new DocBuilderTemplate();
 		builderTemplate.checkAndInit(config, Boolean.TRUE);
 		if (StringUtil.isNotEmpty(config.getServerEnv())) {
 			config.setServerUrl(config.getServerEnv());
 		}
 		config.setParamsDataToTree(false);
-		ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(config, projectBuilder);
 		postManCreate(config, configBuilder);
 	}
 

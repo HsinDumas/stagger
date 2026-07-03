@@ -75,13 +75,6 @@ import com.power.common.util.RandomUtil;
 import com.power.common.util.StringUtil;
 import com.power.common.util.UrlUtil;
 import com.power.common.util.ValidateUtil;
-import com.thoughtworks.qdox.model.DocletTag;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.JavaParameter;
-import com.thoughtworks.qdox.model.JavaType;
-import com.thoughtworks.qdox.model.expression.AnnotationValue;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -141,15 +134,19 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 */
 	default ApiSchema<ApiDoc> processApiData(ProjectDocConfigBuilder projectBuilder,
 			FrameworkAnnotations frameworkAnnotations, List<ApiReqParam> configApiReqParams,
-			IRequestMappingHandler baseMappingHandler, IHeaderHandler headerHandler,
-			Collection<JavaClass> javaClasses) {
+			IRequestMappingHandler baseMappingHandler, IHeaderHandler headerHandler, Collection<?> javaClasses) {
 		ApiConfig apiConfig = projectBuilder.getApiConfig();
 		List<ApiDoc> apiDocList = new ArrayList<>();
 		boolean setCustomOrder = false;
 		int maxOrder = 0;
 		ApiSchema<ApiDoc> apiSchema = new ApiSchema<>();
 		// exclude class is ignore
-		for (JavaClass cls : javaClasses) {
+		for (Object clsObj : javaClasses) {
+			Object cls = clsObj;
+			String canonicalName = DocUtil.getClassCanonicalName(cls);
+			if (StringUtil.isEmpty(canonicalName)) {
+				continue;
+			}
 			if (StringUtil.isNotEmpty(apiConfig.getPackageFilters())) {
 				// from smart config
 				if (!DocUtil.isMatch(apiConfig.getPackageFilters(), cls)) {
@@ -162,8 +159,8 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 				}
 			}
 			// from tag
-			DocletTag ignoreTag = cls.getTagByName(DocTags.IGNORE);
-			if (!this.isEntryPoint(cls, frameworkAnnotations) || Objects.nonNull(ignoreTag)) {
+			if (!this.isEntryPoint(cls, frameworkAnnotations)
+					|| Objects.nonNull(DocUtil.getClassTagByName(cls, DocTags.IGNORE))) {
 				continue;
 			}
 			int order = 0;
@@ -258,9 +255,9 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * @param isUseMd5 Flag indicating whether to use MD5 hashing to generate a unique
 	 * alias for the documented class.
 	 */
-	default void handleApiDoc(JavaClass cls, List<ApiDoc> apiDocList, List<ApiMethodDoc> apiMethodDocs, int order,
+	default void handleApiDoc(Object cls, List<ApiDoc> apiDocList, List<ApiMethodDoc> apiMethodDocs, int order,
 			boolean isUseMd5) {
-		String controllerName = cls.getName();
+		String controllerName = DocUtil.getClassSimpleName(cls);
 		ApiDoc apiDoc = new ApiDoc();
 		String classAuthor = JavaClassUtil.getClassTagsValue(cls, DocTags.AUTHOR, Boolean.TRUE);
 		apiDoc.setOrder(order);
@@ -268,13 +265,16 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 		apiDoc.setAuthor(classAuthor);
 		apiDoc.setAlias(controllerName);
 		apiDoc.setFolder(true);
-		apiDoc.setPackageName(cls.getPackage().getName());
+		apiDoc.setPackageName(DocUtil.getClassPackageName(cls));
 		// apiDoc.setAuthor();
 
 		// handle class tags
-		List<DocletTag> classTags = cls.getTagsByName(DocTags.TAG);
+		List<?> classTags = DocUtil.getClassTags(cls)
+			.stream()
+			.filter(tag -> DocTags.TAG.equals(DocUtil.getDocletTagName(tag)))
+			.collect(Collectors.toList());
 		Set<String> tagSet = classTags.stream()
-			.map(DocletTag::getValue)
+			.map(DocUtil::getDocletTagValue)
 			.map(StringUtils::trim)
 			.collect(Collectors.toCollection(LinkedHashSet::new));
 		String[] tags = tagSet.toArray(new String[] {});
@@ -284,7 +284,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			String name = DocUtil.generateId(apiDoc.getName());
 			apiDoc.setAlias(name);
 		}
-		String desc = DocUtil.getEscapeAndCleanComment(cls.getComment());
+		String desc = DocUtil.getEscapeAndCleanComment(DocUtil.getClassComment(cls));
 		String detail = JavaClassUtil.getClassTagsValue(cls, DocTags.API_NOTE, Boolean.TRUE);
 		if (StringUtil.isEmpty(detail)) {
 			detail = desc;
@@ -401,17 +401,17 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * @return The resolved and cleaned parameter name, or the default if not specified in
 	 * the annotation.
 	 */
-	default String getParamName(ClassLoader classLoader, String paramName, JavaAnnotation annotation) {
+	default String getParamName(ClassLoader classLoader, String paramName, Object annotation) {
 		// First, attempt to resolve the parameter name using the 'value' property of the
 		// annotation
 		String resolvedParamName = DocUtil.resolveAnnotationValue(classLoader,
-				annotation.getProperty(DocAnnotationConstants.VALUE_PROP));
+				DocUtil.getAnnotationProperty(annotation, DocAnnotationConstants.VALUE_PROP));
 
 		// If the 'value' property did not yield a usable name, try resolving it with the
 		// 'name' property
 		if (StringUtils.isBlank(resolvedParamName)) {
 			resolvedParamName = DocUtil.resolveAnnotationValue(classLoader,
-					annotation.getProperty(DocAnnotationConstants.NAME_PROP));
+					DocUtil.getAnnotationProperty(annotation, DocAnnotationConstants.NAME_PROP));
 		}
 
 		// If a name was successfully resolved from the annotation, replace the default
@@ -503,7 +503,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * @return a list of annotations for the specified class, including inherited mapping
 	 * annotations
 	 */
-	default List<JavaAnnotation> getClassAnnotations(JavaClass cls, FrameworkAnnotations frameworkAnnotations) {
+	default List<?> getClassAnnotations(Object cls, FrameworkAnnotations frameworkAnnotations) {
 		return this.getClassAnnotations(cls, frameworkAnnotations, null);
 	}
 
@@ -517,10 +517,10 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * @return a list of annotations for the specified class, including inherited mapping
 	 * annotations
 	 */
-	default List<JavaAnnotation> getClassAnnotations(JavaClass cls, FrameworkAnnotations frameworkAnnotations,
+	default List<?> getClassAnnotations(Object cls, FrameworkAnnotations frameworkAnnotations,
 			ProjectDocConfigBuilder projectBuilder) {
 		// Retrieve the annotations of the specified class
-		List<JavaAnnotation> annotationsList = new ArrayList<>(cls.getAnnotations());
+		List<Object> annotationsList = new ArrayList<>(DocUtil.getClassAnnotations(cls));
 
 		// Get entry annotations from framework annotations
 		Map<String, EntryAnnotation> entryAnnotationMap = Objects.isNull(frameworkAnnotations.getEntryAnnotations())
@@ -533,9 +533,9 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 
 		// Check if the class has both entry and mapping annotations
 		boolean hasEntryAndMappingAnnotation = annotationsList.stream().anyMatch(item -> {
-			String annotationName = item.getType().getValue();
-			String fullyName = item.getType().getFullyQualifiedName();
-			String simpleName = item.getType().getSimpleName();
+			String annotationName = DocUtil.getAnnotationTypeValue(item);
+			String fullyName = DocUtil.getAnnotationTypeFullyQualifiedName(item);
+			String simpleName = DocUtil.getAnnotationTypeSimpleName(item);
 			return (entryAnnotationMap.containsKey(annotationName) || entryAnnotationMap.containsKey(fullyName)
 					|| entryAnnotationMap.containsKey(simpleName))
 					&& (mappingAnnotationMap.containsKey(annotationName) || mappingAnnotationMap.containsKey(fullyName)
@@ -549,20 +549,19 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 		}
 
 		// Inherit mapping annotations from superclass, if any
-		JavaClass superJavaClass = cls.getSuperJavaClass();
+		Object superJavaClass = DocUtil.getClassSuperJavaClass(cls);
 		if (Objects.nonNull(superJavaClass)
-				&& !JavaTypeConstants.OBJECT_SIMPLE_NAME.equals(superJavaClass.getSimpleName())) {
-			List<JavaAnnotation> superAnnotations = this.getClassAnnotations(superJavaClass, frameworkAnnotations,
-					projectBuilder);
+				&& !JavaTypeConstants.OBJECT_SIMPLE_NAME.equals(DocUtil.getClassSimpleName(superJavaClass))) {
+			List<?> superAnnotations = this.getClassAnnotations(superJavaClass, frameworkAnnotations, projectBuilder);
 			annotationsList.addAll(superAnnotations);
 		}
 
 		// Inherit mapping annotations from interfaces, if any
-		List<JavaClass> interfaceList = this.resolveImplementedInterfaces(projectBuilder, cls);
+		List<?> interfaceList = this.resolveImplementedInterfaces(projectBuilder, cls);
 		if (CollectionUtil.isNotEmpty(interfaceList)) {
-			for (JavaClass javaInterface : interfaceList) {
-				List<JavaAnnotation> interfaceAnnotations = this.getClassAnnotations(javaInterface,
-						frameworkAnnotations, projectBuilder);
+			for (Object javaInterface : interfaceList) {
+				List<?> interfaceAnnotations = this.getClassAnnotations(javaInterface, frameworkAnnotations,
+						projectBuilder);
 				annotationsList.addAll(interfaceAnnotations);
 			}
 		}
@@ -584,8 +583,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * @return a list of annotations for the specified class, including inherited mapping
 	 * annotations
 	 */
-	default List<JavaAnnotation> getClassAnnotations(JavaClass cls,
-			Map<String, MappingAnnotation> mappingAnnotationMap) {
+	default List<?> getClassAnnotations(Object cls, Map<String, MappingAnnotation> mappingAnnotationMap) {
 		return this.getClassAnnotations(cls, mappingAnnotationMap, null);
 	}
 
@@ -600,16 +598,16 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * @return a list of annotations for the specified class, including inherited mapping
 	 * annotations
 	 */
-	default List<JavaAnnotation> getClassAnnotations(JavaClass cls, Map<String, MappingAnnotation> mappingAnnotationMap,
+	default List<?> getClassAnnotations(Object cls, Map<String, MappingAnnotation> mappingAnnotationMap,
 			ProjectDocConfigBuilder projectBuilder) {
 		// Retrieve the annotations of the specified class
-		List<JavaAnnotation> annotationsList = new ArrayList<>(cls.getAnnotations());
+		List<Object> annotationsList = new ArrayList<>(DocUtil.getClassAnnotations(cls));
 
 		// Check if the class has both mapping annotations
 		boolean hasMappingAnnotation = annotationsList.stream().anyMatch(item -> {
-			String annotationName = item.getType().getValue();
-			String fullyName = item.getType().getFullyQualifiedName();
-			String simpleName = item.getType().getSimpleName();
+			String annotationName = DocUtil.getAnnotationTypeValue(item);
+			String fullyName = DocUtil.getAnnotationTypeFullyQualifiedName(item);
+			String simpleName = DocUtil.getAnnotationTypeSimpleName(item);
 			return mappingAnnotationMap.containsKey(annotationName) || mappingAnnotationMap.containsKey(fullyName)
 					|| mappingAnnotationMap.containsKey(simpleName);
 		});
@@ -620,26 +618,36 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 		}
 
 		// Inherit mapping annotations from superclass, if any
-		JavaClass superJavaClass = cls.getSuperJavaClass();
+		Object superJavaClass = DocUtil.getClassSuperJavaClass(cls);
 		if (Objects.nonNull(superJavaClass)
-				&& !JavaTypeConstants.OBJECT_SIMPLE_NAME.equals(superJavaClass.getSimpleName())) {
+				&& !JavaTypeConstants.OBJECT_SIMPLE_NAME.equals(DocUtil.getClassSimpleName(superJavaClass))) {
 			annotationsList.addAll(this.getClassAnnotations(superJavaClass, mappingAnnotationMap, projectBuilder)
 				.stream()
-				.filter(annotation -> mappingAnnotationMap.containsKey(annotation.getType().getValue())
-						|| mappingAnnotationMap.containsKey(annotation.getType().getFullyQualifiedName())
-						|| mappingAnnotationMap.containsKey(annotation.getType().getSimpleName()))
+				.filter(annotation -> {
+					String annotationName = DocUtil.getAnnotationTypeValue(annotation);
+					String fullyName = DocUtil.getAnnotationTypeFullyQualifiedName(annotation);
+					String simpleName = DocUtil.getAnnotationTypeSimpleName(annotation);
+					return mappingAnnotationMap.containsKey(annotationName)
+							|| mappingAnnotationMap.containsKey(fullyName)
+							|| mappingAnnotationMap.containsKey(simpleName);
+				})
 				.collect(Collectors.toList()));
 		}
 
 		// Inherit mapping annotations from interfaces, if any
-		List<JavaClass> interfaceList = this.resolveImplementedInterfaces(projectBuilder, cls);
+		List<?> interfaceList = this.resolveImplementedInterfaces(projectBuilder, cls);
 		if (CollectionUtil.isNotEmpty(interfaceList)) {
-			for (JavaClass javaInterface : interfaceList) {
+			for (Object javaInterface : interfaceList) {
 				annotationsList.addAll(this.getClassAnnotations(javaInterface, mappingAnnotationMap, projectBuilder)
 					.stream()
-					.filter(annotation -> mappingAnnotationMap.containsKey(annotation.getType().getValue())
-							|| mappingAnnotationMap.containsKey(annotation.getType().getFullyQualifiedName())
-							|| mappingAnnotationMap.containsKey(annotation.getType().getSimpleName()))
+					.filter(annotation -> {
+						String annotationName = DocUtil.getAnnotationTypeValue(annotation);
+						String fullyName = DocUtil.getAnnotationTypeFullyQualifiedName(annotation);
+						String simpleName = DocUtil.getAnnotationTypeSimpleName(annotation);
+						return mappingAnnotationMap.containsKey(annotationName)
+								|| mappingAnnotationMap.containsKey(fullyName)
+								|| mappingAnnotationMap.containsKey(simpleName);
+					})
 					.collect(Collectors.toList()));
 			}
 		}
@@ -653,38 +661,38 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * @param cls source class
 	 * @return resolved interfaces
 	 */
-	default List<JavaClass> resolveImplementedInterfaces(ProjectDocConfigBuilder projectBuilder, JavaClass cls) {
+	default List<?> resolveImplementedInterfaces(ProjectDocConfigBuilder projectBuilder, Object cls) {
 		if (Objects.isNull(cls)) {
 			return Collections.emptyList();
 		}
-		List<JavaClass> defaultInterfaces = JavaClassUtil.getInterfaceClasses(cls);
+		List<?> defaultInterfaces = JavaClassUtil.getInterfaceClasses(cls);
 		if (Objects.isNull(projectBuilder)) {
 			return defaultInterfaces;
 		}
-		String className = cls.getCanonicalName();
+		String className = DocUtil.getClassCanonicalName(cls);
 		if (StringUtil.isEmpty(className)) {
-			className = cls.getFullyQualifiedName();
+			className = DocUtil.getClassGenericFullyQualifiedName(cls);
 		}
 		List<String> interfaceNames = projectBuilder.getImplementedInterfaceNames(className);
 		if (CollectionUtil.isEmpty(interfaceNames)) {
 			return defaultInterfaces;
 		}
-		List<JavaClass> resolvedInterfaces = new ArrayList<>();
+		List<Object> resolvedInterfaces = new ArrayList<>();
 		Set<String> resolvedNames = new LinkedHashSet<>();
 		for (String interfaceName : interfaceNames) {
-			JavaClass interfaceClass = projectBuilder.getClassByName(interfaceName);
+			Object interfaceClass = projectBuilder.getClassByName(interfaceName);
 			if (Objects.isNull(interfaceClass)) {
 				interfaceClass = projectBuilder.getClassByName(DocClassUtil.getSimpleName(interfaceName));
 			}
 			if (Objects.isNull(interfaceClass)) {
 				continue;
 			}
-			String resolvedName = interfaceClass.getCanonicalName();
+			String resolvedName = DocUtil.getClassCanonicalName(interfaceClass);
 			if (StringUtil.isEmpty(resolvedName)) {
-				resolvedName = interfaceClass.getFullyQualifiedName();
+				resolvedName = DocUtil.getClassGenericFullyQualifiedName(interfaceClass);
 			}
 			if (StringUtil.isEmpty(resolvedName)) {
-				resolvedName = interfaceClass.getSimpleName();
+				resolvedName = DocUtil.getClassSimpleName(interfaceClass);
 			}
 			if (resolvedNames.add(resolvedName)) {
 				resolvedInterfaces.add(interfaceClass);
@@ -711,25 +719,29 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * handling methods and their associated status information.
 	 */
 	default List<ApiExceptionStatus> buildExceptionStatus(ProjectDocConfigBuilder projectBuilder,
-			Collection<JavaClass> javaClasses, FrameworkAnnotations frameworkAnnotations) {
+			Collection<?> javaClasses, FrameworkAnnotations frameworkAnnotations) {
 		ApiConfig apiConfig = projectBuilder.getApiConfig();
 		Set<String> statusSet = new HashSet<>(8);
 		List<ApiExceptionStatus> exceptionStatusList = new ArrayList<>(8);
-		for (JavaClass cls : javaClasses) {
+		for (Object clsObj : javaClasses) {
+			Object cls = clsObj;
+			if (StringUtil.isEmpty(DocUtil.getClassCanonicalName(cls))) {
+				continue;
+			}
 			// from tag
-			DocletTag ignoreTag = cls.getTagByName(DocTags.IGNORE);
-			if (!this.isExceptionAdviceEntryPoint(cls, frameworkAnnotations) || Objects.nonNull(ignoreTag)) {
+			if (!this.isExceptionAdviceEntryPoint(cls, frameworkAnnotations)
+					|| Objects.nonNull(DocUtil.getClassTagByName(cls, DocTags.IGNORE))) {
 				continue;
 			}
 			boolean paramsDataToTree = projectBuilder.getApiConfig().isParamsDataToTree();
 
-			List<JavaMethod> methods = cls.getMethods();
+			List<?> methods = DocUtil.getClassMethods(cls);
 			List<DocJavaMethod> docJavaMethods = new ArrayList<>(methods.size());
-			for (JavaMethod method : methods) {
-				if (method.isPrivate()) {
+			for (Object method : methods) {
+				if (DocUtil.isMethodPrivate(method)) {
 					continue;
 				}
-				if (Objects.nonNull(method.getTagByName(IGNORE))) {
+				if (Objects.nonNull(DocUtil.getMethodTagByName(method, IGNORE))) {
 					continue;
 				}
 				docJavaMethods.add(this.convertToDocJavaMethod(apiConfig, projectBuilder, method, null));
@@ -738,7 +750,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			docJavaMethods.addAll(this.getParentsClassMethods(apiConfig, projectBuilder, cls));
 
 			for (DocJavaMethod docJavaMethod : docJavaMethods) {
-				JavaMethod method = docJavaMethod.getJavaMethod();
+				Object method = docJavaMethod.getJavaMethod();
 				ExceptionAdviceMethod adviceMethod = this.processExceptionAdviceMethod(method);
 				if (Objects.isNull(adviceMethod) || !adviceMethod.isExceptionHandlerMethod()
 						|| Objects.isNull(adviceMethod.getStatus())) {
@@ -763,7 +775,8 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 				apiExceptionStatus.setExceptionResponseParams(responseParams);
 
 				// build response usage
-				String responseValue = DocUtil.getNormalTagComments(method, DocTags.API_RESPONSE, cls.getName());
+				String responseValue = DocUtil.getNormalTagComments(method, DocTags.API_RESPONSE,
+						DocUtil.getClassSimpleName(cls));
 				if (StringUtil.isNotEmpty(responseValue)) {
 					responseValue = responseValue.replaceAll("<br>", "");
 					apiExceptionStatus.setResponseUsage(JsonUtil.toPrettyFormat(responseValue));
@@ -799,11 +812,11 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * documentation.
 	 * @return A list of API method documentation.
 	 */
-	default List<ApiMethodDoc> buildEntryPointMethod(final JavaClass cls, ApiConfig apiConfig,
+	default List<ApiMethodDoc> buildEntryPointMethod(final Object cls, ApiConfig apiConfig,
 			ProjectDocConfigBuilder projectBuilder, FrameworkAnnotations frameworkAnnotations,
 			List<ApiReqParam> configApiReqParams, IRequestMappingHandler baseMappingHandler,
 			IHeaderHandler headerHandler) {
-		String clazzName = cls.getCanonicalName();
+		String clazzName = DocUtil.getClassCanonicalName(cls);
 		boolean paramsDataToTree = projectBuilder.getApiConfig().isParamsDataToTree();
 		ClassLoader classLoader = projectBuilder.getApiConfig().getClassLoader();
 		String group = JavaClassUtil.getClassTagsValue(cls, DocTags.GROUP, Boolean.TRUE);
@@ -811,17 +824,20 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 		Map<String, MappingAnnotation> mappingAnnotations = Objects.isNull(frameworkAnnotations.getMappingAnnotations())
 				? Collections.emptyMap() : frameworkAnnotations.getMappingAnnotations();
 		// Get class mappingAnnotations from class and its parent class or interface
-		List<JavaAnnotation> classAnnotations = this.getClassAnnotations(cls, mappingAnnotations, projectBuilder);
+		List<?> classAnnotations = this.getClassAnnotations(cls, mappingAnnotations, projectBuilder);
 
 		String baseUrl = "";
 		// The requestMapping annotation's consumes value on class
 		String classMediaType = null;
 		Map<String, MappingAnnotation> mappingAnnotationMap = frameworkAnnotations.getMappingAnnotations();
-		for (JavaAnnotation annotation : classAnnotations) {
-			String annotationName = annotation.getType().getValue();
+		for (Object annotation : classAnnotations) {
+			String annotationName = DocUtil.getAnnotationTypeValue(annotation);
 			MappingAnnotation mappingAnnotation = mappingAnnotationMap.get(annotationName);
 			if (Objects.isNull(mappingAnnotation)) {
-				mappingAnnotation = mappingAnnotationMap.get(annotation.getType().getSimpleName());
+				mappingAnnotation = mappingAnnotationMap.get(DocUtil.getAnnotationTypeSimpleName(annotation));
+			}
+			if (Objects.isNull(mappingAnnotation)) {
+				mappingAnnotation = mappingAnnotationMap.get(DocUtil.getAnnotationTypeFullyQualifiedName(annotation));
 			}
 			if (Objects.isNull(mappingAnnotation)) {
 				continue;
@@ -832,7 +848,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			}
 			// use first annotation's value
 			if (classMediaType == null) {
-				Object consumes = annotation.getNamedParameter(mappingAnnotation.getConsumesProp());
+				Object consumes = DocUtil.getAnnotationNamedParameter(annotation, mappingAnnotation.getConsumesProp());
 				if (consumes != null) {
 					classMediaType = consumes.toString();
 				}
@@ -842,33 +858,33 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 		Set<String> filterMethods = DocUtil.findFilterMethods(clazzName);
 		boolean needAllMethods = filterMethods.contains(DocGlobalConstants.DEFAULT_FILTER_METHOD);
 
-		List<JavaMethod> methods = cls.getMethods();
+		List<?> methods = DocUtil.getClassMethods(cls);
 		List<DocJavaMethod> docJavaMethods = new ArrayList<>(methods.size());
-		for (JavaMethod method : methods) {
-			if (method.isPrivate()
-					|| DocUtil.isMatch(apiConfig.getPackageExcludeFilters(), clazzName + "." + method.getName())) {
+		for (Object method : methods) {
+			if (DocUtil.isMethodPrivate(method) || DocUtil.isMatch(apiConfig.getPackageExcludeFilters(),
+					clazzName + "." + DocUtil.getMethodName(method))) {
 				continue;
 			}
-			if (Objects.nonNull(method.getTagByName(IGNORE))) {
+			if (Objects.nonNull(DocUtil.getMethodTagByName(method, IGNORE))) {
 				continue;
 			}
-			if (needAllMethods || filterMethods.contains(method.getName())) {
+			if (needAllMethods || filterMethods.contains(DocUtil.getMethodName(method))) {
 				docJavaMethods.add(this.convertToDocJavaMethod(apiConfig, projectBuilder, method, null));
 			}
 		}
 		// add parent class methods
 		docJavaMethods.addAll(this.getParentsClassMethods(apiConfig, projectBuilder, cls));
 		for (String interfaceName : projectBuilder.getImplementedInterfaceNames(clazzName)) {
-			JavaClass javaClass = projectBuilder.getClassByName(interfaceName);
+			Object javaClass = projectBuilder.getClassByName(interfaceName);
 			if (Objects.isNull(javaClass)) {
 				javaClass = projectBuilder.getClassByName(DocClassUtil.getSimpleName(interfaceName));
 			}
 			if (Objects.isNull(javaClass)) {
 				continue;
 			}
-			Map<String, JavaType> actualTypesMap = JavaClassUtil.getActualTypesMap(javaClass);
-			for (JavaMethod method : javaClass.getMethods()) {
-				if (method.isDefault()) {
+			Map<String, ?> actualTypesMap = JavaClassUtil.getActualTypesMap(javaClass);
+			for (Object method : DocUtil.getClassMethods(javaClass)) {
+				if (DocUtil.isMethodDefault(method)) {
 					docJavaMethods.add(this.convertToDocJavaMethod(apiConfig, projectBuilder, method, actualTypesMap));
 				}
 			}
@@ -880,12 +896,12 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 		List<ApiMethodDoc> methodDocList = new ArrayList<>(methods.size());
 		int methodOrder = 0;
 		for (DocJavaMethod docJavaMethod : docJavaMethods) {
-			JavaMethod method = docJavaMethod.getJavaMethod();
+			Object method = docJavaMethod.getJavaMethod();
 
 			// handle request mapping
 			RequestMapping requestMapping = baseMappingHandler.handle(projectBuilder, baseUrl, method,
-					frameworkAnnotations,
-					(javaClass, mapping) -> this.requestMappingPostProcess(javaClass, method, mapping));
+					frameworkAnnotations, (className, mapping) -> this
+						.requestMappingPostProcess(DocUtil.getMethodDeclaringClass(method), method, mapping));
 			if (Objects.isNull(requestMapping)) {
 				continue;
 			}
@@ -894,6 +910,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			}
 			docJavaMethod.setMethodType(requestMapping.getMethodType());
 			ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
+			apiMethodDoc.setDeclaringClassName(DocUtil.getMethodDeclaringClassCanonicalName(method));
 			// fill contentType by annotation's consumes parameter
 			String mediaType = requestMapping.getMediaType();
 			if (Objects.nonNull(mediaType)) {
@@ -913,13 +930,13 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			}
 
 			// handle tags
-			List<DocletTag> tags = method.getTagsByName(DocTags.TAG);
-			apiMethodDoc.setTags(tags.stream().map(DocletTag::getValue).toArray(String[]::new));
+			List<?> tags = DocUtil.getMethodTagsByName(method, DocTags.TAG);
+			apiMethodDoc.setTags(tags.stream().map(DocUtil::getDocletTagValue).toArray(String[]::new));
 
 			methodOrder++;
 			apiMethodDoc.setOrder(methodOrder);
-			apiMethodDoc.setName(method.getName());
-			String common = method.getComment();
+			apiMethodDoc.setName(DocUtil.getMethodName(method));
+			String common = DocUtil.getMethodComment(method);
 			if (StringUtil.isEmpty(common)) {
 				common = JavaClassUtil.getSameSignatureMethodCommonFromInterface(cls, method);
 			}
@@ -929,7 +946,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			apiMethodDoc.setDesc(common);
 			apiMethodDoc.setAuthor(docJavaMethod.getAuthor());
 			apiMethodDoc.setDetail(docJavaMethod.getDetail());
-			String methodUid = DocUtil.generateId(clazzName + method.getName() + methodOrder);
+			String methodUid = DocUtil.generateId(clazzName + DocUtil.getMethodName(method) + methodOrder);
 			apiMethodDoc.setMethodId(methodUid);
 			// handle headers
 			List<ApiReqParam> apiReqHeaders = headerHandler.handle(method, projectBuilder);
@@ -993,7 +1010,8 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			apiMethodDoc.setRequestExample(requestExample);
 			apiMethodDoc.setRequestUsage(requestJson == null ? requestExample.getUrl() : requestJson);
 			// build response usage
-			String responseValue = DocUtil.getNormalTagComments(method, DocTags.API_RESPONSE, cls.getName());
+			String responseValue = DocUtil.getNormalTagComments(method, DocTags.API_RESPONSE,
+					DocUtil.getClassSimpleName(cls));
 			if (StringUtil.isNotEmpty(responseValue)) {
 				responseValue = responseValue.replaceAll("<br>", "");
 				apiMethodDoc.setResponseUsage(JsonUtil.toPrettyFormat(responseValue));
@@ -1036,21 +1054,27 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 */
 	default ApiMethodReqParam requestParams(final DocJavaMethod docJavaMethod, ProjectDocConfigBuilder builder,
 			List<ApiReqParam> configApiReqParams, FrameworkAnnotations frameworkAnnotations) {
-		JavaMethod javaMethod = docJavaMethod.getJavaMethod();
+		Object javaMethod = docJavaMethod.getJavaMethod();
 		boolean isStrict = builder.getApiConfig().isStrict();
 		boolean isShowValidation = builder.getApiConfig().isShowValidation();
 		ClassLoader classLoader = builder.getApiConfig().getClassLoader();
-		String className = javaMethod.getDeclaringClass().getCanonicalName();
+		String className = DocUtil.getMethodDeclaringClassCanonicalName(javaMethod);
 		Map<String, String> paramTagMap = docJavaMethod.getParamTagMap();
 		Map<String, String> paramsComments = docJavaMethod.getParamsComments();
 		List<ApiParam> paramList = new ArrayList<>();
 		Map<String, String> mappingParams = new HashMap<>(16);
-		List<JavaAnnotation> methodAnnotations = javaMethod.getAnnotations();
+		List<?> methodAnnotations = DocUtil.getMethodAnnotations(javaMethod);
 		Map<String, MappingAnnotation> mappingAnnotationMap = frameworkAnnotations.getMappingAnnotations();
 		String methodMediaType = null;
-		for (JavaAnnotation annotation : methodAnnotations) {
-			String annotationName = annotation.getType().getName();
+		for (Object annotation : methodAnnotations) {
+			String annotationName = DocUtil.getAnnotationTypeValue(annotation);
 			MappingAnnotation mappingAnnotation = mappingAnnotationMap.get(annotationName);
+			if (Objects.isNull(mappingAnnotation)) {
+				mappingAnnotation = mappingAnnotationMap.get(DocUtil.getAnnotationTypeSimpleName(annotation));
+			}
+			if (Objects.isNull(mappingAnnotation)) {
+				mappingAnnotation = mappingAnnotationMap.get(DocUtil.getAnnotationTypeFullyQualifiedName(annotation));
+			}
 			if (Objects.nonNull(mappingAnnotation)) {
 				if (Objects.nonNull(mappingAnnotation.getConsumesProp())) {
 					List<String> consumes = JavaClassUtil.getAnnotationValueStrings(builder, annotation,
@@ -1062,7 +1086,8 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 				if (StringUtil.isEmpty(mappingAnnotation.getParamsProp())) {
 					continue;
 				}
-				Object paramsObjects = annotation.getNamedParameter(mappingAnnotation.getParamsProp());
+				Object paramsObjects = DocUtil.getAnnotationNamedParameter(annotation,
+						mappingAnnotation.getParamsProp());
 				if (Objects.isNull(paramsObjects)) {
 					continue;
 				}
@@ -1109,11 +1134,11 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 				.stream()
 				.anyMatch(annotation -> frameworkAnnotations.getRequestBodyAnnotation()
 					.getAnnotationName()
-					.equals(annotation.getType().getSimpleName())))
+					.equals(DocUtil.getAnnotationTypeSimpleName(annotation))))
 			.collect(Collectors.toSet());
 		out: for (DocJavaParameter apiParameter : parameterList) {
-			JavaParameter parameter = apiParameter.getJavaParameter();
-			String paramName = parameter.getName();
+			Object parameter = apiParameter.getJavaParameter();
+			String paramName = DocUtil.getParameterName(parameter);
 			if (mappingParams.containsKey(paramName)) {
 				continue;
 			}
@@ -1125,15 +1150,14 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			if (!paramTagMap.containsKey(paramName) && JavaClassValidateUtil.isPrimitive(fullyQualifiedName)
 					&& isStrict) {
 				throw new RuntimeException("ERROR: Unable to find javadoc @param for actual param \"" + paramName
-						+ "\" in method " + javaMethod.getName() + " from " + className);
+						+ "\" in method " + DocUtil.getMethodName(javaMethod) + " from " + className);
 			}
 			StringBuilder comment = new StringBuilder(this.paramCommentResolve(paramTagMap.get(paramName)));
 
-			JavaClass javaClass = builder.getClassByName(genericFullyQualifiedName);
+			Object javaClass = builder.getClassByName(genericFullyQualifiedName);
 			String mockValue = JavaFieldUtil.createMockValue(paramsComments, paramName, typeName, simpleTypeName);
-			List<JavaAnnotation> paramAnnotations = parameter.getAnnotations();
-			Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(paramAnnotations,
-					builder.getJavaProjectBuilder());
+			List<?> paramAnnotations = DocUtil.getParameterAnnotations(parameter);
+			Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(paramAnnotations, builder);
 			String strRequired = "false";
 			boolean required = false;
 			boolean isRequestPart = false;
@@ -1143,8 +1167,8 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 					|| Methods.DELETE.getValue().equals(docJavaMethod.getMethodType()))) {
 				apiParamEnum = ApiParamEnum.QUERY;
 			}
-			for (JavaAnnotation annotation : paramAnnotations) {
-				String annotationName = annotation.getType().getSimpleName();
+			for (Object annotation : paramAnnotations) {
+				String annotationName = DocUtil.getAnnotationTypeSimpleName(annotation);
 				if (this.ignoreMvcParamWithAnnotation(annotationName)) {
 					continue out;
 				}
@@ -1178,12 +1202,12 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 						requestBodyCounter++;
 						apiParamEnum = ApiParamEnum.BODY;
 					}
-					AnnotationValue annotationDefaultVal = annotation.getProperty(defaultValueProp);
+					Object annotationDefaultVal = DocUtil.getAnnotationProperty(annotation, defaultValueProp);
 					if (Objects.nonNull(annotationDefaultVal)) {
 						mockValue = DocUtil.resolveAnnotationValue(classLoader, annotationDefaultVal);
 					}
 					paramName = this.getParamName(classLoader, paramName, annotation);
-					AnnotationValue annotationRequired = annotation.getProperty(requiredProp);
+					Object annotationRequired = DocUtil.getAnnotationProperty(annotation, requiredProp);
 					if (Objects.nonNull(annotationRequired)) {
 						strRequired = annotationRequired.toString();
 					}
@@ -1260,10 +1284,10 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 					mockValue = StringUtils.join(mockValue, ",",
 							JavaFieldUtil.createMockValue(paramsComments, paramName, gicName, gicName));
 				}
-				JavaClass gicJavaClass = builder.getClassByName(gicName);
+				Object gicJavaClass = builder.getClassByName(gicName);
 				boolean gicEnumType = builder.isEnumType(gicName);
 				if (gicEnumType) {
-					boolean hasGicJavaEnumClass = Objects.nonNull(gicJavaClass) && gicJavaClass.isEnum();
+					boolean hasGicJavaEnumClass = DocUtil.isClassEnum(gicJavaClass);
 					if (Objects.nonNull(gicJavaClass)) {
 						comment.append(ParamsBuildHelper.handleEnumComment(gicJavaClass, builder));
 					}
@@ -1360,7 +1384,8 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			// Handle if it is map types
 			else if (JavaClassValidateUtil.isMap(fullyQualifiedName)) {
 				log.warning("When using stagger, it is not recommended to use Map to receive parameters, Check it in "
-						+ javaMethod.getDeclaringClass().getCanonicalName() + "#" + javaMethod.getName());
+						+ DocUtil.getMethodDeclaringClassCanonicalName(javaMethod) + "#"
+						+ DocUtil.getMethodName(javaMethod));
 
 				paramList.addAll(ParamsBuildHelper.buildMapParam(gicNameArr, DocGlobalConstants.EMPTY, 0,
 						String.valueOf(required), Boolean.FALSE, new HashMap<>(16), builder, groupClasses,
@@ -1384,7 +1409,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			}
 			// Handle if it is enum types
 			else if (builder.isEnumType(genericFullyQualifiedName)) {
-				boolean hasJavaEnumClass = Objects.nonNull(javaClass) && javaClass.isEnum();
+				boolean hasJavaEnumClass = DocUtil.isClassEnum(javaClass);
 				if (Objects.nonNull(javaClass)) {
 					comment.append(ParamsBuildHelper.handleEnumComment(javaClass, builder));
 				}
@@ -1467,7 +1492,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	default ApiRequestExample buildReqJson(DocJavaMethod javaMethod, ApiMethodDoc apiMethodDoc,
 			ProjectDocConfigBuilder configBuilder, FrameworkAnnotations frameworkAnnotations) {
 		String methodType = apiMethodDoc.getType();
-		JavaMethod method = javaMethod.getJavaMethod();
+		Object method = javaMethod.getJavaMethod();
 		Map<String, String> pathParamsMap = new LinkedHashMap<>();
 		Map<String, String> queryParamsMap = new LinkedHashMap<>();
 		ClassLoader classLoader = configBuilder.getApiConfig().getClassLoader();
@@ -1483,13 +1508,20 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			// filter out null value params Fix String Param value is ""
 			.filter(param -> Objects.nonNull(param.getValue()) || param.isConfigParam())
 			.forEach(param -> queryParamsMap.put(param.getSourceField(), param.getValue()));
-		List<JavaAnnotation> methodAnnotations = method.getAnnotations();
+		List<?> methodAnnotations = DocUtil.getMethodAnnotations(method);
 		Map<String, MappingAnnotation> mappingAnnotationMap = frameworkAnnotations.getMappingAnnotations();
-		for (JavaAnnotation annotation : methodAnnotations) {
-			String annotationName = annotation.getType().getName();
+		for (Object annotation : methodAnnotations) {
+			String annotationName = DocUtil.getAnnotationTypeValue(annotation);
 			MappingAnnotation mappingAnnotation = mappingAnnotationMap.get(annotationName);
+			if (Objects.isNull(mappingAnnotation)) {
+				mappingAnnotation = mappingAnnotationMap.get(DocUtil.getAnnotationTypeSimpleName(annotation));
+			}
+			if (Objects.isNull(mappingAnnotation)) {
+				mappingAnnotation = mappingAnnotationMap.get(DocUtil.getAnnotationTypeFullyQualifiedName(annotation));
+			}
 			if (Objects.nonNull(mappingAnnotation) && StringUtil.isNotEmpty(mappingAnnotation.getParamsProp())) {
-				Object paramsObjects = annotation.getNamedParameter(mappingAnnotation.getParamsProp());
+				Object paramsObjects = DocUtil.getAnnotationNamedParameter(annotation,
+						mappingAnnotation.getParamsProp());
 				if (Objects.isNull(paramsObjects)) {
 					continue;
 				}
@@ -1530,8 +1562,8 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 		List<FormData> formDataList = new ArrayList<>();
 		ApiRequestExample requestExample = ApiRequestExample.builder();
 		out: for (DocJavaParameter apiParameter : parameterList) {
-			JavaParameter parameter = apiParameter.getJavaParameter();
-			String paramName = parameter.getName();
+			Object parameter = apiParameter.getJavaParameter();
+			String paramName = DocUtil.getParameterName(parameter);
 			String genericFullyQualifiedName = apiParameter.getGenericFullyQualifiedName();
 			String fullyQualifiedName = apiParameter.getFullyQualifiedName();
 			String gicTypeName = apiParameter.getGenericCanonicalName();
@@ -1546,13 +1578,12 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			if (requestFieldToUnderline) {
 				paramName = StringUtil.camelToUnderline(paramName);
 			}
-			List<JavaAnnotation> annotations = parameter.getAnnotations();
-			Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(annotations,
-					configBuilder.getJavaProjectBuilder());
+			List<?> annotations = DocUtil.getParameterAnnotations(parameter);
+			Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(annotations, configBuilder);
 			boolean paramAdded = false;
 			boolean requestParam = annotations.isEmpty();
-			for (JavaAnnotation annotation : annotations) {
-				String annotationName = annotation.getType().getSimpleName();
+			for (Object annotation : annotations) {
+				String annotationName = DocUtil.getAnnotationTypeSimpleName(annotation);
 				if (!mvcRequestAnnotations.contains(annotationName) || paramAdded) {
 					continue;
 				}
@@ -1560,8 +1591,8 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 					continue out;
 				}
 
-				AnnotationValue annotationDefaultVal = annotation
-					.getProperty(DocAnnotationConstants.DEFAULT_VALUE_PROP);
+				Object annotationDefaultVal = DocUtil.getAnnotationProperty(annotation,
+						DocAnnotationConstants.DEFAULT_VALUE_PROP);
 
 				if (Objects.nonNull(annotationDefaultVal)) {
 					mockValue = DocUtil.resolveAnnotationValue(classLoader, annotationDefaultVal);
@@ -1694,8 +1725,9 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 				}
 				boolean collectionEnumType = configBuilder.isEnumType(gicName);
 				if (!JavaClassValidateUtil.isPrimitive(gicName) && !collectionEnumType && requestParam) {
-					throw new RuntimeException("can't support binding Collection on method " + method.getName()
-							+ " Check it in " + method.getDeclaringClass().getCanonicalName());
+					throw new RuntimeException(
+							"can't support binding Collection on method " + DocUtil.getMethodName(method)
+									+ " Check it in " + DocUtil.getMethodDeclaringClassCanonicalName(method));
 				}
 				String value;
 				if (collectionEnumType) {
@@ -1759,7 +1791,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * @param frameworkAnnotations the framework annotations to use for the check
 	 * @return {@code true} if the class is a default entry point, {@code false} otherwise
 	 */
-	default boolean defaultEntryPoint(JavaClass cls, FrameworkAnnotations frameworkAnnotations) {
+	default boolean defaultEntryPoint(Object cls, FrameworkAnnotations frameworkAnnotations) {
 		// Check if the class is an annotation or an enum, return false if it is
 		if (DocClassUtil.isAnnotationOrEnum(cls)) {
 			return false;
@@ -1780,18 +1812,24 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 
 		// Get class annotations; Note: Spring Entry Annotation is not supported for
 		// superclass inheritance
-		List<JavaAnnotation> classAnnotations = cls.getAnnotations();
+		List<?> classAnnotations = DocUtil.getClassAnnotations(cls);
 
 		// Check if any of the class annotations match the entry annotations
 		return classAnnotations.stream().anyMatch(annotation -> {
-			String annotationName = annotation.getType().getValue();
-			String fullName = annotation.getType().getFullyQualifiedName();
-			String simpleName = annotation.getType().getSimpleName();
+			String annotationName = DocUtil.getAnnotationTypeValue(annotation);
+			String fullName = DocUtil.getAnnotationTypeFullyQualifiedName(annotation);
+			String simpleName = DocUtil.getAnnotationTypeSimpleName(annotation);
 			return entryAnnotationMap.containsKey(annotationName) || entryAnnotationMap.containsKey(fullName)
 					|| entryAnnotationMap.containsKey(simpleName);
 		});
 	}
 
+	/**
+	 * Parser-agnostic default entry-point detection.
+	 * @param cls class metadata object
+	 * @param frameworkAnnotations framework annotations
+	 * @return true if entry point, false otherwise
+	 */
 	/**
 	 * Determines if the given Java class is an exception advice entry point based on its
 	 * annotations and the provided framework annotations.
@@ -1800,29 +1838,35 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * @return {@code true} if the class is an exception advice entry point, {@code false}
 	 * otherwise
 	 */
-	default boolean defaultExceptionAdviceEntryPoint(JavaClass cls, FrameworkAnnotations frameworkAnnotations) {
+	default boolean defaultExceptionAdviceEntryPoint(Object cls, FrameworkAnnotations frameworkAnnotations) {
 		if (DocClassUtil.isAnnotationOrEnum(cls)) {
 			return false;
 		}
 		if (Objects.isNull(frameworkAnnotations)) {
 			return false;
 		}
-		List<JavaAnnotation> classAnnotations = DocClassUtil.getAnnotations(cls);
+		List<?> classAnnotations = DocClassUtil.getAnnotations(cls);
 		if (Objects.isNull(frameworkAnnotations.getExceptionAdviceAnnotations())) {
 			return false;
 		}
 		Map<String, ExceptionAdviceAnnotation> exceptionAdviceAnnotationMap = frameworkAnnotations
 			.getExceptionAdviceAnnotations();
 		return classAnnotations.stream().anyMatch(annotation -> {
-			String annotationName = annotation.getType().getValue();
-			String fullName = annotation.getType().getFullyQualifiedName();
-			String simpleName = annotation.getType().getSimpleName();
+			String annotationName = DocUtil.getAnnotationTypeValue(annotation);
+			String fullName = DocUtil.getAnnotationTypeFullyQualifiedName(annotation);
+			String simpleName = DocUtil.getAnnotationTypeSimpleName(annotation);
 			return exceptionAdviceAnnotationMap.containsKey(annotationName)
 					|| exceptionAdviceAnnotationMap.containsKey(fullName)
 					|| exceptionAdviceAnnotationMap.containsKey(simpleName);
 		});
 	}
 
+	/**
+	 * Parser-agnostic exception-advice entry-point detection.
+	 * @param cls class metadata object
+	 * @param frameworkAnnotations framework annotations
+	 * @return true if exception advice entry point, false otherwise
+	 */
 	/**
 	 * Get the list of parent class methods for a given Java class.
 	 * @param apiConfig the API configuration
@@ -1831,13 +1875,14 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * @return the list of parent class methods
 	 */
 	default List<DocJavaMethod> getParentsClassMethods(ApiConfig apiConfig, ProjectDocConfigBuilder projectBuilder,
-			JavaClass cls) {
+			Object cls) {
 		List<DocJavaMethod> docJavaMethods = new ArrayList<>();
-		JavaClass parentClass = cls.getSuperJavaClass();
-		if (Objects.nonNull(parentClass) && !JavaTypeConstants.OBJECT_SIMPLE_NAME.equals(parentClass.getSimpleName())) {
-			Map<String, JavaType> actualTypesMap = JavaClassUtil.getActualTypesMap(parentClass);
-			List<JavaMethod> parentMethodList = parentClass.getMethods();
-			for (JavaMethod method : parentMethodList) {
+		Object parentClass = DocUtil.getClassSuperJavaClass(cls);
+		if (Objects.nonNull(parentClass)
+				&& !JavaTypeConstants.OBJECT_SIMPLE_NAME.equals(DocUtil.getClassSimpleName(parentClass))) {
+			Map<String, ?> actualTypesMap = JavaClassUtil.getActualTypesMap(parentClass);
+			List<?> parentMethodList = DocUtil.getClassMethods(parentClass);
+			for (Object method : parentMethodList) {
 				docJavaMethods.add(this.convertToDocJavaMethod(apiConfig, projectBuilder, method, actualTypesMap));
 			}
 			docJavaMethods.addAll(this.getParentsClassMethods(apiConfig, projectBuilder, parentClass));
@@ -1854,32 +1899,34 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * @return the converted DocJavaMethod object
 	 */
 	default DocJavaMethod convertToDocJavaMethod(ApiConfig apiConfig, ProjectDocConfigBuilder projectBuilder,
-			JavaMethod method, Map<String, JavaType> actualTypesMap) {
-		JavaClass cls = method.getDeclaringClass();
-		String clzName = cls.getCanonicalName();
-		if (StringUtil.isEmpty(method.getComment()) && apiConfig.isStrict()) {
+			Object method, Map<String, ?> actualTypesMap) {
+		Object cls = DocUtil.getMethodDeclaringClass(method);
+		String clzName = DocUtil.getClassCanonicalName(cls);
+		if (StringUtil.isEmpty(DocUtil.getMethodComment(method)) && apiConfig.isStrict()) {
 			throw new RuntimeException(
-					"Unable to find comment for method " + method.getName() + " in " + cls.getCanonicalName());
+					"Unable to find comment for method " + DocUtil.getMethodName(method) + " in " + clzName);
 		}
 		String classAuthor = JavaClassUtil.getClassTagsValue(cls, DocTags.AUTHOR, Boolean.TRUE);
 		DocJavaMethod docJavaMethod = DocJavaMethod.builder().setJavaMethod(method).setActualTypesMap(actualTypesMap);
-		if (Objects.nonNull(method.getTagByName(DocTags.DOWNLOAD))) {
+		if (Objects.nonNull(DocUtil.getMethodTagByName(method, DocTags.DOWNLOAD))) {
 			docJavaMethod.setDownload(true);
 		}
-		DocletTag pageTag = method.getTagByName(DocTags.PAGE);
-		if (Objects.nonNull(method.getTagByName(DocTags.PAGE))) {
-			String pageUrl = projectBuilder.getServerUrl() + DocGlobalConstants.PATH_DELIMITER + pageTag.getValue();
+		Object pageTag = DocUtil.getMethodTagByName(method, DocTags.PAGE);
+		if (Objects.nonNull(pageTag)) {
+			String pageUrl = projectBuilder.getServerUrl() + DocGlobalConstants.PATH_DELIMITER
+					+ DocUtil.getDocletTagValue(pageTag);
 			docJavaMethod.setPage(UrlUtil.simplifyUrl(pageUrl));
 		}
 
-		DocletTag docletTag = method.getTagByName(DocTags.GROUP);
+		Object docletTag = DocUtil.getMethodTagByName(method, DocTags.GROUP);
 		if (Objects.nonNull(docletTag)) {
-			docJavaMethod.setGroup(docletTag.getValue());
+			docJavaMethod.setGroup(DocUtil.getDocletTagValue(docletTag));
 		}
 		docJavaMethod.setParamTagMap(DocUtil.getCommentsByTag(method, DocTags.PARAM, clzName));
 		docJavaMethod.setParamsComments(DocUtil.getCommentsByTag(method, DocTags.PARAM, null));
 
-		Map<String, String> authorMap = DocUtil.getCommentsByTag(method, DocTags.AUTHOR, cls.getName());
+		Map<String, String> authorMap = DocUtil.getCommentsByTag(method, DocTags.AUTHOR,
+				DocUtil.getClassSimpleName(cls));
 		String authorValue = String.join(", ", new ArrayList<>(authorMap.keySet()));
 		if (apiConfig.isShowAuthor() && StringUtil.isNotEmpty(authorValue)) {
 			docJavaMethod.setAuthor(JsonUtil.toPrettyFormat(authorValue));
@@ -1888,21 +1935,22 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			docJavaMethod.setAuthor(classAuthor);
 		}
 
-		String comment = DocUtil.getEscapeAndCleanComment(method.getComment());
+		String comment = DocUtil.getEscapeAndCleanComment(DocUtil.getMethodComment(method));
 		docJavaMethod.setDesc(comment);
-		String version = DocUtil.getNormalTagComments(method, DocTags.SINCE, cls.getName());
+		String version = DocUtil.getNormalTagComments(method, DocTags.SINCE, DocUtil.getClassSimpleName(cls));
 		docJavaMethod.setVersion(version);
 
-		String apiNoteValue = DocUtil.getNormalTagComments(method, DocTags.API_NOTE, cls.getName());
+		String apiNoteValue = DocUtil.getNormalTagComments(method, DocTags.API_NOTE, DocUtil.getClassSimpleName(cls));
 		if (StringUtil.isEmpty(apiNoteValue)) {
-			apiNoteValue = method.getComment();
+			apiNoteValue = DocUtil.getMethodComment(method);
 		}
 		docJavaMethod.setDetail(apiNoteValue != null ? apiNoteValue : "");
 
 		// set jsonViewClasses
-		method.getAnnotations()
+		DocUtil.getMethodAnnotations(method)
 			.stream()
-			.filter(annotation -> DocAnnotationConstants.SHORT_JSON_VIEW.equals(annotation.getType().getSimpleName()))
+			.filter(annotation -> DocAnnotationConstants.SHORT_JSON_VIEW
+				.equals(DocUtil.getAnnotationTypeSimpleName(annotation)))
 			.findFirst()
 			.ifPresent(annotation -> docJavaMethod
 				.setJsonViewClasses(JavaClassUtil.getJsonViewClasses(annotation, projectBuilder, false)));
@@ -1917,7 +1965,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * include information about the entry point or other metadata.
 	 * @return True if the Java class is an entry point for RESTful APIs, false otherwise.
 	 */
-	boolean isEntryPoint(JavaClass javaClass, FrameworkAnnotations frameworkAnnotations);
+	boolean isEntryPoint(Object javaClass, FrameworkAnnotations frameworkAnnotations);
 
 	/**
 	 * Unified exception handling entry for RESTful APIs.
@@ -1927,7 +1975,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * @return The processed result, typically a response tailored for the RESTful API
 	 * context.
 	 */
-	boolean isExceptionAdviceEntryPoint(JavaClass javaClass, FrameworkAnnotations frameworkAnnotations);
+	boolean isExceptionAdviceEntryPoint(Object javaClass, FrameworkAnnotations frameworkAnnotations);
 
 	/**
 	 * List of annotations that indicate the entry point of a RESTful API.
@@ -1942,7 +1990,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * @param requestMapping The RequestMapping annotation associated with the API
 	 * endpoint.
 	 */
-	void requestMappingPostProcess(JavaClass javaClass, JavaMethod method, RequestMapping requestMapping);
+	void requestMappingPostProcess(Object javaClass, Object method, RequestMapping requestMapping);
 
 	/**
 	 * Determine whether a parameter should be ignored in a RESTful API endpoint.
@@ -1957,7 +2005,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	 * @return The processed result, typically a response tailored for the exception
 	 * handler.
 	 */
-	ExceptionAdviceMethod processExceptionAdviceMethod(JavaMethod method);
+	ExceptionAdviceMethod processExceptionAdviceMethod(Object method);
 
 	/**
 	 * Default HTTP error statuses for RESTful APIs.

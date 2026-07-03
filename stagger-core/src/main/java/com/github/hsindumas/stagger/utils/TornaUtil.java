@@ -26,6 +26,7 @@ package com.github.hsindumas.stagger.utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocAnnotationConstants;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.constants.ParamTypeConstants;
@@ -51,9 +52,7 @@ import com.power.common.model.EnumDictionary;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.OkHttp3Util;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.JavaParameter;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -117,6 +116,34 @@ public class TornaUtil {
 	}
 
 	/**
+	 * Pushes documentation to the Torna API documentation platform.
+	 * @param tornaApi The API documentation object, containing information about all
+	 * APIs.
+	 * @param apiConfig The configuration information for the API.
+	 * @param configBuilder project doc config builder
+	 */
+	public static void pushToTorna(TornaApi tornaApi, ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
+		// Check whether the document needs to be pushed
+		if (tornaApi == null || apiConfig == null) {
+			return;
+		}
+		// Push all documents
+		if (apiConfig.getApiUploadNums() == null) {
+			pushToTornaAll(tornaApi, apiConfig, configBuilder);
+			return;
+		}
+		// Push part of documents if the upload number is not null
+		List<Apis> tornaApis = tornaApi.getApis();
+		if (tornaApis == null || tornaApis.isEmpty()) {
+			return;
+		}
+		CollectionUtil.partition(tornaApis, apiConfig.getApiUploadNums()).forEach(apis -> {
+			tornaApi.setApis(apis);
+			pushToTornaAll(tornaApi, apiConfig, configBuilder);
+		});
+	}
+
+	/**
 	 * Pushes all documentation information to the Torna platform.
 	 * @param tornaApi The Torna API object, containing the API details to be pushed.
 	 * @param apiConfig The API configuration object, containing the connection
@@ -131,6 +158,33 @@ public class TornaUtil {
 		// Push dictionary information
 		Map<String, Object> dicMap = new HashMap<>(2);
 		List<TornaDic> docDicts = TornaUtil.buildTornaDic(DocUtil.buildDictionary(apiConfig, builder));
+		// Push dictionary information
+		if (CollectionUtil.isNotEmpty(docDicts)) {
+			dicMap.put("enums", docDicts);
+			Map<String, String> dicRequestJson = TornaConstants.buildParams(ENUM_PUSH, new Gson().toJson(dicMap),
+					apiConfig);
+			String dicResponseMsg = OkHttp3Util.syncPostJson(apiConfig.getOpenUrl(), new Gson().toJson(dicRequestJson));
+			TornaUtil.printDebugInfo(apiConfig, dicResponseMsg, dicRequestJson, ENUM_PUSH);
+		}
+		// Get the response result
+		String responseMsg = OkHttp3Util.syncPostJson(apiConfig.getOpenUrl(), new Gson().toJson(requestJson));
+		// Print the log of pushing documents to Torna
+		TornaUtil.printDebugInfo(apiConfig, responseMsg, requestJson, PUSH);
+	}
+
+	/**
+	 * Pushes all documentation information to the Torna platform.
+	 * @param tornaApi The Torna API object, containing the API details to be pushed.
+	 * @param apiConfig The API configuration object.
+	 * @param configBuilder project doc config builder
+	 */
+	private static void pushToTornaAll(TornaApi tornaApi, ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
+		// Build push document information
+		Map<String, String> requestJson = TornaConstants.buildParams(PUSH, new Gson().toJson(tornaApi), apiConfig);
+		TornaUtil.printDebugInfo(apiConfig, null, requestJson, PUSH, true);
+		// Push dictionary information
+		Map<String, Object> dicMap = new HashMap<>(2);
+		List<TornaDic> docDicts = TornaUtil.buildTornaDic(DocUtil.buildDictionary(apiConfig, configBuilder));
 		// Push dictionary information
 		if (CollectionUtil.isNotEmpty(docDicts)) {
 			dicMap.put("enums", docDicts);
@@ -305,7 +359,7 @@ public class TornaUtil {
 			methodApi.setResponseParams(buildParams(apiMethodDoc.getResponseParams()));
 			methodApi.setOrderIndex(apiMethodDoc.getOrder());
 			methodApi.setDeprecated(apiMethodDoc.isDeprecated() ? DocAnnotationConstants.DEPRECATED : null);
-			methodApi.setDubboMethod(apiMethodDoc.getJavaMethod().getDeclarationSignature(false));
+			methodApi.setDubboMethod(DocUtil.getMethodDeclarationSignature(apiMethodDoc.getJavaMethod(), false));
 			// Json
 			if (CollectionUtil.isNotEmpty(apiMethodDoc.getRequestParams())) {
 				methodApi.setRequestParams(buildParams(apiMethodDoc.getRequestParams()));
@@ -417,6 +471,28 @@ public class TornaUtil {
 	}
 
 	/**
+	 * Builds a list of error codes.
+	 * @param config the API configuration object containing error code information
+	 * @param configBuilder project doc config builder
+	 * @return a list of {@link CommonErrorCode} objects representing all API error codes
+	 */
+	public static List<CommonErrorCode> buildErrorCode(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
+		List<CommonErrorCode> commonErrorCodes = new ArrayList<>();
+		CommonErrorCode commonErrorCode;
+		List<ApiErrorCode> errorCodes = DocUtil.errorCodeDictToList(config, configBuilder);
+		if (CollectionUtil.isNotEmpty(errorCodes)) {
+			for (EnumDictionary code : errorCodes) {
+				commonErrorCode = new CommonErrorCode();
+				commonErrorCode.setCode(code.getValue());
+				// commonErrorCode.setSolution(code.getDesc());
+				commonErrorCode.setMsg(DocUtil.replaceNewLineToHtmlBr(code.getDesc()));
+				commonErrorCodes.add(commonErrorCode);
+			}
+		}
+		return commonErrorCodes;
+	}
+
+	/**
 	 * Builds a list of TornaDic objects from a list of ApiDocDict objects.
 	 * <p>
 	 * This method is primarily used to transform the original list of ApiDocDict objects
@@ -478,8 +554,8 @@ public class TornaUtil {
 	 * @param apiMethodDoc apiMethodDoc
 	 * @param apiConfig apiConfig
 	 */
-	public static void setTornaArrayTags(JavaMethod method, ApiMethodDoc apiMethodDoc, ApiConfig apiConfig) {
-		String returnTypeName = method.getReturnType().getCanonicalName();
+	public static void setTornaArrayTags(Object method, ApiMethodDoc apiMethodDoc, ApiConfig apiConfig) {
+		String returnTypeName = DocUtil.getMethodReturnTypeCanonicalName(method);
 		apiMethodDoc.setIsRequestArray(0);
 		apiMethodDoc.setIsResponseArray(0);
 		String responseBodyAdviceClassName = Optional.ofNullable(apiConfig)
@@ -493,26 +569,27 @@ public class TornaUtil {
 		// response
 		if (respArray) {
 			apiMethodDoc.setIsResponseArray(1);
-			String className = getType(method.getReturnType().getGenericCanonicalName());
+			String className = getType(DocUtil.getMethodReturnTypeGenericCanonicalName(method));
 			String arrayType = JavaClassValidateUtil.isPrimitive(className) ? className
 					: ParamTypeConstants.PARAM_TYPE_OBJECT;
 			apiMethodDoc.setResponseArrayType(arrayType);
 		}
 		// request
-		if (CollectionUtil.isNotEmpty(method.getParameters())) {
+		List<?> methodParameters = DocUtil.getMethodParameters(method);
+		if (CollectionUtil.isNotEmpty(methodParameters)) {
 			String requestBodyAdviceClassName = Optional.ofNullable(apiConfig)
 				.map(ApiConfig::getRequestBodyAdvice)
 				.map(BodyAdvice::getClassName)
 				.orElse(StringUtil.EMPTY);
-			for (JavaParameter param : method.getParameters()) {
-				String typeName = param.getType().getCanonicalName();
+			for (Object param : methodParameters) {
+				String typeName = DocUtil.getParameterTypeCanonicalName(param);
 				String realTypeName = StringUtil.isEmpty(requestBodyAdviceClassName) ? typeName
 						: requestBodyAdviceClassName;
 				boolean reqArray = JavaClassValidateUtil.isCollection(realTypeName)
 						|| JavaClassValidateUtil.isArray(realTypeName);
 				if (reqArray) {
 					apiMethodDoc.setIsRequestArray(1);
-					String className = getType(param.getType().getGenericCanonicalName());
+					String className = getType(DocUtil.getParameterTypeGenericCanonicalName(param));
 					String arrayType = JavaClassValidateUtil.isPrimitive(className) ? className
 							: ParamTypeConstants.PARAM_TYPE_OBJECT;
 					apiMethodDoc.setRequestArrayType(arrayType);

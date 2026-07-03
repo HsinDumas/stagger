@@ -73,11 +73,6 @@ import com.github.hsindumas.stagger.utils.TornaUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.RandomUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.DocletTag;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.JavaParameter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -118,7 +113,7 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 	}
 
 	@Override
-	public ApiSchema<ApiDoc> renderApi(ProjectDocConfigBuilder projectBuilder, Collection<JavaClass> candidateClasses) {
+	public ApiSchema<ApiDoc> renderApi(ProjectDocConfigBuilder projectBuilder, Collection<?> candidateClasses) {
 		ApiConfig apiConfig = projectBuilder.getApiConfig();
 		this.headers = apiConfig.getRequestHeaders();
 		List<ApiReqParam> configApiReqParams = Stream.of(apiConfig.getRequestHeaders(), apiConfig.getRequestParams())
@@ -131,7 +126,7 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 	}
 
 	@Override
-	public List<ApiMethodDoc> buildEntryPointMethod(JavaClass cls, ApiConfig apiConfig,
+	public List<ApiMethodDoc> buildEntryPointMethod(Object cls, ApiConfig apiConfig,
 			ProjectDocConfigBuilder projectBuilder, FrameworkAnnotations frameworkAnnotations,
 			List<ApiReqParam> configApiReqParams, IRequestMappingHandler baseMappingHandler,
 			IHeaderHandler headerHandler) {
@@ -140,7 +135,7 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 
 	@Override
 	public List<WebSocketDoc> renderWebSocketApi(ProjectDocConfigBuilder projectBuilder,
-			Collection<JavaClass> candidateClasses) {
+			Collection<?> candidateClasses) {
 		FrameworkAnnotations frameworkAnnotations = this.registeredAnnotations();
 		return this.processWebSocketData(projectBuilder, frameworkAnnotations,
 				DefaultWebSocketRequestHandler.getInstance(), candidateClasses);
@@ -154,16 +149,19 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 	 * @return List<ApiMethodDoc>
 	 */
 	@SuppressWarnings("deprecation")
-	private List<ApiMethodDoc> buildControllerMethod(final JavaClass cls, ApiConfig apiConfig,
+	private List<ApiMethodDoc> buildControllerMethod(final Object cls, ApiConfig apiConfig,
 			ProjectDocConfigBuilder projectBuilder, FrameworkAnnotations frameworkAnnotations) {
-		String clzName = cls.getCanonicalName();
+		String clzName = DocUtil.getClassCanonicalName(cls);
+		if (StringUtil.isEmpty(clzName)) {
+			return Collections.emptyList();
+		}
 		boolean paramsDataToTree = projectBuilder.getApiConfig().isParamsDataToTree();
 		String group = JavaClassUtil.getClassTagsValue(cls, DocTags.GROUP, Boolean.TRUE);
 		String baseUrl = "";
 		String mediaType = MediaType.APPLICATION_FORM_URLENCODED_VALUE;
-		List<JavaAnnotation> classAnnotations = this.getClassAnnotations(cls, frameworkAnnotations, projectBuilder);
-		for (JavaAnnotation annotation : classAnnotations) {
-			String annotationName = annotation.getType().getFullyQualifiedName();
+		List<?> classAnnotations = this.getClassAnnotations(cls, frameworkAnnotations, projectBuilder);
+		for (Object annotation : classAnnotations) {
+			String annotationName = DocUtil.getAnnotationTypeFullyQualifiedName(annotation);
 			if (JakartaJaxrsAnnotations.JAX_PATH_FULLY.equals(annotationName)
 					|| JAXRSAnnotations.JAX_PATH_FULLY.equals(annotationName)) {
 				ClassLoader classLoader = projectBuilder.getApiConfig().getClassLoader();
@@ -172,7 +170,7 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 			// use first annotation's value
 			if (annotationName.equals(JakartaJaxrsAnnotations.JAX_CONSUMES_FULLY)
 					|| annotationName.equals(JAXRSAnnotations.JAX_CONSUMES_FULLY)) {
-				Object value = annotation.getNamedParameter("value");
+				Object value = DocUtil.getAnnotationNamedParameter(annotation, "value");
 				if (Objects.nonNull(value)) {
 					mediaType = MediaType.valueOf(value.toString());
 				}
@@ -182,14 +180,14 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 		Set<String> filterMethods = DocUtil.findFilterMethods(clzName);
 		boolean needAllMethods = filterMethods.contains(DocGlobalConstants.DEFAULT_FILTER_METHOD);
 
-		List<JavaMethod> methods = cls.getMethods();
+		List<?> methods = DocUtil.getClassMethods(cls);
 		List<DocJavaMethod> docJavaMethods = new ArrayList<>(methods.size());
 		// filter private method
-		for (JavaMethod method : methods) {
-			if (method.isPrivate()) {
+		for (Object method : methods) {
+			if (DocUtil.isMethodPrivate(method)) {
 				continue;
 			}
-			if (needAllMethods || filterMethods.contains(method.getName())) {
+			if (needAllMethods || filterMethods.contains(DocUtil.getMethodName(method))) {
 				docJavaMethods.add(this.convertToDocJavaMethod(apiConfig, projectBuilder, method, null));
 			}
 		}
@@ -198,7 +196,7 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 		List<ApiMethodDoc> methodDocList = new ArrayList<>(methods.size());
 		int methodOrder = 0;
 		for (DocJavaMethod docJavaMethod : docJavaMethods) {
-			JavaMethod method = docJavaMethod.getJavaMethod();
+			Object method = docJavaMethod.getJavaMethod();
 			if (checkCondition(method)) {
 				continue;
 			}
@@ -209,6 +207,7 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 				continue;
 			}
 			ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
+			apiMethodDoc.setDeclaringClassName(DocUtil.getMethodDeclaringClassCanonicalName(method));
 			apiMethodDoc.setDownload(docJavaMethod.isDownload());
 			apiMethodDoc.setPage(docJavaMethod.getPage());
 			apiMethodDoc.setGroup(group);
@@ -217,12 +216,12 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 			}
 
 			methodOrder++;
-			apiMethodDoc.setName(method.getName());
+			apiMethodDoc.setName(DocUtil.getMethodName(method));
 			apiMethodDoc.setOrder(methodOrder);
 			String desc = StringUtil.isEmpty(docJavaMethod.getDesc()) ? docJavaMethod.getClass().getName()
 					: docJavaMethod.getDesc();
 			apiMethodDoc.setDesc(desc);
-			String methodUid = DocUtil.generateId(clzName + method.getName() + methodOrder);
+			String methodUid = DocUtil.generateId(clzName + DocUtil.getMethodName(method) + methodOrder);
 			apiMethodDoc.setMethodId(methodUid);
 			apiMethodDoc.setAuthor(docJavaMethod.getAuthor());
 			apiMethodDoc.setDetail(docJavaMethod.getDetail());
@@ -273,7 +272,8 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 			apiMethodDoc.setRequestExample(requestExample);
 			apiMethodDoc.setRequestUsage(requestJson == null ? requestExample.getUrl() : requestJson);
 			// build response usage
-			String responseValue = DocUtil.getNormalTagComments(method, DocTags.API_RESPONSE, cls.getName());
+			String responseValue = DocUtil.getNormalTagComments(method, DocTags.API_RESPONSE,
+					DocUtil.getClassSimpleName(cls));
 			if (StringUtil.isNotEmpty(responseValue)) {
 				apiMethodDoc.setResponseUsage(responseValue);
 			}
@@ -323,7 +323,10 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public boolean isEntryPoint(JavaClass cls, FrameworkAnnotations frameworkAnnotations) {
+	public boolean isEntryPoint(Object cls, FrameworkAnnotations frameworkAnnotations) {
+		if (StringUtil.isEmpty(DocUtil.getClassCanonicalName(cls))) {
+			return false;
+		}
 		boolean isDefaultEntryPoint = this.defaultEntryPoint(cls, frameworkAnnotations);
 		if (isDefaultEntryPoint) {
 			return true;
@@ -332,18 +335,18 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 		if (DocClassUtil.isAnnotationOrEnum(cls)) {
 			return false;
 		}
-		List<JavaAnnotation> classAnnotations = DocClassUtil.getAnnotations(cls);
-		for (JavaAnnotation annotation : classAnnotations) {
-			String annotationName = annotation.getType().getFullyQualifiedName();
+		List<?> classAnnotations = DocClassUtil.getAnnotations(cls);
+		for (Object annotation : classAnnotations) {
+			String annotationName = DocUtil.getAnnotationTypeFullyQualifiedName(annotation);
 			if (JakartaJaxrsAnnotations.JAX_PATH_FULLY.equals(annotationName)
 					|| JAXRSAnnotations.JAX_PATH_FULLY.equals(annotationName)) {
 				return true;
 			}
 		}
 		// use custom doc tag to support Feign.
-		List<DocletTag> docletTags = cls.getTags();
-		for (DocletTag docletTag : docletTags) {
-			String value = docletTag.getName();
+		List<?> docletTags = DocUtil.getClassTags(cls);
+		for (Object docletTag : docletTags) {
+			String value = DocUtil.getDocletTagName(docletTag);
 			if (DocTags.DUBBO_REST.equals(value)) {
 				return true;
 			}
@@ -375,16 +378,16 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 		boolean isStrict = builder.getApiConfig().isStrict();
 		boolean isShowValidation = builder.getApiConfig().isShowValidation();
 		ClassLoader classLoader = builder.getApiConfig().getClassLoader();
-		JavaMethod javaMethod = docJavaMethod.getJavaMethod();
-		String className = javaMethod.getDeclaringClass().getCanonicalName();
+		Object javaMethod = docJavaMethod.getJavaMethod();
+		String className = DocUtil.getMethodDeclaringClassCanonicalName(javaMethod);
 		Map<String, String> paramTagMap = docJavaMethod.getParamTagMap();
 		Map<String, String> paramsComments = docJavaMethod.getParamsComments();
 		Map<String, String> constantsMap = builder.getConstantsMap();
 		boolean requestFieldToUnderline = builder.getApiConfig().isRequestFieldToUnderline();
 		Set<String> ignoreSets = ignoreParamsSets(javaMethod);
 		out: for (DocJavaParameter apiParameter : parameterList) {
-			JavaParameter parameter = apiParameter.getJavaParameter();
-			String paramName = parameter.getName();
+			Object parameter = apiParameter.getJavaParameter();
+			String paramName = DocUtil.getParameterName(parameter);
 			if (ignoreSets.contains(paramName)) {
 				continue;
 			}
@@ -397,18 +400,17 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 			if (!paramTagMap.containsKey(paramName) && JavaClassValidateUtil.isPrimitive(genericFullyQualifiedName)
 					&& isStrict) {
 				throw new RuntimeException("ERROR: Unable to find javadoc @QueryParam for actual param \"" + paramName
-						+ "\" in method " + javaMethod.getName() + " from " + className);
+						+ "\" in method " + DocUtil.getMethodName(javaMethod) + " from " + className);
 			}
 
 			if (requestFieldToUnderline) {
 				paramName = StringUtil.camelToUnderline(paramName);
 			}
 			String mockValue = JavaFieldUtil.createMockValue(paramsComments, paramName, typeName, simpleTypeName);
-			JavaClass javaClass = builder.getClassByName(genericFullyQualifiedName);
+			Object javaClass = builder.getClassByName(genericFullyQualifiedName);
 			boolean enumType = builder.isEnumType(genericFullyQualifiedName);
-			List<JavaAnnotation> annotations = parameter.getAnnotations();
-			Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(annotations,
-					builder.getJavaProjectBuilder());
+			List<?> annotations = DocUtil.getParameterAnnotations(parameter);
+			Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(annotations, builder);
 			Set<String> jsonViewClasses = JavaClassUtil.getParamJsonViewClasses(annotations, builder);
 
 			StringBuilder comment = new StringBuilder(this.paramCommentResolve(paramTagMap.get(paramName)));
@@ -416,8 +418,8 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 			boolean isRequestBody = false;
 			String strRequired = "false";
 			if (CollectionUtil.isNotEmpty(annotations)) {
-				for (JavaAnnotation annotation : annotations) {
-					String annotationName = annotation.getType().getFullyQualifiedName();
+				for (Object annotation : annotations) {
+					String annotationName = DocUtil.getAnnotationTypeFullyQualifiedName(annotation);
 					if (JakartaJaxrsAnnotations.JAX_HEADER_PARAM_FULLY.equals(annotationName)
 							|| JAXRSAnnotations.JAX_HEADER_PARAM_FULLY.equals(annotationName)) {
 						continue out;
@@ -435,7 +437,7 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 						isPathVariable = true;
 						strRequired = "true";
 					}
-					if (JavaClassValidateUtil.isJSR303Required(annotation.getType().getValue())) {
+					if (JavaClassValidateUtil.isJSR303Required(DocUtil.getAnnotationTypeValue(annotation))) {
 						strRequired = "true";
 					}
 				}
@@ -453,11 +455,11 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 				if (JavaClassValidateUtil.isArray(gicName)) {
 					gicName = gicName.substring(0, gicName.indexOf("["));
 				}
-				JavaClass gicJavaClass = builder.getClassByName(gicName);
+				Object gicJavaClass = builder.getClassByName(gicName);
 				boolean gicEnumType = builder.isEnumType(gicName);
 				if (gicEnumType) {
 					String enumValue = null;
-					boolean hasJavaEnumClass = Objects.nonNull(gicJavaClass) && gicJavaClass.isEnum();
+					boolean hasJavaEnumClass = DocUtil.isClassEnum(gicJavaClass);
 					if (hasJavaEnumClass) {
 						enumValue = String.valueOf(JavaClassUtil.getEnumValue(gicJavaClass, builder, Boolean.FALSE));
 					}
@@ -523,7 +525,8 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 			}
 			else if (JavaClassValidateUtil.isMap(fullyQualifiedName)) {
 				log.warning("When using stagger, it is not recommended to use Map to receive parameters, Check it in "
-						+ javaMethod.getDeclaringClass().getCanonicalName() + "#" + javaMethod.getName());
+						+ DocUtil.getMethodDeclaringClassCanonicalName(javaMethod) + "#"
+						+ DocUtil.getMethodName(javaMethod));
 				if (JavaClassValidateUtil.isMap(typeName)) {
 					ApiParam apiParam = ApiParam.of()
 						.setField(paramName)
@@ -578,7 +581,7 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 			else if (enumType) {
 				String enumDesc = comment.toString();
 				String enumValue = null;
-				boolean hasJavaEnumClass = Objects.nonNull(javaClass) && javaClass.isEnum();
+				boolean hasJavaEnumClass = DocUtil.isClassEnum(javaClass);
 				if (hasJavaEnumClass) {
 					enumDesc = StringUtil.removeQuotes(JavaClassUtil.getEnumParams(javaClass));
 					enumValue = String.valueOf(JavaClassUtil.getEnumValue(javaClass, builder, Boolean.FALSE));
@@ -648,7 +651,7 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 	private ApiRequestExample buildReqJson(DocJavaMethod javaMethod, ApiMethodDoc apiMethodDoc,
 			ProjectDocConfigBuilder configBuilder) {
 		String methodType = apiMethodDoc.getType();
-		JavaMethod method = javaMethod.getJavaMethod();
+		Object method = javaMethod.getJavaMethod();
 		Map<String, String> pathParamsMap = new LinkedHashMap<>();
 		List<DocJavaParameter> parameterList = getJavaParameterList(configBuilder, javaMethod, null);
 		List<ApiReqParam> reqHeaderList = apiMethodDoc.getRequestHeaders();
@@ -666,8 +669,8 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 		List<FormData> formDataList = new ArrayList<>();
 		ApiRequestExample requestExample = ApiRequestExample.builder();
 		for (DocJavaParameter apiParameter : parameterList) {
-			JavaParameter parameter = apiParameter.getJavaParameter();
-			String paramName = parameter.getName();
+			Object parameter = apiParameter.getJavaParameter();
+			String paramName = DocUtil.getParameterName(parameter);
 			String typeName = apiParameter.getGenericFullyQualifiedName();
 			String fullyQualifiedName = apiParameter.getFullyQualifiedName();
 			String gicTypeName = apiParameter.getGenericCanonicalName();
@@ -680,14 +683,13 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 			if (requestFieldToUnderline) {
 				paramName = StringUtil.camelToUnderline(paramName);
 			}
-			List<JavaAnnotation> annotations = parameter.getAnnotations();
-			Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(annotations,
-					configBuilder.getJavaProjectBuilder());
+			List<?> annotations = DocUtil.getParameterAnnotations(parameter);
+			Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(annotations, configBuilder);
 			Set<String> jsonViewClasses = JavaClassUtil.getParamJsonViewClasses(annotations, configBuilder);
 			boolean paramAdded = false;
 			if (CollectionUtil.isNotEmpty(annotations)) {
-				for (JavaAnnotation annotation : annotations) {
-					String annotationName = annotation.getType().getFullyQualifiedName();
+				for (Object annotation : annotations) {
+					String annotationName = DocUtil.getAnnotationTypeFullyQualifiedName(annotation);
 					if (JakartaJaxrsAnnotations.JAX_PATH_PARAM_FULLY.equals(annotationName)
 							|| JakartaJaxrsAnnotations.JAXB_REST_PATH_FULLY.equals(annotationName)
 							|| JAXRSAnnotations.JAX_PATH_PARAM_FULLY.equals(annotationName)) {
@@ -729,9 +731,9 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 						}
 						boolean collectionEnumType = configBuilder.isEnumType(gicName);
 						if (!JavaClassValidateUtil.isPrimitive(gicName) && !collectionEnumType) {
-							throw new RuntimeException(
-									"Jaxrs rest can't support binding Collection on method " + method.getName()
-											+ "Check it in " + method.getDeclaringClass().getCanonicalName());
+							throw new RuntimeException("Jaxrs rest can't support binding Collection on method "
+									+ DocUtil.getMethodName(method) + "Check it in "
+									+ DocUtil.getMethodDeclaringClassCanonicalName(method));
 						}
 						String formValue = RandomUtil.randomValueByType(gicName);
 						if (collectionEnumType) {
@@ -788,12 +790,12 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 	 * @param method method
 	 * @return boolean
 	 */
-	private boolean checkCondition(JavaMethod method) {
-		return method.isPrivate() || Objects.nonNull(method.getTagByName(DocTags.IGNORE));
+	private boolean checkCondition(Object method) {
+		return DocUtil.isMethodPrivate(method) || Objects.nonNull(DocUtil.getMethodTagByName(method, DocTags.IGNORE));
 	}
 
 	@Override
-	public void requestMappingPostProcess(JavaClass javaClass, JavaMethod method, RequestMapping requestMapping) {
+	public void requestMappingPostProcess(Object javaClass, Object method, RequestMapping requestMapping) {
 
 	}
 
@@ -808,12 +810,12 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 	}
 
 	@Override
-	public boolean isExceptionAdviceEntryPoint(JavaClass javaClass, FrameworkAnnotations frameworkAnnotations) {
+	public boolean isExceptionAdviceEntryPoint(Object javaClass, FrameworkAnnotations frameworkAnnotations) {
 		return false;
 	}
 
 	@Override
-	public ExceptionAdviceMethod processExceptionAdviceMethod(JavaMethod method) {
+	public ExceptionAdviceMethod processExceptionAdviceMethod(Object method) {
 		return null;
 	}
 

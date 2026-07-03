@@ -23,7 +23,7 @@ package com.github.hsindumas.stagger.builder;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiAllData;
 import com.github.hsindumas.stagger.model.ApiConfig;
-import com.thoughtworks.qdox.JavaProjectBuilder;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 
 /**
  * Build Api Data

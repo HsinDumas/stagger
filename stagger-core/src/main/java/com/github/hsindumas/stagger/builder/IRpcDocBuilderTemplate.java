@@ -35,7 +35,7 @@ import com.github.hsindumas.stagger.utils.BeetlTemplateUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.FileUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import org.beetl.core.Template;
 
 import java.util.ArrayList;
@@ -128,6 +128,31 @@ public interface IRpcDocBuilderTemplate<T extends AbstractRpcApiDoc<?>> extends 
 	 * Merge all api doc into one document.
 	 * @param apiDocList list data of Api doc
 	 * @param config api config
+	 * @param configBuilder project doc config builder
+	 * @param template template
+	 * @param outPutFileName output file
+	 */
+	default void buildAllInOne(List<T> apiDocList, ApiConfig config, ProjectDocConfigBuilder configBuilder,
+			String template, String outPutFileName) {
+		String outPath = config.getOutPath();
+		String rpcConfig = config.getRpcConsumerConfig();
+		String rpcConfigConfigContent = null;
+		if (Objects.nonNull(rpcConfig)) {
+			rpcConfigConfigContent = FileUtil.getFileContent(rpcConfig);
+		}
+		FileUtil.mkdirs(outPath);
+		Template tpl = BeetlTemplateUtil.getByName(template);
+		tpl.binding(TemplateVariable.API_DOC_LIST.getVariable(), apiDocList);
+		tpl.binding(TemplateVariable.DEPENDENCY_LIST.getVariable(), config.getRpcApiDependencies());
+		tpl.binding(TemplateVariable.RPC_CONSUMER_CONFIG.getVariable(), rpcConfigConfigContent);
+		this.bindingCommonVariable(config, configBuilder, tpl, apiDocList.isEmpty());
+		FileUtil.nioWriteFile(tpl.render(), outPath + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
+	}
+
+	/**
+	 * Merge all api doc into one document.
+	 * @param apiDocList list data of Api doc
+	 * @param config api config
 	 * @param javaProjectBuilder JavaProjectBuilder
 	 * @param template template
 	 * @param outPutFileName output file
@@ -148,6 +173,37 @@ public interface IRpcDocBuilderTemplate<T extends AbstractRpcApiDoc<?>> extends 
 		tpl.binding(TemplateVariable.RPC_CONSUMER_CONFIG.getVariable(), rpcConfigConfigContent);
 		// binding common variable
 		this.bindingCommonVariable(config, javaProjectBuilder, tpl, apiDocList.isEmpty());
+		this.setDirectoryLanguageVariable(config, tpl);
+		boolean onlyHasDefaultGroup = apiDocList.stream()
+			.allMatch(doc -> Objects.equals(TornaConstants.DEFAULT_GROUP_CODE, doc.getGroup()));
+
+		tpl.binding(TemplateVariable.API_DOC_LIST_ONLY_HAS_DEFAULT_GROUP.getVariable(), onlyHasDefaultGroup);
+		return tpl;
+	}
+
+	/**
+	 * Merge all api doc into one document.
+	 * @param apiDocList list data of Api doc
+	 * @param config api config
+	 * @param configBuilder project doc config builder
+	 * @param template template
+	 * @param outPutFileName output file
+	 * @return beetl Template
+	 */
+	default Template buildAllInOneWord(List<RpcApiDoc> apiDocList, ApiConfig config,
+			ProjectDocConfigBuilder configBuilder, String template, String outPutFileName) {
+		String outPath = config.getOutPath();
+		String rpcConfig = config.getRpcConsumerConfig();
+		String rpcConfigConfigContent = null;
+		if (Objects.nonNull(rpcConfig)) {
+			rpcConfigConfigContent = FileUtil.getFileContent(rpcConfig);
+		}
+		FileUtil.mkdirs(outPath);
+		Template tpl = BeetlTemplateUtil.getByName(template);
+		tpl.binding(TemplateVariable.API_DOC_LIST.getVariable(), apiDocList);
+		tpl.binding(TemplateVariable.DEPENDENCY_LIST.getVariable(), config.getRpcApiDependencies());
+		tpl.binding(TemplateVariable.RPC_CONSUMER_CONFIG.getVariable(), rpcConfigConfigContent);
+		this.bindingCommonVariable(config, configBuilder, tpl, apiDocList.isEmpty());
 		this.setDirectoryLanguageVariable(config, tpl);
 		boolean onlyHasDefaultGroup = apiDocList.stream()
 			.allMatch(doc -> Objects.equals(TornaConstants.DEFAULT_GROUP_CODE, doc.getGroup()));
@@ -191,6 +247,44 @@ public interface IRpcDocBuilderTemplate<T extends AbstractRpcApiDoc<?>> extends 
 
 		// set dict list
 		List<ApiDocDict> apiDocDictList = DocUtil.buildDictionary(config, javaProjectBuilder);
+		tpl.binding(TemplateVariable.DICT_LIST.getVariable(), apiDocDictList);
+		tpl.binding(TemplateVariable.DIRECTORY_TREE.getVariable(), apiDocs);
+		FileUtil.nioWriteFile(tpl.render(), config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
+	}
+
+	/**
+	 * Build search js.
+	 * @param apiDocList list data of Api doc
+	 * @param config api config
+	 * @param configBuilder project doc config builder
+	 * @param template template
+	 * @param outPutFileName output file
+	 */
+	default void buildSearchJs(List<T> apiDocList, ApiConfig config, ProjectDocConfigBuilder configBuilder,
+			String template, String outPutFileName) {
+		List<ApiErrorCode> errorCodeList = DocUtil.errorCodeDictToList(config, configBuilder);
+		Template tpl = BeetlTemplateUtil.getByName(template);
+		List<T> apiDocs = new ArrayList<>();
+		T apiDoc = this.createEmptyApiDoc();
+		apiDoc.setAlias(DEPENDENCY_TITLE);
+		apiDoc.setOrder(1);
+		apiDoc.setDesc(DEPENDENCY_TITLE);
+		apiDoc.setList(new ArrayList<>(0));
+		apiDocs.add(apiDoc);
+		for (T apiDoc1 : apiDocList) {
+			apiDoc1.setOrder(apiDocs.size() + 1);
+			apiDocs.add(apiDoc1);
+		}
+		Map<String, String> titleMap = this.setDirectoryLanguageVariable(config, tpl);
+		if (CollectionUtil.isNotEmpty(errorCodeList)) {
+			T apiDoc1 = this.createEmptyApiDoc();
+			apiDoc1.setOrder(apiDocs.size() + 1);
+			apiDoc1.setDesc(titleMap.get(TemplateVariable.ERROR_LIST_TITLE.getVariable()));
+			apiDoc1.setList(new ArrayList<>(0));
+			apiDocs.add(apiDoc1);
+		}
+
+		List<ApiDocDict> apiDocDictList = DocUtil.buildDictionary(config, configBuilder);
 		tpl.binding(TemplateVariable.DICT_LIST.getVariable(), apiDocDictList);
 		tpl.binding(TemplateVariable.DIRECTORY_TREE.getVariable(), apiDocs);
 		FileUtil.nioWriteFile(tpl.render(), config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);

@@ -12,7 +12,6 @@ java {
 
 dependencies {
     implementation(libs.beetl)
-    implementation(libs.qdox)
     implementation(libs.javaparserCore)
     implementation(libs.javaparserSymbolSolver)
     implementation(libs.datafaker)

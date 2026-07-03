@@ -61,7 +61,7 @@ public class WebSocketMarkdownBuilder {
 	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		WebSocketDocBuilderTemplate webSocketDocBuilderTemplate = new WebSocketDocBuilderTemplate();
 		List<WebSocketDoc> webSocketDocList = webSocketDocBuilderTemplate.getWebSocketApiDoc(Boolean.FALSE, config,
-				configBuilder.getJavaProjectBuilder());
+				configBuilder);
 
 		if (null == webSocketDocList || webSocketDocList.isEmpty()) {
 			return;
@@ -72,8 +72,7 @@ public class WebSocketMarkdownBuilder {
 					DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
 			String docName = webSocketDocBuilderTemplate.allInOneDocName(config, "webSocket-all" + version,
 					DocGlobalConstants.MARKDOWN_EXTENSION);
-			webSocketDocBuilderTemplate.buildWebSocketAllInOne(webSocketDocList, config,
-					configBuilder.getJavaProjectBuilder(),
+			webSocketDocBuilderTemplate.buildWebSocketAllInOne(webSocketDocList, config, configBuilder,
 					DocGlobalConstants.WEBSOCKET_ALL_IN_ONE_MD_TPL, docName);
 		}
 		else {

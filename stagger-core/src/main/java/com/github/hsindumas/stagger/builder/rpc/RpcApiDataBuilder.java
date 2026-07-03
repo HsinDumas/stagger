@@ -26,7 +26,7 @@ import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.rpc.RpcApiAllData;
 import com.github.hsindumas.stagger.model.rpc.RpcApiDoc;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 
 /**
  * rpc api data builder.

@@ -69,12 +69,11 @@ public class RpcAdocBuilder {
 	 */
 	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		RpcDocBuilderTemplate builderTemplate = new RpcDocBuilderTemplate();
-		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(true, true, false, config,
-				configBuilder.getJavaProjectBuilder());
+		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(true, true, false, config, configBuilder);
 		if (config.isAllInOne()) {
 			String docName = builderTemplate.allInOneDocName(config, INDEX_DOC, DocGlobalConstants.ASCIIDOC_EXTENSION);
-			builderTemplate.buildAllInOne(apiDocList, config, configBuilder.getJavaProjectBuilder(),
-					DocGlobalConstants.RPC_ALL_IN_ONE_ADOC_TPL, docName);
+			builderTemplate.buildAllInOne(apiDocList, config, configBuilder, DocGlobalConstants.RPC_ALL_IN_ONE_ADOC_TPL,
+					docName);
 		}
 		else {
 			builderTemplate.buildApiDoc(apiDocList, config, DocGlobalConstants.RPC_API_DOC_ADOC_TPL, API_EXTENSION);

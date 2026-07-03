@@ -25,8 +25,7 @@ import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.DocJavaMethod;
 import com.github.hsindumas.stagger.model.SourceCodePath;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaMethod;
+import com.github.hsindumas.stagger.utils.DocUtil;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,7 +51,7 @@ class JsonBuildHelperReturnEnumTest {
 	void shouldRenderEnumReturnUsingFacadeResolvedEnumClass() throws Exception {
 		Path javaRoot = this.writeFixture();
 		ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
-		JavaMethod method = this.findMethod(builder, "sample.json.EnumReturnResource", "getLevel");
+		Object method = this.findMethod(builder, "sample.json.EnumReturnResource", "getLevel");
 
 		String result = JsonBuildHelper.buildReturnJson(DocJavaMethod.builder().setJavaMethod(method), builder);
 
@@ -63,8 +62,8 @@ class JsonBuildHelperReturnEnumTest {
 	void shouldRenderEnumReturnUsingSampleFallbackWhenFacadeClassUnavailable() throws Exception {
 		Path javaRoot = this.writeFixture();
 		ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
-		JavaMethod rawMethod = this.findMethod(builder, "sample.json.EnumReturnResource", "getLevel");
-		String returnType = rawMethod.getReturnType().getGenericCanonicalName();
+		Object rawMethod = this.findMethod(builder, "sample.json.EnumReturnResource", "getLevel");
+		String returnType = DocUtil.getMethodReturnTypeGenericCanonicalName(rawMethod);
 
 		ProjectDocConfigBuilder fallbackBuilder = Mockito.spy(builder);
 		doReturn(true).when(fallbackBuilder).isEnumType(returnType);
@@ -95,17 +94,17 @@ class JsonBuildHelperReturnEnumTest {
 		return new ProjectDocConfigBuilder(config, null);
 	}
 
-	private JavaClass findClass(ProjectDocConfigBuilder builder, String className) {
-		JavaClass javaClass = builder.getClassByName(className);
+	private Object findClass(ProjectDocConfigBuilder builder, String className) {
+		Object javaClass = builder.getClassByName(className);
 		assertNotNull(javaClass, "Expected class to be loaded: " + className);
 		return javaClass;
 	}
 
-	private JavaMethod findMethod(ProjectDocConfigBuilder builder, String className, String methodName) {
-		JavaClass javaClass = this.findClass(builder, className);
-		return javaClass.getMethods()
+	private Object findMethod(ProjectDocConfigBuilder builder, String className, String methodName) {
+		Object javaClass = this.findClass(builder, className);
+		return DocUtil.getClassMethods(javaClass)
 			.stream()
-			.filter(method -> methodName.equals(method.getName()))
+			.filter(method -> methodName.equals(DocUtil.getMethodName(method)))
 			.findFirst()
 			.orElseThrow(() -> new IllegalStateException("Method not found: " + methodName));
 	}

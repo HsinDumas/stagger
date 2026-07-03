@@ -21,9 +21,6 @@
 
 package com.github.hsindumas.stagger.model;
 
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaParameter;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +34,7 @@ import java.util.Objects;
  */
 public class DocJavaParameter implements Serializable {
 
-	private JavaParameter javaParameter;
+	private Object javaParameter;
 
 	private String genericCanonicalName;
 
@@ -47,13 +44,14 @@ public class DocJavaParameter implements Serializable {
 
 	private String typeValue;
 
-	private List<JavaAnnotation> annotations;
+	private List<?> annotations;
 
-	public JavaParameter getJavaParameter() {
-		return javaParameter;
+	@SuppressWarnings("unchecked")
+	public <T> T getJavaParameter() {
+		return (T) javaParameter;
 	}
 
-	public void setJavaParameter(JavaParameter javaParameter) {
+	public void setJavaParameter(Object javaParameter) {
 		this.javaParameter = javaParameter;
 	}
 
@@ -89,11 +87,11 @@ public class DocJavaParameter implements Serializable {
 		this.typeValue = typeValue;
 	}
 
-	public List<JavaAnnotation> getAnnotations() {
+	public List<?> getAnnotations() {
 		return annotations;
 	}
 
-	public void setAnnotations(List<JavaAnnotation> annotations) {
+	public void setAnnotations(List<?> annotations) {
 		this.annotations = annotations;
 	}
 

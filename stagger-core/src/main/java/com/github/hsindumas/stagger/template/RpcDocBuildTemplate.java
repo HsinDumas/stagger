@@ -36,10 +36,6 @@ import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.power.common.util.StringUtil;
 import com.power.common.util.ValidateUtil;
-import com.thoughtworks.qdox.model.DocletTag;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.expression.AnnotationValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,7 +58,7 @@ public class RpcDocBuildTemplate implements IDocBuildTemplate<RpcApiDoc>, IWebSo
 	/**
 	 * api index
 	 */
-	private final AtomicInteger ATOMIC_INTEGER = new AtomicInteger(1);
+	private final AtomicInteger atomicInteger = new AtomicInteger(1);
 
 	@Override
 	public boolean supportsFramework(String framework) {
@@ -80,14 +76,14 @@ public class RpcDocBuildTemplate implements IDocBuildTemplate<RpcApiDoc>, IWebSo
 	}
 
 	@Override
-	public ApiSchema<RpcApiDoc> renderApi(ProjectDocConfigBuilder projectBuilder,
-			Collection<JavaClass> candidateClasses) {
+	public ApiSchema<RpcApiDoc> renderApi(ProjectDocConfigBuilder projectBuilder, Collection<?> candidateClasses) {
 		ApiConfig apiConfig = projectBuilder.getApiConfig();
 		List<RpcApiDoc> apiDocList = new ArrayList<>();
 
 		boolean setCustomOrder = false;
 		int maxOrder = 0;
-		for (JavaClass cls : candidateClasses) {
+		for (Object candidateClass : candidateClasses) {
+			Object cls = candidateClass;
 			if (skipClass(apiConfig, cls, null)) {
 				continue;
 			}
@@ -109,19 +105,19 @@ public class RpcDocBuildTemplate implements IDocBuildTemplate<RpcApiDoc>, IWebSo
 			return apiSchema;
 		}
 		else if (setCustomOrder) {
-			ATOMIC_INTEGER.getAndAdd(maxOrder);
+			atomicInteger.getAndAdd(maxOrder);
 			// while set custom oder
 			final List<RpcApiDoc> tempList = new ArrayList<>(apiDocList);
 			tempList.forEach(p -> {
 				if (p.getOrder() == 0) {
-					p.setOrder(ATOMIC_INTEGER.getAndAdd(1));
+					p.setOrder(atomicInteger.getAndAdd(1));
 				}
 			});
 			apiSchema.setApiDatas(
 					tempList.stream().sorted(Comparator.comparing(RpcApiDoc::getOrder)).collect(Collectors.toList()));
 		}
 		else {
-			apiDocList.forEach(p -> p.setOrder(ATOMIC_INTEGER.getAndAdd(1)));
+			apiDocList.forEach(p -> p.setOrder(atomicInteger.getAndAdd(1)));
 			apiSchema.setApiDatas(apiDocList);
 		}
 		return apiSchema;
@@ -129,7 +125,7 @@ public class RpcDocBuildTemplate implements IDocBuildTemplate<RpcApiDoc>, IWebSo
 
 	@Override
 	public List<WebSocketDoc> renderWebSocketApi(ProjectDocConfigBuilder projectBuilder,
-			Collection<JavaClass> candidateClasses) {
+			Collection<?> candidateClasses) {
 		return null;
 	}
 
@@ -139,22 +135,22 @@ public class RpcDocBuildTemplate implements IDocBuildTemplate<RpcApiDoc>, IWebSo
 	}
 
 	@Override
-	public boolean isEntryPoint(JavaClass cls, FrameworkAnnotations frameworkAnnotations) {
+	public boolean isEntryPoint(Object cls, FrameworkAnnotations frameworkAnnotations) {
 		// Exclude DubboSwaggerService from dubbo 2.7.x
-		if (DubboAnnotationConstants.DUBBO_SWAGGER.equals(cls.getCanonicalName())) {
+		if (DubboAnnotationConstants.DUBBO_SWAGGER.equals(DocUtil.getClassCanonicalName(cls))) {
 			return false;
 		}
-		List<JavaAnnotation> classAnnotations = cls.getAnnotations();
-		for (JavaAnnotation annotation : classAnnotations) {
-			String name = annotation.getType().getCanonicalName();
+		List<?> classAnnotations = DocUtil.getClassAnnotations(cls);
+		for (Object annotation : classAnnotations) {
+			String name = DocUtil.getAnnotationTypeFullyQualifiedName(annotation);
 			if (DubboAnnotationConstants.SERVICE.equals(name) || DubboAnnotationConstants.DUBBO_SERVICE.equals(name)
 					|| DubboAnnotationConstants.ALI_DUBBO_SERVICE.equals(name)) {
 				return true;
 			}
 		}
-		List<DocletTag> docletTags = cls.getTags();
-		for (DocletTag docletTag : docletTags) {
-			String value = docletTag.getName();
+		List<?> docletTags = DocUtil.getClassTags(cls);
+		for (Object docletTag : docletTags) {
+			String value = DocUtil.getDocletTagName(docletTag);
 			if (DocTags.DUBBO.equals(value)) {
 				return true;
 			}
@@ -179,22 +175,22 @@ public class RpcDocBuildTemplate implements IDocBuildTemplate<RpcApiDoc>, IWebSo
 	 * @param builder The ProjectDocConfigBuilder used to configure and retrieve class
 	 * information.
 	 */
-	private void handleJavaApiDoc(JavaClass cls, List<RpcApiDoc> apiDocList, List<RpcJavaMethod> apiMethodDocs,
-			int order, ProjectDocConfigBuilder builder) {
-		String className = cls.getCanonicalName();
-		String shortName = cls.getName();
-		String comment = cls.getComment();
+	private void handleJavaApiDoc(Object cls, List<RpcApiDoc> apiDocList, List<RpcJavaMethod> apiMethodDocs, int order,
+			ProjectDocConfigBuilder builder) {
+		String className = DocUtil.getClassCanonicalName(cls);
+		String shortName = DocUtil.getClassSimpleName(cls);
+		String comment = DocUtil.getClassComment(cls);
 		List<String> interfaceNames = builder.getImplementedInterfaceNames(className);
-		if (!interfaceNames.isEmpty() && !cls.isInterface()) {
+		if (!interfaceNames.isEmpty() && !DocUtil.isClassInterface(cls)) {
 			String interfaceName = interfaceNames.get(0);
 			className = DocClassUtil.getSimpleName(interfaceName);
 			shortName = className;
-			JavaClass javaClass = builder.getClassByName(interfaceName);
+			Object javaClass = builder.getClassByName(interfaceName);
 			if (Objects.isNull(javaClass)) {
 				javaClass = builder.getClassByName(className);
 			}
 			if (StringUtil.isEmpty(comment) && Objects.nonNull(javaClass)) {
-				comment = javaClass.getComment();
+				comment = DocUtil.getClassComment(javaClass);
 			}
 		}
 		RpcApiDoc apiDoc = new RpcApiDoc();
@@ -211,42 +207,47 @@ public class RpcDocBuildTemplate implements IDocBuildTemplate<RpcApiDoc>, IWebSo
 		apiDoc.setDesc(DocUtil.getEscapeAndCleanComment(comment));
 		apiDoc.setList(apiMethodDocs);
 
-		List<JavaAnnotation> annotations = cls.getAnnotations();
-		for (JavaAnnotation annotation : annotations) {
-			String name = annotation.getType().getCanonicalName();
+		List<?> annotations = DocUtil.getClassAnnotations(cls);
+		for (Object annotation : annotations) {
+			String name = DocUtil.getAnnotationTypeFullyQualifiedName(annotation);
 			if (!DubboAnnotationConstants.DUBBO_SERVICE.equals(name)) {
 				continue;
 			}
-			AnnotationValue versionValue = annotation.getProperty("version");
+			Object versionValue = DocUtil.getAnnotationProperty(annotation, "version");
 			if (Objects.nonNull(versionValue)) {
-				apiDoc.setVersion(StringUtil.removeDoubleQuotes(versionValue.getParameterValue().toString()));
+				String version = DocUtil.resolveAnnotationValue(builder.getApiConfig().getClassLoader(), versionValue);
+				apiDoc.setVersion(StringUtil.removeDoubleQuotes(version));
 			}
-			AnnotationValue protocolValue = annotation.getProperty("protocol");
+			Object protocolValue = DocUtil.getAnnotationProperty(annotation, "protocol");
 			if (Objects.nonNull(protocolValue)) {
-				apiDoc.setProtocol(StringUtil.removeDoubleQuotes(protocolValue.getParameterValue().toString()));
+				String protocol = DocUtil.resolveAnnotationValue(builder.getApiConfig().getClassLoader(),
+						protocolValue);
+				apiDoc.setProtocol(StringUtil.removeDoubleQuotes(protocol));
 			}
-			AnnotationValue interfaceNameValue = annotation.getProperty("interfaceName");
+			Object interfaceNameValue = DocUtil.getAnnotationProperty(annotation, "interfaceName");
 			if (Objects.nonNull(interfaceNameValue)) {
-				apiDoc.setName(StringUtil.removeDoubleQuotes(interfaceNameValue.getParameterValue().toString()));
+				String interfaceName = DocUtil.resolveAnnotationValue(builder.getApiConfig().getClassLoader(),
+						interfaceNameValue);
+				apiDoc.setName(StringUtil.removeDoubleQuotes(interfaceName));
 			}
 		}
-		List<DocletTag> docletTags = cls.getTags();
+		List<?> docletTags = DocUtil.getClassTags(cls);
 		List<String> authorList = new ArrayList<>();
-		for (DocletTag docletTag : docletTags) {
-			String name = docletTag.getName();
+		for (Object docletTag : docletTags) {
+			String name = DocUtil.getDocletTagName(docletTag);
 			if (DocTags.VERSION.equals(name)) {
-				apiDoc.setVersion(docletTag.getValue());
+				apiDoc.setVersion(DocUtil.getDocletTagValue(docletTag));
 			}
 			if (DocTags.AUTHOR.equals(name)) {
-				authorList.add(docletTag.getValue());
+				authorList.add(DocUtil.getDocletTagValue(docletTag));
 			}
 			// set rpc protocol
 			if (DocTags.PROTOCOL.equals(name)) {
-				apiDoc.setProtocol(docletTag.getValue());
+				apiDoc.setProtocol(DocUtil.getDocletTagValue(docletTag));
 			}
 			// set rpc service name
 			if (DocTags.SERVICE.equals(name)) {
-				apiDoc.setName(docletTag.getValue());
+				apiDoc.setName(DocUtil.getDocletTagValue(docletTag));
 			}
 		}
 		apiDoc.setAuthor(String.join(", ", authorList));

@@ -22,6 +22,7 @@
  */
 package com.github.hsindumas.stagger.builder.openapi;
 
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.constants.Methods;
 import com.github.hsindumas.stagger.constants.OpenApiTagNameTypeEnum;
@@ -40,7 +41,7 @@ import com.github.hsindumas.stagger.utils.JsonUtil;
 import com.github.hsindumas.stagger.utils.OpenApiSchemaUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.FileUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -90,10 +91,20 @@ public class OpenApiBuilder extends AbstractOpenApiBuilder {
 	/**
 	 * Only for stagger maven plugin and gradle plugin.
 	 * @param config Configuration of stagger
-	 * @param projectBuilder JavaDocBuilder of QDox
+	 * @param projectBuilder Java source project builder
 	 */
 	public static void buildOpenApi(ApiConfig config, JavaProjectBuilder projectBuilder) {
-		ApiSchema<ApiDoc> apiSchema = INSTANCE.getOpenApiDocs(config, projectBuilder);
+		ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(config, projectBuilder);
+		buildOpenApi(config, configBuilder);
+	}
+
+	/**
+	 * Build open api with project doc config builder.
+	 * @param config Configuration of stagger
+	 * @param configBuilder Project doc config builder
+	 */
+	public static void buildOpenApi(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
+		ApiSchema<ApiDoc> apiSchema = INSTANCE.getOpenApiDocs(config, configBuilder);
 		INSTANCE.openApiCreate(config, apiSchema);
 	}
 

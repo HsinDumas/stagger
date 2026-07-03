@@ -36,11 +36,17 @@ Stagger 继承了优秀的静态解析理念，彻底摒弃注解流：
 |------|--------------------|-------------------|
 | 构建体系 | Maven 为主 | Gradle Monorepo 为主 |
 | JDK 策略 | 传统基线 | 使用 JDK 25 toolchain 构建，产物保持向下兼容目标 |
-| 解析架构 | QDox 为中心 | `SourceModel` 抽象 + JavaParser Provider，并在迁移期保留兼容回退 |
+| 解析架构 | QDox 为中心 | `SourceModel` 抽象 + JavaParser Provider，配合源码/运行时回退委托且不再依赖 QDox |
 | Spring 侧重点 | 常规 Spring 生态 | 更强调 Spring Boot 4 与新注解形态兼容 |
 | 迁移透明度 | N/A | 公开迁移记录：`docs/CODEX_MIGRATION_PLAN.md` |
 
-关于 QDox 替换：本分支已经引入 JavaParser 的源码模型能力，并在关键链路逐步切换。当前仍保留部分 QDox 兼容路径，以确保迁移期间的行为稳定。
+关于 QDox 替换：本分支已经引入 JavaParser 的源码模型能力，并在关键链路完成到新抽象的迁移。截止 2026-07-03，core/plugin 构建配置中的 QDox 依赖声明已移除，解析兼容能力由 SourceModel 驱动的回退委托承接。
+
+迁移过程中的聚焦验证命令：
+
+```bash
+./gradlew --no-daemon :stagger-core:compileJava :stagger-gradle-plugin:compileJava :stagger-maven-plugin:compileJava :stagger-core:test --tests "*ApiDocTest" --tests "*DocUtilTest" --tests "*IRequestMappingHandlerTest"
+```
 
 ## 🚀 快速开始
 

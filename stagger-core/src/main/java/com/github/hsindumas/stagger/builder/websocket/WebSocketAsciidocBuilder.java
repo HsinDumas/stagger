@@ -71,7 +71,7 @@ public class WebSocketAsciidocBuilder {
 
 		WebSocketDocBuilderTemplate webSocketDocBuilderTemplate = new WebSocketDocBuilderTemplate();
 		List<WebSocketDoc> webSocketDocList = webSocketDocBuilderTemplate.getWebSocketApiDoc(Boolean.TRUE, config,
-				configBuilder.getJavaProjectBuilder());
+				configBuilder);
 
 		if (null == webSocketDocList || webSocketDocList.isEmpty()) {
 			return;
@@ -80,8 +80,7 @@ public class WebSocketAsciidocBuilder {
 		if (config.isAllInOne()) {
 			String docName = webSocketDocBuilderTemplate.allInOneDocName(config, INDEX_DOC,
 					DocGlobalConstants.ASCIIDOC_EXTENSION);
-			webSocketDocBuilderTemplate.buildWebSocketAllInOne(webSocketDocList, config,
-					configBuilder.getJavaProjectBuilder(),
+			webSocketDocBuilderTemplate.buildWebSocketAllInOne(webSocketDocList, config, configBuilder,
 					DocGlobalConstants.WEBSOCKET_ALL_IN_ONE_ADOC_TPL, docName);
 		}
 		else {

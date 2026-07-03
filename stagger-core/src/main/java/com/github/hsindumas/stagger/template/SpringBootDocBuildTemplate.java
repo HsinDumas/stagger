@@ -50,14 +50,11 @@ import com.github.hsindumas.stagger.model.annotation.RequestPartAnnotation;
 import com.github.hsindumas.stagger.model.annotation.ServerEndpointAnnotation;
 import com.github.hsindumas.stagger.model.request.RequestMapping;
 import com.github.hsindumas.stagger.utils.DocClassUtil;
+import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.power.common.util.DateTimeUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.DocletTag;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaMethod;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -85,7 +82,8 @@ public class SpringBootDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IW
 	}
 
 	@Override
-	public ApiSchema<ApiDoc> renderApi(ProjectDocConfigBuilder projectBuilder, Collection<JavaClass> candidateClasses) {
+	@SuppressWarnings("unchecked")
+	public ApiSchema<ApiDoc> renderApi(ProjectDocConfigBuilder projectBuilder, Collection<?> candidateClasses) {
 		ApiConfig apiConfig = projectBuilder.getApiConfig();
 		List<ApiReqParam> configApiReqParams = Stream.of(apiConfig.getRequestHeaders(), apiConfig.getRequestParams())
 			.filter(Objects::nonNull)
@@ -97,8 +95,9 @@ public class SpringBootDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IW
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<WebSocketDoc> renderWebSocketApi(ProjectDocConfigBuilder projectBuilder,
-			Collection<JavaClass> candidateClasses) {
+			Collection<?> candidateClasses) {
 		FrameworkAnnotations frameworkAnnotations = this.registeredAnnotations();
 		return this.processWebSocketData(projectBuilder, frameworkAnnotations, new SpringMVCRequestMappingHandler(),
 				candidateClasses);
@@ -198,7 +197,7 @@ public class SpringBootDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IW
 	}
 
 	@Override
-	public boolean isEntryPoint(JavaClass javaClass, FrameworkAnnotations frameworkAnnotations) {
+	public boolean isEntryPoint(Object javaClass, FrameworkAnnotations frameworkAnnotations) {
 		boolean isDefaultEntryPoint = this.defaultEntryPoint(javaClass, frameworkAnnotations);
 		if (isDefaultEntryPoint) {
 			return true;
@@ -208,9 +207,9 @@ public class SpringBootDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IW
 			return false;
 		}
 		// use custom doc tag to support Feign.
-		List<DocletTag> docletTags = javaClass.getTags();
-		for (DocletTag docletTag : docletTags) {
-			String value = docletTag.getName();
+		List<?> docletTags = DocUtil.getClassTags(javaClass);
+		for (Object docletTag : docletTags) {
+			String value = DocUtil.getDocletTagName(docletTag);
 			if (DocTags.REST_API.equals(value)) {
 				return true;
 			}
@@ -224,7 +223,7 @@ public class SpringBootDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IW
 	}
 
 	@Override
-	public void requestMappingPostProcess(JavaClass javaClass, JavaMethod method, RequestMapping requestMapping) {
+	public void requestMappingPostProcess(Object javaClass, Object method, RequestMapping requestMapping) {
 		// do nothing
 	}
 
@@ -234,22 +233,25 @@ public class SpringBootDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IW
 	}
 
 	@Override
-	public boolean isExceptionAdviceEntryPoint(JavaClass javaClass, FrameworkAnnotations frameworkAnnotations) {
+	public boolean isExceptionAdviceEntryPoint(Object javaClass, FrameworkAnnotations frameworkAnnotations) {
 		return this.defaultExceptionAdviceEntryPoint(javaClass, frameworkAnnotations);
 	}
 
 	@Override
-	public ExceptionAdviceMethod processExceptionAdviceMethod(JavaMethod method) {
-		List<JavaAnnotation> annotations = method.getAnnotations();
+	public ExceptionAdviceMethod processExceptionAdviceMethod(Object method) {
+		if (Objects.isNull(method)) {
+			return ExceptionAdviceMethod.builder().setExceptionHandlerMethod(false).setStatus(null);
+		}
+		List<?> annotations = DocUtil.getMethodAnnotations(method);
 		boolean isExceptionHandlerMethod = false;
 		String status = null;
-		for (JavaAnnotation annotation : annotations) {
-			String annotationName = JavaClassUtil.getClassSimpleName(annotation.getType().getValue());
+		for (Object annotation : annotations) {
+			String annotationName = JavaClassUtil.getClassSimpleName(DocUtil.getAnnotationTypeValue(annotation));
 			if (SpringMvcAnnotations.EXCEPTION_HANDLER.equals(annotationName)) {
 				isExceptionHandlerMethod = true;
 			}
 			if (SpringMvcAnnotations.RESPONSE_STATUS.equals(annotationName)) {
-				Object consumes = annotation.getNamedParameter(DocAnnotationConstants.VALUE_PROP);
+				Object consumes = DocUtil.getAnnotationNamedParameter(annotation, DocAnnotationConstants.VALUE_PROP);
 				if (Objects.nonNull(consumes)) {
 					status = consumes.toString();
 				}

@@ -25,7 +25,6 @@ import com.github.hsindumas.stagger.constants.MediaType;
 import com.github.hsindumas.stagger.model.request.ApiRequestExample;
 import com.github.hsindumas.stagger.utils.ParamUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.JavaClass;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -61,6 +60,11 @@ public class ApiMethodDoc implements IMethod, Serializable, Cloneable {
 	 * @since 1.7.3 +
 	 */
 	private String name;
+
+	/**
+	 * declaring class name
+	 */
+	private String declaringClassName;
 
 	/**
 	 * method order
@@ -281,6 +285,15 @@ public class ApiMethodDoc implements IMethod, Serializable, Cloneable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDeclaringClassName() {
+		return declaringClassName;
+	}
+
+	public ApiMethodDoc setDeclaringClassName(String declaringClassName) {
+		this.declaringClassName = declaringClassName;
+		return this;
 	}
 
 	public String getDesc() {
@@ -564,11 +577,6 @@ public class ApiMethodDoc implements IMethod, Serializable, Cloneable {
 		catch (CloneNotSupportedException e) {
 			throw new RuntimeException("clone apiMethodDoc is error", e);
 		}
-	}
-
-	@Override
-	public JavaClass getDeclaringClass() {
-		return null;
 	}
 
 	@Override

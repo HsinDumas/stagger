@@ -22,7 +22,12 @@
  */
 package com.github.hsindumas.stagger.gradle.util;
 
-import com.github.hsindumas.stagger.gradle.chain.*;
+import com.github.hsindumas.stagger.gradle.chain.CommonArtifactFilterChain;
+import com.github.hsindumas.stagger.gradle.chain.ContainsFilterChain;
+import com.github.hsindumas.stagger.gradle.chain.FilterChain;
+import com.github.hsindumas.stagger.gradle.chain.GroupIdFilterChain;
+import com.github.hsindumas.stagger.gradle.chain.SpringBootArtifactFilterChain;
+import com.github.hsindumas.stagger.gradle.chain.StartsWithFilterChain;
 import com.github.hsindumas.stagger.gradle.model.CustomArtifact;
 
 /**
@@ -43,11 +48,11 @@ public class ArtifactFilterUtil {
 		FilterChain startsWithFilterChain = new StartsWithFilterChain();
 		FilterChain containsFilterChain = new ContainsFilterChain();
 		FilterChain commonArtifactFilterChain = new CommonArtifactFilterChain();
-		FilterChain springBootArtifactFilterChain = new SpringBootArtifactFilterChain();
 
 		groupFilterChain.setNext(startsWithFilterChain);
 		startsWithFilterChain.setNext(containsFilterChain);
 		containsFilterChain.setNext(commonArtifactFilterChain);
+		FilterChain springBootArtifactFilterChain = new SpringBootArtifactFilterChain();
 		commonArtifactFilterChain.setNext(springBootArtifactFilterChain);
 		return groupFilterChain.ignoreArtifactById(artifact);
 	}

@@ -38,11 +38,6 @@ import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.github.hsindumas.stagger.utils.JavaFieldUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.JavaParameter;
-import com.thoughtworks.qdox.model.JavaType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,17 +77,17 @@ public interface IJavadocDocTemplate<T extends JavadocJavaMethod> extends IBaseD
 	T createEmptyJavadocJavaMethod();
 
 	/**
-	 * Convert JavaMethod to JavadocJavaMethod
+	 * Convert method metadata to JavadocJavaMethod
 	 * @param apiConfig ApiConfig
-	 * @param method JavaMethod
+	 * @param method method metadata object
 	 * @param actualTypesMap Map
 	 * @return JavadocJavaMethod
 	 */
-	default T convertToJavadocJavaMethod(ApiConfig apiConfig, JavaMethod method, Map<String, JavaType> actualTypesMap) {
-		JavaClass cls = method.getDeclaringClass();
+	default T convertToJavadocJavaMethod(ApiConfig apiConfig, Object method, Map<String, ?> actualTypesMap) {
+		Object cls = DocUtil.getMethodDeclaringClass(method);
 		T javadocJavaMethod = this.createEmptyJavadocJavaMethod();
 		javadocJavaMethod.setJavaMethod(method);
-		javadocJavaMethod.setName(method.getName());
+		javadocJavaMethod.setName(DocUtil.getMethodName(method));
 		javadocJavaMethod.setActualTypesMap(actualTypesMap);
 		String methodDefine = this.methodDefinition(method, actualTypesMap);
 		String scapeMethod = methodDefine.replaceAll("<", "&lt;");
@@ -100,30 +95,30 @@ public interface IJavadocDocTemplate<T extends JavadocJavaMethod> extends IBaseD
 
 		javadocJavaMethod.setMethodDefinition(methodDefine);
 		javadocJavaMethod.setEscapeMethodDefinition(scapeMethod);
-		javadocJavaMethod.setDesc(DocUtil.getEscapeAndCleanComment(method.getComment()));
+		javadocJavaMethod.setDesc(DocUtil.getEscapeAndCleanComment(DocUtil.getMethodComment(method)));
 		// set detail
-		String apiNoteValue = DocUtil.getNormalTagComments(method, DocTags.API_NOTE, cls.getName());
+		String apiNoteValue = DocUtil.getNormalTagComments(method, DocTags.API_NOTE, DocUtil.getClassSimpleName(cls));
 		if (StringUtil.isEmpty(apiNoteValue)) {
-			apiNoteValue = method.getComment();
+			apiNoteValue = DocUtil.getMethodComment(method);
 		}
-		String version = DocUtil.getNormalTagComments(method, DocTags.SINCE, cls.getName());
+		String version = DocUtil.getNormalTagComments(method, DocTags.SINCE, DocUtil.getClassSimpleName(cls));
 		javadocJavaMethod.setVersion(version);
 		javadocJavaMethod.setDetail(apiNoteValue != null ? apiNoteValue : "");
 		// set author
-		String authorValue = DocUtil.getNormalTagComments(method, DocTags.AUTHOR, cls.getName());
+		String authorValue = DocUtil.getNormalTagComments(method, DocTags.AUTHOR, DocUtil.getClassSimpleName(cls));
 		if (apiConfig.isShowAuthor() && StringUtil.isNotEmpty(authorValue)) {
 			javadocJavaMethod.setAuthor(authorValue);
 		}
 
 		// Deprecated
-		List<JavaAnnotation> annotations = method.getAnnotations();
-		for (JavaAnnotation annotation : annotations) {
-			String annotationName = annotation.getType().getName();
+		List<?> annotations = DocUtil.getMethodAnnotations(method);
+		for (Object annotation : annotations) {
+			String annotationName = DocUtil.getAnnotationTypeValue(annotation);
 			if (DocAnnotationConstants.DEPRECATED.equals(annotationName)) {
 				javadocJavaMethod.setDeprecated(true);
 			}
 		}
-		if (Objects.nonNull(method.getTagByName(DEPRECATED))) {
+		if (Objects.nonNull(DocUtil.getMethodTagByName(method, DEPRECATED))) {
 			javadocJavaMethod.setDeprecated(true);
 		}
 		return javadocJavaMethod;
@@ -131,51 +126,52 @@ public interface IJavadocDocTemplate<T extends JavadocJavaMethod> extends IBaseD
 
 	/**
 	 * Get method definition
-	 * @param method JavaMethod
+	 * @param method method metadata object
 	 * @param actualTypesMap Map
 	 * @return String
 	 */
-	default String methodDefinition(JavaMethod method, Map<String, JavaType> actualTypesMap) {
+	default String methodDefinition(Object method, Map<String, ?> actualTypesMap) {
 		StringBuilder methodBuilder = new StringBuilder();
 		if (this.addMethodModifiers()) {
 			// append method modifiers
-			method.getModifiers().forEach(item -> methodBuilder.append(item).append(" "));
+			DocUtil.getMethodModifiers(method).forEach(item -> methodBuilder.append(item).append(" "));
 		}
 		String returnType = this.getMethodReturnType(method, actualTypesMap);
 		// append method return type
 		methodBuilder.append(returnType).append(" ");
 		List<String> params = new ArrayList<>();
-		List<JavaParameter> parameters = method.getParameters();
-		for (JavaParameter parameter : parameters) {
-			String typeName = this.replaceTypeName(parameter.getType().getGenericValue(), actualTypesMap, Boolean.TRUE);
-			params.add(typeName + " " + parameter.getName());
+		List<?> parameters = DocUtil.getMethodParameters(method);
+		for (Object parameter : parameters) {
+			String typeName = this.replaceTypeName(DocUtil.getParameterTypeValue(parameter), actualTypesMap,
+					Boolean.TRUE);
+			params.add(typeName + " " + DocUtil.getParameterName(parameter));
 		}
-		methodBuilder.append(method.getName()).append("(").append(String.join(", ", params)).append(")");
+		methodBuilder.append(DocUtil.getMethodName(method)).append("(").append(String.join(", ", params)).append(")");
 		return methodBuilder.toString();
 	}
 
 	/**
 	 * Processes methods of a given class and its parent or interfaces.
-	 * @param cls JavaClass
+	 * @param cls class metadata object
 	 * @param methodProcessor Function to process methods from a class
 	 * @return List of documented Java methods
 	 */
-	default List<T> processClassHierarchy(JavaClass cls, Function<JavaClass, List<T>> methodProcessor) {
+	default List<T> processClassHierarchy(Object cls, Function<Object, List<T>> methodProcessor) {
 		List<T> docJavaMethods = new ArrayList<>();
-		Set<JavaClass> classesToProcess = new LinkedHashSet<>();
+		Set<Object> classesToProcess = new LinkedHashSet<>();
 		classesToProcess.add(cls);
 
 		while (!classesToProcess.isEmpty()) {
-			JavaClass currentClass = classesToProcess.iterator().next();
+			Object currentClass = classesToProcess.iterator().next();
 			classesToProcess.remove(currentClass);
 
 			// Process methods
 			docJavaMethods.addAll(methodProcessor.apply(currentClass));
 
 			// Add parent class if not Object
-			JavaClass parentClass = currentClass.getSuperJavaClass();
+			Object parentClass = DocUtil.getClassSuperJavaClass(currentClass);
 			if (Objects.nonNull(parentClass)
-					&& !JavaTypeConstants.OBJECT_SIMPLE_NAME.equals(parentClass.getSimpleName())) {
+					&& !JavaTypeConstants.OBJECT_SIMPLE_NAME.equals(DocUtil.getClassSimpleName(parentClass))) {
 				classesToProcess.add(parentClass);
 			}
 
@@ -189,15 +185,15 @@ public interface IJavadocDocTemplate<T extends JavadocJavaMethod> extends IBaseD
 	/**
 	 * Get parent class and interface methods
 	 * @param apiConfig ApiConfig
-	 * @param cls JavaClass
+	 * @param cls class metadata object
 	 * @return List
 	 */
-	default List<T> getParentsClassAndInterfaceMethods(ApiConfig apiConfig, JavaClass cls) {
+	default List<T> getParentsClassAndInterfaceMethods(ApiConfig apiConfig, Object cls) {
 		return this.processClassHierarchy(cls, currentClass -> {
 			List<T> docJavaMethods = new ArrayList<>();
-			Map<String, JavaType> actualTypesMap = JavaClassUtil.getActualTypesMap(currentClass);
-			List<JavaMethod> methodList = currentClass.getMethods();
-			for (JavaMethod method : methodList) {
+			Map<String, ?> actualTypesMap = JavaClassUtil.getActualTypesMap(currentClass);
+			List<?> methodList = DocUtil.getClassMethods(currentClass);
+			for (Object method : methodList) {
 				docJavaMethods.add(this.convertToJavadocJavaMethod(apiConfig, method, actualTypesMap));
 			}
 			return docJavaMethods;
@@ -207,7 +203,7 @@ public interface IJavadocDocTemplate<T extends JavadocJavaMethod> extends IBaseD
 
 	/**
 	 * Constructs a list of request parameters.
-	 * @param javaMethod The JavaMethod object, used to extract method information.
+	 * @param javaMethod The method metadata object, used to extract method information.
 	 * @param builder The ProjectDocConfigBuilder object, containing project configuration
 	 * details.
 	 * @param atomicInteger An AtomicInteger, used to generate unique parameter IDs.
@@ -215,45 +211,45 @@ public interface IJavadocDocTemplate<T extends JavadocJavaMethod> extends IBaseD
 	 * @return A List of ApiParam objects representing the request parameters or null if
 	 * no parameters exist.
 	 */
-	default List<ApiParam> requestParams(final JavaMethod javaMethod, ProjectDocConfigBuilder builder,
-			AtomicInteger atomicInteger, Map<String, JavaType> actualTypesMap) {
+	default List<ApiParam> requestParams(final Object javaMethod, ProjectDocConfigBuilder builder,
+			AtomicInteger atomicInteger, Map<String, ?> actualTypesMap) {
 		boolean isStrict = builder.getApiConfig().isStrict();
 		boolean isShowJavaType = builder.getApiConfig().getShowJavaType();
 		boolean isShowValidation = builder.getApiConfig().isShowValidation();
-		String className = javaMethod.getDeclaringClass().getCanonicalName();
+		String className = DocUtil.getMethodDeclaringClassCanonicalName(javaMethod);
 		Map<String, String> paramTagMap = DocUtil.getCommentsByTag(javaMethod, DocTags.PARAM, className);
-		List<JavaParameter> parameterList = javaMethod.getParameters();
+		List<?> parameterList = DocUtil.getMethodParameters(javaMethod);
 		if (parameterList.isEmpty()) {
 			return null;
 		}
 		ClassLoader classLoader = builder.getApiConfig().getClassLoader();
 		List<ApiParam> paramList = new ArrayList<>();
-		for (JavaParameter parameter : parameterList) {
+		for (Object parameter : parameterList) {
 			boolean required = false;
-			String paramName = parameter.getName();
-			String typeName = this.replaceTypeName(parameter.getType().getGenericCanonicalName(), actualTypesMap,
-					Boolean.FALSE);
-			String simpleName = this.replaceTypeName(parameter.getType().getValue(), actualTypesMap, Boolean.FALSE)
+			String paramName = DocUtil.getParameterName(parameter);
+			String typeName = this.replaceTypeName(DocUtil.getParameterTypeGenericCanonicalName(parameter),
+					actualTypesMap, Boolean.FALSE);
+			String simpleName = this
+				.replaceTypeName(DocUtil.getParameterTypeValue(parameter), actualTypesMap, Boolean.FALSE)
 				.toLowerCase();
-			String fullTypeName = this.replaceTypeName(parameter.getType().getFullyQualifiedName(), actualTypesMap,
-					Boolean.FALSE);
+			String fullTypeName = this.replaceTypeName(DocUtil.getParameterFullyQualifiedName(parameter),
+					actualTypesMap, Boolean.FALSE);
 			String paramPre = paramName + ".";
 			if (!paramTagMap.containsKey(paramName) && JavaClassValidateUtil.isPrimitive(fullTypeName) && isStrict) {
 				throw new RuntimeException("ERROR: Unable to find javadoc @param for actual param \"" + paramName
-						+ "\" in method " + javaMethod.getName() + " from " + className);
+						+ "\" in method " + DocUtil.getMethodName(javaMethod) + " from " + className);
 			}
 			StringBuilder comment = new StringBuilder(this.paramCommentResolve(paramTagMap.get(paramName)));
 			String mockValue = JavaFieldUtil.createMockValue(paramTagMap, paramName, typeName, typeName);
 			boolean enumType = builder.isEnumType(fullTypeName);
-			List<JavaAnnotation> annotations = parameter.getAnnotations();
-			for (JavaAnnotation a : annotations) {
-				if (JavaClassValidateUtil.isJSR303Required(a.getType().getValue())) {
+			List<?> annotations = DocUtil.getParameterAnnotations(parameter);
+			for (Object annotation : annotations) {
+				if (JavaClassValidateUtil.isJSR303Required(DocUtil.getAnnotationTypeValue(annotation))) {
 					required = true;
 				}
 			}
 			comment.append(JavaFieldUtil.getJsrComment(isShowValidation, classLoader, annotations));
-			Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(annotations,
-					builder.getJavaProjectBuilder());
+			Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(annotations, builder);
 			Set<String> paramJsonViewClasses = JavaClassUtil.getParamJsonViewClasses(annotations, builder);
 			if (JavaClassValidateUtil.isCollection(fullTypeName) || JavaClassValidateUtil.isArray(fullTypeName)) {
 				if (JavaClassValidateUtil.isCollection(typeName)) {
@@ -288,7 +284,7 @@ public interface IJavadocDocTemplate<T extends JavadocJavaMethod> extends IBaseD
 					.setType(JavaClassUtil.getClassSimpleName(typeName))
 					.setDesc(comment.toString())
 					.setRequired(required)
-					.setMaxLength(JavaFieldUtil.getParamMaxLength(classLoader, parameter.getAnnotations()))
+					.setMaxLength(JavaFieldUtil.getParamMaxLength(classLoader, annotations))
 					.setValue(mockValue)
 					.setVersion(DocGlobalConstants.DEFAULT_VERSION);
 				paramList.add(param);
@@ -341,20 +337,22 @@ public interface IJavadocDocTemplate<T extends JavadocJavaMethod> extends IBaseD
 	 * @return A list containing documented methods represented as JavadocJavaMethod
 	 * objects.
 	 */
-	default List<T> buildServiceMethod(final JavaClass cls, ApiConfig apiConfig,
-			ProjectDocConfigBuilder projectBuilder) {
-		String clsCanonicalName = cls.getCanonicalName();
-		List<JavaMethod> methods = cls.getMethods();
+	default List<T> buildServiceMethod(final Object cls, ApiConfig apiConfig, ProjectDocConfigBuilder projectBuilder) {
+		if (StringUtil.isEmpty(DocUtil.getClassCanonicalName(cls))) {
+			return new ArrayList<>(0);
+		}
+		String clsCanonicalName = DocUtil.getClassCanonicalName(cls);
+		List<?> methods = DocUtil.getClassMethods(cls);
 		List<T> methodDocList = new ArrayList<>(methods.size());
 
 		Set<String> filterMethods = DocUtil.findFilterMethods(clsCanonicalName);
 		boolean needAllMethods = filterMethods.contains(DocGlobalConstants.DEFAULT_FILTER_METHOD);
 
-		for (JavaMethod method : methods) {
-			if (method.isPrivate()) {
+		for (Object method : methods) {
+			if (DocUtil.isMethodPrivate(method)) {
 				continue;
 			}
-			if (Objects.nonNull(method.getTagByName(IGNORE))) {
+			if (Objects.nonNull(DocUtil.getMethodTagByName(method, IGNORE))) {
 				continue;
 			}
 
@@ -364,11 +362,11 @@ public interface IJavadocDocTemplate<T extends JavadocJavaMethod> extends IBaseD
 				continue;
 			}
 
-			if (StringUtil.isEmpty(method.getComment()) && apiConfig.isStrict()) {
-				throw new RuntimeException(
-						"Unable to find comment for method " + method.getName() + " in " + cls.getCanonicalName());
+			if (StringUtil.isEmpty(DocUtil.getMethodComment(method)) && apiConfig.isStrict()) {
+				throw new RuntimeException("Unable to find comment for method " + DocUtil.getMethodName(method) + " in "
+						+ DocUtil.getClassCanonicalName(cls));
 			}
-			if (needAllMethods || filterMethods.contains(method.getName())) {
+			if (needAllMethods || filterMethods.contains(DocUtil.getMethodName(method))) {
 				T apiMethodDoc = this.convertToJavadocJavaMethod(apiConfig, method, null);
 				methodDocList.add(apiMethodDoc);
 			}
@@ -471,7 +469,7 @@ public interface IJavadocDocTemplate<T extends JavadocJavaMethod> extends IBaseD
 	 * @return {@code true} if the method should be skipped (not documented),
 	 * {@code false} if it should be included.
 	 */
-	default boolean skipMethod(final JavaClass cls, final JavaMethod method, ApiConfig apiConfig,
+	default boolean skipMethod(final Object cls, final Object method, ApiConfig apiConfig,
 			ProjectDocConfigBuilder projectBuilder) {
 		return false;
 	}

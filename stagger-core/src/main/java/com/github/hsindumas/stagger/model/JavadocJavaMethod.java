@@ -20,10 +20,8 @@
  */
 package com.github.hsindumas.stagger.model;
 
+import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.ParamUtil;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.JavaType;
 
 import java.util.List;
 import java.util.Map;
@@ -40,7 +38,7 @@ public class JavadocJavaMethod implements IMethod {
 	/**
 	 * java method
 	 */
-	private JavaMethod javaMethod;
+	private Object javaMethod;
 
 	/**
 	 * methodId handled by md5
@@ -107,7 +105,7 @@ public class JavadocJavaMethod implements IMethod {
 	 */
 	private boolean deprecated;
 
-	private Map<String, JavaType> actualTypesMap;
+	private Map<String, ?> actualTypesMap;
 
 	private String version;
 
@@ -124,11 +122,12 @@ public class JavadocJavaMethod implements IMethod {
 		return new JavadocJavaMethod();
 	}
 
-	public JavaMethod getJavaMethod() {
-		return javaMethod;
+	@SuppressWarnings("unchecked")
+	public <T> T getJavaMethod() {
+		return (T) javaMethod;
 	}
 
-	public JavadocJavaMethod setJavaMethod(JavaMethod javaMethod) {
+	public JavadocJavaMethod setJavaMethod(Object javaMethod) {
 		this.javaMethod = javaMethod;
 		return this;
 	}
@@ -250,18 +249,23 @@ public class JavadocJavaMethod implements IMethod {
 		return this;
 	}
 
-	public Map<String, JavaType> getActualTypesMap() {
-		return actualTypesMap;
+	@SuppressWarnings("unchecked")
+	public <T extends Map<String, ?>> T getActualTypesMap() {
+		return (T) actualTypesMap;
 	}
 
-	public JavadocJavaMethod setActualTypesMap(Map<String, JavaType> actualTypesMap) {
+	public JavadocJavaMethod setActualTypesMap(Map<String, ?> actualTypesMap) {
 		this.actualTypesMap = actualTypesMap;
 		return this;
 	}
 
 	@Override
-	public JavaClass getDeclaringClass() {
-		return this.javaMethod.getDeclaringClass();
+	public String getDeclaringClassName() {
+		if (this.javaMethod == null) {
+			return null;
+		}
+		String className = DocUtil.getMethodDeclaringClassCanonicalName(this.javaMethod);
+		return className.isEmpty() ? null : className;
 	}
 
 	@Override

@@ -34,8 +34,6 @@ import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.power.common.util.StringUtil;
 import com.power.common.util.ValidateUtil;
-import com.thoughtworks.qdox.model.DocletTag;
-import com.thoughtworks.qdox.model.JavaClass;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -54,7 +52,7 @@ public class JavadocDocBuildTemplate implements IDocBuildTemplate<JavadocApiDoc>
 	/**
 	 * api index
 	 */
-	private final AtomicInteger ATOMIC_INTEGER = new AtomicInteger(1);
+	private final AtomicInteger atomicInteger = new AtomicInteger(1);
 
 	@Override
 	public boolean supportsFramework(String framework) {
@@ -72,13 +70,13 @@ public class JavadocDocBuildTemplate implements IDocBuildTemplate<JavadocApiDoc>
 	}
 
 	@Override
-	public ApiSchema<JavadocApiDoc> renderApi(ProjectDocConfigBuilder projectBuilder,
-			Collection<JavaClass> candidateClasses) {
+	public ApiSchema<JavadocApiDoc> renderApi(ProjectDocConfigBuilder projectBuilder, Collection<?> candidateClasses) {
 		ApiConfig apiConfig = projectBuilder.getApiConfig();
 		List<JavadocApiDoc> apiDocList = new ArrayList<>();
 		int maxOrder = 0;
 		boolean setCustomOrder = false;
-		for (JavaClass cls : candidateClasses) {
+		for (Object candidateClass : candidateClasses) {
+			Object cls = candidateClass;
 			if (skipClass(apiConfig, cls, null)) {
 				continue;
 			}
@@ -100,12 +98,12 @@ public class JavadocDocBuildTemplate implements IDocBuildTemplate<JavadocApiDoc>
 			return apiSchema;
 		}
 		else if (setCustomOrder) {
-			ATOMIC_INTEGER.getAndAdd(maxOrder);
+			atomicInteger.getAndAdd(maxOrder);
 			// while set custom oder
 			final List<JavadocApiDoc> tempList = new ArrayList<>(apiDocList);
 			tempList.forEach(p -> {
 				if (p.getOrder() == 0) {
-					p.setOrder(ATOMIC_INTEGER.getAndAdd(1));
+					p.setOrder(atomicInteger.getAndAdd(1));
 				}
 			});
 			apiSchema.setApiDatas(tempList.stream()
@@ -113,7 +111,7 @@ public class JavadocDocBuildTemplate implements IDocBuildTemplate<JavadocApiDoc>
 				.collect(Collectors.toList()));
 		}
 		else {
-			apiDocList.forEach(p -> p.setOrder(ATOMIC_INTEGER.getAndAdd(1)));
+			apiDocList.forEach(p -> p.setOrder(atomicInteger.getAndAdd(1)));
 			apiSchema.setApiDatas(apiDocList);
 		}
 		return apiSchema;
@@ -121,7 +119,7 @@ public class JavadocDocBuildTemplate implements IDocBuildTemplate<JavadocApiDoc>
 
 	@Override
 	public List<WebSocketDoc> renderWebSocketApi(ProjectDocConfigBuilder projectBuilder,
-			Collection<JavaClass> candidateClasses) {
+			Collection<?> candidateClasses) {
 		return null;
 	}
 
@@ -131,10 +129,10 @@ public class JavadocDocBuildTemplate implements IDocBuildTemplate<JavadocApiDoc>
 	}
 
 	@Override
-	public boolean isEntryPoint(JavaClass cls, FrameworkAnnotations frameworkAnnotations) {
-		List<DocletTag> docletTags = cls.getTags();
-		for (DocletTag docletTag : docletTags) {
-			String value = docletTag.getName();
+	public boolean isEntryPoint(Object cls, FrameworkAnnotations frameworkAnnotations) {
+		List<?> docletTags = DocUtil.getClassTags(cls);
+		for (Object docletTag : docletTags) {
+			String value = DocUtil.getDocletTagName(docletTag);
 			if (DocTags.JAVA_DOC.equals(value)) {
 				return true;
 			}
@@ -158,22 +156,22 @@ public class JavadocDocBuildTemplate implements IDocBuildTemplate<JavadocApiDoc>
 	 * @param order The order in which the API documentation should be listed.
 	 * @param builder A builder used to retrieve class information and configurations.
 	 */
-	private void handleJavaApiDoc(JavaClass cls, List<JavadocApiDoc> apiDocList, List<JavadocJavaMethod> apiMethodDocs,
+	private void handleJavaApiDoc(Object cls, List<JavadocApiDoc> apiDocList, List<JavadocJavaMethod> apiMethodDocs,
 			int order, ProjectDocConfigBuilder builder) {
-		String className = cls.getCanonicalName();
-		String comment = cls.getComment();
-		String shortName = cls.getName();
+		String className = DocUtil.getClassCanonicalName(cls);
+		String comment = DocUtil.getClassComment(cls);
+		String shortName = DocUtil.getClassSimpleName(cls);
 		List<String> interfaceNames = builder.getImplementedInterfaceNames(className);
-		if (!interfaceNames.isEmpty() && !cls.isInterface()) {
+		if (!interfaceNames.isEmpty() && !DocUtil.isClassInterface(cls)) {
 			String interfaceName = interfaceNames.get(0);
 			className = DocClassUtil.getSimpleName(interfaceName);
 			shortName = className;
-			JavaClass javaClass = builder.getClassByName(interfaceName);
+			Object javaClass = builder.getClassByName(interfaceName);
 			if (Objects.isNull(javaClass)) {
 				javaClass = builder.getClassByName(className);
 			}
 			if (StringUtil.isEmpty(comment) && Objects.nonNull(javaClass)) {
-				comment = javaClass.getComment();
+				comment = DocUtil.getClassComment(javaClass);
 			}
 		}
 		JavadocApiDoc apiDoc = new JavadocApiDoc();
@@ -188,15 +186,15 @@ public class JavadocDocBuildTemplate implements IDocBuildTemplate<JavadocApiDoc>
 		apiDoc.setDesc(DocUtil.getEscapeAndCleanComment(comment));
 		apiDoc.setList(apiMethodDocs);
 
-		List<DocletTag> docletTags = cls.getTags();
+		List<?> docletTags = DocUtil.getClassTags(cls);
 		List<String> authorList = new ArrayList<>();
-		for (DocletTag docletTag : docletTags) {
-			String name = docletTag.getName();
+		for (Object docletTag : docletTags) {
+			String name = DocUtil.getDocletTagName(docletTag);
 			if (DocTags.VERSION.equals(name)) {
-				apiDoc.setVersion(docletTag.getValue());
+				apiDoc.setVersion(DocUtil.getDocletTagValue(docletTag));
 			}
 			if (DocTags.AUTHOR.equals(name)) {
-				authorList.add(docletTag.getValue());
+				authorList.add(DocUtil.getDocletTagValue(docletTag));
 			}
 		}
 		apiDoc.setAuthor(String.join(", ", authorList));

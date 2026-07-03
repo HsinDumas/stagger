@@ -34,9 +34,6 @@ import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringEscapeUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaField;
-import com.thoughtworks.qdox.model.expression.AnnotationValue;
 
 import java.util.Map;
 import java.util.Objects;
@@ -111,8 +108,8 @@ public abstract class BaseHelper {
 	 * @param isResp is resp
 	 * @return boolean
 	 */
-	protected static boolean isTransientField(JavaField field, ProjectDocConfigBuilder projectBuilder, boolean isResp) {
-		if (field.isTransient()) {
+	protected static boolean isTransientField(Object field, ProjectDocConfigBuilder projectBuilder, boolean isResp) {
+		if (DocUtil.isFieldTransient(field)) {
 			return (projectBuilder.getApiConfig().isSerializeRequestTransients() && !isResp)
 					|| (projectBuilder.getApiConfig().isSerializeResponseTransients() && isResp);
 		}
@@ -137,7 +134,7 @@ public abstract class BaseHelper {
 			return fieldJsonAnnotationInfo;
 		}
 
-		for (JavaAnnotation annotation : docField.getAnnotations()) {
+		for (Object annotation : docField.getAnnotations()) {
 			// if the field is annotated with @JsonIgnore || @JsonProperty, then
 			// check if it belongs to the groupClasses
 			if (JavaClassValidateUtil.isIgnoreFieldJson(annotation, isResp)) {
@@ -151,11 +148,11 @@ public abstract class BaseHelper {
 				return fieldJsonAnnotationInfo;
 			}
 
-			String annotationName = annotation.getType().getValue();
+			String annotationName = DocUtil.getAnnotationTypeValue(annotation);
 			// if the field is annotated with @JsonSerialize
 			if (DocAnnotationConstants.SHORT_JSON_SERIALIZE.equals(annotationName)
 					&& DocAnnotationConstants.TO_STRING_SERIALIZER_USING
-						.equals(annotation.getNamedParameter(DocAnnotationConstants.USING_PROP))) {
+						.equals(DocUtil.getAnnotationNamedParameter(annotation, DocAnnotationConstants.USING_PROP))) {
 				fieldJsonAnnotationInfo.setToStringSerializer(true);
 				continue;
 			}
@@ -176,8 +173,9 @@ public abstract class BaseHelper {
 
 			// Handle @JSONField
 			if (DocAnnotationConstants.SHORT_JSON_FIELD.equals(annotationName)) {
-				if (null != annotation.getProperty(DocAnnotationConstants.NAME_PROP)) {
-					AnnotationValue annotationValue = annotation.getProperty(DocAnnotationConstants.NAME_PROP);
+				if (null != DocUtil.getAnnotationProperty(annotation, DocAnnotationConstants.NAME_PROP)) {
+					Object annotationValue = DocUtil.getAnnotationProperty(annotation,
+							DocAnnotationConstants.NAME_PROP);
 					String fieldName = DocUtil.resolveAnnotationValue(projectBuilder.getApiConfig().getClassLoader(),
 							annotationValue);
 					fieldJsonAnnotationInfo.setFieldName(fieldName);
@@ -187,7 +185,7 @@ public abstract class BaseHelper {
 			// Handle @JsonProperty
 			else if (DocAnnotationConstants.SHORT_JSON_PROPERTY.equals(annotationName)
 					|| DocAnnotationConstants.GSON_ALIAS_NAME.equals(annotationName)) {
-				AnnotationValue annotationValue = annotation.getProperty(DocAnnotationConstants.VALUE_PROP);
+				Object annotationValue = DocUtil.getAnnotationProperty(annotation, DocAnnotationConstants.VALUE_PROP);
 				String fieldName = DocUtil.resolveAnnotationValue(projectBuilder.getApiConfig().getClassLoader(),
 						annotationValue);
 				fieldJsonAnnotationInfo.setFieldName(fieldName);

@@ -39,9 +39,7 @@ import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.model.DocletTag;
-import com.thoughtworks.qdox.model.JavaClass;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -142,13 +140,12 @@ public interface IDocBuildBaseTemplate {
 	 * @param docBuildHelper incrementHelper
 	 * @return the candidate classes
 	 */
-	default Collection<JavaClass> getCandidateClasses(ProjectDocConfigBuilder docBuilder,
-			DocBuildHelper docBuildHelper) {
+	default Collection<?> getCandidateClasses(ProjectDocConfigBuilder docBuilder, DocBuildHelper docBuildHelper) {
 		ApiConfig apiConfig = docBuilder.getApiConfig();
-		JavaProjectBuilder javaProjectBuilder = docBuilder.getJavaProjectBuilder();
+		Collection<?> allClasses = docBuilder.getClassFilesMap().values();
 
 		if (!apiConfig.isIncrement()) {
-			return javaProjectBuilder.getClasses();
+			return allClasses;
 		}
 
 		if (docBuildHelper.notGitRepo() || StringUtil.isEmpty(docBuildHelper.getDependencyTree().getCommitId())) {
@@ -156,7 +153,7 @@ public interface IDocBuildBaseTemplate {
 			// project.
 			// We need to build the whole project this time,
 			// and record the latest commit-id and the newest api dependency tree.
-			return javaProjectBuilder.getClasses();
+			return allClasses;
 		}
 
 		Set<FileDiff> fileDiffList = docBuildHelper.getChangedFilesFromVCS(s -> isEntryPoint(docBuilder, s));
@@ -164,15 +161,17 @@ public interface IDocBuildBaseTemplate {
 			return Collections.emptyList();
 		}
 
-		Collection<JavaClass> result = new ArrayList<>(fileDiffList.size());
+		Collection<Object> result = new ArrayList<>(fileDiffList.size());
 		fileDiffList.forEach(item -> {
 			try {
-				JavaClass javaClass = docBuilder.getClassByName(item.getNewQualifiedName());
+				Object javaClass = docBuilder.getClassByName(item.getNewQualifiedName());
 				if (Objects.nonNull(javaClass)) {
 					result.add(javaClass);
 				}
 			}
 			catch (Exception ignore) {
+				// Ignore unresolved changed class and continue processing remaining
+				// entries.
 			}
 		});
 
@@ -196,11 +195,12 @@ public interface IDocBuildBaseTemplate {
 			return false;
 		}
 
-		JavaClass javaClass = null;
+		Object javaClass = null;
 		try {
 			javaClass = javaProjectBuilder.getClassByName(javaClassName);
 		}
 		catch (Exception ignore) {
+			// Ignore lookup failures and fall back to SourceProject metadata checks.
 		}
 
 		if (javaClass == null) {
@@ -212,7 +212,7 @@ public interface IDocBuildBaseTemplate {
 
 	/**
 	 * Determine whether a changed class should be treated as entry-point candidate. Falls
-	 * back to SourceProject metadata when qdox lookup is unavailable.
+	 * back to SourceProject metadata when legacy parser lookup is unavailable.
 	 * @param docBuilder doc builder
 	 * @param javaClassName class name
 	 * @return true if class is entry point
@@ -222,7 +222,7 @@ public interface IDocBuildBaseTemplate {
 			return false;
 		}
 
-		JavaClass javaClass = null;
+		Object javaClass = null;
 		try {
 			javaClass = docBuilder.getClassByName(javaClassName);
 		}
@@ -234,7 +234,7 @@ public interface IDocBuildBaseTemplate {
 			return this.isEntryPoint(javaClass, this.registeredAnnotations());
 		}
 
-		SourceClass sourceClass = docBuilder.getSourceProject().findClass(javaClassName).orElse(null);
+		SourceClass sourceClass = docBuilder.findSourceClass(javaClassName).orElse(null);
 		return this.isSourceEntryPoint(sourceClass, this.registeredAnnotations());
 	}
 
@@ -272,7 +272,7 @@ public interface IDocBuildBaseTemplate {
 	 * class is an entry point.
 	 * @return true if the class should be skipped, otherwise false.
 	 */
-	default boolean skipClass(ApiConfig apiConfig, JavaClass javaClass, FrameworkAnnotations frameworkAnnotations) {
+	default boolean skipClass(ApiConfig apiConfig, Object javaClass, FrameworkAnnotations frameworkAnnotations) {
 		if (StringUtil.isNotEmpty(apiConfig.getPackageFilters())) {
 			// from smart config
 			if (!DocUtil.isMatch(apiConfig.getPackageFilters(), javaClass)) {
@@ -285,8 +285,8 @@ public interface IDocBuildBaseTemplate {
 			}
 		}
 		// from tag
-		DocletTag ignoreTag = javaClass.getTagByName(DocTags.IGNORE);
-		return !this.isEntryPoint(javaClass, frameworkAnnotations) || Objects.nonNull(ignoreTag);
+		return !this.isEntryPoint(javaClass, frameworkAnnotations)
+				|| Objects.nonNull(DocUtil.getClassTagByName(javaClass, DocTags.IGNORE));
 	}
 
 	/**
@@ -295,6 +295,6 @@ public interface IDocBuildBaseTemplate {
 	 * @param frameworkAnnotations frameworkAnnotations
 	 * @return is entry point
 	 */
-	boolean isEntryPoint(JavaClass javaClass, FrameworkAnnotations frameworkAnnotations);
+	boolean isEntryPoint(Object javaClass, FrameworkAnnotations frameworkAnnotations);
 
 }

@@ -20,11 +20,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.github.hsindumas.stagger.maven.plugin.mojo;
 
 import com.github.hsindumas.stagger.builder.PostmanJsonBuilder;
-import com.github.hsindumas.stagger.model.ApiConfig;
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants;
+import com.github.hsindumas.stagger.model.ApiConfig;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -41,7 +43,8 @@ public class PostManMojo extends BaseDocsGeneratorMojo {
 	@Override
 	public void executeMojo(ApiConfig apiConfig) {
 		try {
-			PostmanJsonBuilder.buildPostmanCollection(apiConfig, javaProjectBuilder);
+			ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
+			PostmanJsonBuilder.buildPostmanCollection(apiConfig, configBuilder);
 		}
 		catch (Throwable e) {
 			getLog().error(e);

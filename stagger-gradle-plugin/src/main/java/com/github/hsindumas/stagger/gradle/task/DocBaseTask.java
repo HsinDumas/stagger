@@ -37,8 +37,8 @@ import com.github.hsindumas.stagger.gradle.util.GradleUtil;
 import com.github.hsindumas.stagger.gradle.util.I18nMsgUtil;
 import com.github.hsindumas.stagger.gradle.util.SourceSetUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.library.SortedClassLibraryBuilder;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
+import com.github.hsindumas.stagger.helper.SortedClassLibraryBuilder;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
@@ -58,7 +58,12 @@ import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -81,7 +86,6 @@ public abstract class DocBaseTask extends DefaultTask {
 	/**
 	 * Abstract execute action
 	 * @param apiConfig ApiConfig
-	 * @param javaProjectBuilder JavaProjectBuilder
 	 * @param logger Logger
 	 */
 	public abstract void executeAction(ApiConfig apiConfig, Logger logger);
@@ -161,8 +165,9 @@ public abstract class DocBaseTask extends DefaultTask {
 
 	/**
 	 * load sources
-	 * @param javaDocBuilder
+	 * @param javaDocBuilder project source builder
 	 */
+	@SuppressWarnings("unchecked")
 	private void loadSourcesDependencies(JavaProjectBuilder javaDocBuilder, Project project, Set<String> excludes,
 			Set<String> includes) {
 		Configuration compileConfiguration = project.getConfigurations()

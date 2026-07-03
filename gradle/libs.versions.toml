@@ -5,8 +5,7 @@ datafaker = "1.9.0"
 slf4j = "2.0.17"
 jgit = "6.9.0.202403050737-r"
 commonUtil = "2.2.9"
-qdox = "2.2.0"
-javaparser = "3.26.4"
+javaparser = "3.28.2"
 junit = "5.14.1"
 mockito = "4.11.0"
 springJavaFormat = "0.0.47"
@@ -26,7 +25,6 @@ datafaker = { module = "net.datafaker:datafaker", version.ref = "datafaker" }
 slf4jApi = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version.ref = "jgit" }
 commonUtil = { module = "io.github.shalousun:common-util", version.ref = "commonUtil" }
-qdox = { module = "com.thoughtworks.qdox:qdox", version.ref = "qdox" }
 javaparserCore = { module = "com.github.javaparser:javaparser-core", version.ref = "javaparser" }
 javaparserSymbolSolver = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaparser" }
 mockito = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }

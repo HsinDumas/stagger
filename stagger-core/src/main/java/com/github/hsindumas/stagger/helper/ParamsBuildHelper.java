@@ -44,9 +44,6 @@ import com.github.hsindumas.stagger.utils.JavaFieldUtil;
 import com.github.hsindumas.stagger.utils.ParamUtil;
 import com.power.common.model.EnumDictionary;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaField;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -118,12 +115,12 @@ public class ParamsBuildHelper extends BaseHelper {
 		String[] globGicName = DocClassUtil.getSimpleGicName(className);
 
 		if (Objects.isNull(globGicName) || globGicName.length < 1) {
-			JavaClass cls = projectBuilder.getClassByName(simpleName);
+			Object cls = projectBuilder.getClassByName(simpleName);
 			// obtain generics from parent class
-			JavaClass superJavaClass = Objects.nonNull(cls) ? cls.getSuperJavaClass() : null;
+			Object superJavaClass = DocUtil.getClassSuperJavaClass(cls);
 			if (Objects.nonNull(superJavaClass)
-					&& !JavaTypeConstants.OBJECT_SIMPLE_NAME.equals(superJavaClass.getSimpleName())) {
-				globGicName = DocClassUtil.getSimpleGicName(superJavaClass.getGenericFullyQualifiedName());
+					&& !JavaTypeConstants.OBJECT_SIMPLE_NAME.equals(DocUtil.getClassSimpleName(superJavaClass))) {
+				globGicName = DocClassUtil.getSimpleGicName(DocUtil.getClassGenericFullyQualifiedName(superJavaClass));
 			}
 		}
 
@@ -207,7 +204,7 @@ public class ParamsBuildHelper extends BaseHelper {
 		List<ApiParam> paramList = new ArrayList<>();
 		String simpleName = DocClassUtil.getSimpleName(className);
 
-		JavaClass cls = projectBuilder.getClassByName(simpleName);
+		Object cls = projectBuilder.getClassByName(simpleName);
 		boolean isShowJavaType = projectBuilder.getApiConfig().getShowJavaType();
 		boolean requestFieldToUnderline = projectBuilder.getApiConfig().isRequestFieldToUnderline();
 		boolean responseFieldToUnderline = projectBuilder.getApiConfig().isResponseFieldToUnderline();
@@ -217,7 +214,7 @@ public class ParamsBuildHelper extends BaseHelper {
 		PropertyNamingStrategies.NamingBase fieldNameConvert = null;
 		// ignore
 		if (Objects.nonNull(cls)) {
-			List<JavaAnnotation> clsAnnotation = cls.getAnnotations();
+			List<?> clsAnnotation = DocUtil.getClassAnnotations(cls);
 			fieldNameConvert = PropertyNameHelper.translate(projectBuilder, clsAnnotation);
 		}
 
@@ -228,13 +225,13 @@ public class ParamsBuildHelper extends BaseHelper {
 		Map<String, String> ignoreFields = JavaClassUtil.getClassJsonIgnoreFields(cls);
 		List<DocJavaField> fields = JavaClassUtil.getFields(cls, 0, new LinkedHashMap<>(), classLoader);
 		for (DocJavaField docField : fields) {
-			JavaField field = docField.getJavaField();
+			Object field = docField.getJavaField();
 			// ignore transient field
 			if (isTransientField(field, projectBuilder, isResp)) {
 				continue;
 			}
-
-			String maxLength = JavaFieldUtil.getParamMaxLength(classLoader, field.getAnnotations());
+			List<?> javaAnnotations = docField.getAnnotations();
+			String maxLength = JavaFieldUtil.getParamMaxLength(classLoader, javaAnnotations);
 			StringBuilder comment = new StringBuilder();
 			comment.append(docField.getComment());
 
@@ -251,9 +248,8 @@ public class ParamsBuildHelper extends BaseHelper {
 			if (needToUnderline) {
 				fieldName = StringUtil.camelToUnderline(fieldName);
 			}
-			String typeSimpleName = field.getType().getSimpleName();
+			String typeSimpleName = docField.getTypeSimpleName();
 			String fieldGicName = docField.getTypeGenericCanonicalName();
-			List<JavaAnnotation> javaAnnotations = docField.getAnnotations();
 
 			Map<String, String> tagsMap = DocUtil.getFieldTagsValue(field, docField);
 			// since tag value
@@ -263,8 +259,11 @@ public class ParamsBuildHelper extends BaseHelper {
 				since = tagsMap.get(DocTags.SINCE);
 			}
 			// handle extension
-			Map<String, String> extensions = DocUtil.getCommentsByTag(field.getTagsByName(DocTags.EXTENSION),
-					DocTags.EXTENSION);
+			List<?> extensionTags = DocUtil.getFieldTags(field)
+				.stream()
+				.filter(tag -> DocTags.EXTENSION.equals(DocUtil.getDocletTagName(tag)))
+				.collect(Collectors.toList());
+			Map<String, String> extensions = DocUtil.getCommentsByTag(extensionTags, DocTags.EXTENSION);
 			Map<String, Object> extensionParams = new HashMap<>(extensions.size());
 			if (!extensions.isEmpty()) {
 				extensions.forEach((k, v) -> extensionParams.put(k, DocUtil.detectTagValue(v)));
@@ -365,7 +364,7 @@ public class ParamsBuildHelper extends BaseHelper {
 			if (JavaClassValidateUtil.isPrimitive(subTypeName)) {
 				if (StringUtil.isEmpty(fieldValue)) {
 					fieldValue = StringUtil.isNotEmpty(fieldJsonFormatValue) ? fieldJsonFormatValue : StringUtil
-						.removeQuotes(DocUtil.getValByTypeAndFieldName(typeSimpleName, field.getName()));
+						.removeQuotes(DocUtil.getValByTypeAndFieldName(typeSimpleName, DocUtil.getFieldName(field)));
 				}
 
 				ApiParam param = ApiParam.of()
@@ -383,12 +382,12 @@ public class ParamsBuildHelper extends BaseHelper {
 				// handle param
 				processApiParam(paramList, param, isRequired, comment.toString(), since, strRequired);
 
-				JavaClass enumClass = ParamUtil.handleSeeEnum(param, field, projectBuilder, isResp || jsonRequest,
-						tagsMap, fieldJsonFormatValue);
+				Object enumClass = ParamUtil.handleSeeEnum(param, field, projectBuilder, isResp || jsonRequest, tagsMap,
+						fieldJsonFormatValue);
 				if (Objects.nonNull(enumClass)) {
 					String enumClassComment = DocGlobalConstants.EMPTY;
-					if (StringUtil.isNotEmpty(enumClass.getComment())) {
-						enumClassComment = enumClass.getComment();
+					if (StringUtil.isNotEmpty(DocUtil.getClassComment(enumClass))) {
+						enumClassComment = DocUtil.getClassComment(enumClass);
 					}
 					comment = new StringBuilder(
 							StringUtils.isEmpty(comment.toString()) ? enumClassComment : comment.toString());
@@ -444,9 +443,9 @@ public class ParamsBuildHelper extends BaseHelper {
 							: processFieldTypeName(isShowJavaType, subTypeName);
 				}
 				param.setType(processedType);
-				JavaClass javaClass = field.getType();
+				Object javaClass = projectBuilder.getClassByName(subTypeName);
 				if (projectBuilder.isEnumType(subTypeName)) {
-					if (Objects.nonNull(javaClass) && javaClass.isEnum()) {
+					if (DocUtil.isClassEnum(javaClass)) {
 						comment.append(handleEnumComment(javaClass, projectBuilder));
 						ParamUtil.handleSeeEnum(param, field, projectBuilder, isResp || jsonRequest, tagsMap,
 								fieldJsonFormatValue);
@@ -506,9 +505,9 @@ public class ParamsBuildHelper extends BaseHelper {
 						fieldPid = Optional.ofNullable(atomicInteger).isPresent() ? param.getId()
 								: paramList.size() + pid;
 						if (!simpleName.equals(gName)) {
-							JavaClass arraySubClass = projectBuilder.getClassByName(gName);
+							Object arraySubClass = projectBuilder.getClassByName(gName);
 							if (projectBuilder.isEnumType(gName)) {
-								if (Objects.nonNull(arraySubClass) && arraySubClass.isEnum()) {
+								if (DocUtil.isClassEnum(arraySubClass)) {
 									comment.append(handleEnumComment(arraySubClass, projectBuilder));
 									param.setDesc(comment.toString());
 									param.setType(ParamTypeConstants.PARAM_TYPE_ARRAY);
@@ -730,10 +729,10 @@ public class ParamsBuildHelper extends BaseHelper {
 		String mapKeySimpleName = DocClassUtil.getSimpleName(globGicName[0]);
 		String valueSimpleName = DocClassUtil.getSimpleName(globGicName[1]);
 		// get map key class
-		JavaClass mapKeyClass = projectBuilder.getClassByName(mapKeySimpleName);
+		Object mapKeyClass = projectBuilder.getClassByName(mapKeySimpleName);
 		boolean mapKeyEnumType = projectBuilder.isEnumType(mapKeySimpleName);
-		boolean hasMapKeyEnumClass = Objects.nonNull(mapKeyClass) && mapKeyClass.isEnum()
-				&& !mapKeyClass.getEnumConstants().isEmpty();
+		boolean hasMapKeyEnumClass = DocUtil.isClassEnum(mapKeyClass)
+				&& !DocUtil.getClassEnumConstants(mapKeyClass).isEmpty();
 
 		boolean isShowJavaType = projectBuilder.getApiConfig().getShowJavaType();
 		String valueSimpleNameType = processFieldTypeName(isShowJavaType, valueSimpleName);
@@ -741,15 +740,17 @@ public class ParamsBuildHelper extends BaseHelper {
 		// map key is enum
 		if (mapKeyEnumType && hasMapKeyEnumClass) {
 			Integer keyParentId = null;
-			for (JavaField enumConstant : mapKeyClass.getEnumConstants()) {
+			for (Object enumConstant : DocUtil.getClassEnumConstants(mapKeyClass)) {
+				String enumConstantName = DocUtil.getFieldName(enumConstant);
+				String enumConstantComment = DocUtil.getFieldComment(enumConstant);
 				ApiParam apiParam = ApiParam.of()
-					.setField(pre + enumConstant.getName())
+					.setField(pre + enumConstantName)
 					.setType(valueSimpleNameType)
 					.setClassName(valueSimpleName)
-					.setDesc(StringUtil.isEmpty(enumConstant.getComment()) ? enumConstant.getName()
-							: enumConstant.getComment() + " "
+					.setDesc(StringUtil.isEmpty(enumConstantComment) ? enumConstantName
+							: enumConstantComment + " "
 									+ Optional.ofNullable(projectBuilder.getClassByName(valueSimpleName))
-										.map(JavaClass::getComment)
+										.map(DocUtil::getClassComment)
 										.orElse(DocGlobalConstants.DEFAULT_MAP_KEY_DESC))
 					.setVersion(DocGlobalConstants.DEFAULT_VERSION)
 					.setPid(null == keyParentId ? pid : keyParentId);
@@ -781,7 +782,7 @@ public class ParamsBuildHelper extends BaseHelper {
 					.setType(valueSimpleNameType)
 					.setClassName(valueSimpleName)
 					.setDesc(Optional.ofNullable(projectBuilder.getClassByName(valueSimpleName))
-						.map(JavaClass::getComment)
+						.map(DocUtil::getClassComment)
 						.orElse(DocGlobalConstants.DEFAULT_MAP_KEY_DESC))
 					.setVersion(DocGlobalConstants.DEFAULT_VERSION)
 					.setPid(pid)
@@ -800,7 +801,7 @@ public class ParamsBuildHelper extends BaseHelper {
 				.setType(valueSimpleNameType)
 				.setClassName(valueSimpleName)
 				.setDesc(Optional.ofNullable(projectBuilder.getClassByName(valueSimpleName))
-					.map(JavaClass::getComment)
+					.map(DocUtil::getClassComment)
 					.orElse(DocGlobalConstants.DEFAULT_MAP_KEY_DESC))
 				.setVersion(DocGlobalConstants.DEFAULT_VERSION)
 				.setPid(pid)
@@ -896,15 +897,15 @@ public class ParamsBuildHelper extends BaseHelper {
 	 * configuration information.
 	 * @return The generated enum comment string.
 	 */
-	public static String handleEnumComment(JavaClass javaClass, ProjectDocConfigBuilder projectBuilder) {
+	public static String handleEnumComment(Object javaClass, ProjectDocConfigBuilder projectBuilder) {
 		String comment = "";
-		if (!javaClass.isEnum()) {
+		if (!DocUtil.isClassEnum(javaClass)) {
 			return comment;
 		}
-		String enumComments = javaClass.getComment();
+		String enumComments = DocUtil.getClassComment(javaClass);
 		if (Boolean.TRUE.equals(projectBuilder.getApiConfig().getInlineEnum())) {
 			ApiDataDictionary dataDictionary = projectBuilder.getApiConfig()
-				.getDataDictionary(javaClass.getBinaryName());
+				.getDataDictionary(DocUtil.getClassBinaryName(javaClass));
 			if (Objects.isNull(dataDictionary)) {
 				// the output format should be unified ( as same as the "else" output)
 				comment = comment + "<br/>[Enum: " + JavaClassUtil.getEnumParams(javaClass) + "]";
@@ -914,7 +915,7 @@ public class ParamsBuildHelper extends BaseHelper {
 				if (enumClass.isInterface()) {
 					ClassLoader classLoader = projectBuilder.getApiConfig().getClassLoader();
 					try {
-						enumClass = classLoader.loadClass(javaClass.getBinaryName());
+						enumClass = classLoader.loadClass(DocUtil.getClassBinaryName(javaClass));
 					}
 					catch (ClassNotFoundException e) {
 						return comment;
@@ -932,7 +933,7 @@ public class ParamsBuildHelper extends BaseHelper {
 		}
 
 		if (Boolean.TRUE.equals(projectBuilder.getApiConfig().isDisplayActualType())) {
-			comment = comment + " (ActualType: " + javaClass.getSimpleName() + ")";
+			comment = comment + " (ActualType: " + DocUtil.getClassSimpleName(javaClass) + ")";
 		}
 
 		return comment;

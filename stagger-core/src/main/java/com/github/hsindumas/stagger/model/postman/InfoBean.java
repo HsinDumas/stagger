@@ -22,6 +22,7 @@ package com.github.hsindumas.stagger.model.postman;
 
 import java.util.UUID;
 
+import com.google.gson.annotations.SerializedName;
 import com.power.common.util.DateTimeUtil;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +35,8 @@ public class InfoBean {
 
 	String schema;
 
-	private String _postman_id = UUID.randomUUID().toString();
+	@SerializedName("_postman_id")
+	private String postmanId = UUID.randomUUID().toString();
 
 	private String name;
 

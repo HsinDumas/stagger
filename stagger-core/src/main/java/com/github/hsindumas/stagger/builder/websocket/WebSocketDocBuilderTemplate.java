@@ -36,7 +36,7 @@ import com.github.hsindumas.stagger.utils.BeetlTemplateUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.FileUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import org.beetl.core.Template;
 
 import java.util.ArrayList;
@@ -73,6 +73,24 @@ public class WebSocketDocBuilderTemplate implements IBaseDocBuilderTemplate<WebS
 
 	/**
 	 * get all websocket api data.
+	 * @param isAsciidoc is Asciidoc
+	 * @param config ApiConfig
+	 * @param configBuilder project doc config builder
+	 * @return ApiAllData
+	 */
+	public List<WebSocketDoc> getWebSocketApiDoc(boolean isAsciidoc, ApiConfig config,
+			ProjectDocConfigBuilder configBuilder) {
+		config.setAdoc(isAsciidoc);
+		this.checkAndInit(config, Boolean.TRUE);
+		config.setParamsDataToTree(false);
+		config
+			.setOutPath(config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + DocGlobalConstants.WEBSOCKET_OUT_DIR);
+		return this.getWebSocketApiDoc(config, configBuilder);
+
+	}
+
+	/**
+	 * get all websocket api data.
 	 * @param config ApiConfig
 	 * @param javaProjectBuilder JavaProjectBuilder
 	 * @return ApiAllData
@@ -80,6 +98,20 @@ public class WebSocketDocBuilderTemplate implements IBaseDocBuilderTemplate<WebS
 	public List<WebSocketDoc> getWebSocketApiDoc(ApiConfig config, JavaProjectBuilder javaProjectBuilder) {
 		config.setShowJavaType(false);
 		ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(config, javaProjectBuilder);
+		IWebSocketDocBuildTemplate<WebSocketDoc> webSocketDocBuildTemplate = BuildTemplateFactory
+			.getWebSocketDocBuildTemplate(config.getFramework(), config.getClassLoader());
+		Objects.requireNonNull(webSocketDocBuildTemplate, "doc build websocket template is null");
+		return webSocketDocBuildTemplate.getWebSocketData(configBuilder);
+	}
+
+	/**
+	 * get all websocket api data.
+	 * @param config ApiConfig
+	 * @param configBuilder project doc config builder
+	 * @return ApiAllData
+	 */
+	public List<WebSocketDoc> getWebSocketApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
+		config.setShowJavaType(false);
 		IWebSocketDocBuildTemplate<WebSocketDoc> webSocketDocBuildTemplate = BuildTemplateFactory
 			.getWebSocketDocBuildTemplate(config.getFramework(), config.getClassLoader());
 		Objects.requireNonNull(webSocketDocBuildTemplate, "doc build websocket template is null");
@@ -108,6 +140,30 @@ public class WebSocketDocBuilderTemplate implements IBaseDocBuilderTemplate<WebS
 		this.setCssCDN(config, tpl);
 		// binding common variable
 		this.bindingCommonVariable(config, javaProjectBuilder, tpl, webSocketDocList.isEmpty());
+		FileUtil.nioWriteFile(tpl.render(), outPath + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
+	}
+
+	/**
+	 * Merge all websocket api doc into one document.
+	 * @param webSocketDocList list data of Api doc
+	 * @param config api config
+	 * @param configBuilder project doc config builder
+	 * @param template template
+	 * @param outPutFileName output file
+	 */
+	public void buildWebSocketAllInOne(List<WebSocketDoc> webSocketDocList, ApiConfig config,
+			ProjectDocConfigBuilder configBuilder, String template, String outPutFileName) {
+		String outPath = config.getOutPath();
+		FileUtil.mkdirs(outPath);
+		Template tpl = BeetlTemplateUtil.getByName(template);
+		String style = config.getStyle();
+		tpl.binding(TemplateVariable.STYLE.getVariable(), style);
+		tpl.binding(TemplateVariable.HIGH_LIGHT_CSS_LINK.getVariable(), config.getHighlightStyleLink());
+		tpl.binding(TemplateVariable.BACKGROUND.getVariable(), HighlightStyle.getBackgroundColor(style));
+		tpl.binding(TemplateVariable.WEBSOCKET_DOC_LIST.getVariable(), webSocketDocList);
+		tpl.binding(TemplateVariable.LANGUAGE.getVariable(), config.getLanguage());
+		this.setCssCDN(config, tpl);
+		this.bindingCommonVariable(config, configBuilder, tpl, webSocketDocList.isEmpty());
 		FileUtil.nioWriteFile(tpl.render(), outPath + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
 	}
 
@@ -177,6 +233,38 @@ public class WebSocketDocBuilderTemplate implements IBaseDocBuilderTemplate<WebS
 
 		// set dict list
 		List<ApiDocDict> apiDocDictList = DocUtil.buildDictionary(config, javaProjectBuilder);
+		tpl.binding(TemplateVariable.DICT_LIST.getVariable(), apiDocDictList);
+		tpl.binding(TemplateVariable.DIRECTORY_TREE.getVariable(), apiDocs);
+		FileUtil.nioWriteFile(tpl.render(), config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
+	}
+
+	/**
+	 * Build search js.
+	 * @param apiDocList list data of Api doc
+	 * @param config api config
+	 * @param configBuilder project doc config builder
+	 * @param template template
+	 * @param outPutFileName output file
+	 */
+	public void buildSearchJs(List<WebSocketDoc> apiDocList, ApiConfig config, ProjectDocConfigBuilder configBuilder,
+			String template, String outPutFileName) {
+		List<ApiErrorCode> errorCodeList = DocUtil.errorCodeDictToList(config, configBuilder);
+		Template tpl = BeetlTemplateUtil.getByName(template);
+		List<WebSocketDoc> apiDocs = new ArrayList<>();
+		for (WebSocketDoc apiDoc1 : apiDocList) {
+			apiDoc1.setOrder(apiDocs.size() + 1);
+			apiDocs.add(apiDoc1);
+		}
+		Map<String, String> titleMap = this.setDirectoryLanguageVariable(config, tpl);
+		if (CollectionUtil.isNotEmpty(errorCodeList)) {
+			WebSocketDoc apiDoc1 = new WebSocketDoc();
+			apiDoc1.setOrder(apiDocs.size() + 1);
+			apiDoc1.setDesc(titleMap.get(TemplateVariable.ERROR_LIST_TITLE.getVariable()));
+			apiDoc1.setList(new ArrayList<>(0));
+			apiDocs.add(apiDoc1);
+		}
+
+		List<ApiDocDict> apiDocDictList = DocUtil.buildDictionary(config, configBuilder);
 		tpl.binding(TemplateVariable.DICT_LIST.getVariable(), apiDocDictList);
 		tpl.binding(TemplateVariable.DIRECTORY_TREE.getVariable(), apiDocs);
 		FileUtil.nioWriteFile(tpl.render(), config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);

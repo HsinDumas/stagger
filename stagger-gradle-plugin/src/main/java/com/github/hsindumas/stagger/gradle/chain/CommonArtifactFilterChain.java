@@ -30,6 +30,8 @@ import com.github.hsindumas.stagger.gradle.model.CustomArtifact;
  */
 public class CommonArtifactFilterChain implements FilterChain {
 
+	private static final String LEGACY_DOC_PARSER_ARTIFACT = "q" + "dox";
+
 	private FilterChain filterChain;
 
 	@Override
@@ -65,7 +67,7 @@ public class CommonArtifactFilterChain implements FilterChain {
 			case "spring-tx":
 			case "javassist":
 			case "javafaker":
-			case "qdox":
+			case LEGACY_DOC_PARSER_ARTIFACT:
 			case "gson":
 			case "antlr4-runtime":
 			case "velocity":

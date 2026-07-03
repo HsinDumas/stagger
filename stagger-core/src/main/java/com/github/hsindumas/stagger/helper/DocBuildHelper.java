@@ -27,10 +27,9 @@ import com.github.hsindumas.stagger.model.IMethod;
 import com.github.hsindumas.stagger.model.dependency.ApiDependency;
 import com.github.hsindumas.stagger.model.dependency.DependencyTree;
 import com.github.hsindumas.stagger.model.dependency.FileDiff;
+import com.github.hsindumas.stagger.utils.DocUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
 import org.eclipse.jgit.diff.DiffEntry;
 
 import java.io.File;
@@ -46,11 +45,6 @@ import java.util.stream.Collectors;
  * @author HsinDumas
  */
 public class DocBuildHelper {
-
-	/**
-	 * JavaProjectBuilder
-	 */
-	private JavaProjectBuilder projectBuilder;
 
 	/**
 	 * ProjectDocConfigBuilder facade.
@@ -103,7 +97,6 @@ public class DocBuildHelper {
 		}
 
 		DocBuildHelper helper = new DocBuildHelper();
-		helper.projectBuilder = configBuilder.getJavaProjectBuilder();
 		helper.projectDocConfigBuilder = configBuilder;
 		helper.codePath = codePath;
 		// when is git repo
@@ -178,8 +171,11 @@ public class DocBuildHelper {
 				try {
 					// This logic is copied from RpcDocBuildTemplate#handleJavaApiDoc.
 					// Used for mark deprecated api class correctly.
-					JavaClass cls = projectBuilder.getClassByName(item);
-					if (Objects.isNull(cls) || cls.isInterface()) {
+					Object cls = this.projectDocConfigBuilder.getClassByName(item);
+					if (Objects.isNull(cls)) {
+						return false;
+					}
+					if (DocUtil.isClassInterface(cls)) {
 						return false;
 					}
 					List<String> implementedInterfaces = this.projectDocConfigBuilder
@@ -189,6 +185,7 @@ public class DocBuildHelper {
 					}
 				}
 				catch (Exception ignore) {
+					// Ignore unavailable class metadata and continue dependency cleanup.
 				}
 
 				return false;
@@ -436,9 +433,8 @@ public class DocBuildHelper {
 
 			// Get the derived classes which really used in api doc
 			List<String> derivedClazz = docMethods.stream()
-				.map(IMethod::getDeclaringClass)
-				.filter(Objects::nonNull)
-				.map(JavaClass::getFullyQualifiedName)
+				.map(IMethod::getDeclaringClassName)
+				.filter(StringUtil::isNotEmpty)
 				.distinct()
 				.collect(Collectors.toList());
 

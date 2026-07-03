@@ -28,11 +28,8 @@ import com.github.hsindumas.stagger.model.*;
 import com.github.hsindumas.stagger.model.annotation.*;
 import com.github.hsindumas.stagger.model.request.RequestMapping;
 import com.github.hsindumas.stagger.utils.DocClassUtil;
+import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
-import com.thoughtworks.qdox.model.DocletTag;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaMethod;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -53,7 +50,8 @@ public class SolonDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 	}
 
 	@Override
-	public ApiSchema<ApiDoc> renderApi(ProjectDocConfigBuilder projectBuilder, Collection<JavaClass> candidateClasses) {
+	@SuppressWarnings("unchecked")
+	public ApiSchema<ApiDoc> renderApi(ProjectDocConfigBuilder projectBuilder, Collection<?> candidateClasses) {
 		ApiConfig apiConfig = projectBuilder.getApiConfig();
 		List<ApiReqParam> configApiReqParams = Stream.of(apiConfig.getRequestHeaders(), apiConfig.getRequestParams())
 			.filter(Objects::nonNull)
@@ -65,8 +63,9 @@ public class SolonDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<WebSocketDoc> renderWebSocketApi(ProjectDocConfigBuilder projectBuilder,
-			Collection<JavaClass> candidateClasses) {
+			Collection<?> candidateClasses) {
 		return null;
 	}
 
@@ -76,22 +75,22 @@ public class SolonDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 	}
 
 	@Override
-	public boolean isEntryPoint(JavaClass cls, FrameworkAnnotations frameworkAnnotations) {
+	public boolean isEntryPoint(Object cls, FrameworkAnnotations frameworkAnnotations) {
 		boolean isDefaultEntryPoint = this.defaultEntryPoint(cls, frameworkAnnotations);
 		if (isDefaultEntryPoint) {
 			return true;
 		}
 
-		for (JavaAnnotation annotation : cls.getAnnotations()) {
-			String name = annotation.getType().getValue();
+		for (Object annotation : DocUtil.getClassAnnotations(cls)) {
+			String name = DocUtil.getAnnotationTypeValue(annotation);
 			if (SolonAnnotations.REMOTING.equals(name)) {
 				return true;
 			}
 		}
 		// use custom doc tag to support Feign.
-		List<DocletTag> docletTags = cls.getTags();
-		for (DocletTag docletTag : docletTags) {
-			String value = docletTag.getName();
+		List<?> docletTags = DocUtil.getClassTags(cls);
+		for (Object docletTag : docletTags) {
+			String value = DocUtil.getDocletTagName(docletTag);
 			if (DocTags.REST_API.equals(value)) {
 				return true;
 			}
@@ -105,7 +104,7 @@ public class SolonDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 	}
 
 	@Override
-	public void requestMappingPostProcess(JavaClass javaClass, JavaMethod method, RequestMapping requestMapping) {
+	public void requestMappingPostProcess(Object javaClass, Object method, RequestMapping requestMapping) {
 		if (Objects.isNull(requestMapping)) {
 			return;
 		}
@@ -113,8 +112,8 @@ public class SolonDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 			return;
 		}
 		boolean isRemote = false;
-		for (JavaAnnotation annotation : javaClass.getAnnotations()) {
-			String name = annotation.getType().getValue();
+		for (Object annotation : DocUtil.getClassAnnotations(javaClass)) {
+			String name = DocUtil.getAnnotationTypeValue(annotation);
 			if (SolonAnnotations.REMOTING.equals(name)) {
 				isRemote = true;
 			}
@@ -124,7 +123,7 @@ public class SolonDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 			String shortUrl = requestMapping.getShortUrl();
 			String mediaType = requestMapping.getMediaType();
 			if (shortUrl == null) {
-				requestMapping.setShortUrl(method.getName());
+				requestMapping.setShortUrl(DocUtil.getMethodName(method));
 			}
 			if (mediaType == null) {
 				requestMapping.setMediaType("text/json");
@@ -256,12 +255,12 @@ public class SolonDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 	}
 
 	@Override
-	public boolean isExceptionAdviceEntryPoint(JavaClass javaClass, FrameworkAnnotations frameworkAnnotations) {
+	public boolean isExceptionAdviceEntryPoint(Object javaClass, FrameworkAnnotations frameworkAnnotations) {
 		return false;
 	}
 
 	@Override
-	public ExceptionAdviceMethod processExceptionAdviceMethod(JavaMethod method) {
+	public ExceptionAdviceMethod processExceptionAdviceMethod(Object method) {
 		return null;
 	}
 

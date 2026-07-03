@@ -59,14 +59,13 @@ public class RpcHtmlBuilder {
 	 */
 	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		RpcDocBuilderTemplate builderTemplate = new RpcDocBuilderTemplate();
-		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, config,
-				configBuilder.getJavaProjectBuilder());
+		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, config, configBuilder);
 		builderTemplate.copyJQueryAndCss(config);
 		String INDEX_HTML = "rpc-index.html";
-		builderTemplate.buildAllInOne(apiDocList, config, configBuilder.getJavaProjectBuilder(),
-				DocGlobalConstants.RPC_ALL_IN_ONE_HTML_TPL, INDEX_HTML);
-		builderTemplate.buildSearchJs(apiDocList, config, configBuilder.getJavaProjectBuilder(),
-				DocGlobalConstants.RPC_ALL_IN_ONE_SEARCH_TPL, DocGlobalConstants.SEARCH_JS_OUT);
+		builderTemplate.buildAllInOne(apiDocList, config, configBuilder, DocGlobalConstants.RPC_ALL_IN_ONE_HTML_TPL,
+				INDEX_HTML);
+		builderTemplate.buildSearchJs(apiDocList, config, configBuilder, DocGlobalConstants.RPC_ALL_IN_ONE_SEARCH_TPL,
+				DocGlobalConstants.SEARCH_JS_OUT);
 	}
 
 }

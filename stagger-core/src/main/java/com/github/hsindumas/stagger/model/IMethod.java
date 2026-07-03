@@ -20,8 +20,6 @@
  */
 package com.github.hsindumas.stagger.model;
 
-import com.thoughtworks.qdox.model.JavaClass;
-
 import java.util.List;
 
 /**
@@ -31,10 +29,10 @@ import java.util.List;
 public interface IMethod {
 
 	/**
-	 * get method declaring class
-	 * @return method declaring class
+	 * get method declaring class name
+	 * @return method declaring class name
 	 */
-	JavaClass getDeclaringClass();
+	String getDeclaringClassName();
 
 	/**
 	 * get method name

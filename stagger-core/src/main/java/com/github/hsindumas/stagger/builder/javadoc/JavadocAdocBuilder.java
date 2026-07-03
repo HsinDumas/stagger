@@ -69,11 +69,10 @@ public class JavadocAdocBuilder {
 	 */
 	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		JavadocDocBuilderTemplate builderTemplate = new JavadocDocBuilderTemplate();
-		List<JavadocApiDoc> apiDocList = builderTemplate.getApiDoc(true, true, false, config,
-				configBuilder.getJavaProjectBuilder());
+		List<JavadocApiDoc> apiDocList = builderTemplate.getApiDoc(true, true, false, config, configBuilder);
 		if (config.isAllInOne()) {
 			String docName = builderTemplate.allInOneDocName(config, INDEX_DOC, DocGlobalConstants.ASCIIDOC_EXTENSION);
-			builderTemplate.buildAllInOne(apiDocList, config, configBuilder.getJavaProjectBuilder(),
+			builderTemplate.buildAllInOne(apiDocList, config, configBuilder,
 					DocGlobalConstants.JAVADOC_ALL_IN_ONE_ADOC_TPL, docName);
 		}
 		else {

@@ -2,8 +2,8 @@ package com.github.hsindumas.stagger.helper;
 
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
-import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
+import com.github.hsindumas.stagger.utils.DocUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -26,13 +26,13 @@ class JsonBuildHelperTest {
 		ApiConfig apiConfig = new ApiConfig();
 		JavaProjectBuilder projectBuilder = JavaProjectBuilderHelper.create();
 		Assertions.assertNotNull(projectBuilder.getClassByName(getClass().getName()));
-		JavaClass taskType = projectBuilder.getClassByName(Task.class.getName());
+		Object taskType = projectBuilder.getClassByName(Task.class.getName());
 		Assertions.assertNotNull(taskType);
-		Assertions.assertFalse(taskType.getMethods().isEmpty());
+		Assertions.assertFalse(DocUtil.getClassMethods(taskType).isEmpty());
 		ProjectDocConfigBuilder builder = new ProjectDocConfigBuilder(apiConfig, projectBuilder);
 		Assertions.assertNull(builder.getClassByName(getClass().getName()));
 		Assertions.assertNotNull(builder.getClassByName(Task.class.getName()));
-		Assertions.assertFalse(builder.getClassByName(Task.class.getName()).getMethods().isEmpty());
+		Assertions.assertFalse(DocUtil.getClassMethods(builder.getClassByName(Task.class.getName())).isEmpty());
 		String json = JsonBuildHelper.buildJson(Task.class.getName(), Task.class.getCanonicalName(), false, 0,
 				new HashMap<>(16), new HashSet<>(), new HashSet<>(), builder);
 		System.out.println(json);

@@ -44,7 +44,6 @@ import com.github.hsindumas.stagger.model.grpc.proto.ServiceMethod;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.power.common.util.FileUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.JavaClass;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -81,12 +80,12 @@ public class GRpcDocBuildTemplate implements IDocBuildTemplate<GrpcApiDoc>, IJav
 	/**
 	 * Logger for the class.
 	 */
-	private final static Logger log = Logger.getLogger(GRpcDocBuildTemplate.class.getName());
+	private static final Logger log = Logger.getLogger(GRpcDocBuildTemplate.class.getName());
 
 	/**
 	 * api index
 	 */
-	private final AtomicInteger ATOMIC_INTEGER = new AtomicInteger(1);
+	private final AtomicInteger atomicInteger = new AtomicInteger(1);
 
 	/**
 	 * message map
@@ -119,8 +118,7 @@ public class GRpcDocBuildTemplate implements IDocBuildTemplate<GrpcApiDoc>, IJav
 	}
 
 	@Override
-	public ApiSchema<GrpcApiDoc> renderApi(ProjectDocConfigBuilder projectBuilder,
-			Collection<JavaClass> candidateClasses) {
+	public ApiSchema<GrpcApiDoc> renderApi(ProjectDocConfigBuilder projectBuilder, Collection<?> candidateClasses) {
 		ApiConfig apiConfig = projectBuilder.getApiConfig();
 		List<GrpcApiDoc> apiDocList = new ArrayList<>();
 
@@ -168,7 +166,7 @@ public class GRpcDocBuildTemplate implements IDocBuildTemplate<GrpcApiDoc>, IJav
 	}
 
 	@Override
-	public boolean isEntryPoint(JavaClass javaClass, FrameworkAnnotations frameworkAnnotations) {
+	public boolean isEntryPoint(Object javaClass, FrameworkAnnotations frameworkAnnotations) {
 		return false;
 	}
 
@@ -179,7 +177,7 @@ public class GRpcDocBuildTemplate implements IDocBuildTemplate<GrpcApiDoc>, IJav
 	 */
 	private GrpcApiDoc getRpcApiDocByService(Service service) {
 		GrpcApiDoc gRpcApiDoc = new GrpcApiDoc();
-		gRpcApiDoc.setOrder(ATOMIC_INTEGER.getAndIncrement());
+		gRpcApiDoc.setOrder(atomicInteger.getAndIncrement());
 		gRpcApiDoc.setTitle(service.getDescription());
 		gRpcApiDoc.setName(service.getFullName());
 		gRpcApiDoc.setShortName(service.getName());

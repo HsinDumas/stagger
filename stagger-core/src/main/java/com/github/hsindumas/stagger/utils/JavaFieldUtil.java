@@ -29,9 +29,6 @@ import com.github.hsindumas.stagger.constants.JSRAnnotationPropConstants;
 import com.github.hsindumas.stagger.model.CustomField;
 import com.github.hsindumas.stagger.model.DocJavaField;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.expression.AnnotationValue;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -75,7 +72,7 @@ public class JavaFieldUtil {
 	 */
 	public static boolean checkGenerics(List<DocJavaField> fields) {
 		for (DocJavaField field : fields) {
-			if (field.getJavaField().getType().getFullyQualifiedName().length() == 1) {
+			if (DocUtil.getFieldTypeFullyQualifiedName(field.getJavaField()).length() == 1) {
 				return true;
 			}
 		}
@@ -132,16 +129,16 @@ public class JavaFieldUtil {
 	 * @param annotations annotation
 	 * @return max length
 	 */
-	public static String getParamMaxLength(ClassLoader classLoader, List<JavaAnnotation> annotations) {
+	public static String getParamMaxLength(ClassLoader classLoader, List<?> annotations) {
 		String maxLength = "";
-		for (JavaAnnotation annotation : annotations) {
-			String simpleAnnotationName = annotation.getType().getValue();
-			AnnotationValue annotationValue = null;
+		for (Object annotation : annotations) {
+			String simpleAnnotationName = DocUtil.getAnnotationTypeValue(annotation);
+			Object annotationValue = null;
 			if (JSRAnnotationConstants.SIZE.equalsIgnoreCase(simpleAnnotationName)) {
-				annotationValue = annotation.getProperty(JSRAnnotationPropConstants.MAX_PROP);
+				annotationValue = DocUtil.getAnnotationProperty(annotation, JSRAnnotationPropConstants.MAX_PROP);
 			}
 			if (JSRAnnotationConstants.LENGTH.equalsIgnoreCase(simpleAnnotationName)) {
-				annotationValue = annotation.getProperty(JSRAnnotationPropConstants.MAX_PROP);
+				annotationValue = DocUtil.getAnnotationProperty(annotation, JSRAnnotationPropConstants.MAX_PROP);
 			}
 			if (Objects.nonNull(annotationValue)) {
 				maxLength = DocUtil.resolveAnnotationValue(classLoader, annotationValue);
@@ -155,7 +152,7 @@ public class JavaFieldUtil {
 	 * @param annotations annotation
 	 * @return max length
 	 */
-	public static String getParamMaxLength(List<JavaAnnotation> annotations) {
+	public static String getParamMaxLength(List<?> annotations) {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		return getParamMaxLength(classLoader, annotations);
 	}
@@ -167,14 +164,13 @@ public class JavaFieldUtil {
 	 * @param annotations List of Java annotations to process
 	 * @return A string containing JSR validation comments
 	 */
-	public static String getJsrComment(boolean showValidation, ClassLoader classLoader,
-			List<JavaAnnotation> annotations) {
+	public static String getJsrComment(boolean showValidation, ClassLoader classLoader, List<?> annotations) {
 		if (!showValidation) {
 			return DocGlobalConstants.EMPTY;
 		}
 		StringJoiner validationJoiner = new StringJoiner("; ");
-		for (JavaAnnotation annotation : annotations) {
-			String annotationName = annotation.getType().getValue();
+		for (Object annotation : annotations) {
+			String annotationName = DocUtil.getAnnotationTypeValue(annotation);
 			// Skip excluded annotations
 			if (DocValidatorAnnotationEnum.EXCLUDED_ANNOTATIONS.contains(annotationName)) {
 				continue;
@@ -200,15 +196,14 @@ public class JavaFieldUtil {
 	 * @param annotation The Java annotation to process
 	 * @return A string joiner containing the resolved annotation properties
 	 */
-	private static StringJoiner getParamJoiner(String annotationName, ClassLoader classLoader,
-			JavaAnnotation annotation) {
+	private static StringJoiner getParamJoiner(String annotationName, ClassLoader classLoader, Object annotation) {
 
 		// 1. Initialize with default values
 		Map<String, String> effectiveValues = new LinkedHashMap<>(
 				DocValidatorAnnotationEnum.getDefaults(annotationName));
 
 		// 2. Override with explicit values
-		annotation.getPropertyMap()
+		DocUtil.getAnnotationPropertyMap(annotation)
 			.forEach((key, value) -> effectiveValues.put(key,
 					StringUtil.removeDoubleQuotes(DocUtil.resolveAnnotationValue(classLoader, value))));
 
@@ -263,14 +258,18 @@ public class JavaFieldUtil {
 	 * @param fieldName field name
 	 * @return Obtain value of constants field
 	 */
-	public static String getConstantsFieldValue(ClassLoader classLoader, JavaClass javaClass, String fieldName) {
+	public static String getConstantsFieldValue(ClassLoader classLoader, Object javaClass, String fieldName) {
 		try {
 			Class<?> c;
+			String binaryName = DocUtil.getClassBinaryName(javaClass);
+			if (StringUtil.isEmpty(binaryName)) {
+				return null;
+			}
 			if (Objects.nonNull(classLoader)) {
-				c = classLoader.loadClass(javaClass.getBinaryName());
+				c = classLoader.loadClass(binaryName);
 			}
 			else {
-				c = Class.forName(javaClass.getBinaryName());
+				c = Class.forName(binaryName);
 			}
 			Field[] fields = c.getDeclaredFields();
 			for (Field f : fields) {

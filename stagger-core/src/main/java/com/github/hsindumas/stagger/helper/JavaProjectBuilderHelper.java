@@ -20,9 +20,6 @@
  */
 package com.github.hsindumas.stagger.helper;
 
-import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.library.ClassLibraryBuilder;
-
 /**
  * the helper to create {@link JavaProjectBuilder} object
  *
@@ -48,10 +45,10 @@ public class JavaProjectBuilderHelper {
 
 	/**
 	 * create a new {@link JavaProjectBuilder} object
-	 * @param classLibraryBuilder the {@link ClassLibraryBuilder} object
+	 * @param classLibraryBuilder the {@link SortedClassLibraryBuilder} object
 	 * @return a new {@link JavaProjectBuilder} object
 	 */
-	public static JavaProjectBuilder create(ClassLibraryBuilder classLibraryBuilder) {
+	public static JavaProjectBuilder create(SortedClassLibraryBuilder classLibraryBuilder) {
 		return new JavaProjectBuilder(classLibraryBuilder);
 	}
 

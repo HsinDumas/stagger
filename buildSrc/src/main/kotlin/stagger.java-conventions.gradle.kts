@@ -41,6 +41,8 @@ tasks.withType<Javadoc>().configureEach {
 checkstyle {
     toolVersion = "10.20.1"
     configFile = rootProject.file("checkstyle/google_checks.xml")
+    configProperties["org.checkstyle.google.suppressionfilter.config"] =
+        rootProject.file("checkstyle/checkstyle-suppressions.xml").absolutePath
 }
 
 tasks.withType<Test>().configureEach {

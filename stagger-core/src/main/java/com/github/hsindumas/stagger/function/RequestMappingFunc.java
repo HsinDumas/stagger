@@ -21,7 +21,6 @@
 package com.github.hsindumas.stagger.function;
 
 import com.github.hsindumas.stagger.model.request.RequestMapping;
-import com.thoughtworks.qdox.model.JavaClass;
 
 /**
  * beetl template function
@@ -33,6 +32,6 @@ import com.thoughtworks.qdox.model.JavaClass;
 @FunctionalInterface
 public interface RequestMappingFunc {
 
-	void process(JavaClass cls, RequestMapping requestMapping);
+	void process(String className, RequestMapping requestMapping);
 
 }

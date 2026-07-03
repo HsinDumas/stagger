@@ -20,9 +20,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.github.hsindumas.stagger.maven.plugin.util;
 
-import com.github.hsindumas.stagger.maven.plugin.chain.*;
+import com.github.hsindumas.stagger.maven.plugin.chain.CommonArtifactFilterChain;
+import com.github.hsindumas.stagger.maven.plugin.chain.ContainsFilterChain;
+import com.github.hsindumas.stagger.maven.plugin.chain.FilterChain;
+import com.github.hsindumas.stagger.maven.plugin.chain.GroupIdFilterChain;
+import com.github.hsindumas.stagger.maven.plugin.chain.SpringBootArtifactFilterChain;
+import com.github.hsindumas.stagger.maven.plugin.chain.StartsWithFilterChain;
 import org.apache.maven.artifact.Artifact;
 
 /**
@@ -46,11 +52,11 @@ public class ArtifactFilterUtil {
 		FilterChain startsWithFilterChain = new StartsWithFilterChain();
 		FilterChain containsFilterChain = new ContainsFilterChain();
 		FilterChain commonArtifactFilterChain = new CommonArtifactFilterChain();
-		FilterChain springBootArtifactFilterChain = new SpringBootArtifactFilterChain();
 
 		groupFilterChain.setNext(startsWithFilterChain);
 		startsWithFilterChain.setNext(containsFilterChain);
 		containsFilterChain.setNext(commonArtifactFilterChain);
+		FilterChain springBootArtifactFilterChain = new SpringBootArtifactFilterChain();
 		commonArtifactFilterChain.setNext(springBootArtifactFilterChain);
 		return groupFilterChain.ignoreArtifactById(artifact);
 	}

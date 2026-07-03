@@ -22,6 +22,7 @@
 package com.github.hsindumas.stagger.utils;
 
 import com.github.hsindumas.stagger.builder.WordDocBuilder;
+import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocAnnotationConstants;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.constants.DocTags;
@@ -41,6 +42,8 @@ import com.github.hsindumas.stagger.model.DocJavaField;
 import com.github.hsindumas.stagger.model.FormData;
 import com.github.hsindumas.stagger.model.SystemPlaceholders;
 import com.github.hsindumas.stagger.model.request.RequestMapping;
+import com.github.hsindumas.stagger.source.SourceClass;
+import com.github.hsindumas.stagger.source.SourceDocletTag;
 import com.mifmif.common.regex.Generex;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.DateTimeUtil;
@@ -48,18 +51,7 @@ import com.power.common.util.EnumUtil;
 import com.power.common.util.IDCardUtil;
 import com.power.common.util.RandomUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.model.DocletTag;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaField;
-import com.thoughtworks.qdox.model.JavaMember;
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.expression.Add;
-import com.thoughtworks.qdox.model.expression.AnnotationValue;
-import com.thoughtworks.qdox.model.expression.Constant;
-import com.thoughtworks.qdox.model.expression.Expression;
-import com.thoughtworks.qdox.model.expression.FieldRef;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import net.datafaker.Faker;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -413,17 +405,19 @@ public class DocUtil {
 	 * @param controllerClass controller class
 	 * @return boolean
 	 */
-	public static boolean isMatch(String packageFilters, JavaClass controllerClass) {
-		if (StringUtil.isEmpty(packageFilters)) {
+	public static boolean isMatch(String packageFilters, Object controllerClass) {
+		if (StringUtil.isEmpty(packageFilters) || Objects.isNull(controllerClass)) {
 			return false;
 		}
 
-		String controllerName = controllerClass.getCanonicalName();
+		String controllerName = getClassCanonicalName(controllerClass);
+		if (StringUtil.isEmpty(controllerName)) {
+			return false;
+		}
 
 		boolean pointToMethod = false;
-		// if the 'packageFilters' is point to the method, add all candidate methods into
-		// this container
-		int capacity = Math.max((int) (controllerClass.getMethods().size() / 0.75F) + 1, 16);
+		List<?> methods = getClassMethods(controllerClass);
+		int capacity = Math.max((int) (methods.size() / 0.75F) + 1, 16);
 		Set<String> filterMethods = new HashSet<>(capacity);
 
 		String[] filters = packageFilters.split(",");
@@ -432,18 +426,14 @@ public class DocUtil {
 			if (filter.contains("*")) {
 				Pattern pattern = getPattern(filter);
 
-				// if the pattern matches the controller canonical name,
-				// that means the user want all methods in this controller
 				boolean matchControllerName = pattern.matcher(controllerName).matches();
 				if (matchControllerName) {
 					cacheFilterMethods(controllerName, Collections.singleton(DocGlobalConstants.DEFAULT_FILTER_METHOD));
 					return true;
 				}
 				else {
-					// try to match the methods in this controller
-					List<String> controllerMethods = controllerClass.getMethods()
-						.stream()
-						.map(JavaMember::getName)
+					List<String> controllerMethods = methods.stream()
+						.map(DocUtil::getMethodName)
 						.collect(Collectors.toList());
 					Set<String> methodsMatch = controllerMethods.stream()
 						.filter(method -> pattern.matcher(controllerName + "." + method).matches())
@@ -455,13 +445,10 @@ public class DocUtil {
 				}
 			}
 			else if (controllerName.equals(filter) || controllerName.contains(filter)) {
-				// the filter is just the controller canonical name,
-				// or the controller is in a sub package
 				cacheFilterMethods(controllerName, Collections.singleton(DocGlobalConstants.DEFAULT_FILTER_METHOD));
 				return true;
 			}
 			else if (filter.contains(controllerName)) {
-				// the filter is point to a method
 				pointToMethod = true;
 				String method = filter.replace(controllerName, "").replace(".", "");
 				filterMethods.add(method);
@@ -517,7 +504,7 @@ public class DocUtil {
 	 * @param controllerName controllerName
 	 * @return the methods user specified
 	 * @see #cacheFilterMethods(String, Set)
-	 * @see #isMatch(String, JavaClass)
+	 * @see #isMatch(String, Object)
 	 */
 	public static Set<String> findFilterMethods(String controllerName) {
 		return getFilterMethodsCache(controllerName);
@@ -669,7 +656,7 @@ public class DocUtil {
 	 * @param annotation JavaAnnotation
 	 * @return String
 	 */
-	public static String handleMappingValue(ClassLoader classLoader, JavaAnnotation annotation) {
+	public static String handleMappingValue(ClassLoader classLoader, Object annotation) {
 		String url = getRequestMappingUrl(classLoader, annotation);
 		if (StringUtil.isEmpty(url)) {
 			return DocGlobalConstants.PATH_DELIMITER;
@@ -716,25 +703,27 @@ public class DocUtil {
 	}
 
 	/**
-	 * obtain params comments
-	 * @param javaMethod JavaMethod
+	 * obtain params comments from a method-like metadata object
+	 * @param method method metadata object
 	 * @param tagName java comments tag
 	 * @param className class name
 	 * @return Map
 	 */
-	public static Map<String, String> getCommentsByTag(final JavaMethod javaMethod, final String tagName,
+	public static Map<String, String> getCommentsByTag(final Object method, final String tagName,
 			final String className) {
-		List<DocletTag> paramTags = javaMethod.getTagsByName(tagName);
-		String tagValNullMsg = "ERROR: #" + javaMethod.getName() + "() - bad @" + tagName + " Javadoc tag usage from "
-				+ javaMethod.getDeclaringClass().getCanonicalName() + ", This is an invalid comment.";
+		List<?> paramTags = invokeListAccessor(method, "getTagsByName", tagName);
+		String methodName = getMethodName(method);
+		String declaringClassName = getMethodDeclaringClassCanonicalName(method);
+		String tagValNullMsg = "ERROR: #" + methodName + "() - bad @" + tagName + " Javadoc tag usage from "
+				+ declaringClassName + ", This is an invalid comment.";
 		String tagValErrorMsg = "ERROR: An invalid comment was written [@" + tagName + " |]," + "Please @see "
-				+ javaMethod.getDeclaringClass().getCanonicalName() + "." + javaMethod.getName() + "()";
+				+ declaringClassName + "." + methodName + "()";
 		return getCommentsByTag(paramTags, tagName, className, tagValNullMsg, tagValErrorMsg);
 	}
 
-	public static Map<String, String> getRecordCommentsByTag(JavaClass javaClass, final String tagName) {
-		List<DocletTag> paramTags = javaClass.getTagsByName(tagName);
-		String className = javaClass.getCanonicalName();
+	public static Map<String, String> getRecordCommentsByTag(Object javaClass, final String tagName) {
+		List<?> paramTags = invokeListAccessor(javaClass, "getTagsByName", tagName);
+		String className = getClassCanonicalName(javaClass);
 		String tagValNullMsg = "ERROR: " + "Bad @" + tagName + " Javadoc  tag usage from " + className
 				+ ", This is an invalid comment.";
 		String tagValErrorMsg = "ERROR: An invalid comment was written [@" + tagName + " |]," + "Please @see "
@@ -742,15 +731,15 @@ public class DocUtil {
 		return getCommentsByTag(paramTags, tagName, className, tagValNullMsg, tagValErrorMsg);
 	}
 
-	public static Map<String, String> getCommentsByTag(List<DocletTag> paramTags, final String tagName) {
+	public static Map<String, String> getCommentsByTag(List<?> paramTags, final String tagName) {
 		return getCommentsByTag(paramTags, tagName, null, null, null);
 	}
 
-	private static Map<String, String> getCommentsByTag(List<DocletTag> paramTags, final String tagName,
-			String className, String tagValNullMsg, String tagValErrorMsg) {
+	private static Map<String, String> getCommentsByTag(List<?> paramTags, final String tagName, String className,
+			String tagValNullMsg, String tagValErrorMsg) {
 		Map<String, String> paramTagMap = new HashMap<>(paramTags.size());
-		for (DocletTag docletTag : paramTags) {
-			String value = docletTag.getValue();
+		for (Object docletTag : paramTags) {
+			String value = getDocletTagValue(docletTag);
 			if (StringUtil.isEmpty(value) && StringUtil.isNotEmpty(className)) {
 				throw new RuntimeException(tagValNullMsg);
 			}
@@ -791,31 +780,876 @@ public class DocUtil {
 	}
 
 	/**
-	 * obtain java doc tags comments,like apiNote
-	 * @param javaMethod JavaMethod
+	 * Reads doclet-tag name in an implementation-agnostic way.
+	 * @param docletTag doclet-tag object
+	 * @return tag name or empty string when unavailable
+	 */
+	public static String getDocletTagName(Object docletTag) {
+		return getDocletTagProperty(docletTag, "getName");
+	}
+
+	/**
+	 * Reads doclet-tag value in an implementation-agnostic way.
+	 * @param docletTag doclet-tag object
+	 * @return tag value or empty string when unavailable
+	 */
+	public static String getDocletTagValue(Object docletTag) {
+		return getDocletTagProperty(docletTag, "getValue");
+	}
+
+	private static String getDocletTagProperty(Object docletTag, String accessorName) {
+		if (Objects.isNull(docletTag)) {
+			return StringUtil.EMPTY;
+		}
+		try {
+			Object value = docletTag.getClass().getMethod(accessorName).invoke(docletTag);
+			if (value instanceof String) {
+				return (String) value;
+			}
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			// Keep return empty when tag metadata cannot be resolved.
+		}
+		return StringUtil.EMPTY;
+	}
+
+	/**
+	 * Reads method name in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @return method name or empty string when unavailable
+	 */
+	public static String getMethodName(Object method) {
+		return invokeStringAccessor(method, "getName");
+	}
+
+	/**
+	 * Reads method return type canonical name in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @return canonical type name or empty string when unavailable
+	 */
+	public static String getMethodReturnTypeCanonicalName(Object method) {
+		Object returnType = invokeNoArgAccessor(method, "getReturnType");
+		return invokeStringAccessor(returnType, "getCanonicalName");
+	}
+
+	/**
+	 * Reads method return type generic canonical name in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @return generic canonical type name or empty string when unavailable
+	 */
+	public static String getMethodReturnTypeGenericCanonicalName(Object method) {
+		Object returnType = invokeNoArgAccessor(method, "getReturnType");
+		return invokeStringAccessor(returnType, "getGenericCanonicalName");
+	}
+
+	/**
+	 * Reads method declaration signature in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @param withModifiers whether modifiers should be included
+	 * @return declaration signature or empty string when unavailable
+	 */
+	public static String getMethodDeclarationSignature(Object method, boolean withModifiers) {
+		if (Objects.isNull(method)) {
+			return StringUtil.EMPTY;
+		}
+		try {
+			Object value = method.getClass()
+				.getMethod("getDeclarationSignature", boolean.class)
+				.invoke(method, withModifiers);
+			if (value instanceof String) {
+				return (String) value;
+			}
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			// Keep parser-agnostic behavior: unavailable signature metadata returns
+			// empty.
+		}
+		return StringUtil.EMPTY;
+	}
+
+	/**
+	 * Reads method declaring class canonical name in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @return canonical class name or empty string when unavailable
+	 */
+	public static String getMethodDeclaringClassCanonicalName(Object method) {
+		Object declaringClass = getMethodDeclaringClass(method);
+		return getClassCanonicalName(declaringClass);
+	}
+
+	/**
+	 * Reads method declaring class metadata in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @return declaring class metadata object or null when unavailable
+	 */
+	public static Object getMethodDeclaringClass(Object method) {
+		return invokeNoArgAccessor(method, "getDeclaringClass");
+	}
+
+	/**
+	 * Reads class canonical name in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return canonical class name or empty string when unavailable
+	 */
+	public static String getClassCanonicalName(Object javaClass) {
+		return invokeStringAccessor(javaClass, "getCanonicalName");
+	}
+
+	/**
+	 * Reads class simple name in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return simple class name or empty string when unavailable
+	 */
+	public static String getClassSimpleName(Object javaClass) {
+		return invokeStringAccessor(javaClass, "getName");
+	}
+
+	/**
+	 * Reads class package name in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return package name or empty string when unavailable
+	 */
+	public static String getClassPackageName(Object javaClass) {
+		Object pkg = invokeNoArgAccessor(javaClass, "getPackage");
+		return invokeStringAccessor(pkg, "getName");
+	}
+
+	/**
+	 * Reads class methods in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return method list or empty list when unavailable
+	 */
+	public static List<?> getClassMethods(Object javaClass) {
+		return invokeListAccessor(javaClass, "getMethods");
+	}
+
+	/**
+	 * Reads class enum constants in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return enum constants list or empty list when unavailable
+	 */
+	public static List<?> getClassEnumConstants(Object javaClass) {
+		return invokeListAccessor(javaClass, "getEnumConstants");
+	}
+
+	/**
+	 * Reads super class metadata in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return super class metadata object or null when unavailable
+	 */
+	public static Object getClassSuperJavaClass(Object javaClass) {
+		return invokeNoArgAccessor(javaClass, "getSuperJavaClass");
+	}
+
+	/**
+	 * Reads class fields in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return field list or empty list when unavailable
+	 */
+	public static List<?> getClassFields(Object javaClass) {
+		return invokeListAccessor(javaClass, "getFields");
+	}
+
+	/**
+	 * Reads nested classes in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return nested class list or empty list when unavailable
+	 */
+	public static List<?> getClassNestedClasses(Object javaClass) {
+		return invokeListAccessor(javaClass, "getNestedClasses");
+	}
+
+	/**
+	 * Reads class annotations in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return annotation list or empty list when unavailable
+	 */
+	public static List<?> getClassAnnotations(Object javaClass) {
+		return invokeListAccessor(javaClass, "getAnnotations");
+	}
+
+	/**
+	 * Reads class tags in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return tag list or empty list when unavailable
+	 */
+	public static List<?> getClassTags(Object javaClass) {
+		return invokeListAccessor(javaClass, "getTags");
+	}
+
+	/**
+	 * Reads class tag by name in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @param tagName tag name
+	 * @return tag object or null when unavailable
+	 */
+	public static Object getClassTagByName(Object javaClass, String tagName) {
+		if (Objects.isNull(javaClass) || StringUtil.isEmpty(tagName)) {
+			return null;
+		}
+		try {
+			return javaClass.getClass().getMethod("getTagByName", String.class).invoke(javaClass, tagName);
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return null;
+		}
+	}
+
+	/**
+	 * Reads class comment in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return class comment or empty string when unavailable
+	 */
+	public static String getClassComment(Object javaClass) {
+		return invokeStringAccessor(javaClass, "getComment");
+	}
+
+	/**
+	 * Reads class generic fully-qualified name in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return generic fully-qualified name or empty string when unavailable
+	 */
+	public static String getClassGenericFullyQualifiedName(Object javaClass) {
+		return invokeStringAccessor(javaClass, "getGenericFullyQualifiedName");
+	}
+
+	/**
+	 * Reads class binary name in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return binary class name or empty string when unavailable
+	 */
+	public static String getClassBinaryName(Object javaClass) {
+		return invokeStringAccessor(javaClass, "getBinaryName");
+	}
+
+	/**
+	 * Reads class annotation flag in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return true if annotation, false otherwise
+	 */
+	public static boolean isClassAnnotation(Object javaClass) {
+		if (Objects.isNull(javaClass)) {
+			return false;
+		}
+		try {
+			Object value = javaClass.getClass().getMethod("isAnnotation").invoke(javaClass);
+			return value instanceof Boolean && (Boolean) value;
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return false;
+		}
+	}
+
+	/**
+	 * Reads class enum flag in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return true if enum, false otherwise
+	 */
+	public static boolean isClassEnum(Object javaClass) {
+		if (Objects.isNull(javaClass)) {
+			return false;
+		}
+		try {
+			Object value = javaClass.getClass().getMethod("isEnum").invoke(javaClass);
+			return value instanceof Boolean && (Boolean) value;
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return false;
+		}
+	}
+
+	/**
+	 * Reads class interface flag in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @return true if interface, false otherwise
+	 */
+	public static boolean isClassInterface(Object javaClass) {
+		if (Objects.isNull(javaClass)) {
+			return false;
+		}
+		try {
+			Object value = javaClass.getClass().getMethod("isInterface").invoke(javaClass);
+			return value instanceof Boolean && (Boolean) value;
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return false;
+		}
+	}
+
+	/**
+	 * Reads method parameters in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @return parameters list or empty list when unavailable
+	 */
+	public static List<?> getMethodParameters(Object method) {
+		return invokeListAccessor(method, "getParameters");
+	}
+
+	/**
+	 * Reads method annotations in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @return annotation list or empty list when unavailable
+	 */
+	public static List<?> getMethodAnnotations(Object method) {
+		return invokeListAccessor(method, "getAnnotations");
+	}
+
+	/**
+	 * Reads method comment in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @return method comment or empty string when unavailable
+	 */
+	public static String getMethodComment(Object method) {
+		return invokeStringAccessor(method, "getComment");
+	}
+
+	/**
+	 * Reads method modifiers in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @return modifier list or empty list when unavailable
+	 */
+	public static List<String> getMethodModifiers(Object method) {
+		List<?> modifiers = invokeListAccessor(method, "getModifiers");
+		List<String> values = new ArrayList<>(modifiers.size());
+		for (Object modifier : modifiers) {
+			if (modifier != null) {
+				values.add(modifier.toString());
+			}
+		}
+		return values;
+	}
+
+	/**
+	 * Reads method private flag in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @return true if private, false otherwise
+	 */
+	public static boolean isMethodPrivate(Object method) {
+		if (Objects.isNull(method)) {
+			return false;
+		}
+		try {
+			Object value = method.getClass().getMethod("isPrivate").invoke(method);
+			return value instanceof Boolean && (Boolean) value;
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return false;
+		}
+	}
+
+	/**
+	 * Reads method default flag in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @return true if default method, false otherwise
+	 */
+	public static boolean isMethodDefault(Object method) {
+		if (Objects.isNull(method)) {
+			return false;
+		}
+		try {
+			Object value = method.getClass().getMethod("isDefault").invoke(method);
+			return value instanceof Boolean && (Boolean) value;
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return false;
+		}
+	}
+
+	/**
+	 * Reads method tags by name in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @param tagName tag name
+	 * @return tag list or empty list when unavailable
+	 */
+	public static List<?> getMethodTagsByName(Object method, String tagName) {
+		if (StringUtil.isEmpty(tagName)) {
+			return Collections.emptyList();
+		}
+		return invokeListAccessor(method, "getTagsByName", tagName);
+	}
+
+	/**
+	 * Reads field annotations in an implementation-agnostic way.
+	 * @param field field metadata object
+	 * @return annotation list or empty list when unavailable
+	 */
+	public static List<?> getFieldAnnotations(Object field) {
+		return invokeListAccessor(field, "getAnnotations");
+	}
+
+	/**
+	 * Reads field transient flag in an implementation-agnostic way.
+	 * @param field field metadata object
+	 * @return true if transient, false otherwise
+	 */
+	public static boolean isFieldTransient(Object field) {
+		if (Objects.isNull(field)) {
+			return false;
+		}
+		try {
+			Object value = field.getClass().getMethod("isTransient").invoke(field);
+			return value instanceof Boolean && (Boolean) value;
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return false;
+		}
+	}
+
+	/**
+	 * Reads field static flag in an implementation-agnostic way.
+	 * @param field field metadata object
+	 * @return true if static, false otherwise
+	 */
+	public static boolean isFieldStatic(Object field) {
+		if (Objects.isNull(field)) {
+			return false;
+		}
+		try {
+			Object value = field.getClass().getMethod("isStatic").invoke(field);
+			return value instanceof Boolean && (Boolean) value;
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return false;
+		}
+	}
+
+	/**
+	 * Reads field name in an implementation-agnostic way.
+	 * @param field field metadata object
+	 * @return field name or empty string when unavailable
+	 */
+	public static String getFieldName(Object field) {
+		return invokeStringAccessor(field, "getName");
+	}
+
+	/**
+	 * Reads field comment in an implementation-agnostic way.
+	 * @param field field metadata object
+	 * @return field comment or empty string when unavailable
+	 */
+	public static String getFieldComment(Object field) {
+		return invokeStringAccessor(field, "getComment");
+	}
+
+	/**
+	 * Reads field tags in an implementation-agnostic way.
+	 * @param field field metadata object
+	 * @return tags list or empty list when unavailable
+	 */
+	public static List<?> getFieldTags(Object field) {
+		return invokeListAccessor(field, "getTags");
+	}
+
+	/**
+	 * Reads field initialization expression in an implementation-agnostic way.
+	 * @param field field metadata object
+	 * @return initialization expression or empty string when unavailable
+	 */
+	public static String getFieldInitializationExpression(Object field) {
+		return invokeStringAccessor(field, "getInitializationExpression");
+	}
+
+	/**
+	 * Reads field type fully-qualified name in an implementation-agnostic way.
+	 * @param field field metadata object
+	 * @return field type fully-qualified name or empty string when unavailable
+	 */
+	public static String getFieldTypeFullyQualifiedName(Object field) {
+		Object type = invokeNoArgAccessor(field, "getType");
+		return invokeStringAccessor(type, "getFullyQualifiedName");
+	}
+
+	/**
+	 * Reads field type generic fully-qualified name in an implementation-agnostic way.
+	 * @param field field metadata object
+	 * @return generic fully-qualified type name or empty string when unavailable
+	 */
+	public static String getFieldGenericFullyQualifiedName(Object field) {
+		Object type = invokeNoArgAccessor(field, "getType");
+		return invokeStringAccessor(type, "getGenericFullyQualifiedName");
+	}
+
+	/**
+	 * Reads method parameter types in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @return parameter type list or empty list when unavailable
+	 */
+	public static List<?> getMethodParameterTypes(Object method) {
+		return invokeListAccessor(method, "getParameterTypes");
+	}
+
+	/**
+	 * Reads method varArgs flag in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @return true if varArgs, false otherwise
+	 */
+	public static boolean isMethodVarArgs(Object method) {
+		if (Objects.isNull(method)) {
+			return false;
+		}
+		try {
+			Object value = method.getClass().getMethod("isVarArgs").invoke(method);
+			return value instanceof Boolean && (Boolean) value;
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return false;
+		}
+	}
+
+	/**
+	 * Reads method tag by name in an implementation-agnostic way.
+	 * @param method method metadata object
+	 * @param tagName tag name
+	 * @return tag object or null when unavailable
+	 */
+	public static Object getMethodTagByName(Object method, String tagName) {
+		if (Objects.isNull(method) || StringUtil.isEmpty(tagName)) {
+			return null;
+		}
+		try {
+			return method.getClass().getMethod("getTagByName", String.class).invoke(method, tagName);
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return null;
+		}
+	}
+
+	/**
+	 * Resolves class method by signature in an implementation-agnostic way.
+	 * @param javaClass class metadata object
+	 * @param methodName method name
+	 * @param parameterTypes parameter type list
+	 * @param varArgs varArgs flag
+	 * @return method metadata object or null when unavailable
+	 */
+	public static Object getClassMethodBySignature(Object javaClass, String methodName, List<?> parameterTypes,
+			boolean varArgs) {
+		if (Objects.isNull(javaClass) || StringUtil.isEmpty(methodName) || Objects.isNull(parameterTypes)) {
+			return null;
+		}
+		try {
+			return javaClass.getClass()
+				.getMethod("getMethod", String.class, List.class, boolean.class)
+				.invoke(javaClass, methodName, parameterTypes, varArgs);
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return null;
+		}
+	}
+
+	/**
+	 * Reads parameter name in an implementation-agnostic way.
+	 * @param parameter parameter metadata object
+	 * @return parameter name or empty string when unavailable
+	 */
+	public static String getParameterName(Object parameter) {
+		return invokeStringAccessor(parameter, "getName");
+	}
+
+	/**
+	 * Reads parameter fully-qualified type name in an implementation-agnostic way.
+	 * @param parameter parameter metadata object
+	 * @return fully-qualified type name or empty string when unavailable
+	 */
+	public static String getParameterFullyQualifiedName(Object parameter) {
+		return invokeStringAccessor(parameter, "getFullyQualifiedName");
+	}
+
+	/**
+	 * Reads parameter generic fully-qualified type name in an implementation-agnostic
+	 * way.
+	 * @param parameter parameter metadata object
+	 * @return generic fully-qualified type name or empty string when unavailable
+	 */
+	public static String getParameterGenericFullyQualifiedName(Object parameter) {
+		return invokeStringAccessor(parameter, "getGenericFullyQualifiedName");
+	}
+
+	/**
+	 * Reads parameter type value in an implementation-agnostic way.
+	 * @param parameter parameter metadata object
+	 * @return type value or empty string when unavailable
+	 */
+	public static String getParameterTypeValue(Object parameter) {
+		Object type = invokeNoArgAccessor(parameter, "getType");
+		if (Objects.isNull(type)) {
+			return StringUtil.EMPTY;
+		}
+		return invokeStringAccessor(type, "getValue");
+	}
+
+	/**
+	 * Reads parameter type canonical name in an implementation-agnostic way.
+	 * @param parameter parameter metadata object
+	 * @return canonical type name or empty string when unavailable
+	 */
+	public static String getParameterTypeCanonicalName(Object parameter) {
+		Object type = invokeNoArgAccessor(parameter, "getType");
+		return invokeStringAccessor(type, "getCanonicalName");
+	}
+
+	/**
+	 * Reads parameter type generic canonical name in an implementation-agnostic way.
+	 * @param parameter parameter metadata object
+	 * @return generic canonical type name or empty string when unavailable
+	 */
+	public static String getParameterTypeGenericCanonicalName(Object parameter) {
+		Object type = invokeNoArgAccessor(parameter, "getType");
+		return invokeStringAccessor(type, "getGenericCanonicalName");
+	}
+
+	/**
+	 * Reads parameter annotations in an implementation-agnostic way.
+	 * @param parameter parameter metadata object
+	 * @return annotation list or empty list when unavailable
+	 */
+	public static List<?> getParameterAnnotations(Object parameter) {
+		return invokeListAccessor(parameter, "getAnnotations");
+	}
+
+	/**
+	 * Reads type canonical name in an implementation-agnostic way.
+	 * @param javaType type metadata object
+	 * @return canonical type name or empty string when unavailable
+	 */
+	public static String getTypeCanonicalName(Object javaType) {
+		return invokeStringAccessor(javaType, "getCanonicalName");
+	}
+
+	/**
+	 * Reads type value in an implementation-agnostic way.
+	 * @param javaType type metadata object
+	 * @return type value or empty string when unavailable
+	 */
+	public static String getTypeValue(Object javaType) {
+		return invokeStringAccessor(javaType, "getValue");
+	}
+
+	/**
+	 * Reads type generic value in an implementation-agnostic way.
+	 * @param javaType type metadata object
+	 * @return generic value or empty string when unavailable
+	 */
+	public static String getTypeGenericValue(Object javaType) {
+		return invokeStringAccessor(javaType, "getGenericValue");
+	}
+
+	/**
+	 * Reads type fully-qualified name in an implementation-agnostic way.
+	 * @param javaType type metadata object
+	 * @return fully-qualified type name or empty string when unavailable
+	 */
+	public static String getTypeFullyQualifiedName(Object javaType) {
+		return invokeStringAccessor(javaType, "getFullyQualifiedName");
+	}
+
+	/**
+	 * Reads type binary name in an implementation-agnostic way.
+	 * @param javaType type metadata object
+	 * @return binary name or empty string when unavailable
+	 */
+	public static String getTypeBinaryName(Object javaType) {
+		return invokeStringAccessor(javaType, "getBinaryName");
+	}
+
+	/**
+	 * Reads type generic fully-qualified name in an implementation-agnostic way.
+	 * @param javaType type metadata object
+	 * @return generic fully-qualified type name or empty string when unavailable
+	 */
+	public static String getTypeGenericFullyQualifiedName(Object javaType) {
+		return invokeStringAccessor(javaType, "getGenericFullyQualifiedName");
+	}
+
+	/**
+	 * Reads type generic canonical name in an implementation-agnostic way.
+	 * @param javaType type metadata object
+	 * @return generic canonical type name or empty string when unavailable
+	 */
+	public static String getTypeGenericCanonicalName(Object javaType) {
+		return invokeStringAccessor(javaType, "getGenericCanonicalName");
+	}
+
+	/**
+	 * Reads annotation type value in an implementation-agnostic way.
+	 * @param annotation annotation object
+	 * @return annotation type value or empty string when unavailable
+	 */
+	public static String getAnnotationTypeValue(Object annotation) {
+		return getAnnotationTypeProperty(annotation, "getValue");
+	}
+
+	/**
+	 * Reads annotation type fully-qualified name in an implementation-agnostic way.
+	 * @param annotation annotation object
+	 * @return fully-qualified annotation type name or empty string when unavailable
+	 */
+	public static String getAnnotationTypeFullyQualifiedName(Object annotation) {
+		return getAnnotationTypeProperty(annotation, "getFullyQualifiedName");
+	}
+
+	/**
+	 * Reads annotation type simple name in an implementation-agnostic way.
+	 * @param annotation annotation object
+	 * @return simple annotation type name or empty string when unavailable
+	 */
+	public static String getAnnotationTypeSimpleName(Object annotation) {
+		return getAnnotationTypeProperty(annotation, "getSimpleName");
+	}
+
+	/**
+	 * Reads annotation property in an implementation-agnostic way.
+	 * @param annotation annotation object
+	 * @param propertyName property name
+	 * @return property value or null when unavailable
+	 */
+	public static Object getAnnotationProperty(Object annotation, String propertyName) {
+		return invokeAnnotationAccessor(annotation, "getProperty", propertyName);
+	}
+
+	/**
+	 * Reads annotation named parameter in an implementation-agnostic way.
+	 * @param annotation annotation object
+	 * @param propertyName property name
+	 * @return named parameter value or null when unavailable
+	 */
+	public static Object getAnnotationNamedParameter(Object annotation, String propertyName) {
+		return invokeAnnotationAccessor(annotation, "getNamedParameter", propertyName);
+	}
+
+	/**
+	 * Reads annotation named parameter map in an implementation-agnostic way.
+	 * @param annotation annotation object
+	 * @return named parameter map, or empty map when unavailable
+	 */
+	public static Map<String, Object> getAnnotationNamedParameterMap(Object annotation) {
+		return invokeAnnotationMapAccessor(annotation, "getNamedParameterMap");
+	}
+
+	/**
+	 * Reads annotation property map in an implementation-agnostic way.
+	 * @param annotation annotation object
+	 * @return property map, or empty map when unavailable
+	 */
+	public static Map<String, Object> getAnnotationPropertyMap(Object annotation) {
+		return invokeAnnotationMapAccessor(annotation, "getPropertyMap");
+	}
+
+	private static String getAnnotationTypeProperty(Object annotation, String accessorName) {
+		if (Objects.isNull(annotation)) {
+			return StringUtil.EMPTY;
+		}
+		try {
+			Object annotationType = annotation.getClass().getMethod("getType").invoke(annotation);
+			if (Objects.isNull(annotationType)) {
+				return StringUtil.EMPTY;
+			}
+			Object value = annotationType.getClass().getMethod(accessorName).invoke(annotationType);
+			return Objects.nonNull(value) ? value.toString() : StringUtil.EMPTY;
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return StringUtil.EMPTY;
+		}
+	}
+
+	private static Object invokeAnnotationAccessor(Object annotation, String accessorName, String propertyName) {
+		if (Objects.isNull(annotation) || StringUtil.isEmpty(propertyName)) {
+			return null;
+		}
+		try {
+			return annotation.getClass().getMethod(accessorName, String.class).invoke(annotation, propertyName);
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return null;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private static Map<String, Object> invokeAnnotationMapAccessor(Object annotation, String accessorName) {
+		if (Objects.isNull(annotation)) {
+			return Collections.emptyMap();
+		}
+		try {
+			Object value = annotation.getClass().getMethod(accessorName).invoke(annotation);
+			if (value instanceof Map) {
+				return (Map<String, Object>) value;
+			}
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			// Keep return empty when annotation map cannot be resolved.
+		}
+		return Collections.emptyMap();
+	}
+
+	private static Object invokeNoArgAccessor(Object target, String accessorName) {
+		if (Objects.isNull(target) || StringUtil.isEmpty(accessorName)) {
+			return null;
+		}
+		try {
+			return target.getClass().getMethod(accessorName).invoke(target);
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return null;
+		}
+	}
+
+	private static String invokeStringAccessor(Object target, String accessorName) {
+		Object value = invokeNoArgAccessor(target, accessorName);
+		return Objects.nonNull(value) ? value.toString() : StringUtil.EMPTY;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static List<?> invokeListAccessor(Object target, String accessorName) {
+		Object value = invokeNoArgAccessor(target, accessorName);
+		if (value instanceof List) {
+			return (List<?>) value;
+		}
+		return Collections.emptyList();
+	}
+
+	@SuppressWarnings("unchecked")
+	private static List<?> invokeListAccessor(Object target, String accessorName, String argument) {
+		if (Objects.isNull(target) || StringUtil.isEmpty(accessorName)) {
+			return Collections.emptyList();
+		}
+		try {
+			Object value = target.getClass().getMethod(accessorName, String.class).invoke(target, argument);
+			if (value instanceof List) {
+				return (List<?>) value;
+			}
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			// ignore and return empty list
+		}
+		return Collections.emptyList();
+	}
+
+	/**
+	 * Obtain java doc tag comments in a parser-agnostic way.
+	 * @param method method metadata object
 	 * @param tagName java comments tag
 	 * @param className class name
-	 * @return Map
+	 * @return first matched key/value string
 	 */
-	public static String getNormalTagComments(final JavaMethod javaMethod, final String tagName,
-			final String className) {
-		Map<String, String> map = getCommentsByTag(javaMethod, tagName, className);
+	public static String getNormalTagComments(final Object method, final String tagName, final String className) {
+		Map<String, String> map = getCommentsByTag(method, tagName, className);
 		return getFirstKeyAndValue(map);
 	}
 
 	/**
-	 * Get field tags
-	 * @param field JavaField
-	 * @param docJavaField DocJavaField
+	 * Get field tags using parser-agnostic field metadata.
+	 * @param field field metadata object
+	 * @param docJavaField doc java field
 	 * @return map
 	 */
-	public static Map<String, String> getFieldTagsValue(final JavaField field, DocJavaField docJavaField) {
-		List<DocletTag> paramTags = field.getTags();
+	public static Map<String, String> getFieldTagsValue(final Object field, DocJavaField docJavaField) {
+		List<?> paramTags = getFieldTags(field);
 		if (CollectionUtil.isEmpty(paramTags) && Objects.nonNull(docJavaField)) {
 			paramTags = docJavaField.getDocletTags();
 		}
 		return paramTags.stream()
-			.collect(Collectors.toMap(DocletTag::getName, DocletTag::getValue, (key1, key2) -> key1 + "," + key2));
+			.collect(Collectors.toMap(DocUtil::getDocletTagName, DocUtil::getDocletTagValue,
+					(key1, key2) -> key1 + "," + key2));
 	}
 
 	/**
@@ -1022,7 +1856,7 @@ public class DocUtil {
 	 * @param annotation RequestMapping GetMapping PostMapping etc.
 	 * @return the url
 	 */
-	public static String getRequestMappingUrl(ClassLoader classLoader, JavaAnnotation annotation) {
+	public static String getRequestMappingUrl(ClassLoader classLoader, Object annotation) {
 		return getPathUrl(classLoader, annotation, DocAnnotationConstants.VALUE_PROP, DocAnnotationConstants.NAME_PROP,
 				DocAnnotationConstants.PATH_PROP);
 	}
@@ -1034,9 +1868,9 @@ public class DocUtil {
 	 * @param props annotation properties
 	 * @return the path
 	 */
-	public static String getPathUrl(ClassLoader classLoader, JavaAnnotation annotation, String... props) {
+	public static String getPathUrl(ClassLoader classLoader, Object annotation, String... props) {
 		for (String prop : props) {
-			AnnotationValue annotationValue = annotation.getProperty(prop);
+			Object annotationValue = getAnnotationProperty(annotation, prop);
 			if (Objects.nonNull(annotationValue)) {
 				Object url = resolveAnnotationValue(classLoader, annotationValue);
 				if (Objects.nonNull(url)) {
@@ -1048,54 +1882,51 @@ public class DocUtil {
 	}
 
 	/**
-	 * resolve the string of {@link Add} which has {@link FieldRef}(to be exact is
-	 * {@link FieldRef}) children, the value of {@link FieldRef} will be resolved with the
-	 * real value of it if it is the static final member of any other class
+	 * Resolve annotation value from a generic value object.
 	 * @param classLoader classLoader
-	 * @param annotationValue annotationValue
+	 * @param annotationValue annotation value object
 	 * @return annotation value
 	 */
-	public static String resolveAnnotationValue(ClassLoader classLoader, AnnotationValue annotationValue) {
-		// if it is a constant, return its value directly
-		if (annotationValue instanceof Constant) {
-			return ((Constant) annotationValue).getValue().toString();
+	public static String resolveAnnotationValue(ClassLoader classLoader, Object annotationValue) {
+		if (Objects.isNull(annotationValue)) {
+			return StringUtil.EMPTY;
 		}
-		// if it is an add operation, return the result directly
-		if (annotationValue instanceof Add) {
-			Add add = (Add) annotationValue;
-			String leftValue = resolveAnnotationValue(classLoader, add.getLeft());
-			String rightValue = resolveAnnotationValue(classLoader, add.getRight());
+		if (isExpressionType(annotationValue, "Constant")) {
+			Object value = invokeNoArgAccessor(annotationValue, "getValue");
+			return Objects.nonNull(value) ? value.toString() : StringUtil.EMPTY;
+		}
+		if (isExpressionType(annotationValue, "Add")) {
+			Object left = invokeNoArgAccessor(annotationValue, "getLeft");
+			Object right = invokeNoArgAccessor(annotationValue, "getRight");
+			String leftValue = resolveAnnotationValue(classLoader, left);
+			String rightValue = resolveAnnotationValue(classLoader, right);
 			return StringUtil.removeQuotes(leftValue + rightValue);
 		}
-		// if it is a field reference, return its value directly
-		if (annotationValue instanceof FieldRef) {
-			FieldRef fieldRef = (FieldRef) annotationValue;
-			JavaField javaField = fieldRef.getField();
-			if (javaField != null) {
-				String fieldValue = JavaFieldUtil.getConstantsFieldValue(classLoader, javaField.getDeclaringClass(),
-						javaField.getName());
+		if (isExpressionType(annotationValue, "FieldRef")) {
+			Object javaField = invokeNoArgAccessor(annotationValue, "getField");
+			if (Objects.nonNull(javaField)) {
+				Object declaringClass = invokeNoArgAccessor(javaField, "getDeclaringClass");
+				String fieldValue = JavaFieldUtil.getConstantsFieldValue(classLoader, declaringClass,
+						getFieldName(javaField));
 				if (StringUtil.isNotEmpty(fieldValue)) {
 					return StringUtil.removeQuotes(fieldValue);
 				}
-				return StringUtil.removeQuotes(javaField.getInitializationExpression());
+				return StringUtil.removeQuotes(getFieldInitializationExpression(javaField));
 			}
 		}
-		// default return
-		return Optional.ofNullable(annotationValue)
-			.map(Expression::getParameterValue)
-			.map(Object::toString)
-			.orElse(StringUtil.EMPTY);
-
+		Object parameterValue = invokeNoArgAccessor(annotationValue, "getParameterValue");
+		if (Objects.nonNull(parameterValue)) {
+			return parameterValue.toString();
+		}
+		return Optional.ofNullable(annotationValue).map(Object::toString).orElse(StringUtil.EMPTY);
 	}
 
 	/**
-	 * resolve the string of {@link Add} which has {@link FieldRef}(to be exact is
-	 * {@link FieldRef}) children, the value of {@link FieldRef} will be resolved with the
-	 * real value of it if it is the static final member of any other class
-	 * @param annotationValue annotationValue
+	 * Resolve annotation value with thread context class loader.
+	 * @param annotationValue annotation value object
 	 * @return annotation value
 	 */
-	public static String resolveAnnotationValue(AnnotationValue annotationValue) {
+	public static String resolveAnnotationValue(Object annotationValue) {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		return resolveAnnotationValue(classLoader, annotationValue);
 	}
@@ -1106,7 +1937,7 @@ public class DocUtil {
 	 * @param annotation JavaAnnotation
 	 * @return String
 	 */
-	public static String handleRequestHeaderValue(ClassLoader classLoader, JavaAnnotation annotation) {
+	public static String handleRequestHeaderValue(ClassLoader classLoader, Object annotation) {
 		String header = getRequestHeaderValue(classLoader, annotation);
 		if (StringUtil.isEmpty(header)) {
 			return header;
@@ -1121,12 +1952,21 @@ public class DocUtil {
 	 * @param annotation RequestMapping GetMapping PostMapping etc.
 	 * @return The constant value
 	 */
-	public static String getRequestHeaderValue(ClassLoader classLoader, JavaAnnotation annotation) {
-		AnnotationValue annotationValue = annotation.getProperty(DocAnnotationConstants.VALUE_PROP);
+	public static String getRequestHeaderValue(ClassLoader classLoader, Object annotation) {
+		Object annotationValue = getAnnotationProperty(annotation, DocAnnotationConstants.VALUE_PROP);
 		return resolveAnnotationValue(classLoader, annotationValue);
 	}
 
+	public static List<ApiErrorCode> errorCodeDictToList(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
+		return errorCodeDictToList(config, null, configBuilder);
+	}
+
 	public static List<ApiErrorCode> errorCodeDictToList(ApiConfig config, JavaProjectBuilder javaProjectBuilder) {
+		return errorCodeDictToList(config, javaProjectBuilder, null);
+	}
+
+	private static List<ApiErrorCode> errorCodeDictToList(ApiConfig config, JavaProjectBuilder javaProjectBuilder,
+			ProjectDocConfigBuilder configBuilder) {
 		if (CollectionUtil.isNotEmpty(config.getErrorCodes())) {
 			return config.getErrorCodes();
 		}
@@ -1134,81 +1974,87 @@ public class DocUtil {
 		if (CollectionUtil.isEmpty(errorCodeDictionaries)) {
 			return new ArrayList<>(0);
 		}
-		else {
-			ClassLoader classLoader = config.getClassLoader();
-			Set<ApiErrorCode> errorCodeList = new LinkedHashSet<>();
-			try {
-				for (ApiErrorCodeDictionary dictionary : errorCodeDictionaries) {
-					Class<?> clzz = dictionary.getEnumClass();
-					if (Objects.isNull(clzz)) {
-						if (StringUtil.isEmpty(dictionary.getEnumClassName())) {
-							throw new RuntimeException("Enum class name can't be null.");
-						}
-						clzz = classLoader.loadClass(dictionary.getEnumClassName());
+		ClassLoader classLoader = config.getClassLoader();
+		Set<ApiErrorCode> errorCodeList = new LinkedHashSet<>();
+		try {
+			for (ApiErrorCodeDictionary dictionary : errorCodeDictionaries) {
+				Class<?> clzz = dictionary.getEnumClass();
+				if (Objects.isNull(clzz)) {
+					if (StringUtil.isEmpty(dictionary.getEnumClassName())) {
+						throw new RuntimeException("Enum class name can't be null.");
+					}
+					clzz = classLoader.loadClass(dictionary.getEnumClassName());
+				}
+
+				Class<?> valuesResolverClass = null;
+				if (StringUtil.isNotEmpty(dictionary.getValuesResolverClass())) {
+					valuesResolverClass = classLoader.loadClass(dictionary.getValuesResolverClass());
+				}
+				if (null != valuesResolverClass
+						&& DictionaryValuesResolver.class.isAssignableFrom(valuesResolverClass)) {
+					DictionaryValuesResolver resolver = (DictionaryValuesResolver) DocClassUtil
+						.newInstance(valuesResolverClass);
+					// add two method results
+					errorCodeList.addAll(resolver.resolve());
+					errorCodeList.addAll(resolver.resolve(clzz));
+				}
+				else if (clzz.isInterface()) {
+					Set<Class<? extends Enum<?>>> enumImplementSet = dictionary.getEnumImplementSet();
+					if (CollectionUtil.isEmpty(enumImplementSet)) {
+						continue;
 					}
 
-					Class<?> valuesResolverClass = null;
-					if (StringUtil.isNotEmpty(dictionary.getValuesResolverClass())) {
-						valuesResolverClass = classLoader.loadClass(dictionary.getValuesResolverClass());
-					}
-					if (null != valuesResolverClass
-							&& DictionaryValuesResolver.class.isAssignableFrom(valuesResolverClass)) {
-						DictionaryValuesResolver resolver = (DictionaryValuesResolver) DocClassUtil
-							.newInstance(valuesResolverClass);
-						// add two method results
-						errorCodeList.addAll(resolver.resolve());
-						errorCodeList.addAll(resolver.resolve(clzz));
-					}
-					else if (clzz.isInterface()) {
-						Set<Class<? extends Enum<?>>> enumImplementSet = dictionary.getEnumImplementSet();
-						if (CollectionUtil.isEmpty(enumImplementSet)) {
+					for (Class<? extends Enum<?>> enumClass : enumImplementSet) {
+						String enumClassName = resolveClassName(enumClass);
+						if (hasIgnoreDocTag(configBuilder, javaProjectBuilder, enumClassName)) {
 							continue;
 						}
-
-						for (Class<? extends Enum<?>> enumClass : enumImplementSet) {
-							JavaClass interfaceClass = javaProjectBuilder.getClassByName(enumClass.getCanonicalName());
-							if (Objects.nonNull(interfaceClass.getTagByName(DocTags.IGNORE))) {
-								continue;
-							}
-							List<ApiErrorCode> enumDictionaryList = EnumUtil.getEnumInformation(enumClass,
-									dictionary.getCodeField(), dictionary.getDescField());
-							errorCodeList.addAll(enumDictionaryList);
-						}
-
-					}
-					else {
-						JavaClass javaClass = javaProjectBuilder.getClassByName(clzz.getCanonicalName());
-						if (Objects.nonNull(javaClass.getTagByName(DocTags.IGNORE))) {
-							continue;
-						}
-						List<ApiErrorCode> enumDictionaryList = EnumUtil.getEnumInformation(clzz,
+						List<ApiErrorCode> enumDictionaryList = EnumUtil.getEnumInformation(enumClass,
 								dictionary.getCodeField(), dictionary.getDescField());
 						errorCodeList.addAll(enumDictionaryList);
 					}
 
 				}
+				else {
+					String className = resolveClassName(clzz);
+					if (hasIgnoreDocTag(configBuilder, javaProjectBuilder, className)) {
+						continue;
+					}
+					List<ApiErrorCode> enumDictionaryList = EnumUtil.getEnumInformation(clzz, dictionary.getCodeField(),
+							dictionary.getDescField());
+					errorCodeList.addAll(enumDictionaryList);
+				}
+
 			}
-			catch (ClassNotFoundException e) {
-				logger.warning(e.getMessage());
-			}
-			return new ArrayList<>(errorCodeList);
 		}
+		catch (ClassNotFoundException e) {
+			logger.warning(e.getMessage());
+		}
+		return new ArrayList<>(errorCodeList);
 	}
 
 	/**
 	 * Build dictionary
 	 * @param config api config
-	 * @param javaProjectBuilder JavaProjectBuilder
+	 * @param configBuilder project doc config builder
 	 * @return list of ApiDocDict
 	 */
+	public static List<ApiDocDict> buildDictionary(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
+		return buildDictionary(config, null, configBuilder);
+	}
+
 	public static List<ApiDocDict> buildDictionary(ApiConfig config, JavaProjectBuilder javaProjectBuilder) {
+		return buildDictionary(config, javaProjectBuilder, null);
+	}
+
+	private static List<ApiDocDict> buildDictionary(ApiConfig config, JavaProjectBuilder javaProjectBuilder,
+			ProjectDocConfigBuilder configBuilder) {
 		List<ApiDataDictionary> apiDataDictionaryList = config.getDataDictionaries();
 		if (CollectionUtil.isEmpty(apiDataDictionaryList)) {
 			return new ArrayList<>(0);
 		}
 		List<ApiDocDict> apiDocDictList = new ArrayList<>();
 		try {
-
 			ClassLoader classLoader = config.getClassLoader();
 			int order = 0;
 			for (ApiDataDictionary apiDataDictionary : apiDataDictionaryList) {
@@ -1228,18 +2074,16 @@ public class DocUtil {
 					}
 
 					for (Class<? extends Enum<?>> enumClass : enumImplementSet) {
-						JavaClass javaClass = javaProjectBuilder.getClassByName(enumClass.getName());
-						if (Objects.nonNull(javaClass.getTagByName(DocTags.IGNORE))) {
+						String enumClassName = resolveClassName(enumClass);
+						if (hasIgnoreDocTag(configBuilder, javaProjectBuilder, enumClassName)) {
 							continue;
 						}
-						DocletTag apiNoteTag = javaClass.getTagByName(DocTags.API_NOTE);
 						ApiDocDict apiDocDict = new ApiDocDict();
 						apiDocDict.setOrder(order++);
-						String title = StringUtils.isBlank(javaClass.getComment()) ? javaClass.getName()
-								: javaClass.getComment();
-						apiDocDict.setTitle(title);
-						apiDocDict.setDescription(DocUtil.getEscapeAndCleanComment(
-								Optional.ofNullable(apiNoteTag).map(DocletTag::getValue).orElse(StringUtil.EMPTY)));
+						apiDocDict.setTitle(resolveDictionaryTitle(configBuilder, javaProjectBuilder, enumClassName,
+								enumClass.getSimpleName()));
+						apiDocDict
+							.setDescription(resolveApiNoteComment(configBuilder, javaProjectBuilder, enumClassName));
 						List<DataDict> enumDictionaryList = EnumUtil.getEnumInformation(enumClass,
 								apiDataDictionary.getCodeField(), apiDataDictionary.getDescField());
 						apiDocDict.setDataDictList(enumDictionaryList);
@@ -1248,19 +2092,17 @@ public class DocUtil {
 
 				}
 				else {
+					String className = resolveClassName(clazz);
+					if (hasIgnoreDocTag(configBuilder, javaProjectBuilder, className)) {
+						continue;
+					}
 					ApiDocDict apiDocDict = new ApiDocDict();
 					apiDocDict.setOrder(order);
 					apiDocDict.setTitle(apiDataDictionary.getTitle());
-					JavaClass javaClass = javaProjectBuilder.getClassByName(clazz.getCanonicalName());
-					if (Objects.nonNull(javaClass.getTagByName(DocTags.IGNORE))) {
-						continue;
-					}
-					DocletTag apiNoteTag = javaClass.getTagByName(DocTags.API_NOTE);
-					apiDocDict.setDescription(DocUtil.getEscapeAndCleanComment(
-							Optional.ofNullable(apiNoteTag).map(DocletTag::getValue).orElse(StringUtil.EMPTY)));
+					apiDocDict.setDescription(resolveApiNoteComment(configBuilder, javaProjectBuilder, className));
 					if (apiDataDictionary.getTitle() == null) {
-						apiDocDict.setTitle(StringUtils.isBlank(javaClass.getComment()) ? javaClass.getName()
-								: javaClass.getComment());
+						apiDocDict.setTitle(resolveDictionaryTitle(configBuilder, javaProjectBuilder, className,
+								clazz.getSimpleName()));
 					}
 					List<DataDict> enumDictionaryList = EnumUtil.getEnumInformation(clazz,
 							apiDataDictionary.getCodeField(), apiDataDictionary.getDescField());
@@ -1277,6 +2119,115 @@ public class DocUtil {
 			logger.warning(e.getMessage());
 		}
 		return apiDocDictList;
+	}
+
+	private static boolean hasIgnoreDocTag(ProjectDocConfigBuilder configBuilder, JavaProjectBuilder javaProjectBuilder,
+			String className) {
+		Optional<SourceClass> sourceClass = findSourceClass(configBuilder, className);
+		if (sourceClass.isPresent()) {
+			return hasSourceDocletTag(sourceClass.get(), DocTags.IGNORE);
+		}
+		if (Objects.nonNull(configBuilder)) {
+			Object javaClass = configBuilder.getClassByName(className);
+			return Objects.nonNull(javaClass) && Objects.nonNull(DocUtil.getClassTagByName(javaClass, DocTags.IGNORE));
+		}
+		if (Objects.isNull(javaProjectBuilder)) {
+			return false;
+		}
+		Object javaClass = javaProjectBuilder.getClassByName(className);
+		return Objects.nonNull(javaClass) && Objects.nonNull(DocUtil.getClassTagByName(javaClass, DocTags.IGNORE));
+	}
+
+	private static String resolveDictionaryTitle(ProjectDocConfigBuilder configBuilder,
+			JavaProjectBuilder javaProjectBuilder, String className, String fallbackTitle) {
+		Optional<SourceClass> sourceClass = findSourceClass(configBuilder, className);
+		if (sourceClass.isPresent()) {
+			String sourceComment = sourceClass.get().comment();
+			if (StringUtils.isNotBlank(sourceComment)) {
+				return sourceComment;
+			}
+			if (StringUtil.isNotEmpty(sourceClass.get().simpleName())) {
+				return sourceClass.get().simpleName();
+			}
+		}
+		if (Objects.nonNull(javaProjectBuilder)) {
+			Object javaClass = javaProjectBuilder.getClassByName(className);
+			if (Objects.nonNull(javaClass)) {
+				String classComment = DocUtil.getClassComment(javaClass);
+				return StringUtils.isBlank(classComment) ? DocUtil.getClassSimpleName(javaClass) : classComment;
+			}
+		}
+		if (Objects.nonNull(configBuilder)) {
+			Object javaClass = configBuilder.getClassByName(className);
+			if (Objects.nonNull(javaClass)) {
+				String classComment = DocUtil.getClassComment(javaClass);
+				return StringUtils.isBlank(classComment) ? DocUtil.getClassSimpleName(javaClass) : classComment;
+			}
+		}
+		return fallbackTitle;
+	}
+
+	private static String resolveApiNoteComment(ProjectDocConfigBuilder configBuilder,
+			JavaProjectBuilder javaProjectBuilder, String className) {
+		Optional<SourceClass> sourceClass = findSourceClass(configBuilder, className);
+		if (sourceClass.isPresent()) {
+			String sourceApiNote = sourceDocletTagValue(sourceClass.get(), DocTags.API_NOTE);
+			return DocUtil.getEscapeAndCleanComment(sourceApiNote);
+		}
+		if (Objects.nonNull(configBuilder)) {
+			Object javaClass = configBuilder.getClassByName(className);
+			if (Objects.nonNull(javaClass)) {
+				Object apiNoteTag = DocUtil.getClassTagByName(javaClass, DocTags.API_NOTE);
+				return DocUtil.getEscapeAndCleanComment(
+						Optional.ofNullable(apiNoteTag).map(DocUtil::getDocletTagValue).orElse(StringUtil.EMPTY));
+			}
+		}
+		if (Objects.isNull(javaProjectBuilder)) {
+			return StringUtil.EMPTY;
+		}
+		Object javaClass = javaProjectBuilder.getClassByName(className);
+		if (Objects.isNull(javaClass)) {
+			return StringUtil.EMPTY;
+		}
+		Object apiNoteTag = DocUtil.getClassTagByName(javaClass, DocTags.API_NOTE);
+		return DocUtil.getEscapeAndCleanComment(
+				Optional.ofNullable(apiNoteTag).map(DocUtil::getDocletTagValue).orElse(StringUtil.EMPTY));
+	}
+
+	private static Optional<SourceClass> findSourceClass(ProjectDocConfigBuilder configBuilder, String className) {
+		if (Objects.isNull(configBuilder) || StringUtil.isEmpty(className)) {
+			return Optional.empty();
+		}
+		return configBuilder.findSourceClass(className);
+	}
+
+	private static boolean hasSourceDocletTag(SourceClass sourceClass, String tagName) {
+		for (SourceDocletTag sourceDocletTag : sourceClass.docletTags()) {
+			if (tagName.equals(sourceDocletTag.name())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static String sourceDocletTagValue(SourceClass sourceClass, String tagName) {
+		for (SourceDocletTag sourceDocletTag : sourceClass.docletTags()) {
+			if (tagName.equals(sourceDocletTag.name())) {
+				return sourceDocletTag.value();
+			}
+		}
+		return StringUtil.EMPTY;
+	}
+
+	private static String resolveClassName(Class<?> clazz) {
+		if (Objects.isNull(clazz)) {
+			return StringUtil.EMPTY;
+		}
+		String canonicalName = clazz.getCanonicalName();
+		if (StringUtil.isNotEmpty(canonicalName)) {
+			return canonicalName;
+		}
+		return clazz.getName();
 	}
 
 	/**
@@ -1323,7 +2274,7 @@ public class DocUtil {
 		return value;
 	}
 
-	public static String handleContentType(ClassLoader classLoader, String mediaType, JavaAnnotation annotation,
+	public static String handleContentType(ClassLoader classLoader, String mediaType, Object annotation,
 			String annotationName) {
 		if (JakartaJaxrsAnnotations.JAX_PRODUCES_FULLY.equals(annotationName)
 				|| JAXRSAnnotations.JAX_PRODUCES_FULLY.equals(annotationName)) {
@@ -1515,32 +2466,33 @@ public class DocUtil {
 	 * @return JSON formatted string based on the annotation properties or null if
 	 * annotation is null.
 	 */
-	public static String getJsonFormatString(JavaField javaField, JavaAnnotation jsonFormatAnnotation) {
+	public static String getJsonFormatString(Object javaField, Object jsonFormatAnnotation) {
 		// If the JSON format annotation is null, directly return null.
 		if (Objects.isNull(jsonFormatAnnotation)) {
 			return null;
 		}
 
 		// Get the type of the Java field.
-		JavaClass javaClass = javaField.getType();
+		Object javaClass = invokeNoArgAccessor(javaField, "getType");
+		String fullyQualifiedName = getTypeFullyQualifiedName(javaClass);
 
 		// If the field type is java.time.ZoneOffset, directly return the current time
 		// zone offset string.
-		if (javaClass.isA("java.time.ZoneOffset")) {
+		if (isClassA(javaClass, "java.time.ZoneOffset")) {
 			return handleJsonStr(String.valueOf(OffsetDateTime.now().getOffset()));
 		}
 
 		// Get the pattern, shape, timezone, and locale properties from the JSON format
 		// annotation.
-		AnnotationValue pattern = jsonFormatAnnotation.getProperty(DocAnnotationConstants.JSON_FORMAT_PATTERN_PROP);
-		AnnotationValue shape = jsonFormatAnnotation.getProperty(DocAnnotationConstants.JSON_FORMAT_SHAPE_PROP);
-		AnnotationValue timezone = jsonFormatAnnotation.getProperty(DocAnnotationConstants.JSON_FORMAT_TIMEZONE_PROP);
-		AnnotationValue locale = jsonFormatAnnotation.getProperty(DocAnnotationConstants.JSON_FORMAT_LOCALE_PROP);
+		Object pattern = getAnnotationProperty(jsonFormatAnnotation, DocAnnotationConstants.JSON_FORMAT_PATTERN_PROP);
+		Object shape = getAnnotationProperty(jsonFormatAnnotation, DocAnnotationConstants.JSON_FORMAT_SHAPE_PROP);
+		Object timezone = getAnnotationProperty(jsonFormatAnnotation, DocAnnotationConstants.JSON_FORMAT_TIMEZONE_PROP);
+		Object locale = getAnnotationProperty(jsonFormatAnnotation, DocAnnotationConstants.JSON_FORMAT_LOCALE_PROP);
 
 		// Determine the pattern value, if the pattern is not specified, use the default
 		// pattern based on the field type.
 		String patternValue = (pattern != null) ? StringUtil.removeDoubleQuotes(pattern.toString())
-				: DEFAULT_JSON_FORMAT_PATTERNS.getOrDefault(javaClass.getFullyQualifiedName(), "");
+				: DEFAULT_JSON_FORMAT_PATTERNS.getOrDefault(fullyQualifiedName, "");
 
 		// If the field is a time type, generate the JSON string based on the time type,
 		// shape, pattern, timezone, and locale.
@@ -1555,11 +2507,9 @@ public class DocUtil {
 		}
 
 		// if enum to number
-		if (javaClass.isEnum()) {
-			if (Objects.nonNull(shape) && shape instanceof FieldRef) {
-				if (Objects.equals(DocAnnotationConstants.JSON_FORMAT_SHAPE_NUMBER, ((FieldRef) shape).getName())) {
-					return "0";
-				}
+		if (isClassEnum(javaClass)) {
+			if (Objects.equals(DocAnnotationConstants.JSON_FORMAT_SHAPE_NUMBER, getFieldRefName(shape))) {
+				return "0";
 			}
 		}
 
@@ -1571,8 +2521,8 @@ public class DocUtil {
 	 * @param javaClass The Java class to check.
 	 * @return True if the class is a time type, otherwise false.
 	 */
-	public static boolean isTimeType(JavaClass javaClass) {
-		return isTimeType(javaClass.getFullyQualifiedName());
+	public static boolean isTimeType(Object javaClass) {
+		return isTimeType(getTypeFullyQualifiedName(javaClass));
 	}
 
 	/**
@@ -1591,8 +2541,8 @@ public class DocUtil {
 	 * @param javaClass The Java class to check.
 	 * @return True if the class is a numeric type, otherwise false.
 	 */
-	public static boolean isNumericType(JavaClass javaClass) {
-		return isNumericType(javaClass.getFullyQualifiedName());
+	public static boolean isNumericType(Object javaClass) {
+		return isNumericType(getTypeFullyQualifiedName(javaClass));
 	}
 
 	/**
@@ -1629,13 +2579,13 @@ public class DocUtil {
 	 * @return Returns the serialized time-based value string, or null if the shape does
 	 * not match the handled conditions.
 	 */
-	private static String generateTimeBasedValue(JavaClass javaClass, AnnotationValue shape, String patternValue,
-			AnnotationValue timezone, AnnotationValue locale) {
+	private static String generateTimeBasedValue(Object javaClass, Object shape, String patternValue, Object timezone,
+			Object locale) {
 		// Check if the shape value is not null and is an instance of FieldRef, then
 		// extract the shape's name.
 		// If JsonFormat has shape property
-		if (Objects.nonNull(shape) && shape instanceof FieldRef) {
-			String name = ((FieldRef) shape).getName();
+		if (Objects.nonNull(shape)) {
+			String name = getFieldRefName(shape);
 
 			// When the shape is JsonFormat.Shape.NUMBER, call the method to generate a
 			// numeric time value.
@@ -1670,13 +2620,12 @@ public class DocUtil {
 	 * @param shape The shape of the JSON format.
 	 * @return A random number formatted based on the pattern and shape.
 	 */
-	private static String generateRandomNumber(JavaClass javaClass, String patternValue, AnnotationValue shape) {
+	private static String generateRandomNumber(Object javaClass, String patternValue, Object shape) {
 		// generate random number
 		String randomNumber = isIntegerType(javaClass) ? String.valueOf(RandomUtil.randomInt())
 				: new DecimalFormat(patternValue).format(RandomUtil.randomDouble());
 
-		if (Objects.nonNull(shape) && shape instanceof FieldRef
-				&& Objects.equals(DocAnnotationConstants.JSON_FORMAT_SHAPE_STRING, ((FieldRef) shape).getName())) {
+		if (Objects.equals(DocAnnotationConstants.JSON_FORMAT_SHAPE_STRING, getFieldRefName(shape))) {
 			return handleJsonStr(randomNumber);
 		}
 
@@ -1688,8 +2637,8 @@ public class DocUtil {
 	 * @param javaClass The Java class to check.
 	 * @return True if the class is an integer type, otherwise false.
 	 */
-	private static boolean isIntegerType(JavaClass javaClass) {
-		String fullyQualifiedName = javaClass.getFullyQualifiedName();
+	private static boolean isIntegerType(Object javaClass) {
+		String fullyQualifiedName = getTypeFullyQualifiedName(javaClass);
 
 		return JavaTypeConstants.JAVA_LANG_INTEGER_FULLY.equals(fullyQualifiedName)
 				|| JavaTypeConstants.JAVA_MATH_BIG_INTEGER_FULLY.equals(fullyQualifiedName)
@@ -1704,14 +2653,14 @@ public class DocUtil {
 	 * @param patternValue The pattern value to use for formatting.
 	 * @return A formatted time-related value based on the pattern.
 	 */
-	private static String generateTimeStringValue(JavaClass javaClass, String patternValue, AnnotationValue timezone,
-			AnnotationValue locale) {
+	private static String generateTimeStringValue(Object javaClass, String patternValue, Object timezone,
+			Object locale) {
 		ZoneId zoneId = Objects.isNull(timezone) ? ZoneId.systemDefault()
 				: TimeZone.getTimeZone(timezone.toString()).toZoneId();
 		Locale formatLocale = Objects.isNull(locale) ? Locale.getDefault() : Locale.forLanguageTag(locale.toString());
 		try {
-			if (javaClass.isEnum()) {
-				return javaClass.getEnumConstants().stream().findFirst().map(JavaMember::getName).orElse(null);
+			if (isClassEnum(javaClass)) {
+				return getClassEnumConstants(javaClass).stream().findFirst().map(DocUtil::getFieldName).orElse(null);
 			}
 
 			return Instant.now().atZone(zoneId).format(DateTimeFormatter.ofPattern(patternValue, formatLocale));
@@ -1726,52 +2675,52 @@ public class DocUtil {
 	 * @param javaClass The Java class representing the number type.
 	 * @return A number value as a string.
 	 */
-	private static String generateTimeToNumberValue(JavaClass javaClass) {
-		if (javaClass.isA(JavaTypeConstants.JAVA_UTIL_CALENDAR_FULLY)
-				|| javaClass.isA(JavaTypeConstants.JAVA_UTIL_DATE_FULLY)) {
+	private static String generateTimeToNumberValue(Object javaClass) {
+		if (isClassA(javaClass, JavaTypeConstants.JAVA_UTIL_CALENDAR_FULLY)
+				|| isClassA(javaClass, JavaTypeConstants.JAVA_UTIL_DATE_FULLY)) {
 			return String.valueOf(System.currentTimeMillis());
 		}
-		if (javaClass.isA(JavaTypeConstants.JAVA_TIME_YEAR_FULLY)) {
+		if (isClassA(javaClass, JavaTypeConstants.JAVA_TIME_YEAR_FULLY)) {
 			return Year.now().toString();
 		}
-		if (javaClass.isA(JavaTypeConstants.JAVA_TIME_DAY_OF_WEEK_FULLY)) {
+		if (isClassA(javaClass, JavaTypeConstants.JAVA_TIME_DAY_OF_WEEK_FULLY)) {
 			return String.valueOf(LocalDate.now().getDayOfWeek().getValue());
 		}
-		if (javaClass.isA(JavaTypeConstants.JAVA_TIME_LOCAL_DATE_TIME_FULLY)) {
+		if (isClassA(javaClass, JavaTypeConstants.JAVA_TIME_LOCAL_DATE_TIME_FULLY)) {
 			LocalDateTime now = LocalDateTime.now();
 			return "[" + now.getYear() + "," + now.getMonthValue() + "," + now.getDayOfMonth() + "," + now.getHour()
 					+ "," + now.getMinute() + "," + now.getSecond() + "," + now.getNano() + "]";
 		}
-		if (javaClass.isA(JavaTypeConstants.JAVA_TIME_LOCAL_DATE_FULLY)) {
+		if (isClassA(javaClass, JavaTypeConstants.JAVA_TIME_LOCAL_DATE_FULLY)) {
 			LocalDate now = LocalDate.now();
 			return "[" + now.getYear() + "," + now.getMonthValue() + "," + now.getDayOfMonth() + "]";
 		}
-		if (javaClass.isA(JavaTypeConstants.JAVA_TIME_LOCAL_TIME_FULLY)) {
+		if (isClassA(javaClass, JavaTypeConstants.JAVA_TIME_LOCAL_TIME_FULLY)) {
 			LocalTime now = LocalTime.now();
 			return "[" + now.getHour() + "," + now.getMinute() + "," + now.getSecond() + "," + now.getNano() + "]";
 		}
-		if (javaClass.isA(JavaTypeConstants.JAVA_TIME_ZONED_DATE_TIME_FULLY)
-				|| javaClass.isA(JavaTypeConstants.JAVA_TIME_OFFSET_DATE_TIME_FULLY)
-				|| javaClass.isA(JavaTypeConstants.JAVA_TIME_INSTANT_FULLY)) {
+		if (isClassA(javaClass, JavaTypeConstants.JAVA_TIME_ZONED_DATE_TIME_FULLY)
+				|| isClassA(javaClass, JavaTypeConstants.JAVA_TIME_OFFSET_DATE_TIME_FULLY)
+				|| isClassA(javaClass, JavaTypeConstants.JAVA_TIME_INSTANT_FULLY)) {
 			Instant now = Instant.now();
 			long seconds = now.getEpochSecond();
 			int nanos = now.getNano();
 			return seconds + "." + nanos;
 		}
-		if (javaClass.isA(JavaTypeConstants.JAVA_TIME_YEAR_MONTH_FULLY)) {
+		if (isClassA(javaClass, JavaTypeConstants.JAVA_TIME_YEAR_MONTH_FULLY)) {
 			YearMonth now = YearMonth.now();
 			return "[" + now.getYear() + "," + now.getMonthValue() + "]";
 		}
-		if (javaClass.isA(JavaTypeConstants.JAVA_TIME_MONTH_DAY_FULLY)) {
+		if (isClassA(javaClass, JavaTypeConstants.JAVA_TIME_MONTH_DAY_FULLY)) {
 			MonthDay now = MonthDay.now();
 			return "[" + now.getMonthValue() + "," + now.getDayOfMonth() + "]";
 		}
-		if (javaClass.isA(JavaTypeConstants.JAVA_TIME_OFFSET_TIME_FULLY)) {
+		if (isClassA(javaClass, JavaTypeConstants.JAVA_TIME_OFFSET_TIME_FULLY)) {
 			LocalTime now = LocalTime.now();
 			return "[" + now.getHour() + "," + now.getMinute() + "," + now.getSecond() + "," + now.getNano() + ","
 					+ "\"" + ZoneId.systemDefault().getRules().getOffset(Instant.now()) + "\"" + "]";
 		}
-		if (javaClass.isA(JavaTypeConstants.JAVA_TIME_MONTH_FULLY)) {
+		if (isClassA(javaClass, JavaTypeConstants.JAVA_TIME_MONTH_FULLY)) {
 			return String.valueOf(LocalDate.now().getMonth().getValue());
 		}
 		return null;
@@ -1792,15 +2741,15 @@ public class DocUtil {
 	 * cannot be determined.
 	 */
 	public static String processFieldTypeNameByJsonFormat(boolean isShowJavaType, String fullyQualifiedName,
-			JavaAnnotation jsonFormatAnnotation) {
+			Object jsonFormatAnnotation) {
 		if (isShowJavaType) {
 			return JavaFieldUtil.convertToSimpleTypeName(fullyQualifiedName);
 		}
 		// Get the pattern, shape, timezone, and locale properties from the JSON format
 		// annotation.
-		AnnotationValue shape = jsonFormatAnnotation.getProperty(DocAnnotationConstants.JSON_FORMAT_SHAPE_PROP);
-		if (Objects.nonNull(shape) && shape instanceof FieldRef) {
-			String name = ((FieldRef) shape).getName();
+		Object shape = getAnnotationProperty(jsonFormatAnnotation, DocAnnotationConstants.JSON_FORMAT_SHAPE_PROP);
+		String name = getFieldRefName(shape);
+		if (StringUtil.isNotEmpty(name)) {
 			// if the shape is string, then the type is string
 			if (Objects.equals(DocAnnotationConstants.JSON_FORMAT_SHAPE_STRING, name)) {
 				return "string";
@@ -1835,6 +2784,38 @@ public class DocUtil {
 			}
 		}
 		return null;
+	}
+
+	private static boolean isExpressionType(Object expression, String simpleName) {
+		return Objects.nonNull(expression) && Objects.equals(simpleName, expression.getClass().getSimpleName());
+	}
+
+	private static String getFieldRefName(Object fieldRef) {
+		return invokeStringAccessor(fieldRef, "getName");
+	}
+
+	private static boolean isClassA(Object javaClass, String typeName) {
+		if (Objects.isNull(javaClass) || StringUtil.isEmpty(typeName)) {
+			return false;
+		}
+		try {
+			Object value = javaClass.getClass().getMethod("isA", String.class).invoke(javaClass, typeName);
+			if (value instanceof Boolean) {
+				return (Boolean) value;
+			}
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			// Fall through to name-based checks.
+		}
+		String fullyQualifiedName = getTypeFullyQualifiedName(javaClass);
+		if (typeName.equals(fullyQualifiedName)) {
+			return true;
+		}
+		String canonicalName = getTypeCanonicalName(javaClass);
+		if (typeName.equals(canonicalName)) {
+			return true;
+		}
+		return typeName.equals(getClassCanonicalName(javaClass));
 	}
 
 	/**

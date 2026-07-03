@@ -20,11 +20,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.github.hsindumas.stagger.maven.plugin.chain;
 
-import org.apache.maven.artifact.Artifact;
-
 import java.util.Objects;
+import org.apache.maven.artifact.Artifact;
 
 /**
  * @author yu 2020/1/13.
@@ -36,6 +36,12 @@ public interface FilterChain {
 
 	boolean ignoreArtifactById(Artifact artifact);
 
+	/**
+	 * Delegate to next chain element when present.
+	 * @param nextInChain next chain element
+	 * @param artifact artifact metadata
+	 * @return true when artifact should be ignored
+	 */
 	default boolean ignore(FilterChain nextInChain, Artifact artifact) {
 		if (Objects.nonNull(nextInChain)) {
 			return nextInChain.ignoreArtifactById(artifact);

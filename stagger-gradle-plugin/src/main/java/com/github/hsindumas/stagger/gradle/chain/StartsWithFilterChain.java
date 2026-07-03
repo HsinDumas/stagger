@@ -33,7 +33,7 @@ import java.util.Set;
  */
 public class StartsWithFilterChain implements FilterChain {
 
-	private final static Set<String> PREFIX_SET = new HashSet<>();
+	private static final Set<String> PREFIX_SET = new HashSet<>();
 
 	static {
 		PREFIX_SET.add("maven");

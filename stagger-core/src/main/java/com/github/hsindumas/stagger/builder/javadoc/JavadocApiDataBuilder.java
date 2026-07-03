@@ -24,7 +24,7 @@ import com.github.hsindumas.stagger.constants.FrameworkEnum;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.javadoc.JavadocApiAllData;
-import com.thoughtworks.qdox.JavaProjectBuilder;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 
 /**
  * Javadoc Api Data Builder

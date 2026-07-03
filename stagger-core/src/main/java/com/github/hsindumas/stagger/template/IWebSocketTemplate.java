@@ -39,10 +39,6 @@ import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.power.common.util.StringUtil;
 import com.power.common.util.ValidateUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.JavaParameter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -92,13 +88,13 @@ public interface IWebSocketTemplate {
 	 */
 	default List<WebSocketDoc> processWebSocketData(ProjectDocConfigBuilder projectBuilder,
 			FrameworkAnnotations frameworkAnnotations, IWebSocketRequestHandler webSocketRequestHandler,
-			Collection<JavaClass> candidateClasses) {
+			Collection<?> candidateClasses) {
 		ApiConfig apiConfig = projectBuilder.getApiConfig();
 		List<WebSocketDoc> apiDocList = new ArrayList<>();
 		int maxOrder = 0;
 		boolean setCustomOrder = false;
 		// exclude class is ignore
-		for (JavaClass javaClass : candidateClasses) {
+		for (Object javaClass : candidateClasses) {
 			if (StringUtil.isNotEmpty(apiConfig.getPackageFilters())) {
 				// from smart config
 				if (!DocUtil.isMatch(apiConfig.getPackageFilters(), javaClass)) {
@@ -112,12 +108,11 @@ public interface IWebSocketTemplate {
 				}
 			}
 			// ignore tag is ignore
-			if (Objects.nonNull(javaClass.getTagByName(DocTags.IGNORE))) {
+			if (Objects.nonNull(DocUtil.getClassTagByName(javaClass, DocTags.IGNORE))) {
 				continue;
 			}
 			// if the class is websocket
-			Optional<JavaAnnotation> optionalAnnotation = this.getOptionalWebSocketAnnotation(javaClass,
-					frameworkAnnotations);
+			Optional<Object> optionalAnnotation = this.getOptionalWebSocketAnnotation(javaClass, frameworkAnnotations);
 			if (!optionalAnnotation.isPresent()) {
 				continue;
 			}
@@ -164,8 +159,8 @@ public interface IWebSocketTemplate {
 	 * @param serverEndpointAnnotation ServerEndpointAnnotation
 	 * @return WebSocketDoc
 	 */
-	default WebSocketDoc buildEntryPointWebSocketDoc(final JavaClass javaClass, ProjectDocConfigBuilder projectBuilder,
-			IWebSocketRequestHandler webSocketRequestHandler, int order, JavaAnnotation serverEndpointAnnotation) {
+	default WebSocketDoc buildEntryPointWebSocketDoc(final Object javaClass, ProjectDocConfigBuilder projectBuilder,
+			IWebSocketRequestHandler webSocketRequestHandler, int order, Object serverEndpointAnnotation) {
 
 		ApiConfig apiConfig = projectBuilder.getApiConfig();
 
@@ -183,15 +178,17 @@ public interface IWebSocketTemplate {
 		this.populateWebSocketParams(projectBuilder, webSocketDoc, javaClass, serverEndpoint);
 
 		// build websocket doc
-		webSocketDoc.setName(javaClass.getName());
+		webSocketDoc.setName(DocUtil.getClassSimpleName(javaClass));
 		webSocketDoc.setUri(replaceHttpPrefixToWebSocketPrefix(apiConfig.getServerUrl()) + serverEndpoint.getUrl());
-		webSocketDoc.setPackageName(javaClass.getPackage().getName());
-		webSocketDoc.setDesc(DocUtil.getEscapeAndCleanComment(javaClass.getComment()));
+		webSocketDoc.setPackageName(DocUtil.getClassPackageName(javaClass));
+		webSocketDoc.setDesc(DocUtil.getEscapeAndCleanComment(DocUtil.getClassComment(javaClass)));
 		webSocketDoc.setAuthor(JavaClassUtil.getClassTagsValue(javaClass, DocTags.AUTHOR, Boolean.TRUE));
 		webSocketDoc.setOrder(order);
-		boolean isDeprecated = Objects.nonNull(javaClass.getTagByName(DocTags.DEPRECATED)) || javaClass.getAnnotations()
-			.stream()
-			.anyMatch(i -> JavaTypeConstants.JAVA_DEPRECATED_FULLY.equals(i.getType().getGenericFullyQualifiedName()));
+		boolean isDeprecated = Objects.nonNull(DocUtil.getClassTagByName(javaClass, DocTags.DEPRECATED))
+				|| DocUtil.getClassAnnotations(javaClass)
+					.stream()
+					.map(DocUtil::getAnnotationTypeFullyQualifiedName)
+					.anyMatch(JavaTypeConstants.JAVA_DEPRECATED_FULLY::equals);
 		webSocketDoc.setDeprecated(isDeprecated);
 		return webSocketDoc;
 	}
@@ -201,10 +198,10 @@ public interface IWebSocketTemplate {
 	 * @param javaClass The JavaClass to retrieve annotations from.
 	 * @param frameworkAnnotations The FrameworkAnnotations containing specific framework
 	 * annotation information.
-	 * @return An Optional JavaAnnotation containing the WebSocket annotation, or
+	 * @return An Optional annotation object containing the WebSocket annotation, or
 	 * Optional.empty() if not found.
 	 */
-	default Optional<JavaAnnotation> getOptionalWebSocketAnnotation(JavaClass javaClass,
+	default Optional<Object> getOptionalWebSocketAnnotation(Object javaClass,
 			FrameworkAnnotations frameworkAnnotations) {
 		// Check for null inputs
 		if (Objects.isNull(frameworkAnnotations) || Objects.isNull(javaClass)
@@ -213,13 +210,16 @@ public interface IWebSocketTemplate {
 		}
 
 		ServerEndpointAnnotation serverEndpointAnnotation = frameworkAnnotations.getServerEndpointAnnotation();
+		String annotationName = serverEndpointAnnotation.getAnnotationName();
 
 		// Filter and find the WebSocket annotation
-		return javaClass.getAnnotations()
+		return DocUtil.getClassAnnotations(javaClass)
 			.stream()
-			.filter(annotation -> Objects.equals(serverEndpointAnnotation.getAnnotationName(),
-					annotation.getType().getName()))
-			.findFirst();
+			.filter(annotation -> Objects.equals(annotationName, DocUtil.getAnnotationTypeSimpleName(annotation))
+					|| Objects.equals(annotationName, DocUtil.getAnnotationTypeValue(annotation))
+					|| Objects.equals(annotationName, DocUtil.getAnnotationTypeFullyQualifiedName(annotation)))
+			.findFirst()
+			.map(annotation -> (Object) annotation);
 	}
 
 	/**
@@ -231,31 +231,35 @@ public interface IWebSocketTemplate {
 	 * @param serverEndpoint The ServerEndpoint containing the URL and parameters.
 	 */
 	default void populateWebSocketParams(ProjectDocConfigBuilder projectBuilder, WebSocketDoc webSocketDoc,
-			final JavaClass javaClass, ServerEndpoint serverEndpoint) {
+			final Object javaClass, ServerEndpoint serverEndpoint) {
 		List<ApiParam> pathParams = new ArrayList<>();
 		String url = serverEndpoint.getUrl();
 		Set<String> pathParamsSet = extractPathParams(url);
 
-		Map<String, JavaParameter> parameterMap = new HashMap<>(16);
+		Map<String, Object> parameterMap = new HashMap<>(16);
 
 		Map<String, String> commentsByTag = new HashMap<>(16);
 		// @OnMessage Method flag
 		boolean onMessageMethod = false;
 
-		for (JavaMethod javaMethod : javaClass.getMethods()) {
-			List<JavaAnnotation> annotations = javaMethod.getAnnotations();
-			List<JavaParameter> parameters = javaMethod.getParameters();
-			commentsByTag = DocUtil.getCommentsByTag(javaMethod, DocTags.PARAM, javaClass.getName());
+		for (Object javaMethod : DocUtil.getClassMethods(javaClass)) {
+			List<?> annotations = DocUtil.getMethodAnnotations(javaMethod);
+			List<?> parameters = DocUtil.getMethodParameters(javaMethod);
+			commentsByTag = DocUtil.getCommentsByTag(javaMethod, DocTags.PARAM, DocUtil.getClassSimpleName(javaClass));
 
 			// if the method does not have @OnOpen
 			boolean hasOnOpenAnnotation = annotations.stream()
-				.anyMatch(annotation -> DocAnnotationConstants.ON_OPEN.equals(annotation.getType().getName()));
+				.anyMatch(annotation -> DocAnnotationConstants.ON_OPEN
+					.equals(DocUtil.getAnnotationTypeSimpleName(annotation))
+						|| DocAnnotationConstants.ON_OPEN.equals(DocUtil.getAnnotationTypeValue(annotation)));
 			if (hasOnOpenAnnotation) {
 				// Collect parameters annotated with @PathParam
-				for (JavaParameter parameter : parameters) {
-					for (JavaAnnotation annotation : parameter.getAnnotations()) {
-						if (DocAnnotationConstants.PATH_PARAM.equals(annotation.getType().getName())) {
-							parameterMap.put(parameter.getName(), parameter);
+				for (Object parameter : parameters) {
+					for (Object annotation : DocUtil.getParameterAnnotations(parameter)) {
+						if (DocAnnotationConstants.PATH_PARAM.equals(DocUtil.getAnnotationTypeSimpleName(annotation))
+								|| DocAnnotationConstants.PATH_PARAM
+									.equals(DocUtil.getAnnotationTypeValue(annotation))) {
+							parameterMap.put(DocUtil.getParameterName(parameter), parameter);
 						}
 					}
 				}
@@ -263,7 +267,9 @@ public interface IWebSocketTemplate {
 			}
 			// if the method does not have @OnMessage
 			boolean hasOnMessageAnnotation = annotations.stream()
-				.anyMatch(annotation -> DocAnnotationConstants.ON_MESSAGE.equals(annotation.getType().getName()));
+				.anyMatch(annotation -> DocAnnotationConstants.ON_MESSAGE
+					.equals(DocUtil.getAnnotationTypeSimpleName(annotation))
+						|| DocAnnotationConstants.ON_MESSAGE.equals(DocUtil.getAnnotationTypeValue(annotation)));
 			if (hasOnMessageAnnotation) {
 				if (onMessageMethod) {
 					log.warning("@OnMessage can only on one method");
@@ -273,10 +279,10 @@ public interface IWebSocketTemplate {
 					if (!parameters.isEmpty() && parameters.size() > 1) {
 						log.warning("@OnMessage method can only have one parameter");
 					}
-					JavaParameter first = parameters.get(0);
-					List<ApiParam> apiParams = ParamsBuildHelper.buildParams(first.getFullyQualifiedName(), "", 0,
-							"false", false, new HashMap<>(16), projectBuilder, new HashSet<>(16), new HashSet<>(16), 0,
-							false, new AtomicInteger(0));
+					Object first = parameters.get(0);
+					List<ApiParam> apiParams = ParamsBuildHelper.buildParams(
+							DocUtil.getParameterFullyQualifiedName(first), "", 0, "false", false, new HashMap<>(16),
+							projectBuilder, new HashSet<>(16), new HashSet<>(16), 0, false, new AtomicInteger(0));
 					webSocketDoc.setMessageParams(apiParams);
 				}
 			}
@@ -292,12 +298,12 @@ public interface IWebSocketTemplate {
 				.setDesc(item)
 				.setVersion(commentsByTag.getOrDefault(DocTags.SINCE, DocGlobalConstants.DEFAULT_VERSION))
 				.setRequired(true);
-			JavaParameter javaParameter = parameterMap.get(item);
+			Object javaParameter = parameterMap.get(item);
 			if (Objects.nonNull(javaParameter)) {
 				pathApiParam
 					.setType(DocClassUtil
-						.processTypeNameForParams(javaParameter.getType().getGenericFullyQualifiedName()))
-					.setDesc(commentsByTag.get(javaParameter.getName()));
+						.processTypeNameForParams(DocUtil.getParameterGenericFullyQualifiedName(javaParameter)))
+					.setDesc(commentsByTag.get(DocUtil.getParameterName(javaParameter)));
 			}
 			pathParams.add(pathApiParam);
 		}

@@ -31,9 +31,6 @@ import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
 import com.power.common.util.UrlUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,24 +81,25 @@ public interface IRequestMappingHandler {
 
 	/**
 	 * Retrieves all annotations from a method, including those inherited from interfaces.
-	 * @param method The JavaMethod object for which annotations are to be retrieved
-	 * @return A list of JavaAnnotation objects representing the annotations on the method
+	 * @param method The method metadata object for which annotations are to be retrieved
+	 * @return A list of annotation objects representing the annotations on the method
 	 */
-	default List<JavaAnnotation> getAnnotations(JavaMethod method) {
-		List<JavaAnnotation> annotations = new ArrayList<>();
+	default List<?> getAnnotations(Object method) {
+		List<Object> annotations = new ArrayList<>();
 		// Add interface method annotations
-		List<JavaClass> interfaces = JavaClassUtil.getInterfaceClasses(method.getDeclaringClass());
+		List<?> interfaces = JavaClassUtil.getInterfaceClasses(DocUtil.getMethodDeclaringClass(method));
 		if (CollectionUtil.isNotEmpty(interfaces)) {
-			for (JavaClass interfaceClass : interfaces) {
-				JavaMethod interfaceMethod = interfaceClass.getMethod(method.getName(), method.getParameterTypes(),
-						method.isVarArgs());
-				if (interfaceMethod != null) {
+			for (Object interfaceClass : interfaces) {
+				Object interfaceMethod = DocUtil.getClassMethodBySignature(interfaceClass,
+						DocUtil.getMethodName(method), DocUtil.getMethodParameterTypes(method),
+						DocUtil.isMethodVarArgs(method));
+				if (Objects.nonNull(interfaceMethod)) {
 					// Can be overridden by implement class
-					annotations.addAll(interfaceMethod.getAnnotations());
+					annotations.addAll(DocUtil.getMethodAnnotations(interfaceMethod));
 				}
 			}
 		}
-		annotations.addAll(method.getAnnotations());
+		annotations.addAll(DocUtil.getMethodAnnotations(method));
 		return annotations;
 	}
 
@@ -114,7 +112,7 @@ public interface IRequestMappingHandler {
 	 * @param requestMappingFunc Function to process request mappings
 	 * @return The processed RequestMapping object
 	 */
-	RequestMapping handle(ProjectDocConfigBuilder projectBuilder, String controllerBaseUrl, JavaMethod method,
+	RequestMapping handle(ProjectDocConfigBuilder projectBuilder, String controllerBaseUrl, Object method,
 			FrameworkAnnotations frameworkAnnotations, RequestMappingFunc requestMappingFunc);
 
 }

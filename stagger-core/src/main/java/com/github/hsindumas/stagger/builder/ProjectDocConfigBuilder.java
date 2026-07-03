@@ -38,14 +38,13 @@ import com.github.hsindumas.stagger.source.SourceProject;
 import com.github.hsindumas.stagger.source.SourceProjects;
 import com.github.hsindumas.stagger.source.SourceScanRequest;
 import com.github.hsindumas.stagger.source.SourceType;
+import com.github.hsindumas.stagger.utils.DocClassUtil;
+import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.power.common.constants.Charset;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaParameterizedType;
-import com.thoughtworks.qdox.model.JavaType;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -95,7 +94,7 @@ public class ProjectDocConfigBuilder {
 	/**
 	 * classFilesMap
 	 */
-	private final Map<String, JavaClass> classFilesMap = new ConcurrentHashMap<>();
+	private final Map<String, Object> classFilesMap = new ConcurrentHashMap<>();
 
 	/**
 	 * Source project view used by JavaParser abstraction.
@@ -160,12 +159,6 @@ public class ProjectDocConfigBuilder {
 		this.setHighlightStyle();
 		javaProjectBuilder.setEncoding(Charset.DEFAULT_CHARSET);
 		this.javaProjectBuilder = javaProjectBuilder;
-		try {
-			this.loadJavaSource(apiConfig, this.javaProjectBuilder);
-		}
-		catch (Exception e) {
-			log.warning(e.getMessage());
-		}
 		SourceProject builtSourceProject;
 		try {
 			builtSourceProject = this.loadSourceProject(apiConfig);
@@ -175,6 +168,12 @@ public class ProjectDocConfigBuilder {
 			builtSourceProject = SourceProjects.create().build(SourceScanRequest.builder().build());
 		}
 		this.sourceProject = builtSourceProject;
+		try {
+			this.loadJavaSource(apiConfig, this.javaProjectBuilder);
+		}
+		catch (Exception e) {
+			log.warning(e.getMessage());
+		}
 		this.initClassFilesMap();
 		this.initCustomResponseFieldsMap(apiConfig);
 		this.initCustomRequestFieldsMap(apiConfig);
@@ -234,26 +233,26 @@ public class ProjectDocConfigBuilder {
 	/**
 	 * Get class by name.
 	 * @param simpleName simpleName
-	 * @return JavaClass
+	 * @return class metadata object
 	 */
-	public JavaClass getClassByName(String simpleName) {
-		JavaClass cls = javaProjectBuilder.getClassByName(simpleName);
+	public Object getClassByName(String simpleName) {
+		Object cls = javaProjectBuilder.getClassByName(simpleName);
 		if (Objects.isNull(cls)) {
 			return classFilesMap.get(simpleName);
 		}
 
-		if (!cls.isEnum()) {
+		if (!DocUtil.isClassEnum(cls)) {
 			List<DocJavaField> fieldList = JavaClassUtil.getFields(cls, 0, new LinkedHashMap<>(), null);
 			// handle inner class
-			if (Objects.isNull(cls.getFields()) || fieldList.isEmpty()) {
+			if (DocUtil.getClassFields(cls).isEmpty() || fieldList.isEmpty()) {
 				cls = classFilesMap.get(simpleName);
 				return cls;
 			}
 		}
 
-		List<JavaClass> classList = cls.getNestedClasses();
-		for (JavaClass javaClass : classList) {
-			classFilesMap.put(javaClass.getFullyQualifiedName(), javaClass);
+		List<?> classList = DocUtil.getClassNestedClasses(cls);
+		for (Object javaClass : classList) {
+			classFilesMap.put(DocUtil.getClassGenericFullyQualifiedName(javaClass), javaClass);
 		}
 		return cls;
 	}
@@ -267,11 +266,15 @@ public class ProjectDocConfigBuilder {
 		if (StringUtil.isEmpty(typeName)) {
 			return false;
 		}
-		JavaClass javaClass = this.getClassByName(typeName);
-		if (Objects.nonNull(javaClass)) {
-			return javaClass.isEnum();
+		Optional<SourceClass> sourceClass = this.findSourceClass(typeName);
+		if (sourceClass.isPresent()) {
+			return sourceClass.get().isEnum();
 		}
-		return this.findSourceClass(typeName).map(SourceClass::isEnum).orElse(false);
+		Object javaClass = this.getClassByName(typeName);
+		if (Objects.nonNull(javaClass)) {
+			return DocUtil.isClassEnum(javaClass);
+		}
+		return false;
 	}
 
 	/**
@@ -283,25 +286,40 @@ public class ProjectDocConfigBuilder {
 		if (StringUtil.isEmpty(typeName)) {
 			return null;
 		}
-		JavaClass javaClass = this.getClassByName(typeName);
-		if (Objects.nonNull(javaClass) && javaClass.isEnum()) {
+		Optional<SourceClass> sourceClass = this.findSourceClass(typeName);
+		if (sourceClass.isPresent() && sourceClass.get().isEnum()) {
+			List<String> enumConstants = sourceClass.get().enumConstants();
+			if (CollectionUtil.isNotEmpty(enumConstants)) {
+				return enumConstants.get(0);
+			}
+		}
+		Object javaClass = this.getClassByName(typeName);
+		if (Objects.nonNull(javaClass) && DocUtil.isClassEnum(javaClass)) {
 			Object value = JavaClassUtil.getEnumValue(javaClass, this, Boolean.FALSE);
 			return StringUtil.removeDoubleQuotes(String.valueOf(value));
 		}
-		return this.findSourceClass(typeName)
-			.filter(SourceClass::isEnum)
-			.map(SourceClass::enumConstants)
-			.filter(CollectionUtil::isNotEmpty)
-			.map(constants -> constants.get(0))
-			.orElse(null);
+		return null;
 	}
 
-	private Optional<SourceClass> findSourceClass(String typeName) {
+	public Optional<SourceClass> findSourceClass(String typeName) {
+		if (StringUtil.isEmpty(typeName)) {
+			return Optional.empty();
+		}
 		Optional<SourceClass> sourceClass = this.sourceProject.findClass(typeName);
 		if (sourceClass.isPresent()) {
 			return sourceClass;
 		}
-		return this.sourceProject.classes().stream().filter(clazz -> typeName.equals(clazz.simpleName())).findFirst();
+		String normalizedTypeName = typeName.replace('$', '.');
+		if (!normalizedTypeName.equals(typeName)) {
+			sourceClass = this.sourceProject.findClass(normalizedTypeName);
+			if (sourceClass.isPresent()) {
+				return sourceClass;
+			}
+		}
+		return this.sourceProject.classes()
+			.stream()
+			.filter(clazz -> typeName.equals(clazz.simpleName()) || normalizedTypeName.equals(clazz.simpleName()))
+			.findFirst();
 	}
 
 	/**
@@ -314,32 +332,30 @@ public class ProjectDocConfigBuilder {
 			return Collections.emptyList();
 		}
 		Set<String> interfaceNames = new LinkedHashSet<>();
-		JavaClass javaClass = this.getClassByName(className);
+		this.findSourceClass(className)
+			.ifPresent(sourceClass -> sourceClass.interfaces()
+				.stream()
+				.map(SourceType::qualifiedName)
+				.filter(StringUtil::isNotEmpty)
+				.forEach(interfaceNames::add));
+		Object javaClass = this.getClassByName(className);
 		if (Objects.nonNull(javaClass)) {
-			List<JavaType> interfaces = JavaClassUtil.getImplementedInterfaces(javaClass);
+			List<?> interfaces = JavaClassUtil.getImplementedInterfaces(javaClass);
 			if (CollectionUtil.isNotEmpty(interfaces)) {
-				for (JavaType javaType : interfaces) {
+				for (Object javaType : interfaces) {
 					if (Objects.isNull(javaType)) {
 						continue;
 					}
-					String canonicalName = javaType.getCanonicalName();
+					String canonicalName = DocUtil.getTypeCanonicalName(javaType);
 					if (StringUtil.isNotEmpty(canonicalName)) {
 						interfaceNames.add(canonicalName);
 					}
-					String fullyQualifiedName = javaType.getFullyQualifiedName();
+					String fullyQualifiedName = DocUtil.getTypeFullyQualifiedName(javaType);
 					if (StringUtil.isNotEmpty(fullyQualifiedName)) {
 						interfaceNames.add(fullyQualifiedName);
 					}
 				}
 			}
-		}
-		if (interfaceNames.isEmpty()) {
-			this.findSourceClass(className)
-				.ifPresent(sourceClass -> sourceClass.interfaces()
-					.stream()
-					.map(SourceType::qualifiedName)
-					.filter(StringUtil::isNotEmpty)
-					.forEach(interfaceNames::add));
 		}
 		if (interfaceNames.isEmpty()) {
 			return Collections.emptyList();
@@ -364,35 +380,35 @@ public class ProjectDocConfigBuilder {
 			return Optional.empty();
 		}
 
-		JavaClass javaClass = this.getClassByName(className);
+		Optional<SourceClass> sourceClassOptional = this.findSourceClass(className);
+		if (sourceClassOptional.isPresent()) {
+			for (SourceType sourceType : sourceClassOptional.get().interfaces()) {
+				if (!this.matchesImplementedInterface(sourceType, normalizedInterfaceNames)) {
+					continue;
+				}
+				Optional<String> typeArgument = this.resolveSourceImplementedInterfaceTypeArgument(sourceType,
+						argIndex);
+				if (typeArgument.isPresent()) {
+					return typeArgument;
+				}
+			}
+		}
+
+		Object javaClass = this.getClassByName(className);
 		if (Objects.nonNull(javaClass)) {
-			List<JavaType> interfaces = JavaClassUtil.getImplementedInterfaces(javaClass);
+			List<?> interfaces = JavaClassUtil.getImplementedInterfaces(javaClass);
 			if (CollectionUtil.isNotEmpty(interfaces)) {
-				for (JavaType javaType : interfaces) {
+				for (Object javaType : interfaces) {
 					if (Objects.isNull(javaType)
 							|| !this.matchesImplementedInterface(javaType, normalizedInterfaceNames)) {
 						continue;
 					}
-					Optional<String> typeArgument = this.resolveQdoxImplementedInterfaceTypeArgument(javaType,
+					Optional<String> typeArgument = this.resolveLegacyImplementedInterfaceTypeArgument(javaType,
 							argIndex);
 					if (typeArgument.isPresent()) {
 						return typeArgument;
 					}
 				}
-			}
-		}
-
-		Optional<SourceClass> sourceClassOptional = this.findSourceClass(className);
-		if (sourceClassOptional.isEmpty()) {
-			return Optional.empty();
-		}
-		for (SourceType sourceType : sourceClassOptional.get().interfaces()) {
-			if (!this.matchesImplementedInterface(sourceType, normalizedInterfaceNames)) {
-				continue;
-			}
-			Optional<String> typeArgument = this.resolveSourceImplementedInterfaceTypeArgument(sourceType, argIndex);
-			if (typeArgument.isPresent()) {
-				return typeArgument;
 			}
 		}
 		return Optional.empty();
@@ -412,15 +428,12 @@ public class ProjectDocConfigBuilder {
 		return normalizedNames;
 	}
 
-	private Optional<String> resolveQdoxImplementedInterfaceTypeArgument(JavaType interfaceType, int argIndex) {
-		if (!(interfaceType instanceof JavaParameterizedType)) {
-			return Optional.empty();
-		}
-		List<JavaType> typeArguments = ((JavaParameterizedType) interfaceType).getActualTypeArguments();
+	private Optional<String> resolveLegacyImplementedInterfaceTypeArgument(Object interfaceType, int argIndex) {
+		List<?> typeArguments = JavaClassUtil.getActualTypes(interfaceType);
 		if (CollectionUtil.isEmpty(typeArguments) || typeArguments.size() <= argIndex) {
 			return Optional.empty();
 		}
-		JavaType javaType = typeArguments.get(argIndex);
+		Object javaType = typeArguments.get(argIndex);
 		if (Objects.isNull(javaType)) {
 			return Optional.empty();
 		}
@@ -453,11 +466,13 @@ public class ProjectDocConfigBuilder {
 		return Optional.of(resolvedTypeName);
 	}
 
-	private boolean matchesImplementedInterface(JavaType interfaceType, Set<String> normalizedInterfaceNames) {
-		return this.matchesNormalizedName(interfaceType.getBinaryName(), normalizedInterfaceNames)
-				|| this.matchesNormalizedName(interfaceType.getFullyQualifiedName(), normalizedInterfaceNames)
-				|| this.matchesNormalizedName(interfaceType.getCanonicalName(), normalizedInterfaceNames)
-				|| this.matchesNormalizedName(interfaceType.getGenericFullyQualifiedName(), normalizedInterfaceNames);
+	private boolean matchesImplementedInterface(Object interfaceType, Set<String> normalizedInterfaceNames) {
+		return this.matchesNormalizedName(DocUtil.getTypeBinaryName(interfaceType), normalizedInterfaceNames)
+				|| this.matchesNormalizedName(DocUtil.getTypeFullyQualifiedName(interfaceType),
+						normalizedInterfaceNames)
+				|| this.matchesNormalizedName(DocUtil.getTypeCanonicalName(interfaceType), normalizedInterfaceNames)
+				|| this.matchesNormalizedName(DocUtil.getTypeGenericFullyQualifiedName(interfaceType),
+						normalizedInterfaceNames);
 	}
 
 	private boolean matchesImplementedInterface(SourceType interfaceType, Set<String> normalizedInterfaceNames) {
@@ -498,9 +513,9 @@ public class ProjectDocConfigBuilder {
 		return typeName.trim();
 	}
 
-	private String extractTypeName(JavaType javaType) {
-		String[] candidates = { javaType.getBinaryName(), javaType.getFullyQualifiedName(), javaType.getCanonicalName(),
-				javaType.getGenericFullyQualifiedName() };
+	private String extractTypeName(Object javaType) {
+		String[] candidates = { DocUtil.getTypeBinaryName(javaType), DocUtil.getTypeFullyQualifiedName(javaType),
+				DocUtil.getTypeCanonicalName(javaType), DocUtil.getTypeGenericFullyQualifiedName(javaType) };
 		for (String candidate : candidates) {
 			if (StringUtil.isNotEmpty(candidate)) {
 				return this.stripGenericType(candidate);
@@ -660,25 +675,25 @@ public class ProjectDocConfigBuilder {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initClassFilesMap() {
-		Collection<JavaClass> javaClasses = javaProjectBuilder.getClasses();
-		for (JavaClass cls : javaClasses) {
-			if (cls.isEnum()) {
+		Collection<?> javaClasses = javaProjectBuilder.getClasses();
+		for (Object cls : javaClasses) {
+			if (DocUtil.isClassEnum(cls)) {
 				Class enumClass;
 				ClassLoader classLoader = apiConfig.getClassLoader();
 				try {
 					if (Objects.isNull(classLoader)) {
-						enumClass = Class.forName(cls.getBinaryName());
+						enumClass = Class.forName(DocUtil.getClassBinaryName(cls));
 					}
 					else {
-						enumClass = classLoader.loadClass(cls.getBinaryName());
+						enumClass = classLoader.loadClass(DocUtil.getClassBinaryName(cls));
 					}
-					enumClassMap.put(cls.getFullyQualifiedName(), enumClass);
+					enumClassMap.put(DocUtil.getClassGenericFullyQualifiedName(cls), enumClass);
 				}
 				catch (ClassNotFoundException | NoClassDefFoundError e) {
 					continue;
 				}
 			}
-			classFilesMap.put(cls.getFullyQualifiedName(), cls);
+			classFilesMap.put(DocUtil.getClassGenericFullyQualifiedName(cls), cls);
 		}
 	}
 
@@ -819,7 +834,7 @@ public class ProjectDocConfigBuilder {
 		return sourceProject;
 	}
 
-	public Map<String, JavaClass> getClassFilesMap() {
+	public Map<String, Object> getClassFilesMap() {
 		return classFilesMap;
 	}
 

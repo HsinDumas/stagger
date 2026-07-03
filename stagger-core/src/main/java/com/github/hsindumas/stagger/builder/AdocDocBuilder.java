@@ -80,8 +80,8 @@ public class AdocDocBuilder {
 		if (config.isAllInOne()) {
 			String docName = builderTemplate.allInOneDocName(config, INDEX_DOC, DocGlobalConstants.ASCIIDOC_EXTENSION);
 			apiDocList = docBuildTemplate.handleApiGroup(apiDocList, config);
-			builderTemplate.buildAllInOne(apiDocList, config, configBuilder,
-					DocGlobalConstants.ALL_IN_ONE_ADOC_TPL, docName);
+			builderTemplate.buildAllInOne(apiDocList, config, configBuilder, DocGlobalConstants.ALL_IN_ONE_ADOC_TPL,
+					docName);
 		}
 		else {
 			builderTemplate.buildApiDoc(apiDocList, config, DocGlobalConstants.API_DOC_ADOC_TPL, API_EXTENSION);

@@ -59,13 +59,12 @@ public class JavadocHtmlBuilder {
 	 */
 	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		JavadocDocBuilderTemplate builderTemplate = new JavadocDocBuilderTemplate();
-		List<JavadocApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, config,
-				configBuilder.getJavaProjectBuilder());
+		List<JavadocApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, config, configBuilder);
 		builderTemplate.copyJQueryAndCss(config);
 		String INDEX_HTML = "javadoc-index.html";
-		builderTemplate.buildAllInOne(apiDocList, config, configBuilder.getJavaProjectBuilder(),
-				DocGlobalConstants.JAVADOC_ALL_IN_ONE_HTML_TPL, INDEX_HTML);
-		builderTemplate.buildSearchJs(apiDocList, config, configBuilder.getJavaProjectBuilder(),
+		builderTemplate.buildAllInOne(apiDocList, config, configBuilder, DocGlobalConstants.JAVADOC_ALL_IN_ONE_HTML_TPL,
+				INDEX_HTML);
+		builderTemplate.buildSearchJs(apiDocList, config, configBuilder,
 				DocGlobalConstants.JAVADOC_ALL_IN_ONE_SEARCH_TPL, DocGlobalConstants.SEARCH_JS_OUT);
 	}
 

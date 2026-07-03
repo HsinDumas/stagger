@@ -37,11 +37,6 @@ import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.github.hsindumas.stagger.utils.JavaFieldUtil;
 import com.github.hsindumas.stagger.utils.JsonUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.DocletTag;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaField;
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.JavaType;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -68,23 +63,22 @@ public class JsonBuildHelper extends BaseHelper {
 	 * @return String
 	 */
 	public static String buildReturnJson(DocJavaMethod docJavaMethod, ProjectDocConfigBuilder builder) {
-		JavaMethod method = docJavaMethod.getJavaMethod();
+		Object method = docJavaMethod.getJavaMethod();
 		String responseBodyAdvice = null;
 		if (Objects.nonNull(builder.getApiConfig().getResponseBodyAdvice())) {
 			responseBodyAdvice = builder.getApiConfig().getResponseBodyAdvice().getClassName();
 		}
-		String returnTypeCanonicalName = method.getReturnType().getCanonicalName();
+		String returnTypeCanonicalName = DocUtil.getMethodReturnTypeCanonicalName(method);
 		if ("void".equals(returnTypeCanonicalName) && Objects.isNull(responseBodyAdvice)) {
 			return "Return void.";
 		}
-		DocletTag downloadTag = method.getTagByName(DocTags.DOWNLOAD);
-		if (Objects.nonNull(downloadTag)) {
+		if (Objects.nonNull(DocUtil.getMethodTagByName(method, DocTags.DOWNLOAD))) {
 			return "File download.";
 		}
-		String returnTypeGenericCanonicalName = method.getReturnType().getGenericCanonicalName();
-		JavaClass returnJavaClass = builder.getClassByName(returnTypeGenericCanonicalName);
+		String returnTypeGenericCanonicalName = DocUtil.getMethodReturnTypeGenericCanonicalName(method);
+		Object returnJavaClass = builder.getClassByName(returnTypeGenericCanonicalName);
 		if (builder.isEnumType(returnTypeGenericCanonicalName) && Objects.isNull(responseBodyAdvice)) {
-			if (Objects.nonNull(returnJavaClass) && returnJavaClass.isEnum()) {
+			if (DocUtil.isClassEnum(returnJavaClass)) {
 				return StringUtil
 					.removeQuotes(String.valueOf(JavaClassUtil.getEnumValue(returnJavaClass, builder, Boolean.TRUE)));
 			}
@@ -100,7 +94,8 @@ public class JsonBuildHelper extends BaseHelper {
 				&& Objects.isNull(responseBodyAdvice)) {
 			return "string";
 		}
-		if (Objects.nonNull(responseBodyAdvice) && Objects.isNull(method.getTagByName(IGNORE_RESPONSE_BODY_ADVICE))) {
+		if (Objects.nonNull(responseBodyAdvice)
+				&& Objects.isNull(DocUtil.getMethodTagByName(method, IGNORE_RESPONSE_BODY_ADVICE))) {
 			if (!returnTypeGenericCanonicalName.startsWith(responseBodyAdvice)) {
 				returnTypeGenericCanonicalName = responseBodyAdvice + "<" + returnTypeGenericCanonicalName + ">";
 			}
@@ -111,7 +106,7 @@ public class JsonBuildHelper extends BaseHelper {
 			docJavaMethod.setDownload(true);
 			return "File download.";
 		}
-		Map<String, JavaType> actualTypesMap = docJavaMethod.getActualTypesMap();
+		Map<String, ?> actualTypesMap = docJavaMethod.getActualTypesMap();
 		String returnType = apiReturn.getGenericCanonicalName();
 		if (Objects.nonNull(actualTypesMap)) {
 			typeName = JavaClassUtil.getGenericsNameByActualTypesMap(typeName, actualTypesMap);
@@ -167,7 +162,7 @@ public class JsonBuildHelper extends BaseHelper {
 		registryClasses.put(typeName, typeName);
 
 		Map<String, String> genericMap = new HashMap<>(10);
-		JavaClass javaClass = projectBuilder.getClassByName(typeName);
+		Object javaClass = projectBuilder.getClassByName(typeName);
 
 		// Check if the class should be ignored based on MVC parameters
 		if (JavaClassValidateUtil.isMvcIgnoreParams(typeName, projectBuilder.getApiConfig().getIgnoreRequestParams())) {
@@ -186,7 +181,7 @@ public class JsonBuildHelper extends BaseHelper {
 
 		// Handle enum types
 		if (projectBuilder.isEnumType(typeName)) {
-			if (Objects.nonNull(javaClass) && javaClass.isEnum()) {
+			if (DocUtil.isClassEnum(javaClass)) {
 				return StringUtil
 					.removeQuotes(String.valueOf(JavaClassUtil.getEnumValue(javaClass, projectBuilder, Boolean.TRUE)));
 			}
@@ -197,7 +192,7 @@ public class JsonBuildHelper extends BaseHelper {
 		}
 
 		StringBuilder result = new StringBuilder();
-		JavaClass cls = projectBuilder.getClassByName(typeName);
+		Object cls = projectBuilder.getClassByName(typeName);
 
 		result.append("{");
 		String[] globGicName = DocClassUtil.getSimpleGicName(genericCanonicalName);
@@ -205,10 +200,10 @@ public class JsonBuildHelper extends BaseHelper {
 		// Obtain generics from parent class if not found
 		if (Objects.isNull(globGicName) || globGicName.length < 1) {
 			// obtain generics from parent class
-			JavaClass superJavaClass = cls != null ? cls.getSuperJavaClass() : null;
+			Object superJavaClass = DocUtil.getClassSuperJavaClass(cls);
 			if (Objects.nonNull(superJavaClass)
-					&& !JavaTypeConstants.OBJECT_SIMPLE_NAME.equals(superJavaClass.getSimpleName())) {
-				globGicName = DocClassUtil.getSimpleGicName(superJavaClass.getGenericFullyQualifiedName());
+					&& !JavaTypeConstants.OBJECT_SIMPLE_NAME.equals(DocUtil.getClassSimpleName(superJavaClass))) {
+				globGicName = DocClassUtil.getSimpleGicName(DocUtil.getClassGenericFullyQualifiedName(superJavaClass));
 			}
 		}
 		JavaClassUtil.genericParamMap(genericMap, cls, globGicName);
@@ -279,7 +274,7 @@ public class JsonBuildHelper extends BaseHelper {
 
 			// Process each field of the class
 			for (DocJavaField docField : fields) {
-				JavaField field = docField.getJavaField();
+				Object field = docField.getJavaField();
 				// ignore transient field
 				if (isTransientField(field, projectBuilder, isResp)) {
 					continue;
@@ -338,7 +333,7 @@ public class JsonBuildHelper extends BaseHelper {
 					int data0Length = result.length();
 					if (StringUtil.isEmpty(fieldValue)) {
 						String valueByTypeAndFieldName = DocUtil.getValByTypeAndFieldName(typeSimpleName,
-								field.getName());
+								DocUtil.getFieldName(field));
 						if (toStringSerializer && isResp) {
 							fieldValue = valueByTypeAndFieldName.startsWith("\"")
 									&& valueByTypeAndFieldName.endsWith("\"") ? valueByTypeAndFieldName
@@ -416,10 +411,10 @@ public class JsonBuildHelper extends BaseHelper {
 									result.append("[{\"mapKey\":{}}],");
 									continue;
 								}
-								JavaClass arraySubClass = projectBuilder.getClassByName(gicName);
+								Object arraySubClass = projectBuilder.getClassByName(gicName);
 								if (projectBuilder.isEnumType(gicName)) {
 									Object enumValue = null;
-									if (Objects.nonNull(arraySubClass) && arraySubClass.isEnum()) {
+									if (DocUtil.isClassEnum(arraySubClass)) {
 										enumValue = JavaClassUtil.getEnumValue(arraySubClass, projectBuilder,
 												Boolean.TRUE);
 									}
@@ -481,7 +476,7 @@ public class JsonBuildHelper extends BaseHelper {
 					}
 					// Object
 					else if (JavaTypeConstants.JAVA_OBJECT_FULLY.equals(fieldGicName)) {
-						if (StringUtil.isNotEmpty(field.getComment())) {
+						if (StringUtil.isNotEmpty(DocUtil.getFieldComment(field))) {
 							// from source code
 							result.append("{\"object\":\"any object\"},");
 						}
@@ -493,7 +488,7 @@ public class JsonBuildHelper extends BaseHelper {
 						result.append("{\"$ref\":\"...\"}").append(",");
 					}
 					else {
-						javaClass = field.getType();
+						javaClass = projectBuilder.getClassByName(subTypeName);
 						boolean enumType = projectBuilder.isEnumType(subTypeName);
 						// if enum
 						if (enumType) {
@@ -504,7 +499,7 @@ public class JsonBuildHelper extends BaseHelper {
 							// if has Annotation @JsonSerialize And using
 							// ToStringSerializer && isResp
 							else if (toStringSerializer && isResp) {
-								Object value = Objects.nonNull(javaClass) && javaClass.isEnum()
+								Object value = DocUtil.isClassEnum(javaClass)
 										? JavaClassUtil.getEnumValue(javaClass, projectBuilder, Boolean.TRUE)
 										: projectBuilder.getEnumSampleValue(subTypeName);
 								if (Objects.nonNull(value)) {
@@ -516,7 +511,7 @@ public class JsonBuildHelper extends BaseHelper {
 								result.append(fieldJsonFormatValue).append(",");
 							}
 							else {
-								Object value = Objects.nonNull(javaClass) && javaClass.isEnum()
+								Object value = DocUtil.isClassEnum(javaClass)
 										? JavaClassUtil.getEnumValue(javaClass, projectBuilder, Boolean.TRUE)
 										: projectBuilder.getEnumSampleValue(subTypeName);
 								if (Objects.nonNull(value)) {
@@ -573,15 +568,16 @@ public class JsonBuildHelper extends BaseHelper {
 			data.append("{\"mapKey\":{}}");
 			return;
 		}
-		JavaClass mapKeyClass = builder.getClassByName(getKeyValType[0]);
+		Object mapKeyClass = builder.getClassByName(getKeyValType[0]);
 		String keyType = getKeyValType[0];
 		boolean mapKeyIsEnum = builder.isEnumType(keyType);
-		boolean hasMapKeyClass = Objects.nonNull(mapKeyClass) && mapKeyClass.isEnum();
+		boolean hasMapKeyClass = DocUtil.isClassEnum(mapKeyClass);
 
 		if (builder.getApiConfig().isStrict()) {
 			boolean isStringKey = JavaTypeConstants.JAVA_STRING_FULLY.equals(keyType);
-			boolean isValidEnumKey = mapKeyIsEnum && (hasMapKeyClass ? !mapKeyClass.getEnumConstants().isEmpty()
-					: StringUtil.isNotEmpty(builder.getEnumSampleValue(keyType)));
+			boolean isValidEnumKey = mapKeyIsEnum
+					&& (hasMapKeyClass ? !DocUtil.getClassEnumConstants(mapKeyClass).isEmpty()
+							: StringUtil.isNotEmpty(builder.getEnumSampleValue(keyType)));
 			if (!isStringKey && !isValidEnumKey) {
 				throw new RuntimeException("Map's key can only use String or Enum for JSON, but you used: " + keyType);
 			}
@@ -593,9 +589,9 @@ public class JsonBuildHelper extends BaseHelper {
 			// Handle primitive types
 			data.append("{");
 			if (hasMapKeyClass) {
-				for (JavaField field : mapKeyClass.getFields()) {
+				for (Object field : DocUtil.getClassEnumConstants(mapKeyClass)) {
 					data.append("\"")
-						.append(field.getName())
+						.append(DocUtil.getFieldName(field))
 						.append("\":")
 						.append(JavaClassValidateUtil.isPrimitive(mapValueSimpleName)
 								? DocUtil.jsonValueByType(mapValueSimpleName)

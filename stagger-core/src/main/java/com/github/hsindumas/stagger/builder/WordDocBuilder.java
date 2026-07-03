@@ -103,8 +103,7 @@ public class WordDocBuilder {
 			apiDocList = docBuildTemplate.handleApiGroup(apiDocList, config);
 			String outPath = config.getOutPath();
 			FileUtil.mkdirs(outPath);
-			Template tpl = builderTemplate.buildAllRenderDocTemplate(apiDocList, config,
-					configBuilder.getJavaProjectBuilder(),
+			Template tpl = builderTemplate.buildAllRenderDocTemplate(apiDocList, config, configBuilder,
 					DocGlobalConstants.ALL_IN_ONE_WORD_XML_TPL, null, null);
 			DocUtil.copyAndReplaceDocx(tpl.render(), outPath + DocGlobalConstants.FILE_SEPARATOR + docName,
 					TEMPLATE_DOCX);
@@ -122,8 +121,8 @@ public class WordDocBuilder {
 			DocUtil.copyAndReplaceDocx(errorCodeDocTemplate.render(),
 					config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + BUILD_ERROR_DOCX, TEMPLATE_DOCX);
 
-			Template directoryDataDocTemplate = builderTemplate.buildDirectoryDataDocTemplate(config,
-					configBuilder, DocGlobalConstants.WORD_DICT_XML_TPL);
+			Template directoryDataDocTemplate = builderTemplate.buildDirectoryDataDocTemplate(config, configBuilder,
+					DocGlobalConstants.WORD_DICT_XML_TPL);
 			DocUtil.copyAndReplaceDocx(directoryDataDocTemplate.render(),
 					config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + BUILD_DICT_DOCX, TEMPLATE_DOCX);
 		}

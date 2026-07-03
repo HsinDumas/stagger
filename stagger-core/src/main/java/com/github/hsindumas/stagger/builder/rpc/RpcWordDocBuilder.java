@@ -83,15 +83,13 @@ public class RpcWordDocBuilder {
 	 */
 	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) throws Exception {
 		RpcDocBuilderTemplate rpcDocBuilderTemplate = new RpcDocBuilderTemplate();
-		List<RpcApiDoc> apiDocList = rpcDocBuilderTemplate.getApiDoc(false, true, false, config,
-				configBuilder.getJavaProjectBuilder());
+		List<RpcApiDoc> apiDocList = rpcDocBuilderTemplate.getApiDoc(false, true, false, config, configBuilder);
 
 		if (config.isAllInOne()) {
 			String docName = rpcDocBuilderTemplate.allInOneDocName(config, INDEX_DOC,
 					DocGlobalConstants.WORD_DOC_EXTENSION);
 			apiDocList = rpcDocBuilderTemplate.handleApiGroup(apiDocList, config);
-			Template tpl = rpcDocBuilderTemplate.buildAllInOneWord(apiDocList, config,
-					configBuilder.getJavaProjectBuilder(),
+			Template tpl = rpcDocBuilderTemplate.buildAllInOneWord(apiDocList, config, configBuilder,
 					DocGlobalConstants.RPC_ALL_IN_ONE_WORD_TPL, docName);
 
 			String outPath = config.getOutPath();

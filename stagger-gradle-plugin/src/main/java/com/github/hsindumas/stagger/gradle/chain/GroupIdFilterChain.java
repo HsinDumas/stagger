@@ -34,7 +34,7 @@ import java.util.Set;
  */
 public class GroupIdFilterChain implements FilterChain {
 
-	private final static Set<String> GROUPID_SET = new HashSet<>();
+	private static final Set<String> GROUPID_SET = new HashSet<>();
 
 	static {
 		GROUPID_SET.add("org.apache.commons");

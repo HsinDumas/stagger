@@ -24,8 +24,6 @@ import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocAnnotationConstants;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.expression.AnnotationValue;
 
 import java.util.List;
 
@@ -88,13 +86,13 @@ public class PropertyNameHelper {
 	 * @return The property naming strategy, or null if no matching strategy is found
 	 */
 	public static PropertyNamingStrategies.NamingBase translate(ProjectDocConfigBuilder projectBuilder,
-			List<JavaAnnotation> javaAnnotations) {
-		for (JavaAnnotation annotation : javaAnnotations) {
-			String simpleAnnotationName = annotation.getType().getValue();
+			List<?> javaAnnotations) {
+		for (Object annotation : javaAnnotations) {
+			String simpleAnnotationName = DocUtil.getAnnotationTypeValue(annotation);
 			// jackson JsonNaming
 			if (DocAnnotationConstants.JSON_NAMING.equalsIgnoreCase(simpleAnnotationName)) {
 				// annotationValue (Fix issues #1103)
-				AnnotationValue annotationValue = annotation.getProperty(DocAnnotationConstants.VALUE_PROP);
+				Object annotationValue = DocUtil.getAnnotationProperty(annotation, DocAnnotationConstants.VALUE_PROP);
 				// get value
 				String value = DocUtil.resolveAnnotationValue(projectBuilder.getApiConfig().getClassLoader(),
 						annotationValue);

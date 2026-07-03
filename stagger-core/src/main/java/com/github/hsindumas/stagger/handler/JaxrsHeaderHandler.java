@@ -31,10 +31,6 @@ import com.github.hsindumas.stagger.utils.DocClassUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.JavaParameter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,22 +57,22 @@ public class JaxrsHeaderHandler {
 	 * documentation configurations.
 	 * @return A list of ApiReqParam objects representing the parsed header parameters.
 	 */
-	public List<ApiReqParam> handle(JavaMethod method, ProjectDocConfigBuilder projectBuilder) {
+	public List<ApiReqParam> handle(Object method, ProjectDocConfigBuilder projectBuilder) {
 		Map<String, String> constantsMap = projectBuilder.getConstantsMap();
 
 		ClassLoader classLoader = projectBuilder.getApiConfig().getClassLoader();
 		List<ApiReqParam> apiReqHeaders = new ArrayList<>();
-		List<JavaParameter> parameters = method.getParameters();
-		for (JavaParameter javaParameter : parameters) {
-			List<JavaAnnotation> annotations = javaParameter.getAnnotations();
-			String paramName = javaParameter.getName();
+		List<?> parameters = DocUtil.getMethodParameters(method);
+		for (Object javaParameter : parameters) {
+			List<?> annotations = DocUtil.getParameterAnnotations(javaParameter);
+			String paramName = DocUtil.getParameterName(javaParameter);
 
 			// hit target head annotation
 			ApiReqParam apiReqHeader = new ApiReqParam();
 
 			String defaultValue = "";
-			for (JavaAnnotation annotation : annotations) {
-				String annotationName = annotation.getType().getFullyQualifiedName();
+			for (Object annotation : annotations) {
+				String annotationName = DocUtil.getAnnotationTypeFullyQualifiedName(annotation);
 				// Obtain header default value
 				if (JakartaJaxrsAnnotations.JAX_DEFAULT_VALUE_FULLY.equals(annotationName)
 						|| JAXRSAnnotations.JAX_DEFAULT_VALUE_FULLY.equals(annotationName)) {
@@ -92,13 +88,13 @@ public class JaxrsHeaderHandler {
 					name = DocUtil.handleConstants(constantsMap, name);
 					apiReqHeader.setName(name);
 
-					String typeName = javaParameter.getType().getValue().toLowerCase();
-					String genericFullyQualifiedName = javaParameter.getGenericFullyQualifiedName();
-					JavaClass javaClass = projectBuilder.getClassByName(genericFullyQualifiedName);
+					String typeName = DocUtil.getParameterTypeValue(javaParameter).toLowerCase();
+					String genericFullyQualifiedName = DocUtil.getParameterGenericFullyQualifiedName(javaParameter);
+					Object javaClass = projectBuilder.getClassByName(genericFullyQualifiedName);
 					boolean enumType = projectBuilder.isEnumType(genericFullyQualifiedName);
 					if (enumType) {
 						apiReqHeader.setType(ParamTypeConstants.PARAM_TYPE_ENUM);
-						boolean hasJavaEnumClass = Objects.nonNull(javaClass) && javaClass.isEnum();
+						boolean hasJavaEnumClass = DocUtil.isClassEnum(javaClass);
 						if (hasJavaEnumClass) {
 							EnumInfoAndValues enumInfoAndValue = JavaClassUtil.getEnumInfoAndValue(javaClass,
 									projectBuilder, Boolean.FALSE);
@@ -127,7 +123,7 @@ public class JaxrsHeaderHandler {
 						apiReqHeader.setType(DocClassUtil.processTypeNameForParams(typeName));
 					}
 
-					String className = method.getDeclaringClass().getCanonicalName();
+					String className = DocUtil.getMethodDeclaringClassCanonicalName(method);
 					Map<String, String> paramMap = DocUtil.getCommentsByTag(method, DocTags.PARAM, className);
 					String paramComments = paramMap.get(paramName);
 					apiReqHeader.setDesc(getComments(defaultValue, paramComments));

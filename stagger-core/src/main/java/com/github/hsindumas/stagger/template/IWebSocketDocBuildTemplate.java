@@ -24,7 +24,6 @@ import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.helper.DocBuildHelper;
 import com.github.hsindumas.stagger.model.DocMapping;
 import com.github.hsindumas.stagger.model.WebSocketDoc;
-import com.thoughtworks.qdox.model.JavaClass;
 
 import java.util.Collection;
 import java.util.List;
@@ -51,7 +50,7 @@ public interface IWebSocketDocBuildTemplate<T extends WebSocketDoc> extends IDoc
 
 		this.preRender(docBuildHelper);
 
-		Collection<JavaClass> candidateClasses = this.getCandidateClasses(projectBuilder, docBuildHelper);
+		Collection<?> candidateClasses = this.getCandidateClasses(projectBuilder, docBuildHelper);
 
 		return this.renderWebSocketApi(projectBuilder, candidateClasses);
 	}
@@ -62,6 +61,6 @@ public interface IWebSocketDocBuildTemplate<T extends WebSocketDoc> extends IDoc
 	 * @param candidateClasses candidate classes
 	 * @return websocket data
 	 */
-	List<T> renderWebSocketApi(ProjectDocConfigBuilder projectBuilder, Collection<JavaClass> candidateClasses);
+	List<T> renderWebSocketApi(ProjectDocConfigBuilder projectBuilder, Collection<?> candidateClasses);
 
 }

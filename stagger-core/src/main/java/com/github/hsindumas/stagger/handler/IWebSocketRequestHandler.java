@@ -24,10 +24,9 @@ import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocAnnotationConstants;
 import com.github.hsindumas.stagger.constants.DocTags;
 import com.github.hsindumas.stagger.model.request.ServerEndpoint;
+import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
 
 import java.util.List;
 import java.util.Objects;
@@ -48,14 +47,14 @@ public interface IWebSocketRequestHandler {
 	 * @param cls JavaClass
 	 * @return ServerEndpoint
 	 */
-	default ServerEndpoint handleServerEndpoint(ProjectDocConfigBuilder projectBuilder, JavaClass cls,
-			JavaAnnotation javaAnnotation) {
-		if (Objects.nonNull(cls.getTagByName(DocTags.IGNORE))) {
+	default ServerEndpoint handleServerEndpoint(ProjectDocConfigBuilder projectBuilder, Object cls,
+			Object javaAnnotation) {
+		if (Objects.nonNull(DocUtil.getMethodTagByName(cls, DocTags.IGNORE))) {
 			return null;
 		}
 		ServerEndpoint builder = ServerEndpoint.builder();
 		// get the value of JavaAnnotation
-		Optional.ofNullable(javaAnnotation.getProperty(DocAnnotationConstants.VALUE_PROP))
+		Optional.ofNullable(DocUtil.getAnnotationProperty(javaAnnotation, DocAnnotationConstants.VALUE_PROP))
 			.map(Object::toString)
 			.map(StringUtil::removeQuotes)
 			.ifPresent(builder::setUrl);

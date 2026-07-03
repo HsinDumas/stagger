@@ -20,15 +20,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.github.hsindumas.stagger.maven.plugin.util;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
+package com.github.hsindumas.stagger.maven.plugin.util;
 
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
 
 /**
  * https://github.com/jboz/living-documentation

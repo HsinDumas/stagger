@@ -20,9 +20,6 @@
  */
 package com.github.hsindumas.stagger.model;
 
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.JavaType;
-
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -37,7 +34,7 @@ public class DocJavaMethod {
 	/**
 	 * JavaMethod
 	 */
-	private JavaMethod javaMethod;
+	private Object javaMethod;
 
 	/**
 	 * return schema map
@@ -52,7 +49,7 @@ public class DocJavaMethod {
 	/**
 	 * actualTypesMap
 	 */
-	private Map<String, JavaType> actualTypesMap;
+	private Map<String, ?> actualTypesMap;
 
 	/**
 	 * method type
@@ -134,20 +131,22 @@ public class DocJavaMethod {
 		return new DocJavaMethod();
 	}
 
-	public JavaMethod getJavaMethod() {
-		return javaMethod;
+	@SuppressWarnings("unchecked")
+	public <T> T getJavaMethod() {
+		return (T) javaMethod;
 	}
 
-	public DocJavaMethod setJavaMethod(JavaMethod javaMethod) {
+	public DocJavaMethod setJavaMethod(Object javaMethod) {
 		this.javaMethod = javaMethod;
 		return this;
 	}
 
-	public Map<String, JavaType> getActualTypesMap() {
-		return actualTypesMap;
+	@SuppressWarnings("unchecked")
+	public <T extends Map<String, ?>> T getActualTypesMap() {
+		return (T) actualTypesMap;
 	}
 
-	public DocJavaMethod setActualTypesMap(Map<String, JavaType> actualTypesMap) {
+	public DocJavaMethod setActualTypesMap(Map<String, ?> actualTypesMap) {
 		this.actualTypesMap = actualTypesMap;
 		return this;
 	}

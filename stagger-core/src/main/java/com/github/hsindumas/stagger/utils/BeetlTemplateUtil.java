@@ -44,7 +44,7 @@ import org.beetl.core.statement.Program;
  */
 public class BeetlTemplateUtil {
 
-	private final static String HTML_SUFFIX = ".html";
+	private static final String HTML_SUFFIX = ".html";
 
 	/**
 	 * private constructor

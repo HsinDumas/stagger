@@ -20,12 +20,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.github.hsindumas.stagger.maven.plugin.chain;
 
-import org.apache.maven.artifact.Artifact;
+package com.github.hsindumas.stagger.maven.plugin.chain;
 
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.maven.artifact.Artifact;
 
 /**
  * @author yu 2020/1/13.
@@ -33,7 +33,7 @@ import java.util.Set;
  */
 public class StartsWithFilterChain implements FilterChain {
 
-	private final static Set<String> PREFIX_SET = new HashSet<>();
+	private static final Set<String> PREFIX_SET = new HashSet<>();
 
 	static {
 		PREFIX_SET.add("maven");

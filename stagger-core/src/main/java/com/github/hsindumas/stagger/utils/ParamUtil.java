@@ -30,8 +30,6 @@ import com.github.hsindumas.stagger.model.ApiParam;
 import com.github.hsindumas.stagger.model.torna.EnumInfoAndValues;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaField;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -81,15 +79,15 @@ public class ParamUtil {
 	 * @return Returns the processed JavaClass object representing the enum, or null if
 	 * the input field is not an enum.
 	 */
-	public static JavaClass handleSeeEnum(ApiParam param, JavaField javaField, ProjectDocConfigBuilder builder,
+	public static Object handleSeeEnum(ApiParam param, Object javaField, ProjectDocConfigBuilder builder,
 			boolean jsonRequest, Map<String, String> tagsMap, String jsonFormatValue) {
-		JavaClass seeEnum = JavaClassUtil.getSeeEnum(javaField, builder);
+		Object seeEnum = JavaClassUtil.getSeeEnum(javaField, builder);
 		if (Objects.isNull(seeEnum)) {
 			return null;
 		}
 		// when enum is same class, set type to enum
-		if (Objects.equals(seeEnum.getGenericFullyQualifiedName(),
-				javaField.getType().getGenericFullyQualifiedName())) {
+		if (Objects.equals(DocUtil.getClassGenericFullyQualifiedName(seeEnum),
+				DocUtil.getFieldGenericFullyQualifiedName(javaField))) {
 			param.setType(ParamTypeConstants.PARAM_TYPE_ENUM);
 		}
 		EnumInfoAndValues enumInfoAndValue = JavaClassUtil.getEnumInfoAndValue(seeEnum, builder, jsonRequest);

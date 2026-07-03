@@ -21,7 +21,6 @@
 package com.github.hsindumas.stagger.handler;
 
 import com.github.hsindumas.stagger.model.DocJavaMethod;
-import com.thoughtworks.qdox.model.JavaClass;
 
 import java.util.List;
 
@@ -40,6 +39,6 @@ public interface ICustomJavaMethodHandler {
 	 * @param methodList DocJavaMethod list
 	 * @return {@code List<DocJavaMethod>}
 	 */
-	List<DocJavaMethod> apply(JavaClass cls, List<DocJavaMethod> methodList);
+	List<DocJavaMethod> apply(Object cls, List<DocJavaMethod> methodList);
 
 }

@@ -22,7 +22,29 @@
  */
 package com.github.hsindumas.stagger.gradle.constant;
 
-import com.github.hsindumas.stagger.gradle.task.*;
+import com.github.hsindumas.stagger.gradle.task.DocBaseTask;
+import com.github.hsindumas.stagger.gradle.task.GrpcAdocTask;
+import com.github.hsindumas.stagger.gradle.task.GrpcHtmlTask;
+import com.github.hsindumas.stagger.gradle.task.GrpcMarkdownTask;
+import com.github.hsindumas.stagger.gradle.task.JMeterTask;
+import com.github.hsindumas.stagger.gradle.task.JavadocAdocTask;
+import com.github.hsindumas.stagger.gradle.task.JavadocHtmlTask;
+import com.github.hsindumas.stagger.gradle.task.JavadocMarkdownTask;
+import com.github.hsindumas.stagger.gradle.task.OpenApiTask;
+import com.github.hsindumas.stagger.gradle.task.PostmanTask;
+import com.github.hsindumas.stagger.gradle.task.RestAdocTask;
+import com.github.hsindumas.stagger.gradle.task.RestHtmlTask;
+import com.github.hsindumas.stagger.gradle.task.RestMarkdownTask;
+import com.github.hsindumas.stagger.gradle.task.RpcAdocTask;
+import com.github.hsindumas.stagger.gradle.task.RpcHtmlTask;
+import com.github.hsindumas.stagger.gradle.task.RpcMarkdownTask;
+import com.github.hsindumas.stagger.gradle.task.SwaggerTask;
+import com.github.hsindumas.stagger.gradle.task.TornaRestTask;
+import com.github.hsindumas.stagger.gradle.task.TornaRpcTask;
+import com.github.hsindumas.stagger.gradle.task.WebSocketAdocTask;
+import com.github.hsindumas.stagger.gradle.task.WebSocketHtmlTask;
+import com.github.hsindumas.stagger.gradle.task.WebSocketMarkdownTask;
+import com.github.hsindumas.stagger.gradle.task.WordTask;
 
 import java.util.HashMap;
 import java.util.Map;

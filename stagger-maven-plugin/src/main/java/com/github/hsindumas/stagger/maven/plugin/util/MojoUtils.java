@@ -20,28 +20,39 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.github.hsindumas.stagger.maven.plugin.util;
 
+import com.github.hsindumas.stagger.maven.plugin.constant.GlobalConstants;
+import com.github.hsindumas.stagger.model.ApiConfig;
+import com.github.hsindumas.stagger.model.ApiConstant;
+import com.github.hsindumas.stagger.model.ApiDataDictionary;
+import com.github.hsindumas.stagger.model.ApiErrorCodeDictionary;
+import com.github.hsindumas.stagger.model.BodyAdvice;
+import com.github.hsindumas.stagger.model.SourceCodePath;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.github.hsindumas.stagger.model.*;
-import com.github.hsindumas.stagger.maven.plugin.constant.GlobalConstants;
 import com.power.common.util.FileUtil;
 import com.power.common.util.StringUtil;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.project.*;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.*;
-
-import static com.github.hsindumas.stagger.maven.plugin.constant.GlobalConstants.FILE_SEPARATOR;
+import org.apache.maven.project.DefaultProjectBuildingRequest;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.ProjectBuilder;
+import org.apache.maven.project.ProjectBuildingException;
+import org.apache.maven.project.ProjectBuildingRequest;
 
 /**
  * @author xingzi 2019/12/07 21:19
@@ -52,14 +63,14 @@ public class MojoUtils {
 	/**
 	 * Gson Object
 	 */
-	public final static Gson GSON = new GsonBuilder().addDeserializationExclusionStrategy(new ExclusionStrategy() {
+	public static final Gson GSON = new GsonBuilder().addDeserializationExclusionStrategy(new ExclusionStrategy() {
 		@Override
 		public boolean shouldSkipField(FieldAttributes fieldAttributes) {
 			return false;
 		}
 
 		@Override
-		public boolean shouldSkipClass(Class<?> aClass) {
+		public boolean shouldSkipClass(Class<?> clazz) {
 			return false;
 		}
 	}).create();
@@ -91,8 +102,6 @@ public class MojoUtils {
 			List<ApiDataDictionary> apiDataDictionaries = apiConfig.getDataDictionaries();
 			List<ApiErrorCodeDictionary> apiErrorCodes = apiConfig.getErrorCodeDictionaries();
 			List<ApiConstant> apiConstants = apiConfig.getApiConstants();
-			BodyAdvice responseBodyAdvice = apiConfig.getResponseBodyAdvice();
-			BodyAdvice requestBodyAdvice = apiConfig.getRequestBodyAdvice();
 			if (Objects.nonNull(apiErrorCodes)) {
 				apiErrorCodes.forEach(apiErrorCode -> {
 					String className = apiErrorCode.getEnumClassName();
@@ -111,6 +120,8 @@ public class MojoUtils {
 					apiConstant.setConstantsClass(getClassByClassName(className, classLoader));
 				});
 			}
+			BodyAdvice responseBodyAdvice = apiConfig.getResponseBodyAdvice();
+			BodyAdvice requestBodyAdvice = apiConfig.getRequestBodyAdvice();
 			if (Objects.nonNull(responseBodyAdvice) && StringUtil.isNotEmpty(responseBodyAdvice.getClassName())) {
 				responseBodyAdvice.setWrapperClass(getClassByClassName(responseBodyAdvice.getClassName(), classLoader));
 			}
@@ -178,8 +189,8 @@ public class MojoUtils {
 				sourceCodePaths.add(SourceCodePath.builder().setPath(modulePath));
 			}
 		}));
-		sourceCodePaths
-			.add(SourceCodePath.builder().setPath(project.getBasedir() + FILE_SEPARATOR + apiConfig.getCodePath()));
+		sourceCodePaths.add(SourceCodePath.builder()
+			.setPath(project.getBasedir() + GlobalConstants.FILE_SEPARATOR + apiConfig.getCodePath()));
 		SourceCodePath[] codePaths = new SourceCodePath[sourceCodePaths.size()];
 		sourceCodePaths.toArray(codePaths);
 		List<String> artifacts = new ArrayList<>();
@@ -205,8 +216,8 @@ public class MojoUtils {
 		if (project.getProjectReferences().isEmpty()) {
 			referenceMavenProject = collectProject(project, projectBuilder, mavenSession, log);
 		}
-		// if module's version isn't SNAPSHOT
 		else {
+			// if module's version isn't SNAPSHOT
 			addByProjectReference(referenceMavenProject, project.getProjectReferences());
 		}
 		for (Map.Entry<String, MavenProject> mavenProject : referenceMavenProject.entrySet()) {
@@ -216,7 +227,7 @@ public class MojoUtils {
 			String artifactId = mavenProject.getValue().getModel().getArtifactId();
 			String groupId = mavenProject.getValue().getGroupId();
 			moduleList.put(groupId + ":" + artifactId,
-					mavenProject.getValue().getBasedir() + FILE_SEPARATOR + codePath);
+					mavenProject.getValue().getBasedir() + GlobalConstants.FILE_SEPARATOR + codePath);
 		}
 	}
 

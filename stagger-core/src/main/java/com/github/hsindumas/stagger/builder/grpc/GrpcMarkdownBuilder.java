@@ -61,14 +61,13 @@ public class GrpcMarkdownBuilder {
 	 */
 	public static void buildApiDoc(ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
 		GrpcDocBuilderTemplate grpcDocBuilderTemplate = new GrpcDocBuilderTemplate();
-		List<GrpcApiDoc> apiDocList = grpcDocBuilderTemplate.getApiDoc(false, true, false, apiConfig,
-				configBuilder.getJavaProjectBuilder());
+		List<GrpcApiDoc> apiDocList = grpcDocBuilderTemplate.getApiDoc(false, true, false, apiConfig, configBuilder);
 		if (apiConfig.isAllInOne()) {
 			String version = apiConfig.isCoverOld() ? "" : "-V" + DateTimeUtil.long2Str(System.currentTimeMillis(),
 					DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
 			String docName = grpcDocBuilderTemplate.allInOneDocName(apiConfig, "grpc-all" + version,
 					DocGlobalConstants.MARKDOWN_EXTENSION);
-			grpcDocBuilderTemplate.buildAllInOne(apiDocList, apiConfig, configBuilder.getJavaProjectBuilder(),
+			grpcDocBuilderTemplate.buildAllInOne(apiDocList, apiConfig, configBuilder,
 					DocGlobalConstants.GRPC_ALL_IN_ONE_MD_TPL, docName);
 		}
 		else {

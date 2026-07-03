@@ -29,7 +29,7 @@ import com.github.hsindumas.stagger.model.torna.Apis;
 import com.github.hsindumas.stagger.model.torna.DubboInfo;
 import com.github.hsindumas.stagger.model.torna.TornaApi;
 import com.github.hsindumas.stagger.utils.TornaUtil;
-import com.thoughtworks.qdox.JavaProjectBuilder;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -66,9 +66,8 @@ public class RpcTornaBuilder {
 	 */
 	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		RpcDocBuilderTemplate builderTemplate = new RpcDocBuilderTemplate();
-		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, true, config,
-				configBuilder.getJavaProjectBuilder());
-		buildTorna(apiDocList, config, configBuilder.getJavaProjectBuilder());
+		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, true, config, configBuilder);
+		buildTorna(apiDocList, config, configBuilder);
 	}
 
 	/**
@@ -84,15 +83,27 @@ public class RpcTornaBuilder {
 	}
 
 	/**
+	 * Build Torna data and push it to the Torna server.
+	 * @param apiDocs List of RpcApiDoc
+	 * @param apiConfig ApiConfig
+	 * @param configBuilder project doc config builder
+	 */
+	public static void buildTorna(List<RpcApiDoc> apiDocs, ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
+		TornaApi tornaApi = convertToTornaApi(apiDocs, apiConfig, configBuilder);
+		// Push to torna
+		TornaUtil.pushToTorna(tornaApi, apiConfig, configBuilder);
+	}
+
+	/**
 	 * Get Torna API documentation.
 	 * @param config ApiConfig
 	 * @return TornaApi
 	 */
 	public static TornaApi getTornaApi(ApiConfig config) {
 		RpcDocBuilderTemplate builderTemplate = new RpcDocBuilderTemplate();
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, true, config, javaProjectBuilder);
-		return convertToTornaApi(apiDocList, config, javaProjectBuilder);
+		ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create());
+		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, true, config, configBuilder);
+		return convertToTornaApi(apiDocList, config, configBuilder);
 	}
 
 	/**
@@ -115,6 +126,31 @@ public class RpcTornaBuilder {
 		}
 
 		tornaApi.setCommonErrorCodes(TornaUtil.buildErrorCode(apiConfig, builder));
+		tornaApi.setApis(apisList);
+		return tornaApi;
+	}
+
+	/**
+	 * Convert a list of RpcApiDoc to TornaApi.
+	 * @param apiDocs List of RpcApiDoc
+	 * @param apiConfig ApiConfig
+	 * @param configBuilder project doc config builder
+	 * @return TornaApi
+	 */
+	public static TornaApi convertToTornaApi(List<RpcApiDoc> apiDocs, ApiConfig apiConfig,
+			ProjectDocConfigBuilder configBuilder) {
+		TornaApi tornaApi = new TornaApi();
+		tornaApi.setAuthor(apiConfig.getAuthor());
+		tornaApi.setIsReplace(BooleanUtils.toInteger(apiConfig.getReplace()));
+
+		List<Apis> apisList = new ArrayList<>();
+		// Add data
+		for (RpcApiDoc rpcApiDoc : apiDocs) {
+			Apis api = createApi(rpcApiDoc, apiConfig, tornaApi);
+			apisList.add(api);
+		}
+
+		tornaApi.setCommonErrorCodes(TornaUtil.buildErrorCode(apiConfig, configBuilder));
 		tornaApi.setApis(apisList);
 		return tornaApi;
 	}

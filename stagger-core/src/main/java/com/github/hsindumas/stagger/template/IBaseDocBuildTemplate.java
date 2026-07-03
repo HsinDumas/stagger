@@ -27,7 +27,6 @@ import com.github.hsindumas.stagger.helper.ParamsBuildHelper;
 import com.github.hsindumas.stagger.model.*;
 import com.github.hsindumas.stagger.model.annotation.FrameworkAnnotations;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.*;
 import com.github.hsindumas.stagger.utils.*;
 
 import java.util.*;
@@ -66,30 +65,30 @@ public interface IBaseDocBuildTemplate {
 	 * @return List
 	 */
 	default List<ApiParam> buildReturnApiParams(DocJavaMethod docJavaMethod, ProjectDocConfigBuilder projectBuilder) {
-		JavaMethod method = docJavaMethod.getJavaMethod();
-		String returnTypeCanonicalName = method.getReturnType().getCanonicalName();
+		Object method = docJavaMethod.getJavaMethod();
+		String returnTypeCanonicalName = DocUtil.getMethodReturnTypeCanonicalName(method);
 		if ("void".equals(returnTypeCanonicalName)
 				&& Objects.isNull(projectBuilder.getApiConfig().getResponseBodyAdvice())) {
 			return new ArrayList<>(0);
 		}
-		DocletTag downloadTag = method.getTagByName(DocTags.DOWNLOAD);
+		Object downloadTag = DocUtil.getMethodTagByName(method, DocTags.DOWNLOAD);
 		if (Objects.nonNull(downloadTag)) {
 			return new ArrayList<>(0);
 		}
-		String returnTypeGenericCanonicalName = method.getReturnType().getGenericCanonicalName();
+		String returnTypeGenericCanonicalName = DocUtil.getMethodReturnTypeGenericCanonicalName(method);
 		if (Objects.nonNull(projectBuilder.getApiConfig().getResponseBodyAdvice())
-				&& Objects.isNull(method.getTagByName(DocTags.IGNORE_RESPONSE_BODY_ADVICE))) {
+				&& Objects.isNull(DocUtil.getMethodTagByName(method, DocTags.IGNORE_RESPONSE_BODY_ADVICE))) {
 			String responseBodyAdvice = projectBuilder.getApiConfig().getResponseBodyAdvice().getClassName();
 			if (!returnTypeGenericCanonicalName.startsWith(responseBodyAdvice)) {
 				returnTypeGenericCanonicalName = responseBodyAdvice + "<" + returnTypeGenericCanonicalName + ">";
 			}
 		}
-		Map<String, JavaType> actualTypesMap = docJavaMethod.getActualTypesMap();
+		Map<String, ?> actualTypesMap = docJavaMethod.getActualTypesMap();
 		ApiReturn apiReturn = DocClassUtil.processReturnType(returnTypeGenericCanonicalName);
 		String returnType = apiReturn.getGenericCanonicalName();
 		if (Objects.nonNull(actualTypesMap)) {
-			for (Map.Entry<String, JavaType> entry : actualTypesMap.entrySet()) {
-				returnType = returnType.replace(entry.getKey(), entry.getValue().getCanonicalName());
+			for (Map.Entry<String, ?> entry : actualTypesMap.entrySet()) {
+				returnType = returnType.replace(entry.getKey(), DocUtil.getTypeCanonicalName(entry.getValue()));
 			}
 		}
 
@@ -151,32 +150,33 @@ public interface IBaseDocBuildTemplate {
 	 */
 	default List<DocJavaParameter> getJavaParameterList(ProjectDocConfigBuilder builder,
 			final DocJavaMethod docJavaMethod, FrameworkAnnotations frameworkAnnotations) {
-		JavaMethod javaMethod = docJavaMethod.getJavaMethod();
+		Object javaMethod = docJavaMethod.getJavaMethod();
 		Map<String, String> replacementMap = builder.getReplaceClassMap();
 		Map<String, String> paramTagMap = docJavaMethod.getParamTagMap();
-		List<JavaParameter> parameterList = javaMethod.getParameters();
+		List<?> parameterList = DocUtil.getMethodParameters(javaMethod);
 		if (parameterList.isEmpty()) {
 			return new ArrayList<>(0);
 		}
 		Set<String> ignoreSets = ignoreParamsSets(javaMethod);
 		List<DocJavaParameter> apiJavaParameterList = new ArrayList<>(parameterList.size());
-		Map<String, JavaType> actualTypesMap = docJavaMethod.getActualTypesMap();
-		for (JavaParameter parameter : parameterList) {
-			String paramName = parameter.getName();
+		Map<String, ?> actualTypesMap = docJavaMethod.getActualTypesMap();
+		for (Object parameter : parameterList) {
+			String paramName = DocUtil.getParameterName(parameter);
 			if (ignoreSets.contains(paramName)) {
 				continue;
 			}
 			DocJavaParameter apiJavaParameter = new DocJavaParameter();
 			apiJavaParameter.setJavaParameter(parameter);
-			JavaType javaType = parameter.getType();
-			if (Objects.nonNull(actualTypesMap) && Objects.nonNull(actualTypesMap.get(javaType.getCanonicalName()))) {
-				javaType = actualTypesMap.get(javaType.getCanonicalName());
+			Object javaType = invokeParameterType(parameter);
+			String javaTypeCanonicalName = DocUtil.getTypeCanonicalName(javaType);
+			if (Objects.nonNull(actualTypesMap) && Objects.nonNull(actualTypesMap.get(javaTypeCanonicalName))) {
+				javaType = actualTypesMap.get(javaTypeCanonicalName);
 			}
-			apiJavaParameter.setTypeValue(javaType.getValue());
-			StringBuilder genericCanonicalName = new StringBuilder(javaType.getGenericCanonicalName());
-			String fullyQualifiedName = javaType.getFullyQualifiedName();
+			apiJavaParameter.setTypeValue(DocUtil.getTypeValue(javaType));
+			StringBuilder genericCanonicalName = new StringBuilder(DocUtil.getTypeGenericCanonicalName(javaType));
+			String fullyQualifiedName = DocUtil.getTypeFullyQualifiedName(javaType);
 			apiJavaParameter.setFullyQualifiedName(fullyQualifiedName);
-			String genericFullyQualifiedName = javaType.getGenericFullyQualifiedName();
+			String genericFullyQualifiedName = DocUtil.getTypeGenericFullyQualifiedName(javaType);
 			String commentClass = paramTagMap.get(paramName);
 			// ignore request params
 			if (Objects.nonNull(commentClass) && commentClass.contains(DocTags.IGNORE)) {
@@ -194,14 +194,14 @@ public interface IBaseDocBuildTemplate {
 			}
 			genericFullyQualifiedName = DocClassUtil.rewriteRequestParam(genericFullyQualifiedName);
 			genericCanonicalName = new StringBuilder(DocClassUtil.rewriteRequestParam(genericCanonicalName.toString()));
-			List<JavaAnnotation> annotations = parameter.getAnnotations();
+			List<?> annotations = DocUtil.getParameterAnnotations(parameter);
 			apiJavaParameter.setAnnotations(annotations);
-			for (JavaAnnotation annotation : annotations) {
-				String annotationName = annotation.getType().getValue();
+			for (Object annotation : annotations) {
+				String annotationName = DocUtil.getAnnotationTypeValue(annotation);
 				if (Objects.nonNull(frameworkAnnotations)
 						&& frameworkAnnotations.getRequestBodyAnnotation().getAnnotationName().equals(annotationName)) {
-					if (Objects.nonNull(builder.getApiConfig().getRequestBodyAdvice())
-							&& Objects.isNull(javaMethod.getTagByName(DocTags.IGNORE_REQUEST_BODY_ADVICE))) {
+					if (Objects.nonNull(builder.getApiConfig().getRequestBodyAdvice()) && Objects
+						.isNull(DocUtil.getMethodTagByName(javaMethod, DocTags.IGNORE_REQUEST_BODY_ADVICE))) {
 						String requestBodyAdvice = builder.getApiConfig().getRequestBodyAdvice().getClassName();
 						genericFullyQualifiedName = requestBodyAdvice;
 						genericCanonicalName = new StringBuilder(requestBodyAdvice + "<" + genericCanonicalName + ">");
@@ -251,11 +251,11 @@ public interface IBaseDocBuildTemplate {
 	 * @param method The Java method to inspect for the ignore parameters tag.
 	 * @return A set of parameter names that should be ignored.
 	 */
-	default Set<String> ignoreParamsSets(JavaMethod method) {
+	default Set<String> ignoreParamsSets(Object method) {
 		Set<String> ignoreSets = new HashSet<>();
-		DocletTag ignoreParam = method.getTagByName(DocTags.IGNORE_PARAMS);
+		Object ignoreParam = DocUtil.getMethodTagByName(method, DocTags.IGNORE_PARAMS);
 		if (Objects.nonNull(ignoreParam)) {
-			String[] igParams = ignoreParam.getValue().split(" ");
+			String[] igParams = DocUtil.getDocletTagValue(ignoreParam).split(" ");
 			Collections.addAll(ignoreSets, igParams);
 		}
 		return ignoreSets;
@@ -268,10 +268,11 @@ public interface IBaseDocBuildTemplate {
 	 * @param actualTypesMap A map containing actual type mappings.
 	 * @return The simplified return type as a string.
 	 */
-	default String getMethodReturnType(JavaMethod javaMethod, Map<String, JavaType> actualTypesMap) {
-		JavaType returnType = javaMethod.getReturnType();
-		String simpleReturn = this.replaceTypeName(returnType.getCanonicalName(), actualTypesMap, Boolean.TRUE);
-		String returnClass = this.replaceTypeName(returnType.getGenericCanonicalName(), actualTypesMap, Boolean.TRUE);
+	default String getMethodReturnType(Object javaMethod, Map<String, ?> actualTypesMap) {
+		String simpleReturn = this.replaceTypeName(DocUtil.getMethodReturnTypeCanonicalName(javaMethod), actualTypesMap,
+				Boolean.TRUE);
+		String returnClass = this.replaceTypeName(DocUtil.getMethodReturnTypeGenericCanonicalName(javaMethod),
+				actualTypesMap, Boolean.TRUE);
 		returnClass = returnClass.replace(simpleReturn, JavaClassUtil.getClassSimpleName(simpleReturn));
 		String[] arrays = DocClassUtil.getSimpleGicName(returnClass);
 		for (String str : arrays) {
@@ -300,21 +301,38 @@ public interface IBaseDocBuildTemplate {
 	 * @param simple A flag indicating whether to use simple names for replacement.
 	 * @return The type name after replacement.
 	 */
-	default String replaceTypeName(String type, Map<String, JavaType> actualTypesMap, boolean simple) {
+	default String replaceTypeName(String type, Map<String, ?> actualTypesMap, boolean simple) {
 		if (Objects.isNull(actualTypesMap)) {
 			return type;
 		}
-		for (Map.Entry<String, JavaType> entry : actualTypesMap.entrySet()) {
+		for (Map.Entry<String, ?> entry : actualTypesMap.entrySet()) {
 			if (type.contains(entry.getKey())) {
 				if (simple) {
-					return type.replace(entry.getKey(), entry.getValue().getGenericValue());
+					return type.replace(entry.getKey(), DocUtil.getTypeGenericValue(entry.getValue()));
 				}
 				else {
-					return type.replace(entry.getKey(), entry.getValue().getGenericFullyQualifiedName());
+					return type.replace(entry.getKey(), DocUtil.getTypeGenericFullyQualifiedName(entry.getValue()));
 				}
 			}
 		}
 		return type;
+	}
+
+	/**
+	 * Resolve parameter type metadata without binding to a specific parser type.
+	 * @param parameter parameter metadata object
+	 * @return parameter type metadata object or null
+	 */
+	default Object invokeParameterType(Object parameter) {
+		if (Objects.isNull(parameter)) {
+			return null;
+		}
+		try {
+			return parameter.getClass().getMethod("getType").invoke(parameter);
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			return null;
+		}
 	}
 
 	/**

@@ -24,8 +24,6 @@ import com.github.hsindumas.stagger.filter.ReturnTypeProcessor;
 import com.github.hsindumas.stagger.model.ApiReturn;
 import com.github.hsindumas.stagger.source.SourceClass;
 import com.power.common.util.StringUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -50,8 +48,8 @@ public class DocClassUtil {
 	 * @param javaClass class metadata
 	 * @return true when class is annotation or enum
 	 */
-	public static boolean isAnnotationOrEnum(JavaClass javaClass) {
-		return Objects.nonNull(javaClass) && (javaClass.isAnnotation() || javaClass.isEnum());
+	public static boolean isAnnotationOrEnum(Object javaClass) {
+		return Objects.nonNull(javaClass) && (DocUtil.isClassAnnotation(javaClass) || DocUtil.isClassEnum(javaClass));
 	}
 
 	/**
@@ -211,27 +209,27 @@ public class DocClassUtil {
 
 	/**
 	 * get map key and value type name populate into array.
-	 * @param gName generic class name
+	 * @param genericName generic class name
 	 * @return array of string
 	 */
-	public static String[] getMapKeyValueType(String gName) {
-		if (StringUtil.isEmpty(gName)) {
+	public static String[] getMapKeyValueType(String genericName) {
+		if (StringUtil.isEmpty(genericName)) {
 			return new String[0];
 		}
 		// Find the positions of the outermost '<' and '>' characters
-		int leftAngleBracket = gName.indexOf('<');
+		int leftAngleBracket = genericName.indexOf('<');
 		// If no matching angle brackets are found, return new String[0]
 		if (leftAngleBracket == -1) {
 			return new String[0];
 		}
-		int rightAngleBracket = findMatchingAngleBracket(gName, leftAngleBracket);
+		int rightAngleBracket = findMatchingAngleBracket(genericName, leftAngleBracket);
 
 		// If no matching angle brackets are found, return new String[0]
 		if (rightAngleBracket == -1) {
 			return new String[0];
 		}
 		// Extract the content inside "Map<...>"
-		String insideMap = gName.substring(leftAngleBracket + 1, rightAngleBracket);
+		String insideMap = genericName.substring(leftAngleBracket + 1, rightAngleBracket);
 
 		// Split the content into the key and value parts
 		return splitKeyValue(insideMap);
@@ -450,22 +448,68 @@ public class DocClassUtil {
 	/**
 	 * Get class annotations
 	 * @param cls JavaClass
-	 * @return List of JavaAnnotation
+	 * @return List of annotation objects
 	 */
-	public static List<JavaAnnotation> getAnnotations(JavaClass cls) {
-		JavaClass superClass = cls.getSuperJavaClass();
-		List<JavaAnnotation> classAnnotations = new ArrayList<>();
+	public static List<?> getAnnotations(Object cls) {
+		Object superClass = getSuperJavaClass(cls);
+		List<Object> classAnnotations = new ArrayList<>();
 		try {
 			if (Objects.nonNull(superClass)) {
-				classAnnotations.addAll(superClass.getAnnotations());
+				classAnnotations.addAll(getClassAnnotations(superClass));
 			}
 		}
 		catch (Throwable e) {
 			throw new RuntimeException(
-					"Could not obtain annotations for class: " + cls.getFullyQualifiedName() + "\n" + e);
+					"Could not obtain annotations for class: " + getClassFullyQualifiedName(cls) + "\n" + e);
 		}
-		classAnnotations.addAll(cls.getAnnotations());
+		classAnnotations.addAll(getClassAnnotations(cls));
 		return classAnnotations;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static List<?> getClassAnnotations(Object cls) {
+		if (Objects.isNull(cls)) {
+			return Collections.emptyList();
+		}
+		try {
+			Object value = cls.getClass().getMethod("getAnnotations").invoke(cls);
+			if (value instanceof List<?>) {
+				return (List<?>) value;
+			}
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			// Gracefully degrade when parser implementation does not expose this method.
+		}
+		return Collections.emptyList();
+	}
+
+	private static Object getSuperJavaClass(Object cls) {
+		if (Objects.isNull(cls)) {
+			return null;
+		}
+		try {
+			return cls.getClass().getMethod("getSuperJavaClass").invoke(cls);
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			// Gracefully degrade when superclass metadata is not available.
+			return null;
+		}
+	}
+
+	private static String getClassFullyQualifiedName(Object cls) {
+		if (Objects.isNull(cls)) {
+			return StringUtil.EMPTY;
+		}
+		try {
+			Object value = cls.getClass().getMethod("getFullyQualifiedName").invoke(cls);
+			if (value instanceof String) {
+				return (String) value;
+			}
+		}
+		catch (ReflectiveOperationException | RuntimeException ignored) {
+			// Gracefully degrade when class canonical name metadata is not available.
+		}
+		return StringUtil.EMPTY;
 	}
 
 	/**

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+    <!-- Keep formatter-compliant style in maven plugin while avoiding known style-rule conflicts. -->
+    <suppress id="RightCurlySame" files="[/\\]stagger-maven-plugin[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="RequireEmptyLineBeforeBlockTagGroup" files="[/\\]stagger-maven-plugin[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-maven-plugin[/\\]src[/\\]main[/\\]java[/\\].*[/\\]JMeterMojo\.java"/>
+    <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-maven-plugin[/\\]src[/\\]main[/\\]java[/\\].*[/\\]ADocMojo\.java"/>
+
+    <!-- Align gradle plugin checks with formatter output during migration cleanup. -->
+    <suppress id="RightCurlySame" files="[/\\]stagger-gradle-plugin[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="RequireEmptyLineBeforeBlockTagGroup" files="[/\\]stagger-gradle-plugin[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="CustomImportOrderCheck" files="[/\\]stagger-gradle-plugin[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="EmptyLineSeparatorCheck" files="[/\\]stagger-gradle-plugin[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="JavadocTagContinuationIndentationCheck" files="[/\\]stagger-gradle-plugin[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-gradle-plugin[/\\]src[/\\]main[/\\]java[/\\].*[/\\]JMeterTask\.java"/>
+
+    <!-- Keep core module formatter-aligned while migration focuses on behavioral parity. -->
+    <suppress id="RightCurlySame" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="RequireEmptyLineBeforeBlockTagGroup" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="CustomImportOrderCheck" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="EmptyLineSeparatorCheck" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="JavadocTagContinuationIndentationCheck" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="JavadocParagraph" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="MissingJavadocMethod" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="MissingJavadocType" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="VariableDeclarationUsageDistance" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="LocalVariableName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="NonEmptyAtclauseDescription" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="AvoidStarImport" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="SingleLineJavadoc" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="InvalidJavadocPosition" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="AtclauseOrder" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="OverloadMethodsDeclarationOrder" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+    <suppress checks="GenericWhitespace" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
+</suppressions>

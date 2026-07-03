@@ -32,8 +32,6 @@ import com.github.hsindumas.stagger.utils.DocUrlUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.power.common.util.StringUtil;
 import com.power.common.util.UrlUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaMethod;
 
 import java.util.Collections;
 import java.util.List;
@@ -80,22 +78,22 @@ public class JaxrsPathHandler {
 	 * @param mediaType The media type
 	 * @return A JaxrsPathMapping object containing the processed path information
 	 */
-	public JaxrsPathMapping handle(ProjectDocConfigBuilder projectBuilder, String baseUrl, JavaMethod method,
+	public JaxrsPathMapping handle(ProjectDocConfigBuilder projectBuilder, String baseUrl, Object method,
 			String mediaType) {
 
-		List<JavaAnnotation> annotations = method.getAnnotations();
+		List<?> annotations = DocUtil.getMethodAnnotations(method);
 		this.constantsMap = projectBuilder.getConstantsMap();
 		String methodType = null;
 		String shortUrl = "";
 		String serverUrl = projectBuilder.getServerUrl();
 		String contextPath = projectBuilder.getApiConfig().getPathPrefix();
 		boolean deprecated = false;
-		for (JavaAnnotation annotation : annotations) {
-			String annotationName = annotation.getType().getFullyQualifiedName();
+		for (Object annotation : annotations) {
+			String annotationName = DocUtil.getAnnotationTypeFullyQualifiedName(annotation);
 			// method level annotation will override class level annotation
 			if (annotationName.equals(JakartaJaxrsAnnotations.JAX_CONSUMES_FULLY)
 					|| annotationName.equals(JAXRSAnnotations.JAX_CONSUMES_FULLY)) {
-				Object value = annotation.getNamedParameter(DocAnnotationConstants.VALUE_PROP);
+				Object value = DocUtil.getAnnotationNamedParameter(annotation, DocAnnotationConstants.VALUE_PROP);
 				if (Objects.nonNull(value)) {
 					mediaType = MediaType.valueOf(value.toString());
 				}
@@ -115,11 +113,11 @@ public class JaxrsPathHandler {
 			// annotationName like "Get" "Post", not "jakarta.ws.rs.Get"
 			// "jakarta.ws.rs.Post"
 			if (ANNOTATION_NAMES.stream().anyMatch(it -> it.contains(annotationName))) {
-				methodType = annotation.getType().getName();
+				methodType = DocUtil.getAnnotationTypeSimpleName(annotation);
 			}
 		}
 		// @deprecated tag on method
-		if (Objects.nonNull(method.getTagByName(DEPRECATED))) {
+		if (Objects.nonNull(DocUtil.getMethodTagByName(method, DEPRECATED))) {
 			deprecated = true;
 		}
 		JaxrsPathMapping jaxrsPathMapping = getJaxbPathMapping(projectBuilder, baseUrl, method, shortUrl, serverUrl,
@@ -140,11 +138,11 @@ public class JaxrsPathHandler {
 	 * @param contextPath The context path
 	 * @return A JaxrsPathMapping object containing the processed path information
 	 */
-	private JaxrsPathMapping getJaxbPathMapping(ProjectDocConfigBuilder projectBuilder, String baseUrl,
-			JavaMethod method, String shortUrl, String serverUrl, String contextPath) {
+	private JaxrsPathMapping getJaxbPathMapping(ProjectDocConfigBuilder projectBuilder, String baseUrl, Object method,
+			String shortUrl, String serverUrl, String contextPath) {
 		String url;
 		if (Objects.nonNull(shortUrl)) {
-			if (Objects.nonNull(method.getTagByName(IGNORE))) {
+			if (Objects.nonNull(DocUtil.getMethodTagByName(method, IGNORE))) {
 				return null;
 			}
 			shortUrl = StringUtil.removeQuotes(shortUrl);

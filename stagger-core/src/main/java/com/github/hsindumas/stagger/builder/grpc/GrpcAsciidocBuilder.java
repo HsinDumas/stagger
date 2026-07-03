@@ -69,12 +69,11 @@ public class GrpcAsciidocBuilder {
 	 */
 	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		GrpcDocBuilderTemplate grpcDocBuilderTemplate = new GrpcDocBuilderTemplate();
-		List<GrpcApiDoc> apiDocList = grpcDocBuilderTemplate.getApiDoc(true, true, false, config,
-				configBuilder.getJavaProjectBuilder());
+		List<GrpcApiDoc> apiDocList = grpcDocBuilderTemplate.getApiDoc(true, true, false, config, configBuilder);
 		if (config.isAllInOne()) {
 			String docName = grpcDocBuilderTemplate.allInOneDocName(config, INDEX_DOC,
 					DocGlobalConstants.ASCIIDOC_EXTENSION);
-			grpcDocBuilderTemplate.buildAllInOne(apiDocList, config, configBuilder.getJavaProjectBuilder(),
+			grpcDocBuilderTemplate.buildAllInOne(apiDocList, config, configBuilder,
 					DocGlobalConstants.GRPC_ALL_IN_ONE_ADOC_TPL, docName);
 		}
 		else {

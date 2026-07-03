@@ -26,7 +26,11 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.github.hsindumas.stagger.model.*;
+import com.github.hsindumas.stagger.model.ApiConfig;
+import com.github.hsindumas.stagger.model.ApiConstant;
+import com.github.hsindumas.stagger.model.ApiDataDictionary;
+import com.github.hsindumas.stagger.model.ApiErrorCodeDictionary;
+import com.github.hsindumas.stagger.model.BodyAdvice;
 import com.power.common.util.FileUtil;
 import com.power.common.util.StringUtil;
 import org.gradle.api.Project;
@@ -47,14 +51,14 @@ public class GradleUtil {
 	/**
 	 * Gson Object
 	 */
-	public final static Gson GSON = new GsonBuilder().addDeserializationExclusionStrategy(new ExclusionStrategy() {
+	public static final Gson GSON = new GsonBuilder().addDeserializationExclusionStrategy(new ExclusionStrategy() {
 		@Override
 		public boolean shouldSkipField(FieldAttributes fieldAttributes) {
 			return false;
 		}
 
 		@Override
-		public boolean shouldSkipClass(Class<?> aClass) {
+		public boolean shouldSkipClass(Class<?> clazz) {
 			return false;
 		}
 	}).create();
@@ -76,8 +80,6 @@ public class GradleUtil {
 			List<ApiDataDictionary> apiDataDictionaries = apiConfig.getDataDictionaries();
 			List<ApiErrorCodeDictionary> apiErrorCodes = apiConfig.getErrorCodeDictionaries();
 			List<ApiConstant> apiConstants = apiConfig.getApiConstants();
-			BodyAdvice responseBodyAdvice = apiConfig.getResponseBodyAdvice();
-			BodyAdvice requestBodyAdvice = apiConfig.getRequestBodyAdvice();
 			if (Objects.nonNull(apiErrorCodes)) {
 				apiErrorCodes.forEach(apiErrorCode -> {
 					String className = apiErrorCode.getEnumClassName();
@@ -96,6 +98,8 @@ public class GradleUtil {
 					apiConstant.setConstantsClass(getClassByClassName(className, classLoader));
 				});
 			}
+			BodyAdvice responseBodyAdvice = apiConfig.getResponseBodyAdvice();
+			BodyAdvice requestBodyAdvice = apiConfig.getRequestBodyAdvice();
 			if (Objects.nonNull(responseBodyAdvice) && StringUtil.isNotEmpty(responseBodyAdvice.getClassName())) {
 				responseBodyAdvice.setWrapperClass(getClassByClassName(responseBodyAdvice.getClassName(), classLoader));
 			}

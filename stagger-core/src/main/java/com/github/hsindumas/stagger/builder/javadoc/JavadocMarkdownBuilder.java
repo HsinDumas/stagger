@@ -59,14 +59,13 @@ public class JavadocMarkdownBuilder {
 	 */
 	public static void buildApiDoc(ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
 		JavadocDocBuilderTemplate builderTemplate = new JavadocDocBuilderTemplate();
-		List<JavadocApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, apiConfig,
-				configBuilder.getJavaProjectBuilder());
+		List<JavadocApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, apiConfig, configBuilder);
 		if (apiConfig.isAllInOne()) {
 			String version = apiConfig.isCoverOld() ? "" : "-V" + DateTimeUtil.long2Str(System.currentTimeMillis(),
 					DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
 			String docName = builderTemplate.allInOneDocName(apiConfig, "javadoc-all" + version,
 					DocGlobalConstants.MARKDOWN_EXTENSION);
-			builderTemplate.buildAllInOne(apiDocList, apiConfig, configBuilder.getJavaProjectBuilder(),
+			builderTemplate.buildAllInOne(apiDocList, apiConfig, configBuilder,
 					DocGlobalConstants.JAVADOC_ALL_IN_ONE_MD_TPL, docName);
 		}
 		else {

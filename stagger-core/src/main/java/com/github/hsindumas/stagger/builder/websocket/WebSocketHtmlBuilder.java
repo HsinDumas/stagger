@@ -40,7 +40,7 @@ public class WebSocketHtmlBuilder {
 	/**
 	 * index.html
 	 */
-	private final static String INDEX_HTML = "websocket-index.html";
+	private static final String INDEX_HTML = "websocket-index.html";
 
 	/**
 	 * private constructor
@@ -65,16 +65,15 @@ public class WebSocketHtmlBuilder {
 	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
 		WebSocketDocBuilderTemplate webSocketDocBuilderTemplate = new WebSocketDocBuilderTemplate();
 		List<WebSocketDoc> webSocketDocList = webSocketDocBuilderTemplate.getWebSocketApiDoc(Boolean.FALSE, config,
-				configBuilder.getJavaProjectBuilder());
+				configBuilder);
 
 		if (null == webSocketDocList || webSocketDocList.isEmpty()) {
 			return;
 		}
 		webSocketDocBuilderTemplate.copyJQueryAndCss(config);
-		webSocketDocBuilderTemplate.buildWebSocketAllInOne(webSocketDocList, config,
-				configBuilder.getJavaProjectBuilder(),
+		webSocketDocBuilderTemplate.buildWebSocketAllInOne(webSocketDocList, config, configBuilder,
 				DocGlobalConstants.WEBSOCKET_ALL_IN_ONE_HTML_TPL, INDEX_HTML);
-		webSocketDocBuilderTemplate.buildSearchJs(webSocketDocList, config, configBuilder.getJavaProjectBuilder(),
+		webSocketDocBuilderTemplate.buildSearchJs(webSocketDocList, config, configBuilder,
 				DocGlobalConstants.WEBSOCKET_ALL_IN_ONE_SEARCH_TPL, DocGlobalConstants.SEARCH_JS_OUT);
 
 	}

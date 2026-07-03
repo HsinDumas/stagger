@@ -29,8 +29,6 @@ import com.github.hsindumas.stagger.function.RequestMappingFunc;
 import com.github.hsindumas.stagger.model.annotation.FrameworkAnnotations;
 import com.github.hsindumas.stagger.model.request.RequestMapping;
 import com.github.hsindumas.stagger.utils.DocUtil;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaMethod;
 
 import java.util.List;
 import java.util.Objects;
@@ -54,54 +52,61 @@ public class SolonRequestMappingHandler implements IRequestMappingHandler, IWebS
 	 * @return RequestMapping
 	 */
 	@Override
-	public RequestMapping handle(ProjectDocConfigBuilder projectBuilder, String controllerBaseUrl, JavaMethod method,
+	public RequestMapping handle(ProjectDocConfigBuilder projectBuilder, String controllerBaseUrl, Object method,
 			FrameworkAnnotations frameworkAnnotations, RequestMappingFunc requestMappingFunc) {
-		if (Objects.nonNull(method.getTagByName(IGNORE))) {
+		if (Objects.nonNull(DocUtil.getMethodTagByName(method, IGNORE))) {
 			return null;
 		}
-		List<JavaAnnotation> annotations = getAnnotations(method);
-		String methodType = "GET";// default is get
+		List<?> annotations = getAnnotations(method);
+		String methodType = "GET"; // default is get
 		String shortUrl = null;
 		String mediaType = null;
 		boolean deprecated = false;
-		for (JavaAnnotation annotation : annotations) {
-			String annotationName = annotation.getType().getName();
+		for (Object annotation : annotations) {
+			String annotationName = DocUtil.getAnnotationTypeValue(annotation);
+			String annotationFullyName = DocUtil.getAnnotationTypeFullyQualifiedName(annotation);
 			if (DocAnnotationConstants.DEPRECATED.equals(annotationName)) {
 				deprecated = true;
 			}
 			if (SolonAnnotations.REQUEST_MAPPING.equals(annotationName)
-					|| SolonAnnotations.REQUEST_MAPPING_FULLY.equals(annotationName)) {
+					|| SolonAnnotations.REQUEST_MAPPING_FULLY.equals(annotationName)
+					|| SolonAnnotations.REQUEST_MAPPING_FULLY.equals(annotationFullyName)) {
 				ClassLoader classLoader = projectBuilder.getApiConfig().getClassLoader();
 				shortUrl = DocUtil.handleMappingValue(classLoader, annotation);
 				// There is no need to add '/' to the end
 				shortUrl = shortUrl.equals(DocGlobalConstants.PATH_DELIMITER) ? "" : shortUrl;
-				Object produces = annotation.getNamedParameter("produces");
+				Object produces = DocUtil.getAnnotationNamedParameter(annotation, "produces");
 				if (Objects.nonNull(produces)) {
 					mediaType = produces.toString();
 				}
 			}
 			if (SolonAnnotations.GET_MAPPING.equals(annotationName)
-					|| SolonAnnotations.GET_MAPPING_FULLY.equals(annotationName)) {
+					|| SolonAnnotations.GET_MAPPING_FULLY.equals(annotationName)
+					|| SolonAnnotations.GET_MAPPING_FULLY.equals(annotationFullyName)) {
 				methodType = Methods.GET.getValue();
 			}
 			else if (SolonAnnotations.POST_MAPPING.equals(annotationName)
-					|| SolonAnnotations.POST_MAPPING_FULLY.equals(annotationName)) {
+					|| SolonAnnotations.POST_MAPPING_FULLY.equals(annotationName)
+					|| SolonAnnotations.POST_MAPPING_FULLY.equals(annotationFullyName)) {
 				methodType = Methods.POST.getValue();
 			}
 			else if (SolonAnnotations.PUT_MAPPING.equals(annotationName)
-					|| SolonAnnotations.PUT_MAPPING_FULLY.equals(annotationName)) {
+					|| SolonAnnotations.PUT_MAPPING_FULLY.equals(annotationName)
+					|| SolonAnnotations.PUT_MAPPING_FULLY.equals(annotationFullyName)) {
 				methodType = Methods.PUT.getValue();
 			}
 			else if (SolonAnnotations.PATCH_MAPPING.equals(annotationName)
-					|| SolonAnnotations.PATCH_MAPPING_FULLY.equals(annotationName)) {
+					|| SolonAnnotations.PATCH_MAPPING_FULLY.equals(annotationName)
+					|| SolonAnnotations.PATCH_MAPPING_FULLY.equals(annotationFullyName)) {
 				methodType = Methods.PATCH.getValue();
 			}
 			else if (SolonAnnotations.DELETE_MAPPING.equals(annotationName)
-					|| SolonAnnotations.DELETE_MAPPING_FULLY.equals(annotationName)) {
+					|| SolonAnnotations.DELETE_MAPPING_FULLY.equals(annotationName)
+					|| SolonAnnotations.DELETE_MAPPING_FULLY.equals(annotationFullyName)) {
 				methodType = Methods.DELETE.getValue();
 			}
 		}
-		if (Objects.nonNull(method.getTagByName(DEPRECATED))) {
+		if (Objects.nonNull(DocUtil.getMethodTagByName(method, DEPRECATED))) {
 			deprecated = true;
 		}
 		RequestMapping requestMapping = RequestMapping.builder()
@@ -110,7 +115,7 @@ public class SolonRequestMappingHandler implements IRequestMappingHandler, IWebS
 			.setDeprecated(deprecated)
 			.setShortUrl(shortUrl);
 		requestMapping = formatMappingData(projectBuilder, controllerBaseUrl, requestMapping);
-		requestMappingFunc.process(method.getDeclaringClass(), requestMapping);
+		requestMappingFunc.process(DocUtil.getMethodDeclaringClassCanonicalName(method), requestMapping);
 		return requestMapping;
 	}
 

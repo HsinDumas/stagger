@@ -22,8 +22,6 @@ package com.github.hsindumas.stagger.model.grpc;
 
 import com.github.hsindumas.stagger.constants.GrpcMethodTypeEnum;
 import com.github.hsindumas.stagger.model.JavadocJavaMethod;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.impl.DefaultJavaClass;
 
 import java.io.Serializable;
 
@@ -52,11 +50,6 @@ public class GrpcJavaMethod extends JavadocJavaMethod implements Serializable {
 	public GrpcJavaMethod setMethodType(String methodType) {
 		this.methodType = methodType;
 		return this;
-	}
-
-	@Override
-	public JavaClass getDeclaringClass() {
-		return new DefaultJavaClass(this.getName());
 	}
 
 }
