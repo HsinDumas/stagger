@@ -76,6 +76,12 @@ import java.util.jar.JarFile;
 
 public abstract class DocBaseTask extends DefaultTask {
 
+	private Project taskProject;
+
+	public void setTaskProject(Project taskProject) {
+		this.taskProject = taskProject;
+	}
+
 	/**
 	 * QDOX JavaProjectBuilder
 	 */
@@ -96,7 +102,10 @@ public abstract class DocBaseTask extends DefaultTask {
 	@TaskAction
 	public void action() {
 		Logger logger = getLogger();
-		Project project = getProject();
+		Project project = this.taskProject;
+		if (project == null) {
+			throw new IllegalStateException("Task project context is not initialized.");
+		}
 		logger.quiet(I18nMsgUtil.get("launch_the_welcome_message"));
 		StaggerPluginExtension pluginExtension = project.getExtensions().getByType(StaggerPluginExtension.class);
 		Set<String> excludes = pluginExtension.getExclude();

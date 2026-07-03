@@ -25,6 +25,7 @@ package com.github.hsindumas.stagger.gradle.plugin;
 import com.github.hsindumas.stagger.gradle.constant.GlobalConstants;
 import com.github.hsindumas.stagger.gradle.constant.TaskConstants;
 import com.github.hsindumas.stagger.gradle.extension.StaggerPluginExtension;
+import com.github.hsindumas.stagger.gradle.task.DocBaseTask;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
@@ -53,6 +54,9 @@ public class StaggerPlugin implements Plugin<Project> {
 		project.getTasks().register(taskName, taskClass, task -> {
 			task.setGroup(GlobalConstants.TASK_GROUP);
 			task.dependsOn(javaCompileTask);
+			if (task instanceof DocBaseTask) {
+				((DocBaseTask) task).setTaskProject(project);
+			}
 		});
 	}
 
