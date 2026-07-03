@@ -21,8 +21,6 @@
 
 package com.github.hsindumas.stagger.model;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -107,7 +105,7 @@ public class ApiExceptionStatus implements Comparable<ApiExceptionStatus> {
 	}
 
 	@Override
-	public int compareTo(@NotNull ApiExceptionStatus o) {
+	public int compareTo(ApiExceptionStatus o) {
 		if (Objects.nonNull(o.getDesc())) {
 			return status.compareTo(o.status);
 		}

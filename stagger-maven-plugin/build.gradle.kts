@@ -12,7 +12,6 @@ java {
 
 dependencies {
     implementation(project(":stagger-core"))
-    implementation(libs.commonUtil)
     implementation(libs.gson)
     implementation("org.apache.commons:commons-lang3:3.18.0")
 

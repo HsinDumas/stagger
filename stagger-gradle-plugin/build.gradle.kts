@@ -13,7 +13,6 @@ description = "stagger gradle plugin"
 
 dependencies {
     implementation(project(":stagger-core"))
-    implementation(libs.commonUtil)
     implementation(libs.gson)
 }
 

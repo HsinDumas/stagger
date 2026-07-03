@@ -15,10 +15,10 @@ dependencies {
     implementation(libs.javaparserCore)
     implementation(libs.javaparserSymbolSolver)
     implementation(libs.generex)
-    implementation(libs.commonUtil)
     implementation(libs.gson)
     implementation(libs.slf4jApi)
     implementation(libs.jgit)
+    implementation("org.apache.commons:commons-lang3:3.18.0")
 
     testImplementation(platform(libs.junitBom))
     testImplementation("org.junit.jupiter:junit-jupiter")

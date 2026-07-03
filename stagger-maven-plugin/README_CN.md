@@ -109,7 +109,8 @@ mvn -Dfile.encoding=UTF-8 stagger:rpc-markdown
 mvn -Dfile.encoding=UTF-8 stagger:rpc-adoc
 ```
 
-**注意：** 尤其在`window`系统下，如果实际使用`maven`命令行执行文档生成，可能会出现乱码，因此需要在执行时指定`-Dfile.encoding=UTF-8`。
+**注意：** 尤其在`window`系统下，如果实际使用`maven`命令行执行文档生成，可能会出现乱码，因此需要在执行时指定
+`-Dfile.encoding=UTF-8`。
 
 查看maven的编码
 
@@ -151,30 +152,6 @@ stagger-maven-plugin is under the Apache 2.0 license. See
 the [LICENSE](https://gitee.com/stagger-team/stagger/blob/master/license.txt) file for details.
 
 **注意：** stagger源代码文件全部带有版权注释，使用关键代码二次开源请保留原始版权，否则后果自负！
-
-## Who is using
-
->
-排名不分先后，更多接入公司，欢迎在[https://gitee.com/stagger-team/stagger/issues/I1594T](https://gitee.com/stagger-team/stagger/issues/I1594T)
-登记（仅供开源用户参考）
-
-![IFLYTEK](https://gitee.com/stagger-team/stagger/raw/master/images/known-users/iflytek.png)
-&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/oneplus.png" title="一加" >
-&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/xiaomi.png" title="小米" >
-&nbsp;&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/shunfeng.png" title="顺丰">
-&nbsp;&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/ly.jpeg" title="同程旅行" width="160px" height="70px"/>
-&nbsp;&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/kuishou.png" title="快手">
-&nbsp;&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/mafengwo.png" title="马蜂窝">
-&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/yunda.png" title="韵达速递" width="192px" height="64px">
-&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/zhongtongzhiyun.png" title="中通智运">
-&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/tcsklogo.jpeg" title="同程数科" width="170px" height="64px"/>
-&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/flipboard.png" title="红板报">
-&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/dianxin.png" title="中国电信">
-&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/yidong.png" title="中国移动">
-&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/neusoft.png" title="东软集团">
-&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/zhongkezhilian.png" title="中科智链" width="240px" height="64px"/>
-&nbsp;&nbsp;<img src="https://www.hand-china.com/static/img/hand-logo.svg" title="上海汉得信息技术股份有限公司" width="240px" height="64px"/>
-&nbsp;&nbsp;<img src="https://gitee.com/stagger-team/stagger/raw/master/images/known-users/yuanmengjiankang.png" title="远盟健康" width="230px" height="64px"/>
 
 ## Contact
 
