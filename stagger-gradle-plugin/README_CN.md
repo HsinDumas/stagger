@@ -146,8 +146,6 @@ https://gitee.com/devin-alan/stagger-gradle-plugin-demo
 gradle staggerRestHtml
 //生成markdown
 gradle staggerRestMarkdown
-//生成adoc
-gradle staggerRestAdoc
 //生成postmanjson数据
 gradle staggerPostman
 //生成Open Api 3.0 +规范的json文档,since stagger-gradle-plugin 1.1.4
@@ -155,7 +153,7 @@ gradle staggerOpenApi
 //生成Jmeter性能压测脚本,since 3.0.0
 gradle staggerJmeter
 //生成文档输出到Word,since 3.0.0
-gradle word
+gradle staggerWord
 
 
 // Apache Dubbo Rpc生成
@@ -163,8 +161,6 @@ gradle word
 gradle staggerRpcHtml
 // Generate markdown
 gradle staggerRpcMarkdown
-// Generate adoc
-gradle staggerRpcAdoc
 ```
 
 #### Use IDEA

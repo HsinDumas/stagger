@@ -49,11 +49,6 @@ public interface GlobalConstants {
 	String REST_HTML_TASK = "staggerRestHtml";
 
 	/**
-	 * Generate Rest Adoc document
-	 */
-	String REST_ADOC_TASK = "staggerRestAdoc";
-
-	/**
 	 * Generate Rest markdown document
 	 */
 	String REST_MARKDOWN_TASK = "staggerRestMarkdown";
@@ -79,11 +74,6 @@ public interface GlobalConstants {
 	String RPC_HTML_TASK = "staggerRpcHtml";
 
 	/**
-	 * Generate Rpc adoc document
-	 */
-	String RPC_ADOC_TASK = "staggerRpcAdoc";
-
-	/**
 	 * Generate Rpc markdown document
 	 */
 	String RPC_MARKDOWN_TASK = "staggerRpcMarkdown";
@@ -91,57 +81,42 @@ public interface GlobalConstants {
 	/**
 	 * Generate rest document push to word
 	 */
-	String WORD_TASK = "word";
+	String WORD_TASK = "staggerWord";
 
 	/**
 	 * Generate Swagger document
 	 */
-	String SWAGGER_TASK = "swagger";
+	String SWAGGER_TASK = "staggerSwagger";
 
 	/**
 	 * Generate WebSocket markdown document
 	 */
-	String WEBSOCKET_MARKDOWN_TASK = "webSocketMarkdown";
+	String WEBSOCKET_MARKDOWN_TASK = "staggerWebSocketMarkdown";
 
 	/**
 	 * Generate WebSocket html document
 	 */
-	String WEBSOCKET_HTML_TASK = "webSocketHtml";
-
-	/**
-	 * Generate WebSocket ascii document
-	 */
-	String WEBSOCKET_ADOC_TASK = "webSocketAdoc";
+	String WEBSOCKET_HTML_TASK = "staggerWebSocketHtml";
 
 	/**
 	 * Generate JavaDoc html document
 	 */
-	String JAVADOC_HTML_TASK = "javadocHtml";
-
-	/**
-	 * Generate JavaDoc adoc document
-	 */
-	String JAVADOC_ADOC_TASK = "javadocAdoc";
+	String JAVADOC_HTML_TASK = "staggerJavadocHtml";
 
 	/**
 	 * Generate JavaDoc markdown document
 	 */
-	String JAVADOC_MARKDOWN_TASK = "javadocMarkdown";
+	String JAVADOC_MARKDOWN_TASK = "staggerJavadocMarkdown";
 
 	/**
 	 * Generate gRPC html document
 	 */
-	String GRPC_HTML_TASK = "gRPCHtml";
-
-	/**
-	 * Generate gRPC adoc document
-	 */
-	String GRPC_ADOC_TASK = "gRPCAdoc";
+	String GRPC_HTML_TASK = "staggerGrpcHtml";
 
 	/**
 	 * Generate gRPC markdown document
 	 */
-	String GRPC_MARKDOWN_TASK = "gRPCMarkdown";
+	String GRPC_MARKDOWN_TASK = "staggerGrpcMarkdown";
 
 	/**
 	 * Plugin extension name

@@ -23,23 +23,18 @@
 package com.github.hsindumas.stagger.gradle.constant;
 
 import com.github.hsindumas.stagger.gradle.task.DocBaseTask;
-import com.github.hsindumas.stagger.gradle.task.GrpcAdocTask;
 import com.github.hsindumas.stagger.gradle.task.GrpcHtmlTask;
 import com.github.hsindumas.stagger.gradle.task.GrpcMarkdownTask;
 import com.github.hsindumas.stagger.gradle.task.JMeterTask;
-import com.github.hsindumas.stagger.gradle.task.JavadocAdocTask;
 import com.github.hsindumas.stagger.gradle.task.JavadocHtmlTask;
 import com.github.hsindumas.stagger.gradle.task.JavadocMarkdownTask;
 import com.github.hsindumas.stagger.gradle.task.OpenApiTask;
 import com.github.hsindumas.stagger.gradle.task.PostmanTask;
-import com.github.hsindumas.stagger.gradle.task.RestAdocTask;
 import com.github.hsindumas.stagger.gradle.task.RestHtmlTask;
 import com.github.hsindumas.stagger.gradle.task.RestMarkdownTask;
-import com.github.hsindumas.stagger.gradle.task.RpcAdocTask;
 import com.github.hsindumas.stagger.gradle.task.RpcHtmlTask;
 import com.github.hsindumas.stagger.gradle.task.RpcMarkdownTask;
 import com.github.hsindumas.stagger.gradle.task.SwaggerTask;
-import com.github.hsindumas.stagger.gradle.task.WebSocketAdocTask;
 import com.github.hsindumas.stagger.gradle.task.WebSocketHtmlTask;
 import com.github.hsindumas.stagger.gradle.task.WebSocketMarkdownTask;
 import com.github.hsindumas.stagger.gradle.task.WordTask;
@@ -61,8 +56,6 @@ public class TaskConstants {
 	static {
 		// create html
 		taskMap.put(GlobalConstants.REST_HTML_TASK, RestHtmlTask.class);
-		// create adoc
-		taskMap.put(GlobalConstants.REST_ADOC_TASK, RestAdocTask.class);
 		// create markdown
 		taskMap.put(GlobalConstants.REST_MARKDOWN_TASK, RestMarkdownTask.class);
 		// create jmeter
@@ -73,8 +66,6 @@ public class TaskConstants {
 		taskMap.put(GlobalConstants.OPEN_API_TASK, OpenApiTask.class);
 		// create rpc html
 		taskMap.put(GlobalConstants.RPC_HTML_TASK, RpcHtmlTask.class);
-		// create rpc adoc
-		taskMap.put(GlobalConstants.RPC_ADOC_TASK, RpcAdocTask.class);
 		// create rpc Markdown
 		taskMap.put(GlobalConstants.RPC_MARKDOWN_TASK, RpcMarkdownTask.class);
 		// create word rest
@@ -83,20 +74,14 @@ public class TaskConstants {
 		taskMap.put(GlobalConstants.SWAGGER_TASK, SwaggerTask.class);
 		// create websocket html
 		taskMap.put(GlobalConstants.WEBSOCKET_HTML_TASK, WebSocketHtmlTask.class);
-		// create websocket adoc
-		taskMap.put(GlobalConstants.WEBSOCKET_ADOC_TASK, WebSocketAdocTask.class);
 		// create websocket markdown
 		taskMap.put(GlobalConstants.WEBSOCKET_MARKDOWN_TASK, WebSocketMarkdownTask.class);
 		// create javadoc html
 		taskMap.put(GlobalConstants.JAVADOC_HTML_TASK, JavadocHtmlTask.class);
-		// create javadoc adoc
-		taskMap.put(GlobalConstants.JAVADOC_ADOC_TASK, JavadocAdocTask.class);
 		// create javadoc markdown
 		taskMap.put(GlobalConstants.JAVADOC_MARKDOWN_TASK, JavadocMarkdownTask.class);
 		// create gRPC html
 		taskMap.put(GlobalConstants.GRPC_HTML_TASK, GrpcHtmlTask.class);
-		// create gRPC adoc
-		taskMap.put(GlobalConstants.GRPC_ADOC_TASK, GrpcAdocTask.class);
 		// create gRPC markdown
 		taskMap.put(GlobalConstants.GRPC_MARKDOWN_TASK, GrpcMarkdownTask.class);
 

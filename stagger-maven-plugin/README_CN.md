@@ -89,8 +89,6 @@
 mvn -Dfile.encoding=UTF-8 stagger:html
 //生成markdown
 mvn -Dfile.encoding=UTF-8 stagger:markdown
-//生成adoc
-mvn -Dfile.encoding=UTF-8 stagger:adoc
 //生成postman json数据
 mvn -Dfile.encoding=UTF-8 stagger:postman
 // 生成 Open Api 3.0+,Since stagger-maven-plugin 1.1.5
@@ -105,8 +103,6 @@ mvn -Dfile.encoding=UTF-8 stagger:jmeter
 mvn -Dfile.encoding=UTF-8 stagger:rpc-html
 // Generate markdown
 mvn -Dfile.encoding=UTF-8 stagger:rpc-markdown
-// Generate adoc
-mvn -Dfile.encoding=UTF-8 stagger:rpc-adoc
 ```
 
 **注意：** 尤其在`window`系统下，如果实际使用`maven`命令行执行文档生成，可能会出现乱码，因此需要在执行时指定

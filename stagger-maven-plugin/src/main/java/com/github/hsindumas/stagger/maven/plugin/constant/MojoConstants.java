@@ -30,11 +30,6 @@ package com.github.hsindumas.stagger.maven.plugin.constant;
 public interface MojoConstants {
 
 	/**
-	 * api-adoc
-	 */
-	String ADOC_MOJO = "adoc";
-
-	/**
 	 * api-html
 	 */
 	String HTML_MOJO = "html";
@@ -70,11 +65,6 @@ public interface MojoConstants {
 	String WORD_MOJO = "word";
 
 	/**
-	 * javadoc-adoc
-	 */
-	String JAVADOC_ADOC_MOJO = "javadoc-adoc";
-
-	/**
 	 * javadoc-html
 	 */
 	String JAVADOC_HTML_MOJO = "javadoc-html";
@@ -83,11 +73,6 @@ public interface MojoConstants {
 	 * javadoc-markdown
 	 */
 	String JAVADOC_MARKDOWN_MOJO = "javadoc-markdown";
-
-	/**
-	 * rpc-adoc
-	 */
-	String RPC_ADOC_MOJO = "rpc-adoc";
 
 	/**
 	 * rpc-word
@@ -115,11 +100,6 @@ public interface MojoConstants {
 	String WEBSOCKET_HTML_MOJO = "websocket-html";
 
 	/**
-	 * websocket adoc.
-	 */
-	String WEBSOCKET_ADOC_MOJO = "websocket-adoc";
-
-	/**
 	 * grpc markdown.
 	 */
 	String GRPC_MARKDOWN_MOJO = "grpc-markdown";
@@ -128,10 +108,5 @@ public interface MojoConstants {
 	 * grpc html.
 	 */
 	String GRPC_HTML_MOJO = "grpc-html";
-
-	/**
-	 * grpc adoc.
-	 */
-	String GRPC_ADOC_MOJO = "grpc-adoc";
 
 }

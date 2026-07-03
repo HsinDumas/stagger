@@ -52,7 +52,7 @@ stagger-maven-plugin will also make stagger's ability to generate API documentat
             <!--Comment out phase if you don't need to start stagger when compiling-->
             <phase>compile</phase>
             <goals>
-                <!--stagger provides html, openapi, markdown, adoc and other goals-->
+                <!--stagger provides html, openapi, markdown and other goals-->
                 <goal>html</goal>
             </goals>
         </execution>
@@ -93,8 +93,6 @@ please refer to the [official documentation](https://HsinDumas.github.io/#/diy/c
 mvn -Dfile.encoding=UTF-8 stagger:html
 //  Generate document output to Markdown
 mvn -Dfile.encoding=UTF-8 stagger:markdown
-// Generate document output to Adoc
-mvn -Dfile.encoding=UTF-8 stagger:adoc
 // Generate Postman.
 mvn -Dfile.encoding=UTF-8 stagger:postman
 // build Open Api 3.0+,Since stagger-maven-plugin 1.1.5
@@ -110,8 +108,6 @@ mvn -Dfile.encoding=UTF-8 stagger:
 mvn -Dfile.encoding=UTF-8 stagger:rpc-html
 // Generate markdown
 mvn -Dfile.encoding=UTF-8 stagger:rpc-markdown
-// Generate adoc
-mvn -Dfile.encoding=UTF-8 stagger:rpc-adoc
 ```
 
 **Note:** Under the window system, if you use the maven command line to perform document generation,

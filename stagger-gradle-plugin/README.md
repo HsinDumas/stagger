@@ -154,8 +154,6 @@ please refer to the [official documentation](https://HsinDumas.github.io/guide/a
 gradle staggerRestHtml
 // Generate markdown
 gradle staggerRestMarkdown
-// Generate adoc
-gradle staggerRestAdoc
 // Generate Postman JSON data
 gradle staggerPostman
 // Generate Open API 3.0 + specification JSON documentation, since stagger-gradle-plugin 1.1.4
@@ -163,15 +161,13 @@ gradle staggerOpenApi
 // Generate JMeter performance test scripts, since 3.0.0
 gradle staggerJmeter
 // Generate documentation output to Word, since 3.0.0
-gradle word
+gradle staggerWord
 
 // Apache Dubbo RPC generation
 // Generate html
 gradle staggerRpcHtml
 // Generate markdown
 gradle staggerRpcMarkdown
-// Generate adoc
-gradle staggerRpcAdoc
 ```
 
 #### Use In IntelliJ IDEA

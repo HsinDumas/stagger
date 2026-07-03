@@ -8,7 +8,6 @@
     <suppress id="RightCurlySame" files="[/\\]stagger-maven-plugin[/\\]src[/\\]main[/\\]java[/\\].*"/>
     <suppress checks="RequireEmptyLineBeforeBlockTagGroup" files="[/\\]stagger-maven-plugin[/\\]src[/\\]main[/\\]java[/\\].*"/>
     <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-maven-plugin[/\\]src[/\\]main[/\\]java[/\\].*[/\\]JMeterMojo\.java"/>
-    <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-maven-plugin[/\\]src[/\\]main[/\\]java[/\\].*[/\\]ADocMojo\.java"/>
 
     <!-- Align gradle plugin checks with formatter output during migration cleanup. -->
     <suppress id="RightCurlySame" files="[/\\]stagger-gradle-plugin[/\\]src[/\\]main[/\\]java[/\\].*"/>
