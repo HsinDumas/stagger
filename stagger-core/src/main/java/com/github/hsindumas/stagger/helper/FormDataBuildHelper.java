@@ -31,9 +31,19 @@ import com.github.hsindumas.stagger.model.FormData;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.RandomUtil;
 import com.power.common.util.StringUtil;
-import com.github.hsindumas.stagger.utils.*;
+import com.github.hsindumas.stagger.utils.DocClassUtil;
+import com.github.hsindumas.stagger.utils.DocUtil;
+import com.github.hsindumas.stagger.utils.JavaClassUtil;
+import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
+import com.github.hsindumas.stagger.utils.JavaFieldUtil;
+import com.github.hsindumas.stagger.utils.ParamUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * FormData Builder {@link FormData }
