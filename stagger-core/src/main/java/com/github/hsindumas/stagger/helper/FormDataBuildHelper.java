@@ -165,7 +165,7 @@ public class FormDataBuildHelper extends BaseHelper {
 			else if (JavaClassValidateUtil.isPrimitive(subTypeName)) {
 				String fieldValue = getFieldValueFromMock(tagsMap);
 				if (StringUtil.isEmpty(fieldValue)) {
-					fieldValue = DocUtil.getValByTypeAndFieldName(typeSimpleName, fieldName);
+					fieldValue = DocUtil.getValByTypeAndFieldName(typeSimpleName, fieldName, javaAnnotations);
 				}
 				CustomField.Key key = CustomField.Key.create(docField.getDeclaringClassName(), fieldName);
 				CustomField customRequestField = builder.getCustomReqFieldMap().get(key);
@@ -211,7 +211,7 @@ public class FormDataBuildHelper extends BaseHelper {
 				if (JavaClassValidateUtil.isPrimitive(gName)) {
 					String fieldValue = getFieldValueFromMock(tagsMap);
 					if (StringUtil.isEmpty(fieldValue)) {
-						fieldValue = DocUtil.getValByTypeAndFieldName(typeSimpleName, fieldName);
+						fieldValue = DocUtil.getValByTypeAndFieldName(typeSimpleName, fieldName, javaAnnotations);
 						fieldValue = fieldValue + "," + fieldValue;
 					}
 					FormData formData = new FormData();

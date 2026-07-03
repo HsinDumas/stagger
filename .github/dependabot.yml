@@ -19,8 +19,3 @@ updates:
       - dependency-name: "org.eclipse.jgit:org.eclipse.jgit"
         versions:
           - "6.x"
-
-      # Ignore Data faker dependency(work not on jdk 8)
-      - dependency-name: "net.datafaker:datafaker"
-        versions:
-          - "2.x"

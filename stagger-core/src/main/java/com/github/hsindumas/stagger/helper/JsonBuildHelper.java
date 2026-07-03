@@ -333,7 +333,7 @@ public class JsonBuildHelper extends BaseHelper {
 					int data0Length = result.length();
 					if (StringUtil.isEmpty(fieldValue)) {
 						String valueByTypeAndFieldName = DocUtil.getValByTypeAndFieldName(typeSimpleName,
-								DocUtil.getFieldName(field));
+								DocUtil.getFieldName(field), docField.getAnnotations());
 						if (toStringSerializer && isResp) {
 							fieldValue = valueByTypeAndFieldName.startsWith("\"")
 									&& valueByTypeAndFieldName.endsWith("\"") ? valueByTypeAndFieldName

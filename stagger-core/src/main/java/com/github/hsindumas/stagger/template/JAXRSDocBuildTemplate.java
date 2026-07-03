@@ -406,10 +406,11 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 			if (requestFieldToUnderline) {
 				paramName = StringUtil.camelToUnderline(paramName);
 			}
-			String mockValue = JavaFieldUtil.createMockValue(paramsComments, paramName, typeName, simpleTypeName);
+			List<?> annotations = DocUtil.getParameterAnnotations(parameter);
+			String mockValue = JavaFieldUtil.createMockValue(paramsComments, paramName, typeName, simpleTypeName,
+					annotations);
 			Object javaClass = builder.getClassByName(genericFullyQualifiedName);
 			boolean enumType = builder.isEnumType(genericFullyQualifiedName);
-			List<?> annotations = DocUtil.getParameterAnnotations(parameter);
 			Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(annotations, builder);
 			Set<String> jsonViewClasses = JavaClassUtil.getParamJsonViewClasses(annotations, builder);
 
@@ -679,11 +680,12 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 			boolean enumType = configBuilder.isEnumType(typeName);
 			String[] globGicName = DocClassUtil.getSimpleGicName(gicTypeName);
 			String comment = this.paramCommentResolve(paramsComments.get(paramName));
-			String mockValue = JavaFieldUtil.createMockValue(paramsComments, paramName, gicTypeName, simpleTypeName);
+			List<?> annotations = DocUtil.getParameterAnnotations(parameter);
+			String mockValue = JavaFieldUtil.createMockValue(paramsComments, paramName, gicTypeName, simpleTypeName,
+					annotations);
 			if (requestFieldToUnderline) {
 				paramName = StringUtil.camelToUnderline(paramName);
 			}
-			List<?> annotations = DocUtil.getParameterAnnotations(parameter);
 			Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(annotations, configBuilder);
 			Set<String> jsonViewClasses = JavaClassUtil.getParamJsonViewClasses(annotations, configBuilder);
 			boolean paramAdded = false;

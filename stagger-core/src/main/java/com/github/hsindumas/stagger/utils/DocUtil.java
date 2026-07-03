@@ -52,7 +52,6 @@ import com.power.common.util.IDCardUtil;
 import com.power.common.util.RandomUtil;
 import com.power.common.util.StringUtil;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
-import net.datafaker.Faker;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -118,83 +117,9 @@ public class DocUtil {
 	private static final Logger logger = Logger.getLogger(DocUtil.class.getName());
 
 	/**
-	 * Faker
+	 * Constraint and field dictionary resolver for mock values.
 	 */
-	private static final Faker FAKER = new Faker(new Locale("en-US"));
-
-	/**
-	 * En-Faker
-	 */
-	private static final Faker EN_FAKER = new Faker(new Locale("en-US"));
-
-	/**
-	 * Field value map
-	 */
-	private static final Map<String, String> FIELD_VALUE = new LinkedHashMap<>(64);
-
-	static {
-		FIELD_VALUE.put("uuid-string", UUID.randomUUID().toString());
-		FIELD_VALUE.put("traceid-string", UUID.randomUUID().toString());
-		FIELD_VALUE.put("id-string", String.valueOf(RandomUtil.randomInt(1, 200)));
-		FIELD_VALUE.put("ids-string", String.valueOf(RandomUtil.randomInt(1, 200)));
-		FIELD_VALUE.put("nickname-string", EN_FAKER.name().username());
-		FIELD_VALUE.put("hostname-string", FAKER.internet().ipV4Address());
-		FIELD_VALUE.put("name-string", FAKER.name().username());
-		FIELD_VALUE.put("author-string", FAKER.book().author());
-		FIELD_VALUE.put("url-string", FAKER.internet().url());
-		FIELD_VALUE.put("username-string", FAKER.name().username());
-		FIELD_VALUE.put("code-int", "0");
-		FIELD_VALUE.put("index-int", "1");
-		FIELD_VALUE.put("index-integer", "1");
-		FIELD_VALUE.put("page-int", "1");
-		FIELD_VALUE.put("page-integer", "1");
-		FIELD_VALUE.put("age-int", String.valueOf(RandomUtil.randomInt(0, 70)));
-		FIELD_VALUE.put("age-integer", String.valueOf(RandomUtil.randomInt(0, 70)));
-		FIELD_VALUE.put("email-string", FAKER.internet().emailAddress());
-		FIELD_VALUE.put("domain-string", FAKER.internet().domainName());
-		FIELD_VALUE.put("phone-string", FAKER.phoneNumber().cellPhone());
-		FIELD_VALUE.put("mobile-string", FAKER.phoneNumber().cellPhone());
-		FIELD_VALUE.put("telephone-string", FAKER.phoneNumber().phoneNumber());
-		FIELD_VALUE.put("address-string", FAKER.address().fullAddress().replace(",", "，"));
-		FIELD_VALUE.put("ip-string", FAKER.internet().ipV4Address());
-		FIELD_VALUE.put("ipv4-string", FAKER.internet().ipV4Address());
-		FIELD_VALUE.put("ipv6-string", FAKER.internet().ipV6Address());
-		FIELD_VALUE.put("company-string", FAKER.company().name());
-		FIELD_VALUE.put("timestamp-long", String.valueOf(System.currentTimeMillis()));
-		FIELD_VALUE.put("timestamp-string", DateTimeUtil.dateToStr(new Date(), DateTimeUtil.DATE_FORMAT_SECOND));
-		FIELD_VALUE.put("time-long", String.valueOf(System.currentTimeMillis()));
-		FIELD_VALUE.put("time-string", DateTimeUtil.dateToStr(new Date(), DateTimeUtil.DATE_FORMAT_SECOND));
-		FIELD_VALUE.put("birthday-string", DateTimeUtil.dateToStr(new Date(), DateTimeUtil.DATE_FORMAT_DAY));
-		FIELD_VALUE.put("birthday-long", String.valueOf(System.currentTimeMillis()));
-		FIELD_VALUE.put("code-string", String.valueOf(RandomUtil.randomInt(100, 99999)));
-		FIELD_VALUE.put("message-string", "success,fail".split(",")[RandomUtil.randomInt(0, 1)]);
-		FIELD_VALUE.put("date-string", DateTimeUtil.dateToStr(new Date(), DateTimeUtil.DATE_FORMAT_DAY));
-		FIELD_VALUE.put("date-date", DateTimeUtil.dateToStr(new Date(), DateTimeUtil.DATE_FORMAT_DAY));
-		FIELD_VALUE.put("begintime-date", DateTimeUtil.dateToStr(new Date(), DateTimeUtil.DATE_FORMAT_SECOND));
-		FIELD_VALUE.put("endtime-date", DateTimeUtil.dateToStr(new Date(), DateTimeUtil.DATE_FORMAT_SECOND));
-		FIELD_VALUE.put("time-localtime",
-				LocalDateTime.now().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-		FIELD_VALUE.put("state-int", String.valueOf(RandomUtil.randomInt(0, 10)));
-		FIELD_VALUE.put("state-integer", String.valueOf(RandomUtil.randomInt(0, 10)));
-		FIELD_VALUE.put("flag-int", String.valueOf(RandomUtil.randomInt(0, 10)));
-		FIELD_VALUE.put("flag-integer", String.valueOf(RandomUtil.randomInt(0, 10)));
-		FIELD_VALUE.put("flag-boolean", "true");
-		FIELD_VALUE.put("flag-Boolean", "false");
-		FIELD_VALUE.put("idcard-string", IDCardUtil.getIdCard());
-		FIELD_VALUE.put("sex-int", String.valueOf(RandomUtil.randomInt(0, 2)));
-		FIELD_VALUE.put("sex-integer", String.valueOf(RandomUtil.randomInt(0, 2)));
-		FIELD_VALUE.put("gender-int", String.valueOf(RandomUtil.randomInt(0, 2)));
-		FIELD_VALUE.put("gender-integer", String.valueOf(RandomUtil.randomInt(0, 2)));
-		FIELD_VALUE.put("limit-int", "10");
-		FIELD_VALUE.put("limit-integer", "10");
-		FIELD_VALUE.put("size-int", "10");
-		FIELD_VALUE.put("size-integer", "10");
-
-		FIELD_VALUE.put("offset-int", "1");
-		FIELD_VALUE.put("offset-integer", "1");
-		FIELD_VALUE.put("offset-long", "1");
-		FIELD_VALUE.put("version-string", EN_FAKER.app().version());
-	}
+	private static final MockValueResolver MOCK_VALUE_RESOLVER = new MockValueResolver();
 
 	/**
 	 * This map contains the default JSON format patterns for various date and time types.
@@ -321,38 +246,48 @@ public class DocUtil {
 	 * @return random value
 	 */
 	public static String getValByTypeAndFieldName(String typeName, String filedName) {
+		return getValByTypeAndFieldName(typeName, filedName, Collections.emptyList());
+	}
+
+	/**
+	 * Generate random field values based on field names, type and annotations.
+	 * @param typeName field type name
+	 * @param filedName field name
+	 * @param annotations field/parameter annotations
+	 * @return random value
+	 */
+	public static String getValByTypeAndFieldName(String typeName, String filedName, List<?> annotations) {
 		String randomMock = System.getProperty(DocGlobalConstants.RANDOM_MOCK);
 		boolean randomMockFlag = Boolean.parseBoolean(randomMock);
 		boolean isArray = true;
 		String type = typeName.contains("java.lang") ? typeName.substring(typeName.lastIndexOf(".") + 1) : typeName;
 		String key = filedName.toLowerCase() + "-" + type.toLowerCase();
-		StringBuilder value = null;
+		String value = null;
 		if (!type.contains("[")) {
 			isArray = false;
 		}
 		if (!randomMockFlag) {
 			return jsonValueByType(typeName);
 		}
-		for (Map.Entry<String, String> entry : FIELD_VALUE.entrySet()) {
-			if (key.contains(entry.getKey())) {
-				value = new StringBuilder(entry.getValue());
-				if (isArray) {
-					for (int i = 0; i < 2; i++) {
-						value.append(",").append(entry.getValue());
-					}
-				}
-				break;
-			}
+
+		value = MOCK_VALUE_RESOLVER.resolveByConstraints(type, annotations);
+		if (StringUtil.isEmpty(value)) {
+			value = MOCK_VALUE_RESOLVER.resolveByFieldName(key);
 		}
+
+		if (StringUtil.isNotEmpty(value) && isArray) {
+			value = value + "," + value + "," + value;
+		}
+
 		if (Objects.isNull(value)) {
 			return jsonValueByType(typeName);
 		}
 		else {
 			if (javaPrimaryType(type)) {
-				return value.toString();
+				return value;
 			}
 			else {
-				return handleJsonStr(value.toString());
+				return handleJsonStr(value);
 			}
 		}
 	}
@@ -366,11 +301,25 @@ public class DocUtil {
 	 * @return String
 	 */
 	public static String getValByTypeAndFieldName(String type0, String filedName, boolean removeDoubleQuotation) {
+		return getValByTypeAndFieldName(type0, filedName, Collections.emptyList(), removeDoubleQuotation);
+	}
+
+	/**
+	 * To obtain a field's value using Java reflection and remove double quotes from a
+	 * string.
+	 * @param type0 field type name
+	 * @param filedName field name
+	 * @param annotations field/parameter annotations
+	 * @param removeDoubleQuotation removeDoubleQuotation
+	 * @return String
+	 */
+	public static String getValByTypeAndFieldName(String type0, String filedName, List<?> annotations,
+			boolean removeDoubleQuotation) {
 		if (removeDoubleQuotation) {
-			return getValByTypeAndFieldName(type0, filedName).replace("\"", "");
+			return getValByTypeAndFieldName(type0, filedName, annotations).replace("\"", "");
 		}
 		else {
-			return getValByTypeAndFieldName(type0, filedName);
+			return getValByTypeAndFieldName(type0, filedName, annotations);
 		}
 	}
 

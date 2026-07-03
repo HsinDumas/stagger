@@ -129,6 +129,7 @@ public interface IHeaderHandler {
 		Object javaClass = builder.getClassByName(genericFullyQualifiedName);
 		boolean enumType = builder.isEnumType(genericFullyQualifiedName);
 		String simpleTypeName = DocUtil.getParameterTypeValue(javaParameter);
+		List<?> parameterAnnotations = DocUtil.getParameterAnnotations(javaParameter);
 
 		if (JavaClassValidateUtil.isCollection(fullyQualifiedName)
 				|| JavaClassValidateUtil.isArray(fullyQualifiedName)) {
@@ -166,10 +167,11 @@ public interface IHeaderHandler {
 				}
 			}
 			else if (JavaClassValidateUtil.isPrimitive(gicName)) {
-				String mockValue = JavaFieldUtil.createMockValue(paramCommentMap, paramName, gicName, gicName);
+				String mockValue = JavaFieldUtil.createMockValue(paramCommentMap, paramName, gicName, gicName,
+						parameterAnnotations);
 				if (StringUtil.isNotEmpty(mockValue) && !mockValue.contains(",")) {
-					mockValue = StringUtils.join(mockValue, ",",
-							JavaFieldUtil.createMockValue(paramCommentMap, paramName, gicName, gicName));
+					mockValue = StringUtils.join(mockValue, ",", JavaFieldUtil.createMockValue(paramCommentMap,
+							paramName, gicName, gicName, parameterAnnotations));
 				}
 
 				apiReqHeader.setType(ParamTypeConstants.PARAM_TYPE_ARRAY);
@@ -181,7 +183,7 @@ public interface IHeaderHandler {
 		}
 		else if (JavaClassValidateUtil.isPrimitive(fullyQualifiedName)) {
 			String mockValue = JavaFieldUtil.createMockValue(paramCommentMap, paramName, fullyQualifiedName,
-					simpleTypeName);
+					simpleTypeName, parameterAnnotations);
 
 			apiReqHeader.setType(DocClassUtil.processTypeNameForParams(simpleTypeName));
 			apiReqHeader.setValue(mockValue);

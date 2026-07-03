@@ -14,7 +14,7 @@ dependencies {
     implementation(libs.freemarker)
     implementation(libs.javaparserCore)
     implementation(libs.javaparserSymbolSolver)
-    implementation(libs.datafaker)
+    implementation(libs.generex)
     implementation(libs.commonUtil)
     implementation(libs.gson)
     implementation(libs.slf4jApi)

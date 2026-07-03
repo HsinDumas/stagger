@@ -1155,8 +1155,9 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			StringBuilder comment = new StringBuilder(this.paramCommentResolve(paramTagMap.get(paramName)));
 
 			Object javaClass = builder.getClassByName(genericFullyQualifiedName);
-			String mockValue = JavaFieldUtil.createMockValue(paramsComments, paramName, typeName, simpleTypeName);
 			List<?> paramAnnotations = DocUtil.getParameterAnnotations(parameter);
+			String mockValue = JavaFieldUtil.createMockValue(paramsComments, paramName, typeName, simpleTypeName,
+					paramAnnotations);
 			Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(paramAnnotations, builder);
 			String strRequired = "false";
 			boolean required = false;
@@ -1279,10 +1280,11 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 					gicName = gicName.substring(0, gicName.indexOf("["));
 				}
 				// handle array and list mock value
-				mockValue = JavaFieldUtil.createMockValue(paramsComments, paramName, gicName, gicName);
+				mockValue = JavaFieldUtil.createMockValue(paramsComments, paramName, gicName, gicName,
+						paramAnnotations);
 				if (StringUtil.isNotEmpty(mockValue) && !mockValue.contains(",")) {
-					mockValue = StringUtils.join(mockValue, ",",
-							JavaFieldUtil.createMockValue(paramsComments, paramName, gicName, gicName));
+					mockValue = StringUtils.join(mockValue, ",", JavaFieldUtil.createMockValue(paramsComments,
+							paramName, gicName, gicName, paramAnnotations));
 				}
 				Object gicJavaClass = builder.getClassByName(gicName);
 				boolean gicEnumType = builder.isEnumType(gicName);
@@ -1571,14 +1573,15 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 			boolean enumType = configBuilder.isEnumType(genericFullyQualifiedName);
 			String[] globGicName = DocClassUtil.getSimpleGicName(gicTypeName);
 			String comment = this.paramCommentResolve(paramsComments.get(paramName));
-			String mockValue = JavaFieldUtil.createMockValue(paramsComments, paramName, gicTypeName, simpleTypeName);
+			List<?> annotations = DocUtil.getParameterAnnotations(parameter);
+			String mockValue = JavaFieldUtil.createMockValue(paramsComments, paramName, gicTypeName, simpleTypeName,
+					annotations);
 			if (queryParamsMap.containsKey(paramName)) {
 				mockValue = queryParamsMap.get(paramName);
 			}
 			if (requestFieldToUnderline) {
 				paramName = StringUtil.camelToUnderline(paramName);
 			}
-			List<?> annotations = DocUtil.getParameterAnnotations(parameter);
 			Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(annotations, configBuilder);
 			boolean paramAdded = false;
 			boolean requestParam = annotations.isEmpty();

@@ -240,9 +240,9 @@ public interface IJavadocDocTemplate<T extends JavadocJavaMethod> extends IBaseD
 						+ "\" in method " + DocUtil.getMethodName(javaMethod) + " from " + className);
 			}
 			StringBuilder comment = new StringBuilder(this.paramCommentResolve(paramTagMap.get(paramName)));
-			String mockValue = JavaFieldUtil.createMockValue(paramTagMap, paramName, typeName, typeName);
-			boolean enumType = builder.isEnumType(fullTypeName);
 			List<?> annotations = DocUtil.getParameterAnnotations(parameter);
+			String mockValue = JavaFieldUtil.createMockValue(paramTagMap, paramName, typeName, typeName, annotations);
+			boolean enumType = builder.isEnumType(fullTypeName);
 			for (Object annotation : annotations) {
 				if (JavaClassValidateUtil.isJSR303Required(DocUtil.getAnnotationTypeValue(annotation))) {
 					required = true;

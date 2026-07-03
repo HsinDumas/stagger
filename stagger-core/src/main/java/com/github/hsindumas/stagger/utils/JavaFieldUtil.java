@@ -32,6 +32,7 @@ import com.power.common.util.StringUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,6 +108,20 @@ public class JavaFieldUtil {
 	 */
 	public static String createMockValue(Map<String, String> paramsComments, String paramName, String typeName,
 			String simpleTypeName) {
+		return createMockValue(paramsComments, paramName, typeName, simpleTypeName, Collections.emptyList());
+	}
+
+	/**
+	 * create mock value with validation annotations.
+	 * @param paramsComments param comments
+	 * @param paramName param name
+	 * @param typeName param type
+	 * @param simpleTypeName simple type name
+	 * @param annotations parameter annotations
+	 * @return mock value
+	 */
+	public static String createMockValue(Map<String, String> paramsComments, String paramName, String typeName,
+			String simpleTypeName, List<?> annotations) {
 		String mockValue = "";
 		if (JavaClassValidateUtil.isPrimitive(typeName)) {
 			mockValue = paramsComments.get(paramName);
@@ -117,7 +132,7 @@ public class JavaFieldUtil {
 				mockValue = "";
 			}
 			if (StringUtil.isEmpty(mockValue)) {
-				mockValue = DocUtil.getValByTypeAndFieldName(simpleTypeName, paramName, Boolean.TRUE);
+				mockValue = DocUtil.getValByTypeAndFieldName(simpleTypeName, paramName, annotations, Boolean.TRUE);
 			}
 		}
 		return ParamUtil.formatMockValue(mockValue);
