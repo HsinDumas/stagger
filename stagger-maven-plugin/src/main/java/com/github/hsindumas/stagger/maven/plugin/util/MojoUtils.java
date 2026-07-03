@@ -199,7 +199,7 @@ public class MojoUtils {
 			artifacts.add(artifactName);
 		}
 		log.info("Artifacts that the current project depends on: " + GSON.toJson(artifacts));
-		log.info("Smart-doc has loaded the source code path: "
+		log.info("Stagger has loaded the source code path: "
 				+ GSON.toJson(sourceCodePaths).replaceAll("\\\\", "/").replaceAll("//", "/"));
 
 		apiConfig.setSourceCodePaths(codePaths);

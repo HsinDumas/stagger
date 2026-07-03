@@ -146,7 +146,7 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
 			return;
 		}
 		this.getLog().info("------------------------------------------------------------------------");
-		this.getLog().info("Smart-doc Start preparing sources at: " + DateTimeUtil.nowStrTime());
+		this.getLog().info("Stagger Start preparing sources at: " + DateTimeUtil.nowStrTime());
 		projectArtifacts = project.getArtifacts()
 			.stream()
 			.map(moduleName -> moduleName.getGroupId() + ":" + moduleName.getArtifactId())
@@ -166,13 +166,13 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
 
 		String outPath = apiConfig.getOutPath();
 		if (StringUtil.isEmpty(outPath)) {
-			this.getLog().error("Smart-doc out path can't be null or empty.");
-			throw new RuntimeException("Smart-doc out path can't be null or empty.");
+			this.getLog().error("Stagger out path can't be null or empty.");
+			throw new RuntimeException("Stagger out path can't be null or empty.");
 		}
 		if (!FileUtil.isAbsPath(outPath) && StringUtil.isNotEmpty(outPath)) {
 			apiConfig.setOutPath(project.getBasedir().getPath() + "/" + outPath);
 		}
-		getLog().info("Smart-doc Starting Create API Documentation at: " + DateTimeUtil.nowStrTime());
+		getLog().info("Stagger Starting Create API Documentation at: " + DateTimeUtil.nowStrTime());
 		getLog().info("API documentation is output to => " + apiConfig.getOutPath().replace("\\", "/"));
 		this.executeMojo(apiConfig);
 	}
