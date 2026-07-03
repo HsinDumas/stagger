@@ -15,8 +15,6 @@ extensions.configure<JavaPluginExtension> {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(25))
     }
-    withJavadocJar()
-    withSourcesJar()
 }
 
 tasks.withType<JavaCompile>().configureEach {

@@ -1,9 +1,10 @@
+import com.vanniktech.maven.publish.GradlePublishPlugin
+
 plugins {
     id("stagger.java-conventions")
     `java-gradle-plugin`
     alias(libs.plugins.pluginPublish)
-    `maven-publish`
-    signing
+    alias(libs.plugins.mavenPublish)
 }
 
 group = "com.github.hsindumas"
@@ -30,12 +31,34 @@ gradlePlugin {
     }
 }
 
-publishing {
-    repositories {
-        mavenLocal()
-    }
-}
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+    configure(GradlePublishPlugin())
 
-signing {
-    isRequired = false
+    pom {
+        name = "stagger-gradle-plugin"
+        description = "Gradle plugin for Stagger documentation generation"
+        inceptionYear = "2018"
+        url = "https://github.com/HsinDumas/stagger"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+        developers {
+            developer {
+                id = "HsinDumas"
+                name = "HsinDumas"
+                url = "https://github.com/HsinDumas"
+            }
+        }
+        scm {
+            url = "https://github.com/HsinDumas/stagger"
+            connection = "scm:git:git://github.com/HsinDumas/stagger.git"
+            developerConnection = "scm:git:ssh://git@github.com/HsinDumas/stagger.git"
+        }
+    }
 }

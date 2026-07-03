@@ -1,5 +1,6 @@
 plugins {
     base
+    alias(libs.plugins.mavenPublish) apply false
 }
 
 group = "com.github.hsindumas"
@@ -21,4 +22,24 @@ tasks.register("printVersion") {
     doLast {
         println(project.version)
     }
+}
+
+tasks.register("publishSnapshotToMavenCentral") {
+    group = "publishing"
+    description = "Publishes all modules to Sonatype Central snapshot repository"
+    dependsOn(
+        ":stagger-core:publishToMavenCentral",
+        ":stagger-maven-plugin:publishToMavenCentral",
+        ":stagger-gradle-plugin:publishToMavenCentral",
+    )
+}
+
+tasks.register("publishReleaseToMavenCentral") {
+    group = "publishing"
+    description = "Publishes and releases all modules to Sonatype Central"
+    dependsOn(
+        ":stagger-core:publishAndReleaseToMavenCentral",
+        ":stagger-maven-plugin:publishAndReleaseToMavenCentral",
+        ":stagger-gradle-plugin:publishAndReleaseToMavenCentral",
+    )
 }

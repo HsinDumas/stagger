@@ -1,4 +1,4 @@
-name: Release Publish (Gradle)
+name: Release Publish (Central)
 
 on:
   release:
@@ -20,9 +20,11 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: Publish artifacts to Maven Local
+      - name: Publish and release artifacts to Maven Central
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_IN_MEMORY_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_IN_MEMORY_KEY_PASSWORD }}
         run: |
-          ./gradlew --no-daemon \
-            :stagger-core:publishToMavenLocal \
-            :stagger-maven-plugin:publishToMavenLocal \
-            :stagger-gradle-plugin:publishToMavenLocal
+          ./gradlew --no-daemon publishReleaseToMavenCentral

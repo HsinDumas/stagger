@@ -1,14 +1,9 @@
 plugins {
     id("stagger.java-conventions")
-    `maven-publish`
+    alias(libs.plugins.mavenPublish)
 }
 
 description = "Maven plugin for Stagger documentation generation"
-
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
 
 dependencies {
     implementation(project(":stagger-core"))
@@ -24,14 +19,35 @@ dependencies {
     implementation(libs.mavenDependencyTree)
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            artifactId = "stagger-maven-plugin"
-            from(components["java"])
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+
+    coordinates("com.github.hsindumas", "stagger-maven-plugin", rootProject.version.toString())
+
+    pom {
+        name = "stagger-maven-plugin"
+        description = "Maven plugin for Stagger documentation generation"
+        inceptionYear = "2018"
+        url = "https://github.com/HsinDumas/stagger"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
         }
-    }
-    repositories {
-        mavenLocal()
+        developers {
+            developer {
+                id = "HsinDumas"
+                name = "HsinDumas"
+                url = "https://github.com/HsinDumas"
+            }
+        }
+        scm {
+            url = "https://github.com/HsinDumas/stagger"
+            connection = "scm:git:git://github.com/HsinDumas/stagger.git"
+            developerConnection = "scm:git:ssh://git@github.com/HsinDumas/stagger.git"
+        }
     }
 }
