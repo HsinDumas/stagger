@@ -322,8 +322,8 @@ public class BeetlTemplateUtil {
 
 		private static final Pattern EXPRESSION_PATTERN = Pattern.compile("\\$\\{(.*?)}", Pattern.DOTALL);
 
-		private static final Pattern FOR_STATEMENT_PATTERN = Pattern
-			.compile("^([A-Za-z_][A-Za-z0-9_]*)\\s+in\\s+(.+)$", Pattern.DOTALL);
+		private static final Pattern FOR_STATEMENT_PATTERN = Pattern.compile("^([A-Za-z_][A-Za-z0-9_]*)\\s+in\\s+(.+)$",
+				Pattern.DOTALL);
 
 		private BeetlSyntaxConverter() {
 		}
@@ -350,8 +350,7 @@ public class BeetlTemplateUtil {
 			StringBuffer converted = new StringBuffer(text.length() + 64);
 			while (expressionMatcher.find()) {
 				String expression = convertExpression(expressionMatcher.group(1));
-				expressionMatcher.appendReplacement(converted,
-						Matcher.quoteReplacement("${" + expression + "}"));
+				expressionMatcher.appendReplacement(converted, Matcher.quoteReplacement("${" + expression + "}"));
 			}
 			expressionMatcher.appendTail(converted);
 			return converted.toString();
@@ -421,12 +420,23 @@ public class BeetlTemplateUtil {
 			String loopVar = matcher.group(1);
 			String loopExpr = convertExpression(matcher.group(2));
 			out.append("<#list ").append(loopExpr).append(" as ").append(loopVar).append(">");
-			out.append("<#assign ").append(loopVar)
-				.append("LP={\"first\":").append(loopVar).append("?is_first,")
-				.append("\"index\":").append(loopVar).append("?index,")
-				.append("\"dataIndex\":").append(loopVar).append("?index,")
-				.append("\"last\":").append(loopVar).append("?is_last,")
-				.append("\"size\":").append(loopExpr).append("?size}>");
+			out.append("<#assign ")
+				.append(loopVar)
+				.append("LP={\"first\":")
+				.append(loopVar)
+				.append("?is_first,")
+				.append("\"index\":")
+				.append(loopVar)
+				.append("?index,")
+				.append("\"dataIndex\":")
+				.append(loopVar)
+				.append("?index,")
+				.append("\"last\":")
+				.append(loopVar)
+				.append("?is_last,")
+				.append("\"size\":")
+				.append(loopExpr)
+				.append("?size}>");
 			directives.push("for");
 			return consumeOpeningBrace(script, closeParen + 1);
 		}

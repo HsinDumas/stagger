@@ -24,4 +24,5 @@ package org.beetl.core;
  * Compatibility marker interface retained for template function signatures.
  */
 public interface Context {
+
 }

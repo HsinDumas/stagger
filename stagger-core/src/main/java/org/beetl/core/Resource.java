@@ -28,6 +28,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Classpath resource adapter for compatibility with existing copy logic.
+ *
  * @param <T> ignored generic type, retained for API compatibility
  */
 public class Resource<T> {
