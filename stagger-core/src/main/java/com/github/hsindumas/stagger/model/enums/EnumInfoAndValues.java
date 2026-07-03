@@ -1,4 +1,4 @@
-package com.github.hsindumas.stagger.model.torna;
+package com.github.hsindumas.stagger.model.enums;
 
 import com.github.hsindumas.stagger.model.ApiParam;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Torna Enum Info And values
+ * Enum metadata and normalized enum values for API rendering.
  *
  * @author linwumingshi
  * @author HsinDumas
@@ -20,7 +20,7 @@ public class EnumInfoAndValues implements Serializable {
 	private static final long serialVersionUID = 6164712273272981975L;
 
 	/**
-	 * torna enumInfo
+	 * Enum metadata.
 	 */
 	private EnumInfo enumInfo;
 

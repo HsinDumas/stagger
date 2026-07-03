@@ -27,7 +27,7 @@ import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocTags;
 import com.github.hsindumas.stagger.constants.ParamTypeConstants;
 import com.github.hsindumas.stagger.model.ApiParam;
-import com.github.hsindumas.stagger.model.torna.EnumInfoAndValues;
+import com.github.hsindumas.stagger.model.enums.EnumInfoAndValues;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.StringUtil;
 

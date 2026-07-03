@@ -105,16 +105,6 @@ public interface MojoConstants {
 	String RPC_MARKDOWN_MOJO = "rpc-markdown";
 
 	/**
-	 * torna-rest
-	 */
-	String TORNA_REST_MOJO = "torna-rest";
-
-	/**
-	 * torna-rpc
-	 */
-	String TORNA_RPC_MOJO = "torna-rpc";
-
-	/**
 	 * websocket markdown
 	 */
 	String WEBSOCKET_MARKDOWN_MOJO = "websocket-markdown";

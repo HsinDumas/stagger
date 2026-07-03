@@ -39,8 +39,6 @@ import com.github.hsindumas.stagger.gradle.task.RpcAdocTask;
 import com.github.hsindumas.stagger.gradle.task.RpcHtmlTask;
 import com.github.hsindumas.stagger.gradle.task.RpcMarkdownTask;
 import com.github.hsindumas.stagger.gradle.task.SwaggerTask;
-import com.github.hsindumas.stagger.gradle.task.TornaRestTask;
-import com.github.hsindumas.stagger.gradle.task.TornaRpcTask;
 import com.github.hsindumas.stagger.gradle.task.WebSocketAdocTask;
 import com.github.hsindumas.stagger.gradle.task.WebSocketHtmlTask;
 import com.github.hsindumas.stagger.gradle.task.WebSocketMarkdownTask;
@@ -79,10 +77,6 @@ public class TaskConstants {
 		taskMap.put(GlobalConstants.RPC_ADOC_TASK, RpcAdocTask.class);
 		// create rpc Markdown
 		taskMap.put(GlobalConstants.RPC_MARKDOWN_TASK, RpcMarkdownTask.class);
-		// create torna rest
-		taskMap.put(GlobalConstants.TORNA_REST_TASK, TornaRestTask.class);
-		// create torna rpc
-		taskMap.put(GlobalConstants.TORNA_RPC_TASK, TornaRpcTask.class);
 		// create word rest
 		taskMap.put(GlobalConstants.WORD_TASK, WordTask.class);
 		// create Swagger

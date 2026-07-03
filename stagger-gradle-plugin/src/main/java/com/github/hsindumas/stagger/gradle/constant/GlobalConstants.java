@@ -89,16 +89,6 @@ public interface GlobalConstants {
 	String RPC_MARKDOWN_TASK = "smartDocRpcMarkdown";
 
 	/**
-	 * Generate rest document push to torna
-	 */
-	String TORNA_REST_TASK = "tornaRest";
-
-	/**
-	 * Generate rpc document push to torna
-	 */
-	String TORNA_RPC_TASK = "tornaRpc";
-
-	/**
 	 * Generate rest document push to word
 	 */
 	String WORD_TASK = "word";

@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.github.hsindumas.stagger.constants.TornaConstants.GSON;
+import static com.github.hsindumas.stagger.constants.CommonConstants.GSON;
 
 /**
  * OpenApi Schema Util

@@ -26,7 +26,7 @@ import com.github.hsindumas.stagger.constants.ParamTypeConstants;
 import com.github.hsindumas.stagger.helper.ParamsBuildHelper;
 import com.github.hsindumas.stagger.model.ApiReqParam;
 import com.github.hsindumas.stagger.model.annotation.HeaderAnnotation;
-import com.github.hsindumas.stagger.model.torna.EnumInfoAndValues;
+import com.github.hsindumas.stagger.model.enums.EnumInfoAndValues;
 import com.github.hsindumas.stagger.utils.DocClassUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;

@@ -157,12 +157,6 @@ public interface IBaseDocBuilderTemplate<T extends IDoc> {
 		if (StringUtil.isEmpty(config.getFramework())) {
 			config.setFramework(FrameworkEnum.SPRING.getFramework());
 		}
-		if (StringUtil.isEmpty(config.getAuthor())) {
-			config.setAuthor(System.getProperty("user.name"));
-		}
-		if (Objects.isNull(config.getReplace())) {
-			config.setReplace(Boolean.TRUE);
-		}
 	}
 
 	/**

@@ -69,7 +69,7 @@ import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.github.hsindumas.stagger.utils.JavaFieldUtil;
 import com.github.hsindumas.stagger.utils.JsonUtil;
 import com.github.hsindumas.stagger.utils.RequestExampleUtil;
-import com.github.hsindumas.stagger.utils.TornaUtil;
+import com.github.hsindumas.stagger.utils.ApiParamTagUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.RandomUtil;
 import com.power.common.util.StringUtil;
@@ -289,7 +289,7 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 			apiMethodDoc.setRequestSchema(docJavaMethod.getRequestSchema());
 			apiMethodDoc.setResponseParams(responseParams);
 			methodDocList.add(apiMethodDoc);
-			TornaUtil.setTornaArrayTags(docJavaMethod.getJavaMethod(), apiMethodDoc, apiConfig);
+			ApiParamTagUtil.setArrayTags(docJavaMethod.getJavaMethod(), apiMethodDoc, apiConfig);
 		}
 		return methodDocList;
 	}

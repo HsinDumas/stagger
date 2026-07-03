@@ -1,6 +1,4 @@
 /*
- * stagger
- *
  * Copyright (C) 2018-2024 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -20,33 +18,62 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.github.hsindumas.stagger.gradle.task;
+package com.github.hsindumas.stagger.model.enums;
 
-import org.gradle.work.DisableCachingByDefault;
-
-import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
-import com.github.hsindumas.stagger.builder.rpc.RpcTornaBuilder;
-import com.github.hsindumas.stagger.model.ApiConfig;
-import org.gradle.api.logging.Logger;
+import java.io.Serializable;
+import java.util.List;
 
 /**
- * @author yu 2021/5/5.
+ * Enum metadata.
+ *
+ * @author xingzi 2021/2/25 12:13
  * @author HsinDumas
- */
-@DisableCachingByDefault(
-		because = "Invokes external documentation generation and depends on project state; not cacheable yet.")
+ * @since 2.0.9
+ **/
+public class EnumInfo implements Serializable {
 
-public class TornaRpcTask extends DocBaseTask {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -4902969363646799679L;
 
-	@Override
-	public void executeAction(ApiConfig apiConfig, Logger logger) {
-		try {
-			ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
-			RpcTornaBuilder.buildApiDoc(apiConfig, configBuilder);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+	/**
+	 * enum name
+	 */
+	private String name;
+
+	/**
+	 * enum description
+	 */
+	private String description;
+
+	/**
+	 * enum items
+	 */
+	private List<Item> items;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
 	}
 
 }

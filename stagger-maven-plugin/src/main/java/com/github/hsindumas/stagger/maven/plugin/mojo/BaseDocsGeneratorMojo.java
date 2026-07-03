@@ -27,7 +27,6 @@ import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.helper.SortedClassLibraryBuilder;
 import com.github.hsindumas.stagger.maven.plugin.constant.GlobalConstants;
-import com.github.hsindumas.stagger.maven.plugin.constant.MojoConstants;
 import com.github.hsindumas.stagger.maven.plugin.util.ArtifactFilterUtil;
 import com.github.hsindumas.stagger.maven.plugin.util.ClassLoaderUtil;
 import com.github.hsindumas.stagger.maven.plugin.util.FileUtil;
@@ -130,9 +129,6 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
 
 	private List<String> projectArtifacts;
 
-	@Parameter(defaultValue = "${tornaToken}")
-	private String tornaToken;
-
 	public abstract void executeMojo(ApiConfig apiConfig) throws MojoExecutionException, MojoFailureException;
 
 	@Override
@@ -161,9 +157,6 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
 			this.getLog().info(GlobalConstants.ERROR_MSG);
 			return;
 		}
-		if (StringUtil.isNotEmpty(tornaToken)) {
-			apiConfig.setAppToken(tornaToken);
-		}
 		javaProjectBuilder = buildJavaProjectBuilder(apiConfig.getCodePath());
 		javaProjectBuilder.setEncoding(Charset.DEFAULT_CHARSET);
 		String rpcConsumerConfig = apiConfig.getRpcConsumerConfig();
@@ -171,21 +164,16 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
 			apiConfig.setRpcConsumerConfig(project.getBasedir().getPath() + "/" + rpcConsumerConfig);
 		}
 
-		String goal = mojoEx.getGoal();
 		String outPath = apiConfig.getOutPath();
 		if (StringUtil.isEmpty(outPath)) {
-			if (!MojoConstants.TORNA_REST_MOJO.equals(goal) && !MojoConstants.TORNA_RPC_MOJO.equals(goal)) {
-				this.getLog().error("Smart-doc out path can't be null or empty.");
-				throw new RuntimeException("Smart-doc out path can't be null or empty.");
-			}
+			this.getLog().error("Smart-doc out path can't be null or empty.");
+			throw new RuntimeException("Smart-doc out path can't be null or empty.");
 		}
 		if (!FileUtil.isAbsPath(outPath) && StringUtil.isNotEmpty(outPath)) {
 			apiConfig.setOutPath(project.getBasedir().getPath() + "/" + outPath);
 		}
 		getLog().info("Smart-doc Starting Create API Documentation at: " + DateTimeUtil.nowStrTime());
-		if (!MojoConstants.TORNA_RPC_MOJO.equals(goal) && !MojoConstants.TORNA_REST_MOJO.equals(goal)) {
-			getLog().info("API documentation is output to => " + apiConfig.getOutPath().replace("\\", "/"));
-		}
+		getLog().info("API documentation is output to => " + apiConfig.getOutPath().replace("\\", "/"));
 		this.executeMojo(apiConfig);
 	}
 

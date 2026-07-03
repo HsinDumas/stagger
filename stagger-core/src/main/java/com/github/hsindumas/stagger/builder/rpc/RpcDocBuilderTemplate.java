@@ -24,7 +24,7 @@ package com.github.hsindumas.stagger.builder.rpc;
 import com.github.hsindumas.stagger.builder.IRpcDocBuilderTemplate;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.constants.FrameworkEnum;
-import com.github.hsindumas.stagger.constants.TornaConstants;
+import com.github.hsindumas.stagger.constants.CommonConstants;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiGroup;
 import com.github.hsindumas.stagger.model.RpcJavaMethod;
@@ -78,7 +78,7 @@ public class RpcDocBuilderTemplate implements IRpcDocBuilderTemplate<RpcApiDoc> 
 		List<ApiGroup> groups = apiConfig.getGroups();
 		List<RpcApiDoc> finalApiDocs = new ArrayList<>();
 
-		RpcApiDoc defaultGroup = RpcApiDoc.buildGroupApiDoc(TornaConstants.DEFAULT_GROUP_CODE);
+		RpcApiDoc defaultGroup = RpcApiDoc.buildGroupApiDoc(CommonConstants.DEFAULT_GROUP_CODE);
 		// show default group
 		AtomicInteger order = new AtomicInteger(1);
 		finalApiDocs.add(defaultGroup);

@@ -22,7 +22,7 @@ package com.github.hsindumas.stagger.builder;
 
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.constants.TemplateVariable;
-import com.github.hsindumas.stagger.constants.TornaConstants;
+import com.github.hsindumas.stagger.constants.CommonConstants;
 import com.github.hsindumas.stagger.factory.BuildTemplateFactory;
 import com.github.hsindumas.stagger.model.AbstractRpcApiDoc;
 import com.github.hsindumas.stagger.model.ApiConfig;
@@ -175,7 +175,7 @@ public interface IRpcDocBuilderTemplate<T extends AbstractRpcApiDoc<?>> extends 
 		this.bindingCommonVariable(config, javaProjectBuilder, tpl, apiDocList.isEmpty());
 		this.setDirectoryLanguageVariable(config, tpl);
 		boolean onlyHasDefaultGroup = apiDocList.stream()
-			.allMatch(doc -> Objects.equals(TornaConstants.DEFAULT_GROUP_CODE, doc.getGroup()));
+			.allMatch(doc -> Objects.equals(CommonConstants.DEFAULT_GROUP_CODE, doc.getGroup()));
 
 		tpl.binding(TemplateVariable.API_DOC_LIST_ONLY_HAS_DEFAULT_GROUP.getVariable(), onlyHasDefaultGroup);
 		return tpl;
@@ -206,7 +206,7 @@ public interface IRpcDocBuilderTemplate<T extends AbstractRpcApiDoc<?>> extends 
 		this.bindingCommonVariable(config, configBuilder, tpl, apiDocList.isEmpty());
 		this.setDirectoryLanguageVariable(config, tpl);
 		boolean onlyHasDefaultGroup = apiDocList.stream()
-			.allMatch(doc -> Objects.equals(TornaConstants.DEFAULT_GROUP_CODE, doc.getGroup()));
+			.allMatch(doc -> Objects.equals(CommonConstants.DEFAULT_GROUP_CODE, doc.getGroup()));
 
 		tpl.binding(TemplateVariable.API_DOC_LIST_ONLY_HAS_DEFAULT_GROUP.getVariable(), onlyHasDefaultGroup);
 		return tpl;

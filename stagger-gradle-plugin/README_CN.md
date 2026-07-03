@@ -12,12 +12,6 @@
 或者是`IDE`中点击`stagger-gradle-plugin`预设好的`task`即可生成接口文档。
 `stagger-gradle-plugin`底层完全依赖于官方开源的`stagger`解析库.
 [关于stagger](https://github.com/HsinDumas/stagger)
-## Best Practice
-`stagger` + [Torna](http://torna.cn) 组成行业领先的文档生成和管理解决方案，使用`stagger`无侵入完成`Java`源代码分析和提取注释生成`API`文档，自动将文档推送到`Torna`企业级接口文档管理平台。
-
-![stagger+torna](https://gitee.com/stagger-team/stagger/raw/master/images/stagger-torna.png)
-
-[stagger+Torna文档自动化](https://HsinDumas.github.io/zh/guide/integrated/torna)
 ## Getting started
 ### Add plugin
 Using the plugins DSL:
@@ -134,8 +128,6 @@ gradle smartDocRestAdoc
 gradle smartDocPostman
 //生成Open Api 3.0 +规范的json文档,since stagger-gradle-plugin 1.1.4
 gradle smartDocOpenApi
-//生成rest接口文档并推送到Torna平台,@since 2.0.9
-gradle tornaRest
 //生成Jmeter性能压测脚本,since 3.0.0
 gradle smartDocJmeter
 //生成文档输出到Word,since 3.0.0
@@ -149,8 +141,6 @@ gradle smartDocRpcHtml
 gradle smartDocRpcMarkdown
 // Generate adoc
 gradle smartDocRpcAdoc
-// 推送rpc接口到torna中
-gradle tornaRpc
 ```
 #### Use IDEA
 当你使用`IDEA`时，可以通过`maven Helper`插件选择生成何种文档。

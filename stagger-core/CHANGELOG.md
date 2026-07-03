@@ -18,6 +18,7 @@
   12. 新功能：支持 RPC 中多级接口继承。[#773](https://github.com/HsinDumas/stagger/pull/773)
   13. 新功能：在添加自定义注解到参数后，忽略集合参数检查。[#774](https://github.com/HsinDumas/stagger/pull/774)
   14. 新功能：忽略集合参数检查。[#775](https://github.com/HsinDumas/stagger/pull/775)
+    15. 维护：移除 Torna 推送适配并完成核心链路解耦。[#12](https://github.com/HsinDumas/stagger/issues/12)
 
 ### 版本号：3.0.2
 - 更新日期: 2024-2-26

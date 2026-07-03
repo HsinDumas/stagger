@@ -57,7 +57,7 @@ import com.github.hsindumas.stagger.model.annotation.MappingAnnotation;
 import com.github.hsindumas.stagger.model.request.ApiRequestExample;
 import com.github.hsindumas.stagger.model.request.CurlRequest;
 import com.github.hsindumas.stagger.model.request.RequestMapping;
-import com.github.hsindumas.stagger.model.torna.EnumInfoAndValues;
+import com.github.hsindumas.stagger.model.enums.EnumInfoAndValues;
 import com.github.hsindumas.stagger.utils.ApiParamTreeUtil;
 import com.github.hsindumas.stagger.utils.CurlUtil;
 import com.github.hsindumas.stagger.utils.DocClassUtil;
@@ -69,7 +69,7 @@ import com.github.hsindumas.stagger.utils.JavaFieldUtil;
 import com.github.hsindumas.stagger.utils.JsonUtil;
 import com.github.hsindumas.stagger.utils.OpenApiSchemaUtil;
 import com.github.hsindumas.stagger.utils.RequestExampleUtil;
-import com.github.hsindumas.stagger.utils.TornaUtil;
+import com.github.hsindumas.stagger.utils.ApiParamTagUtil;
 import com.power.common.util.CollectionUtil;
 import com.power.common.util.RandomUtil;
 import com.power.common.util.StringUtil;
@@ -1037,7 +1037,7 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 				apiMethodDoc.setExtensions(extensionParams);
 			}
 
-			TornaUtil.setTornaArrayTags(docJavaMethod.getJavaMethod(), apiMethodDoc, apiConfig);
+			ApiParamTagUtil.setArrayTags(docJavaMethod.getJavaMethod(), apiMethodDoc, apiConfig);
 			methodDocList.add(apiMethodDoc);
 		}
 

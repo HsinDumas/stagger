@@ -16,11 +16,6 @@ Start `stagger` to scan source code analysis and generate API documents.
 You can run the `gradle` command directly or click on the preset` goal` of the `stagger-maven-plugin` in the IDE to generate API documentation. 
 stagger-gradle-plugin will also make stagger's ability to generate API documentation more powerful.
 [About stagger](https://HsinDumas.github.io)
-## Best Practice
-stagger + [Torna](http://torna.cn) form an industry-leading document generation and management solution, using `stagger` to complete Java source code analysis and extract annotations to generate API documents without intrusion, 
-and automatically push the documents to the `Torna` enterprise-level interface document management platform.
-
-![stagger+torna](https://raw.githubusercontent.com/HsinDumas/stagger/master/images/stagger-torna-en.png)
 ## Getting started
 ### Add plugin
 Using the plugins DSL:
@@ -136,8 +131,6 @@ gradle smartDocRestAdoc
 gradle smartDocPostman
 // Generate Open API 3.0 + specification JSON documentation, since stagger-gradle-plugin 1.1.4
 gradle smartDocOpenApi
-// Generate REST API documentation and push to Torna platform, @since 2.0.9
-gradle tornaRest
 // Generate JMeter performance test scripts, since 3.0.0
 gradle smartDocJmeter
 // Generate documentation output to Word, since 3.0.0
@@ -150,8 +143,6 @@ gradle smartDocRpcHtml
 gradle smartDocRpcMarkdown
 // Generate adoc
 gradle smartDocRpcAdoc
-// Push RPC interfaces to torna
-gradle tornaRpc
 ```
 #### Use In IntelliJ IDEA
 On Use IntelliJ IDE, if you have added `stagger-gradle-plugin` to the project, 

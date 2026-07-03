@@ -35,7 +35,7 @@ import com.github.hsindumas.stagger.model.ApiParam;
 import com.github.hsindumas.stagger.model.CustomFieldInfo;
 import com.github.hsindumas.stagger.model.DocJavaField;
 import com.github.hsindumas.stagger.model.FieldJsonAnnotationInfo;
-import com.github.hsindumas.stagger.model.torna.EnumInfoAndValues;
+import com.github.hsindumas.stagger.model.enums.EnumInfoAndValues;
 import com.github.hsindumas.stagger.utils.DocClassUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;

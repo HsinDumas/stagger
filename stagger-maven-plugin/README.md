@@ -20,14 +20,6 @@ generate API documentation.
 stagger-maven-plugin will also make stagger's ability to generate API documentation more powerful.
 [About stagger](https://HsinDumas.github.io/#/)
 
-## Best Practice
-
-stagger + [Torna](http://torna.cn) form an industry-leading document generation and management solution, using
-stagger to complete Java source code analysis and extract annotations to generate API documents without intrusion, and
-automatically push the documents to the Torna enterprise-level interface document management platform.
-
-![stagger+torna](https://raw.githubusercontent.com/HsinDumas/stagger/master/images/stagger-torna-en.png)
-
 ## Getting started
 
 ### Add plugin
@@ -107,8 +99,6 @@ mvn -Dfile.encoding=UTF-8 stagger:adoc
 mvn -Dfile.encoding=UTF-8 stagger:postman
 // build Open Api 3.0+,Since stagger-maven-plugin 1.1.5
 mvn -Dfile.encoding=UTF-8 stagger:openapi
-// Generate document and push to torna
-mvn -Dfile.encoding=UTF-8 stagger:torna-rest
 // Generate document output to Word.
 mvn -Dfile.encoding=UTF-8 stagger:word
 // Generate Jmeter performance pressure test scripts.

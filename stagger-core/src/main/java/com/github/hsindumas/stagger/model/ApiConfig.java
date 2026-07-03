@@ -328,33 +328,6 @@ public class ApiConfig {
 	private String urlSuffix;
 
 	/**
-	 * Torna appKey
-	 */
-	private String appKey;
-
-	/**
-	 * Torna Secret
-	 */
-	private String secret;
-
-	/**
-	 * Torna appToken
-	 */
-	private String appToken;
-
-	/**
-	 * Torna openUrl
-	 */
-	private String openUrl;
-
-	/**
-	 * public static final String APP_KEY = "20201216788835306945118208"; public static
-	 * final String SECRET = "W.ZyGMOB9Q0UqujVxnfi@.I#V&tUUYZR"; public static final
-	 * String APP_TOKEN = "2f9a7d3858a147b7845ebb48785d4dc7"; public static final String
-	 * OPEN_URL = "http://torna.opensphere.cn/api/";
-	 * @return
-	 */
-	/**
 	 * Debugging environment name
 	 */
 	private String debugEnvName;
@@ -365,28 +338,11 @@ public class ApiConfig {
 	private String debugEnvUrl;
 
 	/**
-	 * Show log when pushing document to torna
-	 */
-	private boolean tornaDebug = true;
-
-	/**
-	 * The operator who pushes the document to Torna
-	 */
-	private String author;
-
-	/**
 	 * stagger supported framework, if not set default is spring,
 	 */
 	private String framework;
 
 	private List<ApiGroup> groups;
-
-	/**
-	 * replace old document while push to torna
-	 *
-	 * @since 2.2.4
-	 */
-	private Boolean replace;
 
 	/**
 	 * @since 2.2.5
@@ -545,54 +501,6 @@ public class ApiConfig {
 
 	public void setPathPrefix(String pathPrefix) {
 		this.pathPrefix = pathPrefix;
-	}
-
-	public String getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-
-	public boolean isTornaDebug() {
-		return tornaDebug;
-	}
-
-	public void setTornaDebug(boolean tornaDebug) {
-		this.tornaDebug = tornaDebug;
-	}
-
-	public String getAppKey() {
-		return appKey;
-	}
-
-	public void setAppKey(String appKey) {
-		this.appKey = appKey;
-	}
-
-	public String getSecret() {
-		return secret;
-	}
-
-	public void setSecret(String secret) {
-		this.secret = secret;
-	}
-
-	public String getAppToken() {
-		return appToken;
-	}
-
-	public void setAppToken(String appToken) {
-		this.appToken = appToken;
-	}
-
-	public String getOpenUrl() {
-		return openUrl;
-	}
-
-	public void setOpenUrl(String openUrl) {
-		this.openUrl = openUrl;
 	}
 
 	public String getServerUrl() {
@@ -1057,14 +965,6 @@ public class ApiConfig {
 
 	public void setFramework(String framework) {
 		this.framework = framework;
-	}
-
-	public Boolean getReplace() {
-		return replace;
-	}
-
-	public void setReplace(Boolean replace) {
-		this.replace = replace;
 	}
 
 	public boolean isRequestParamsTable() {

@@ -21,8 +21,8 @@
 
 package com.github.hsindumas.stagger.model;
 
-import com.github.hsindumas.stagger.model.torna.EnumInfo;
-import com.github.hsindumas.stagger.model.torna.EnumInfoAndValues;
+import com.github.hsindumas.stagger.model.enums.EnumInfo;
+import com.github.hsindumas.stagger.model.enums.EnumInfoAndValues;
 import com.power.common.util.CollectionUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -133,7 +133,7 @@ public class ApiParam implements Serializable {
 
 	/**
 	 * enum Info<br>
-	 * Use in torna api document
+	 * Use in API document rendering
 	 */
 	private EnumInfo enumInfo;
 

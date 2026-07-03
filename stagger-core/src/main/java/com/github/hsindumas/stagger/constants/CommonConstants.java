@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2024 stagger
+ * Copyright (C) 2018-2025 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,42 +18,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.github.hsindumas.stagger.model.torna;
+package com.github.hsindumas.stagger.constants;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
- * @author xingzi 2021/5/18 14:51
+ * Shared constants used across multiple document generators.
+ *
  * @author HsinDumas
- **/
-public class CommonErrorCode {
+ */
+public interface CommonConstants {
 
-	private String code;
+	/**
+	 * Default code used for the fallback API group.
+	 */
+	String DEFAULT_GROUP_CODE = "default";
 
-	private String msg;
-
-	private String solution;
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String getMsg() {
-		return msg;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
-
-	public String getSolution() {
-		return solution;
-	}
-
-	public void setSolution(String solution) {
-		this.solution = solution;
-	}
+	/**
+	 * Shared Gson instance for deterministic JSON serialization.
+	 */
+	Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 }

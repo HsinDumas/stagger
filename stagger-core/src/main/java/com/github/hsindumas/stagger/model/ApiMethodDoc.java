@@ -194,22 +194,22 @@ public class ApiMethodDoc implements IMethod, Serializable, Cloneable {
 	private String page = "";
 
 	/**
-	 * torna request is array
+	 * request payload is array
 	 */
 	private Integer isRequestArray;
 
 	/**
-	 * torna request is array-type
+	 * request payload array element type
 	 */
 	private String requestArrayType;
 
 	/**
-	 * torna response is array
+	 * response payload is array
 	 */
 	private Integer isResponseArray;
 
 	/**
-	 * torna request is array
+	 * response payload array element type
 	 */
 	private String responseArrayType;
 

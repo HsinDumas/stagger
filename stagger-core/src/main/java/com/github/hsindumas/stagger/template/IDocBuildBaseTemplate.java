@@ -22,7 +22,7 @@ package com.github.hsindumas.stagger.template;
 
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocTags;
-import com.github.hsindumas.stagger.constants.TornaConstants;
+import com.github.hsindumas.stagger.constants.CommonConstants;
 import com.github.hsindumas.stagger.helper.DocBuildHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiDoc;
@@ -89,7 +89,7 @@ public interface IDocBuildBaseTemplate {
 		List<ApiGroup> groups = apiConfig.getGroups();
 		List<ApiDoc> finalApiDocs = new ArrayList<>();
 
-		ApiDoc defaultGroup = ApiDoc.buildGroupApiDoc(TornaConstants.DEFAULT_GROUP_CODE);
+		ApiDoc defaultGroup = ApiDoc.buildGroupApiDoc(CommonConstants.DEFAULT_GROUP_CODE);
 		// show default group
 		AtomicInteger order = new AtomicInteger(1);
 		finalApiDocs.add(defaultGroup);

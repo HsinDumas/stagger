@@ -18,14 +18,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.github.hsindumas.stagger.model.torna;
+package com.github.hsindumas.stagger.model.enums;
 
 import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
 
 /**
- * Torna Enum Item.
+ * Enum item.
  *
  * @author xingzi 2021/2/25 12:29
  * @author HsinDumas

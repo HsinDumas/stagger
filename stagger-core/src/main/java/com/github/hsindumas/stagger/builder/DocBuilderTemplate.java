@@ -23,7 +23,7 @@ package com.github.hsindumas.stagger.builder;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.constants.HighlightStyle;
 import com.github.hsindumas.stagger.constants.TemplateVariable;
-import com.github.hsindumas.stagger.constants.TornaConstants;
+import com.github.hsindumas.stagger.constants.CommonConstants;
 import com.github.hsindumas.stagger.factory.BuildTemplateFactory;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import com.github.hsindumas.stagger.model.ApiAllData;
@@ -188,7 +188,7 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 		tpl.binding(TemplateVariable.DICT_LIST.getVariable(), apiDocDictList);
 
 		boolean onlyHasDefaultGroup = apiDocList.stream()
-			.allMatch(doc -> Objects.equals(TornaConstants.DEFAULT_GROUP_CODE, doc.getGroup()));
+			.allMatch(doc -> Objects.equals(CommonConstants.DEFAULT_GROUP_CODE, doc.getGroup()));
 		int codeIndex = 0;
 		if (onlyHasDefaultGroup) {
 			if (!apiDocList.isEmpty()) {
@@ -262,7 +262,7 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 		tpl.binding(TemplateVariable.DICT_LIST.getVariable(), apiDocDictList);
 
 		boolean onlyHasDefaultGroup = apiDocList.stream()
-			.allMatch(doc -> Objects.equals(TornaConstants.DEFAULT_GROUP_CODE, doc.getGroup()));
+			.allMatch(doc -> Objects.equals(CommonConstants.DEFAULT_GROUP_CODE, doc.getGroup()));
 		int codeIndex = 0;
 		if (onlyHasDefaultGroup) {
 			if (!apiDocList.isEmpty()) {

@@ -17,14 +17,6 @@
 
 [关于stagger](https://gitee.com/stagger-team/stagger)
 
-## Best Practice
-
-stagger + [Torna](http://torna.cn) 组成行业领先的文档生成和管理解决方案，使用`stagger`无侵入完成`Java`源代码分析和提取注释生成`API`文档，自动将文档推送到`Torna`企业级接口文档管理平台。
-
-![stagger+torna](https://gitee.com/stagger-team/stagger/raw/master/images/stagger-torna.png)
-
-[stagger+Torna文档自动化](https://gitee.com/stagger-team/stagger/wikis/stagger与torna对接?sort_id=3695028)
-
 ## Getting started
 
 ### Add plugin
@@ -103,8 +95,6 @@ mvn -Dfile.encoding=UTF-8 stagger:adoc
 mvn -Dfile.encoding=UTF-8 stagger:postman
 // 生成 Open Api 3.0+,Since stagger-maven-plugin 1.1.5
 mvn -Dfile.encoding=UTF-8 stagger:openapi
-// 生成文档推送到Torna平台
-mvn -Dfile.encoding=UTF-8 stagger:torna-rest
 // 生成word格式文档，推荐使用stagger 3.0.2及更高版本
 mvn -Dfile.encoding=UTF-8 stagger:word
 // 生成jmeter性能压测脚本
@@ -117,9 +107,6 @@ mvn -Dfile.encoding=UTF-8 stagger:rpc-html
 mvn -Dfile.encoding=UTF-8 stagger:rpc-markdown
 // Generate adoc
 mvn -Dfile.encoding=UTF-8 stagger:rpc-adoc
-
-// 生成dubbo接口文档推送到torna
-mvn -Dfile.encoding=UTF-8 stagger:torna-rpc
 ```
 
 **注意：** 尤其在`window`系统下，如果实际使用`maven`命令行执行文档生成，可能会出现乱码，因此需要在执行时指定`-Dfile.encoding=UTF-8`。
