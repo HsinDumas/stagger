@@ -53,7 +53,7 @@ for(doc in api.list){
 <%
 for(param in doc.requestHeaders){
 %>
-|${param.name}|${param.type}|${param.required}|${lineBreaksToBr(param.desc)}|${param.since}|${param.value}|
+|${param.name}|${param.type}|${param.required}|${lineBreaksToBr(param.desc)}|${param.since}|${param.value!''}|
 <%}%>
 <%}%>
 
@@ -66,7 +66,7 @@ for(param in doc.requestHeaders){
 <%
 for(param in doc.pathParams){
 %>
-|${param.field}|${param.type}|${param.required}|${lineBreaksToBr(param.desc)}|${param.version}|${param.value}|
+|${param.field}|${param.type}|${param.required}|${lineBreaksToBr(param.desc)}|${param.version}|${param.value!''}|
 <%}%>
 <%}%>
 <%if(isNotEmpty(doc.queryParams)){%>
@@ -78,7 +78,7 @@ for(param in doc.pathParams){
 <%
 for(param in doc.queryParams){
 %>
-|${param.field}|${param.type}|${param.required}|${lineBreaksToBr(param.desc)}|${param.version}|${param.value}|
+|${param.field}|${param.type}|${param.required}|${lineBreaksToBr(param.desc)}|${param.version}|${param.value!''}|
 <%}%>
 <%}%>
 <%if(isNotEmpty(doc.requestParams)){%>
@@ -90,7 +90,7 @@ for(param in doc.queryParams){
 <%
 for(param in doc.requestParams){
 %>
-|${param.field}|${param.type}|${param.required}|${lineBreaksToBr(param.desc)}|${param.version}|${param.value}|
+|${param.field}|${param.type}|${param.required}|${lineBreaksToBr(param.desc)}|${param.version}|${param.value!''}|
 <%}%>
 <%}%>
 
@@ -108,7 +108,7 @@ ${doc.requestUsage}
 <%
 for(param in doc.responseParams){
 %>
-|${param.field}|${param.type}|${lineBreaksToBr(param.desc)}|${param.version}|${param.value}|
+|${param.field}|${param.type}|${lineBreaksToBr(param.desc)}|${param.version}|${param.value!''}|
 <%}%>
 <%}%>
 
