@@ -361,6 +361,11 @@ public interface DocGlobalConstants {
 	String OPEN_API_JSON = "/openapi.json";
 
 	/**
+	 * swagger json.
+	 */
+	String SWAGGER_JSON = "/swagger.json";
+
+	/**
 	 * spring ModelAndView.
 	 */
 	String MODE_AND_VIEW_FULLY = "org.springframework.web.servlet.ModelAndView";

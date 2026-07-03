@@ -124,7 +124,7 @@ public class SwaggerBuilder extends AbstractOpenApiBuilder {
 		json.put("definitions", buildComponentsSchema(apiSchema));
 
 		String filePath = config.getOutPath();
-		filePath = filePath + DocGlobalConstants.OPEN_API_JSON;
+		filePath = filePath + DocGlobalConstants.SWAGGER_JSON;
 		String data = JsonUtil.toPrettyJson(json);
 		FileUtil.nioWriteFile(data, filePath);
 	}
