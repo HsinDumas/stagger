@@ -31,7 +31,6 @@
     <suppress checks="LocalVariableName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
     <suppress checks="AbbreviationAsWordInName" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
     <suppress checks="NonEmptyAtclauseDescription" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
-    <suppress checks="AvoidStarImport" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
     <suppress checks="SingleLineJavadoc" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
     <suppress checks="InvalidJavadocPosition" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>
     <suppress checks="AtclauseOrder" files="[/\\]stagger-core[/\\]src[/\\]main[/\\]java[/\\].*"/>

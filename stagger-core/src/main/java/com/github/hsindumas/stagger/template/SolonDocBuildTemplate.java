@@ -21,17 +21,39 @@
 package com.github.hsindumas.stagger.template;
 
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
-import com.github.hsindumas.stagger.constants.*;
+import com.github.hsindumas.stagger.constants.DocAnnotationConstants;
+import com.github.hsindumas.stagger.constants.DocGlobalConstants;
+import com.github.hsindumas.stagger.constants.DocTags;
+import com.github.hsindumas.stagger.constants.FrameworkEnum;
+import com.github.hsindumas.stagger.constants.Methods;
+import com.github.hsindumas.stagger.constants.SolonAnnotations;
+import com.github.hsindumas.stagger.constants.SolonRequestAnnotationsEnum;
 import com.github.hsindumas.stagger.handler.SolonRequestHeaderHandler;
 import com.github.hsindumas.stagger.handler.SolonRequestMappingHandler;
-import com.github.hsindumas.stagger.model.*;
-import com.github.hsindumas.stagger.model.annotation.*;
+import com.github.hsindumas.stagger.model.ApiConfig;
+import com.github.hsindumas.stagger.model.ApiDoc;
+import com.github.hsindumas.stagger.model.ApiExceptionStatus;
+import com.github.hsindumas.stagger.model.ApiReqParam;
+import com.github.hsindumas.stagger.model.ApiSchema;
+import com.github.hsindumas.stagger.model.ExceptionAdviceMethod;
+import com.github.hsindumas.stagger.model.WebSocketDoc;
+import com.github.hsindumas.stagger.model.annotation.EntryAnnotation;
+import com.github.hsindumas.stagger.model.annotation.FrameworkAnnotations;
+import com.github.hsindumas.stagger.model.annotation.HeaderAnnotation;
+import com.github.hsindumas.stagger.model.annotation.MappingAnnotation;
+import com.github.hsindumas.stagger.model.annotation.PathVariableAnnotation;
+import com.github.hsindumas.stagger.model.annotation.RequestBodyAnnotation;
+import com.github.hsindumas.stagger.model.annotation.RequestParamAnnotation;
 import com.github.hsindumas.stagger.model.request.RequestMapping;
 import com.github.hsindumas.stagger.utils.DocClassUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
