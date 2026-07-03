@@ -84,7 +84,6 @@ public class ProtoInfo implements Serializable {
 	private ProtoInfo() {
 		this.winOs = false;
 		String targetJsonPath = DocGlobalConstants.ABSOLUTE_TARGET_CLASS_PATH + "/json/";
-		String targetShPath = DocGlobalConstants.ABSOLUTE_TARGET_CLASS_PATH + "/sh/";
 		String os = System.getProperty("os.name").toLowerCase();
 		String arch = System.getProperty("os.arch").toLowerCase();
 
@@ -115,6 +114,7 @@ public class ProtoInfo implements Serializable {
 			}
 		}
 
+		String targetShPath = DocGlobalConstants.ABSOLUTE_TARGET_CLASS_PATH + "/sh/";
 		this.setProtocPath(targetShPath + this.getSourceProtocPath());
 		this.setProtocGenDocPath(targetShPath + this.getSourceProtocGenDocPath());
 	}

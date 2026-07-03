@@ -76,10 +76,18 @@ public enum SolonRequestAnnotationsEnum {
 	 */
 	private final String value;
 
+	/**
+	 * Create enum entry.
+	 * @param value annotation simple or fully-qualified name
+	 */
 	SolonRequestAnnotationsEnum(String value) {
 		this.value = value;
 	}
 
+	/**
+	 * List supported Solon request annotation names.
+	 * @return annotation names
+	 */
 	public static List<String> listMvcRequestAnnotations() {
 		List<String> annotations = new ArrayList<>();
 		for (SolonRequestAnnotationsEnum annotation : SolonRequestAnnotationsEnum.values()) {

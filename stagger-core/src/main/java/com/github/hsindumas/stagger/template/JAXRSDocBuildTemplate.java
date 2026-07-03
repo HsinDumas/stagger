@@ -146,7 +146,8 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 	 * @param cls cls
 	 * @param apiConfig apiConfig
 	 * @param projectBuilder projectBuilder
-	 * @return List<ApiMethodDoc>
+	 * @param frameworkAnnotations framework annotations
+	 * @return {@code List<ApiMethodDoc>}
 	 */
 	@SuppressWarnings("deprecation")
 	private List<ApiMethodDoc> buildControllerMethod(final Object cls, ApiConfig apiConfig,

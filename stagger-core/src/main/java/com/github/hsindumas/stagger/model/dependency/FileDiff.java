@@ -50,6 +50,9 @@ public class FileDiff {
 	 */
 	private boolean isEntryPoint = false;
 
+	/**
+	 * File change classification.
+	 */
 	public enum ChangeType {
 
 		/** Add a new file to the project */

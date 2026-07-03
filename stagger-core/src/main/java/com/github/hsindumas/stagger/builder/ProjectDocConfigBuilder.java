@@ -301,6 +301,11 @@ public class ProjectDocConfigBuilder {
 		return null;
 	}
 
+	/**
+	 * Find a source class by qualified or simple name.
+	 * @param typeName class name to search
+	 * @return matched source class when present
+	 */
 	public Optional<SourceClass> findSourceClass(String typeName) {
 		if (StringUtil.isEmpty(typeName)) {
 			return Optional.empty();

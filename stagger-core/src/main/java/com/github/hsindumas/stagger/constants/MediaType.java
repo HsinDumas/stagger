@@ -121,6 +121,11 @@ public class MediaType implements Serializable {
 			.collect(Collectors.toMap(it -> it[0], it -> it[1]));
 	}
 
+	/**
+	 * Resolve a media type constant expression to its concrete value.
+	 * @param name media type token or expression
+	 * @return resolved media type value
+	 */
 	public static String valueOf(String name) {
 		// if not springframework MediaType constant, return original value
 		if (!name.contains("MediaType.")) {

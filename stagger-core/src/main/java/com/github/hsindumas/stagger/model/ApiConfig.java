@@ -111,9 +111,7 @@ public class ApiConfig {
 
 	/**
 	 * List of error code
-	 * @return
 	 */
-
 	private List<ApiErrorCode> errorCodes;
 
 	/**
@@ -287,7 +285,6 @@ public class ApiConfig {
 
 	/**
 	 * request ignore param
-	 * @return
 	 * @since 1.9.2
 	 */
 	private List<String> ignoreRequestParams;

@@ -274,6 +274,9 @@ public class BeetlTemplateUtil {
 
 	}
 
+	/**
+	 * Basic string helpers exposed to templates.
+	 */
 	public static final class TemplateStringUtil {
 
 		public String replace(Object source, Object search, Object replacement) {

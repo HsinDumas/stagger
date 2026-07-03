@@ -523,16 +523,6 @@ public final class MockValueResolver {
 		return Math.max(first, second);
 	}
 
-	private Integer min(Integer first, Integer second) {
-		if (first == null) {
-			return second;
-		}
-		if (second == null) {
-			return first;
-		}
-		return Math.min(first, second);
-	}
-
 	private BigDecimal max(BigDecimal first, BigDecimal second) {
 		if (first == null) {
 			return second;
@@ -541,6 +531,16 @@ public final class MockValueResolver {
 			return first;
 		}
 		return first.max(second);
+	}
+
+	private Integer min(Integer first, Integer second) {
+		if (first == null) {
+			return second;
+		}
+		if (second == null) {
+			return first;
+		}
+		return Math.min(first, second);
 	}
 
 	private BigDecimal min(BigDecimal first, BigDecimal second) {

@@ -49,11 +49,11 @@ public final class StringEscapeUtil {
 		return builder.toString();
 	}
 
-	public static String escapeJavaIgnoreChinese(String input) {
+	public static String escapeJava(String input, Boolean ignoreChinese) {
 		return escapeJava(input);
 	}
 
-	public static String escapeJava(String input, Boolean ignoreChinese) {
+	public static String escapeJavaIgnoreChinese(String input) {
 		return escapeJava(input);
 	}
 

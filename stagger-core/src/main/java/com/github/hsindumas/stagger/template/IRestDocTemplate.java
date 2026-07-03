@@ -1828,12 +1828,6 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 	}
 
 	/**
-	 * Parser-agnostic default entry-point detection.
-	 * @param cls class metadata object
-	 * @param frameworkAnnotations framework annotations
-	 * @return true if entry point, false otherwise
-	 */
-	/**
 	 * Determines if the given Java class is an exception advice entry point based on its
 	 * annotations and the provided framework annotations.
 	 * @param cls the Java class to check
@@ -1864,12 +1858,6 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
 		});
 	}
 
-	/**
-	 * Parser-agnostic exception-advice entry-point detection.
-	 * @param cls class metadata object
-	 * @param frameworkAnnotations framework annotations
-	 * @return true if exception advice entry point, false otherwise
-	 */
 	/**
 	 * Get the list of parent class methods for a given Java class.
 	 * @param apiConfig the API configuration

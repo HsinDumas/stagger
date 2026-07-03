@@ -246,6 +246,14 @@ public interface IDocBuildBaseTemplate {
 	}
 
 	/**
+	 * is entry point.
+	 * @param javaClass javaClass
+	 * @param frameworkAnnotations frameworkAnnotations
+	 * @return is entry point
+	 */
+	boolean isEntryPoint(Object javaClass, FrameworkAnnotations frameworkAnnotations);
+
+	/**
 	 * Determine whether a SourceClass is entry point by registered entry annotations.
 	 * @param sourceClass source class
 	 * @param frameworkAnnotations framework annotations
@@ -295,13 +303,5 @@ public interface IDocBuildBaseTemplate {
 		return !this.isEntryPoint(javaClass, frameworkAnnotations)
 				|| Objects.nonNull(DocUtil.getClassTagByName(javaClass, DocTags.IGNORE));
 	}
-
-	/**
-	 * is entry point.
-	 * @param javaClass javaClass
-	 * @param frameworkAnnotations frameworkAnnotations
-	 * @return is entry point
-	 */
-	boolean isEntryPoint(Object javaClass, FrameworkAnnotations frameworkAnnotations);
 
 }

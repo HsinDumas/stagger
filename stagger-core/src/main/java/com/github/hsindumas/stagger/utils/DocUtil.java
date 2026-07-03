@@ -261,7 +261,6 @@ public class DocUtil {
 		boolean randomMockFlag = Boolean.parseBoolean(randomMock);
 		boolean isArray = true;
 		String type = typeName.contains("java.lang") ? typeName.substring(typeName.lastIndexOf(".") + 1) : typeName;
-		String key = filedName.toLowerCase() + "-" + type.toLowerCase();
 		String value = null;
 		if (!type.contains("[")) {
 			isArray = false;
@@ -272,7 +271,7 @@ public class DocUtil {
 
 		value = MOCK_VALUE_RESOLVER.resolveByConstraints(type, annotations);
 		if (StringUtil.isEmpty(value)) {
-			value = MOCK_VALUE_RESOLVER.resolveByFieldName(key);
+			value = MOCK_VALUE_RESOLVER.resolveByFieldName(filedName.toLowerCase() + "-" + type.toLowerCase());
 		}
 
 		if (StringUtil.isNotEmpty(value) && isArray) {
@@ -670,16 +669,6 @@ public class DocUtil {
 		return getCommentsByTag(paramTags, tagName, className, tagValNullMsg, tagValErrorMsg);
 	}
 
-	public static Map<String, String> getRecordCommentsByTag(Object javaClass, final String tagName) {
-		List<?> paramTags = invokeListAccessor(javaClass, "getTagsByName", tagName);
-		String className = getClassCanonicalName(javaClass);
-		String tagValNullMsg = "ERROR: " + "Bad @" + tagName + " Javadoc  tag usage from " + className
-				+ ", This is an invalid comment.";
-		String tagValErrorMsg = "ERROR: An invalid comment was written [@" + tagName + " |]," + "Please @see "
-				+ className;
-		return getCommentsByTag(paramTags, tagName, className, tagValNullMsg, tagValErrorMsg);
-	}
-
 	public static Map<String, String> getCommentsByTag(List<?> paramTags, final String tagName) {
 		return getCommentsByTag(paramTags, tagName, null, null, null);
 	}
@@ -726,6 +715,16 @@ public class DocUtil {
 			}
 		}
 		return paramTagMap;
+	}
+
+	public static Map<String, String> getRecordCommentsByTag(Object javaClass, final String tagName) {
+		List<?> paramTags = invokeListAccessor(javaClass, "getTagsByName", tagName);
+		String className = getClassCanonicalName(javaClass);
+		String tagValNullMsg = "ERROR: " + "Bad @" + tagName + " Javadoc  tag usage from " + className
+				+ ", This is an invalid comment.";
+		String tagValErrorMsg = "ERROR: An invalid comment was written [@" + tagName + " |]," + "Please @see "
+				+ className;
+		return getCommentsByTag(paramTags, tagName, className, tagValNullMsg, tagValErrorMsg);
 	}
 
 	/**

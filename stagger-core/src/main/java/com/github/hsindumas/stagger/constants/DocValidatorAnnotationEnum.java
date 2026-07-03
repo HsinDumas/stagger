@@ -92,6 +92,11 @@ public enum DocValidatorAnnotationEnum implements ValidationAnnotationDefaultsPr
 	 * Spring validator annotations `@Size`
 	 */
 	SIZE(JSRAnnotationConstants.SIZE) {
+		/**
+		 * Provide default attributes for {@code @Size}.
+		 * @return default attribute map
+		 */
+		@Override
 		public Map<String, String> getDefaultProperties() {
 			// @Size default values (min=0, max=Integer.MAX_VALUE)
 			Map<String, String> sizeDefaults = new HashMap<>(2);
@@ -160,6 +165,11 @@ public enum DocValidatorAnnotationEnum implements ValidationAnnotationDefaultsPr
 	 * Spring validator annotations `@Length`
 	 */
 	LENGTH(JSRAnnotationConstants.LENGTH) {
+		/**
+		 * Provide default attributes for {@code @Length}.
+		 * @return default attribute map
+		 */
+		@Override
 		public Map<String, String> getDefaultProperties() {
 			// @Length default values (min=0, max=Integer.MAX_VALUE)
 			Map<String, String> lengthDefaults = new HashMap<>(2);

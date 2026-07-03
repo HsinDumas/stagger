@@ -152,6 +152,9 @@ public class CustomField {
 		return this;
 	}
 
+	/**
+	 * Compound key for owner-class and field name.
+	 */
 	public static final class Key {
 
 		/**

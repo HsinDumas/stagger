@@ -51,15 +51,6 @@ public class ApiDataBuilder {
 	}
 
 	/**
-	 * Get list of ApiDoc
-	 * @param config ApiConfig
-	 * @return List of ApiDoc
-	 */
-	public static ApiAllData getApiDataTree(ApiConfig config) {
-		return getApiData(config, Boolean.TRUE);
-	}
-
-	/**
 	 * Retrieves API data based on the given configuration.
 	 * @param config The API configuration object containing request parameters and data
 	 * source information.
@@ -73,6 +64,15 @@ public class ApiDataBuilder {
 		builderTemplate.checkAndInitForGetApiData(config);
 		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
 		return builderTemplate.getApiData(config, javaProjectBuilder);
+	}
+
+	/**
+	 * Get list of ApiDoc as a tree structure.
+	 * @param config ApiConfig
+	 * @return List of ApiDoc
+	 */
+	public static ApiAllData getApiDataTree(ApiConfig config) {
+		return getApiData(config, Boolean.TRUE);
 	}
 
 }
