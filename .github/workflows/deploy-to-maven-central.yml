@@ -67,13 +67,13 @@ jobs:
           while IFS= read -r subject; do
             [[ -z "$subject" ]] && continue
 
-            if [[ "$subject" =~ ^[A-Za-z]+(\([^)]+\))?!: ]]; then
+            if printf '%s' "$subject" | grep -Eq '^[A-Za-z]+(\([^)]+\))?!:'; then
               printf -- '- %s\n' "$subject" >> "$BREAKING_FILE"
             fi
 
-            if [[ "$subject" =~ ^feat(\([^)]+\))?!?: ]]; then
+            if printf '%s' "$subject" | grep -Eq '^feat(\([^)]+\))?!?:'; then
               printf -- '- %s\n' "$subject" >> "$FEATURES_FILE"
-            elif [[ "$subject" =~ ^fix(\([^)]+\))?!?: ]]; then
+            elif printf '%s' "$subject" | grep -Eq '^fix(\([^)]+\))?!?:'; then
               printf -- '- %s\n' "$subject" >> "$FIXES_FILE"
             else
               printf -- '- %s\n' "$subject" >> "$OTHERS_FILE"
