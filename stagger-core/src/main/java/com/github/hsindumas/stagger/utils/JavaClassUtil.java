@@ -265,8 +265,8 @@ public class JavaClassUtil {
 
 				String actualType = null;
 				if (JavaClassValidateUtil.isCollection(subTypeName) && !JavaClassValidateUtil.isCollection(gicName)) {
-					String[] gNameArr = DocClassUtil.getSimpleGicName(gicName);
-					actualType = JavaClassUtil.getClassSimpleName(gNameArr[0]);
+					String[] genericNameArray = DocClassUtil.getSimpleGicName(gicName);
+					actualType = JavaClassUtil.getClassSimpleName(genericNameArray[0]);
 					docJavaField.setArray(true);
 					typeChecked = true;
 				}
@@ -1387,9 +1387,9 @@ public class JavaClassUtil {
 		}
 		try {
 			Class<?> c = Class.forName(DocUtil.getClassCanonicalName(cls));
-			TypeVariable<?>[] tValue = c.getTypeParameters();
-			for (int i = 0; i < tValue.length && i < globGicName.length; i++) {
-				genericMap.put(tValue[i].getName(), globGicName[i]);
+			TypeVariable<?>[] typeParameters = c.getTypeParameters();
+			for (int i = 0; i < typeParameters.length && i < globGicName.length; i++) {
+				genericMap.put(typeParameters[i].getName(), globGicName[i]);
 			}
 		}
 		catch (ClassNotFoundException e) {

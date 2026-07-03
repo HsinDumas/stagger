@@ -151,8 +151,8 @@ public class GRpcDocBuildTemplate implements IDocBuildTemplate<GrpcApiDoc>, IJav
 			.flatMap(file -> file.getEnums().stream())
 			.collect(Collectors.toMap(EnumDefinition::getName, EnumDefinition::getValues, (v1, v2) -> v2));
 		for (Service service : services) {
-			GrpcApiDoc gRpcApiDoc = this.getRpcApiDocByService(service);
-			apiDocList.add(gRpcApiDoc);
+			GrpcApiDoc grpcApiDoc = this.getRpcApiDocByService(service);
+			apiDocList.add(grpcApiDoc);
 		}
 
 		ApiSchema<GrpcApiDoc> apiSchema = new ApiSchema<>();
@@ -176,19 +176,19 @@ public class GRpcDocBuildTemplate implements IDocBuildTemplate<GrpcApiDoc>, IJav
 	 * @return rpc api doc
 	 */
 	private GrpcApiDoc getRpcApiDocByService(Service service) {
-		GrpcApiDoc gRpcApiDoc = new GrpcApiDoc();
-		gRpcApiDoc.setOrder(atomicInteger.getAndIncrement());
-		gRpcApiDoc.setTitle(service.getDescription());
-		gRpcApiDoc.setName(service.getFullName());
-		gRpcApiDoc.setShortName(service.getName());
-		gRpcApiDoc.setDesc(service.getDescription());
-		gRpcApiDoc.setProtocol(FrameworkEnum.GRPC.getFramework());
-		gRpcApiDoc.setUri("gRpc://" + service.getFullName());
-		gRpcApiDoc.setVersion(DocGlobalConstants.DEFAULT_VERSION);
+		GrpcApiDoc grpcApiDoc = new GrpcApiDoc();
+		grpcApiDoc.setOrder(atomicInteger.getAndIncrement());
+		grpcApiDoc.setTitle(service.getDescription());
+		grpcApiDoc.setName(service.getFullName());
+		grpcApiDoc.setShortName(service.getName());
+		grpcApiDoc.setDesc(service.getDescription());
+		grpcApiDoc.setProtocol(FrameworkEnum.GRPC.getFramework());
+		grpcApiDoc.setUri("gRpc://" + service.getFullName());
+		grpcApiDoc.setVersion(DocGlobalConstants.DEFAULT_VERSION);
 
 		List<GrpcJavaMethod> rpcJavaMethods = this.getRpcJavaMethods(service);
-		gRpcApiDoc.setList(rpcJavaMethods);
-		return gRpcApiDoc;
+		grpcApiDoc.setList(rpcJavaMethods);
+		return grpcApiDoc;
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class GRpcDocBuildTemplate implements IDocBuildTemplate<GrpcApiDoc>, IJav
 	 * @return rpc java methods
 	 */
 	private List<GrpcJavaMethod> getRpcJavaMethods(Service service) {
-		List<GrpcJavaMethod> gRpcJavaMethods = new ArrayList<>();
+		List<GrpcJavaMethod> grpcJavaMethods = new ArrayList<>();
 		int methodOrder = 1;
 		for (ServiceMethod method : service.getMethods()) {
 			GrpcJavaMethod rpcJavaMethod = new GrpcJavaMethod();
@@ -225,9 +225,9 @@ public class GRpcDocBuildTemplate implements IDocBuildTemplate<GrpcApiDoc>, IJav
 				rpcJavaMethod.setResponseParams(responseParams);
 			}
 
-			gRpcJavaMethods.add(rpcJavaMethod);
+			grpcJavaMethods.add(rpcJavaMethod);
 		}
-		return gRpcJavaMethods;
+		return grpcJavaMethods;
 	}
 
 	/**

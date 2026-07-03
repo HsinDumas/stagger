@@ -693,8 +693,8 @@ public class DocUtil {
 				throw new RuntimeException(tagValNullMsg);
 			}
 			if (DocTags.PARAM.equals(tagName) || DocTags.EXTENSION.equals(tagName)) {
-				String pName = value;
-				String pValue = DocGlobalConstants.NO_COMMENTS_FOUND;
+				String paramName = value;
+				String paramValue = DocGlobalConstants.NO_COMMENTS_FOUND;
 
 				// Fixed #1129
 				// Split the value by the first sequence of whitespace
@@ -703,23 +703,23 @@ public class DocUtil {
 				// Successfully split into parameter name and description
 				if (parts.length == 2) {
 					// Parameter name
-					pName = parts[0];
+					paramName = parts[0];
 					// Description, preserving internal newlines and formatting
-					pValue = parts[1];
+					paramValue = parts[1];
 				}
 				// Only one part found, likely just the parameter name
 				// without a description, OR an empty/whitespace-only value after trim
 				else if (parts.length == 1) {
 					// Covers both "paramName" and "" cases
-					// pValue remains DocGlobalConstants.NO_COMMENTS_FOUND
-					// Set pName based on whether the single part is empty
-					pName = parts[0];
+					// paramValue remains DocGlobalConstants.NO_COMMENTS_FOUND
+					// Set paramName based on whether the single part is empty
+					paramName = parts[0];
 				}
 
-				if ("|".equals(StringUtil.trim(pValue)) && StringUtil.isNotEmpty(className)) {
+				if ("|".equals(StringUtil.trim(paramValue)) && StringUtil.isNotEmpty(className)) {
 					throw new RuntimeException(tagValErrorMsg);
 				}
-				paramTagMap.put(pName, pValue);
+				paramTagMap.put(paramName, paramValue);
 			}
 			else {
 				paramTagMap.put(value, DocGlobalConstants.EMPTY);

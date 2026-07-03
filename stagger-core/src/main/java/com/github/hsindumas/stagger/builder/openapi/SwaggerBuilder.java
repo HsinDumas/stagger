@@ -29,7 +29,6 @@ import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiDoc;
 import com.github.hsindumas.stagger.model.ApiExceptionStatus;
-import com.github.hsindumas.stagger.model.ApiGroup;
 import com.github.hsindumas.stagger.model.ApiMethodDoc;
 import com.github.hsindumas.stagger.model.ApiParam;
 import com.github.hsindumas.stagger.model.ApiReqParam;
@@ -142,24 +141,6 @@ public class SwaggerBuilder extends AbstractOpenApiBuilder {
 	}
 
 	/**
-	 * Build Servers
-	 * @param config Configuration of stagger
-	 */
-	@Deprecated
-	private static List<Map<String, String>> buildTags(ApiConfig config) {
-		List<Map<String, String>> tagList = new ArrayList<>();
-		Map<String, String> tagMap;
-		List<ApiGroup> groups = config.getGroups();
-		for (ApiGroup group : groups) {
-			tagMap = new HashMap<>(4);
-			tagMap.put("name", group.getName());
-			tagMap.put("description", group.getApis());
-			tagList.add(tagMap);
-		}
-		return tagList;
-	}
-
-	/**
 	 * Build request
 	 * @param apiConfig Configuration of stagger
 	 * @param apiMethodDoc ApiMethodDoc
@@ -190,7 +171,6 @@ public class SwaggerBuilder extends AbstractOpenApiBuilder {
 		request.put("parameters", parameters);
 		request.put("responses", this.buildResponses(apiConfig, apiMethodDoc, apiExceptionStatuses));
 		request.put("deprecated", apiMethodDoc.isDeprecated());
-		String operationId = apiMethodDoc.getUrl().replace(apiMethodDoc.getServerUrl(), "");
 		// make sure operationId is unique and can be used as a method name
 		request.put("operationId",
 				apiMethodDoc.getName() + "_" + apiMethodDoc.getMethodId() + "UsingOn" + apiMethodDoc.getType());

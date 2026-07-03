@@ -61,9 +61,9 @@ public class RpcHtmlBuilder {
 		RpcDocBuilderTemplate builderTemplate = new RpcDocBuilderTemplate();
 		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, config, configBuilder);
 		builderTemplate.copyJQueryAndCss(config);
-		String INDEX_HTML = "rpc-index.html";
+		String indexHtml = "rpc-index.html";
 		builderTemplate.buildAllInOne(apiDocList, config, configBuilder, DocGlobalConstants.RPC_ALL_IN_ONE_HTML_TPL,
-				INDEX_HTML);
+				indexHtml);
 		builderTemplate.buildSearchJs(apiDocList, config, configBuilder, DocGlobalConstants.RPC_ALL_IN_ONE_SEARCH_TPL,
 				DocGlobalConstants.SEARCH_JS_OUT);
 	}
