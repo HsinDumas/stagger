@@ -4,12 +4,9 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Release version (e.g. 1.0.1 or v1.0.1)'
-        required: true
-        type: string
+
+permissions:
+  contents: write
 
 jobs:
   publish:
@@ -31,7 +28,7 @@ jobs:
         id: release_version
         shell: bash
         env:
-          RAW_VERSION: ${{ github.event_name == 'workflow_dispatch' && inputs.version || github.ref_name }}
+          RAW_VERSION: ${{ github.ref_name }}
         run: |
           VERSION="${RAW_VERSION#v}"
           if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
@@ -41,10 +38,45 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Publish and release artifacts to Maven Central
+        id: publish_central
+        shell: bash
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_IN_MEMORY_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_IN_MEMORY_KEY_PASSWORD }}
         run: |
-          ./gradlew --no-daemon -PreleaseVersion=${{ steps.release_version.outputs.version }} publishReleaseToMavenCentral
+          set -euo pipefail
+          LOG_FILE="$(mktemp)"
+          ./gradlew --no-daemon -PreleaseVersion=${{ steps.release_version.outputs.version }} publishReleaseToMavenCentral | tee "$LOG_FILE"
+
+          DEPLOYMENT_ID="$(grep -Eo 'deployment id: [0-9a-fA-F-]+' "$LOG_FILE" | tail -n 1 | awk '{print $3}' || true)"
+          echo "deployment_id=$DEPLOYMENT_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Write release summary
+        shell: bash
+        run: |
+          {
+            echo "## Release Summary"
+            echo ""
+            echo "- Tag: ${{ github.ref_name }}"
+            echo "- Version: ${{ steps.release_version.outputs.version }}"
+            if [[ -n "${{ steps.publish_central.outputs.deployment_id }}" ]]; then
+              echo "- Maven Central Deployment ID: ${{ steps.publish_central.outputs.deployment_id }}"
+            else
+              echo "- Maven Central Deployment ID: not detected from Gradle output"
+            fi
+            echo "- Workflow Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Create or update GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ steps.release_version.outputs.version }}
+          generate_release_notes: true
+          append_body: true
+          body: |
+            ## Publish metadata
+            - Maven Central Deployment ID: ${{ steps.publish_central.outputs.deployment_id || 'N/A' }}
+            - Workflow Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}

@@ -10,6 +10,34 @@ val resolvedVersion = providers.gradleProperty("releaseVersion")
 
 version = resolvedVersion.get()
 
+fun Project.enforceTagDrivenRelease() {
+    val isCi = providers.environmentVariable("CI").orNull == "true"
+    val refType = providers.environmentVariable("GITHUB_REF_TYPE").orNull
+    val refName = providers.environmentVariable("GITHUB_REF_NAME").orNull
+    val releaseVersion = providers.gradleProperty("releaseVersion")
+        .orElse(providers.environmentVariable("RELEASE_VERSION"))
+        .orNull
+
+    if (!isCi || refType != "tag" || refName.isNullOrBlank()) {
+        throw org.gradle.api.GradleException(
+            "Release publishing is restricted to GitHub Actions tag builds (push tag vX.Y.Z)."
+        )
+    }
+
+    if (releaseVersion.isNullOrBlank()) {
+        throw org.gradle.api.GradleException(
+            "releaseVersion must be provided from tag workflow and match the pushed tag version."
+        )
+    }
+
+    val expectedVersion = refName.removePrefix("v")
+    if (releaseVersion != expectedVersion) {
+        throw org.gradle.api.GradleException(
+            "releaseVersion ($releaseVersion) does not match tag version ($expectedVersion)."
+        )
+    }
+}
+
 allprojects {
     version = rootProject.version
 
@@ -17,6 +45,15 @@ allprojects {
         mavenLocal()
         maven(url = "https://maven.aliyun.com/repository/public")
         mavenCentral()
+    }
+}
+
+gradle.taskGraph.whenReady {
+    val releasePublishRequested = allTasks.any {
+        it.name == "publishReleaseToMavenCentral" || it.name == "publishAndReleaseToMavenCentral"
+    }
+    if (releasePublishRequested) {
+        rootProject.enforceTagDrivenRelease()
     }
 }
 
