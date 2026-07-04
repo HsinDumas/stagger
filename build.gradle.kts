@@ -6,7 +6,7 @@ plugins {
 group = "com.github.hsindumas"
 val resolvedVersion = providers.gradleProperty("releaseVersion")
     .orElse(providers.environmentVariable("RELEASE_VERSION"))
-    .orElse("3.2.1-SNAPSHOT")
+    .orElse("3.2.2-SNAPSHOT")
 
 version = resolvedVersion.get()
 
