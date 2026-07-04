@@ -99,16 +99,6 @@ public interface GlobalConstants {
 	String WEBSOCKET_HTML_TASK = "webSocketHtml";
 
 	/**
-	 * Generate JavaDoc html document
-	 */
-	String JAVADOC_HTML_TASK = "javadocHtml";
-
-	/**
-	 * Generate JavaDoc markdown document
-	 */
-	String JAVADOC_MARKDOWN_TASK = "javadocMarkdown";
-
-	/**
 	 * Generate gRPC html document
 	 */
 	String GRPC_HTML_TASK = "grpcHtml";

@@ -39,11 +39,6 @@ public enum FrameworkEnum {
 	DUBBO("dubbo", "com.github.hsindumas.stagger.template.RpcDocBuildTemplate"),
 
 	/**
-	 * Javadoc
-	 */
-	JAVADOC("javadoc", "com.github.hsindumas.stagger.template.JavadocDocBuildTemplate"),
-
-	/**
 	 * Spring Framework
 	 */
 	SPRING("spring", "com.github.hsindumas.stagger.template.SpringBootDocBuildTemplate"),

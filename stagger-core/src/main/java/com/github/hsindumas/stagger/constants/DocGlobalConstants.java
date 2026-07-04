@@ -266,41 +266,6 @@ public interface DocGlobalConstants {
 	String RPC_OUT_DIR = "rpc";
 
 	/**
-	 * javadoc out dir.
-	 */
-	String JAVADOC_OUT_DIR = "javadoc";
-
-	/**
-	 * javadoc all in one html template.
-	 */
-	String JAVADOC_ALL_IN_ONE_HTML_TPL = "javadoc/JavadocAllInOne.html";
-
-	/**
-	 * javadoc all in one search template.
-	 */
-	String JAVADOC_ALL_IN_ONE_SEARCH_TPL = "javadoc/JavadocSearch.btl";
-
-	/**
-	 * javadoc all in one markdown template.
-	 */
-	String JAVADOC_ALL_IN_ONE_MD_TPL = "javadoc/JavadocAllInOne.md";
-
-	/**
-	 * javadoc api doc template.
-	 */
-	String JAVADOC_API_DOC_MD_TPL = "javadoc/Javadoc.md";
-
-	/**
-	 * javadoc all in one ascii template.
-	 */
-	String JAVADOC_ALL_IN_ONE_ADOC_TPL = "javadoc/JavadocAllInOne.adoc";
-
-	/**
-	 * javadoc api doc ascii template.
-	 */
-	String JAVADOC_API_DOC_ADOC_TPL = "javadoc/Javadoc.adoc";
-
-	/**
 	 * rpc api doc asciidoc template.
 	 */
 	String RPC_API_DOC_ADOC_TPL = "dubbo/Dubbo.adoc";

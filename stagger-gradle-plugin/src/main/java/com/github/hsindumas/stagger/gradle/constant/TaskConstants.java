@@ -26,8 +26,6 @@ import com.github.hsindumas.stagger.gradle.task.DocBaseTask;
 import com.github.hsindumas.stagger.gradle.task.GrpcHtmlTask;
 import com.github.hsindumas.stagger.gradle.task.GrpcMarkdownTask;
 import com.github.hsindumas.stagger.gradle.task.JMeterTask;
-import com.github.hsindumas.stagger.gradle.task.JavadocHtmlTask;
-import com.github.hsindumas.stagger.gradle.task.JavadocMarkdownTask;
 import com.github.hsindumas.stagger.gradle.task.OpenApiTask;
 import com.github.hsindumas.stagger.gradle.task.PostmanTask;
 import com.github.hsindumas.stagger.gradle.task.RestHtmlTask;
@@ -76,10 +74,6 @@ public class TaskConstants {
 		taskMap.put(GlobalConstants.WEBSOCKET_HTML_TASK, WebSocketHtmlTask.class);
 		// create websocket markdown
 		taskMap.put(GlobalConstants.WEBSOCKET_MARKDOWN_TASK, WebSocketMarkdownTask.class);
-		// create javadoc html
-		taskMap.put(GlobalConstants.JAVADOC_HTML_TASK, JavadocHtmlTask.class);
-		// create javadoc markdown
-		taskMap.put(GlobalConstants.JAVADOC_MARKDOWN_TASK, JavadocMarkdownTask.class);
 		// create gRPC html
 		taskMap.put(GlobalConstants.GRPC_HTML_TASK, GrpcHtmlTask.class);
 		// create gRPC markdown
