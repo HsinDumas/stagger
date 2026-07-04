@@ -23,6 +23,7 @@ package com.github.hsindumas.stagger.template;
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.constants.DocTags;
+import com.github.hsindumas.stagger.constants.ParamTypeConstants;
 import com.github.hsindumas.stagger.helper.ParamsBuildHelper;
 import com.github.hsindumas.stagger.model.ApiMethodDoc;
 import com.github.hsindumas.stagger.model.ApiParam;
@@ -46,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.github.hsindumas.stagger.constants.DocGlobalConstants.NO_COMMENTS_FOUND;
 
@@ -92,8 +94,10 @@ public interface IBaseDocBuildTemplate {
 			return new ArrayList<>(0);
 		}
 		String returnTypeGenericCanonicalName = DocUtil.getMethodReturnTypeGenericCanonicalName(method);
-		if (Objects.nonNull(projectBuilder.getApiConfig().getResponseBodyAdvice())
-				&& Objects.isNull(DocUtil.getMethodTagByName(method, DocTags.IGNORE_RESPONSE_BODY_ADVICE))) {
+		String originalReturnTypeGenericCanonicalName = returnTypeGenericCanonicalName;
+		boolean responseBodyAdviceEnabled = Objects.nonNull(projectBuilder.getApiConfig().getResponseBodyAdvice())
+				&& Objects.isNull(DocUtil.getMethodTagByName(method, DocTags.IGNORE_RESPONSE_BODY_ADVICE));
+		if (responseBodyAdviceEnabled) {
 			String responseBodyAdvice = projectBuilder.getApiConfig().getResponseBodyAdvice().getClassName();
 			if (!returnTypeGenericCanonicalName.startsWith(responseBodyAdvice)) {
 				returnTypeGenericCanonicalName = responseBodyAdvice + "<" + returnTypeGenericCanonicalName + ">";
@@ -102,9 +106,11 @@ public interface IBaseDocBuildTemplate {
 		Map<String, ?> actualTypesMap = docJavaMethod.getActualTypesMap();
 		ApiReturn apiReturn = DocClassUtil.processReturnType(returnTypeGenericCanonicalName);
 		String returnType = apiReturn.getGenericCanonicalName();
+		String originalReturnType = originalReturnTypeGenericCanonicalName;
 		if (Objects.nonNull(actualTypesMap)) {
 			for (Map.Entry<String, ?> entry : actualTypesMap.entrySet()) {
 				returnType = returnType.replace(entry.getKey(), DocUtil.getTypeCanonicalName(entry.getValue()));
+				originalReturnType = originalReturnType.replace(entry.getKey(), DocUtil.getTypeCanonicalName(entry.getValue()));
 			}
 		}
 
@@ -139,10 +145,90 @@ public interface IBaseDocBuildTemplate {
 					projectBuilder, null, docJavaMethod.getJsonViewClasses(), 0, Boolean.FALSE, null);
 		}
 		if (StringUtil.isNotEmpty(returnType)) {
-			return ParamsBuildHelper.buildParams(returnType, "", 0, null, Boolean.TRUE, new HashMap<>(16),
-					projectBuilder, null, docJavaMethod.getJsonViewClasses(), 0, Boolean.FALSE, null);
+			List<ApiParam> returnParams = ParamsBuildHelper.buildParams(returnType, "", 0, null, Boolean.TRUE,
+					new HashMap<>(16), projectBuilder, null, docJavaMethod.getJsonViewClasses(), 0, Boolean.FALSE,
+					null);
+			if (responseBodyAdviceEnabled) {
+				this.replaceResponseBodyAdviceCollectionDataType(returnParams, originalReturnType, projectBuilder,
+						docJavaMethod.getJsonViewClasses());
+			}
+			return returnParams;
 		}
 		return new ArrayList<>(0);
+	}
+
+	/**
+	 * For responseBodyAdvice wrappers, preserve collection/array return type information on
+	 * the wrapper's data field when generic resolution degrades to object.
+	 * @param responseParams wrapped response params
+	 * @param actualReturnType original method return type (without wrapper)
+	 * @param projectBuilder project builder
+	 * @param methodJsonViewClasses json view classes on method
+	 */
+	default void replaceResponseBodyAdviceCollectionDataType(List<ApiParam> responseParams, String actualReturnType,
+			ProjectDocConfigBuilder projectBuilder, Set<String> methodJsonViewClasses) {
+		if (responseParams == null || responseParams.isEmpty() || StringUtil.isEmpty(actualReturnType)) {
+			return;
+		}
+		String actualSimpleName = DocClassUtil.getSimpleName(actualReturnType);
+		String normalizedSimpleName = actualSimpleName.contains(".") ? actualSimpleName
+				: "java.util." + actualSimpleName;
+		boolean isCollectionType = JavaClassValidateUtil.isCollection(actualSimpleName)
+				|| JavaClassValidateUtil.isCollection(normalizedSimpleName);
+		boolean isArrayType = JavaClassValidateUtil.isArray(actualSimpleName)
+				|| JavaClassValidateUtil.isArray(normalizedSimpleName);
+		if (!isCollectionType && !isArrayType) {
+			return;
+		}
+
+		ApiParam dataParam = null;
+		for (ApiParam responseParam : responseParams) {
+			if ("data".equals(responseParam.getField())) {
+				dataParam = responseParam;
+				break;
+			}
+		}
+		if (Objects.isNull(dataParam)) {
+			return;
+		}
+
+		int dataParamId = dataParam.getId();
+		List<ApiParam> directChildren = responseParams.stream()
+			.filter(param -> param.getPid() == dataParamId)
+			.collect(Collectors.toList());
+		boolean hasChildren = !directChildren.isEmpty();
+		boolean hasPlaceholderAnyObjectChild = directChildren.stream()
+			.anyMatch(param -> StringUtil.isNotEmpty(param.getField()) && param.getField().contains("any object"));
+		if (ParamTypeConstants.PARAM_TYPE_ARRAY.equals(dataParam.getType()) && hasChildren) {
+			return;
+		}
+		if (hasPlaceholderAnyObjectChild) {
+			Set<Integer> removeParentIds = new HashSet<>();
+			removeParentIds.add(dataParamId);
+			responseParams.removeIf(param -> {
+				boolean shouldRemove = removeParentIds.contains(param.getPid());
+				if (shouldRemove) {
+					removeParentIds.add(param.getId());
+				}
+				return shouldRemove;
+			});
+			hasChildren = false;
+		}
+		dataParam.setType(ParamTypeConstants.PARAM_TYPE_ARRAY);
+		if (hasChildren) {
+			return;
+		}
+
+		String[] genericTypeNames = DocClassUtil.getSimpleGicName(actualReturnType);
+		if (genericTypeNames.length == 0) {
+			return;
+		}
+		String itemType = genericTypeNames[0];
+		if (JavaClassValidateUtil.isPrimitive(itemType)) {
+			return;
+		}
+		responseParams.addAll(ParamsBuildHelper.buildParams(itemType, "", 1, null, Boolean.TRUE, new HashMap<>(16),
+				projectBuilder, null, methodJsonViewClasses, dataParamId, Boolean.FALSE, null));
 	}
 
 	/**
