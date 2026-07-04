@@ -1,4 +1,4 @@
-package com.power.common.util;
+package com.github.hsindumas.stagger.common.util;
 
 import java.util.regex.Pattern;
 

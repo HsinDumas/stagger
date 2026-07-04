@@ -1,4 +1,4 @@
-package com.power.common.model;
+package com.github.hsindumas.stagger.common.model;
 
 /**
  * Generic enum dictionary item.

@@ -37,8 +37,8 @@ import com.github.hsindumas.stagger.utils.DocClassUtil;
 import com.github.hsindumas.stagger.utils.DocPathUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 
 import java.util.ArrayList;

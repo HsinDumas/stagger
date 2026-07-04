@@ -21,7 +21,7 @@
 package com.github.hsindumas.stagger.model.dependency;
 
 import com.github.hsindumas.stagger.utils.JsonUtil;
-import com.power.common.util.FileUtil;
+import com.github.hsindumas.stagger.common.util.FileUtil;
 
 import java.io.BufferedReader;
 import java.io.File;

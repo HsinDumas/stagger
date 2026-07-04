@@ -21,7 +21,7 @@
 package com.github.hsindumas.stagger.model.request;
 
 import com.github.hsindumas.stagger.model.FormData;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

@@ -29,8 +29,8 @@ import com.github.hsindumas.stagger.model.annotation.MappingAnnotation;
 import com.github.hsindumas.stagger.model.request.RequestMapping;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.util.List;
 import java.util.Map;

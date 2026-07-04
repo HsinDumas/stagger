@@ -25,7 +25,7 @@ import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.rpc.RpcApiAllData;
 import com.github.hsindumas.stagger.model.rpc.RpcApiDoc;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 
 /**

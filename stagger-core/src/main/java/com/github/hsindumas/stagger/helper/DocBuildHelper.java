@@ -28,8 +28,8 @@ import com.github.hsindumas.stagger.model.dependency.ApiDependency;
 import com.github.hsindumas.stagger.model.dependency.DependencyTree;
 import com.github.hsindumas.stagger.model.dependency.FileDiff;
 import com.github.hsindumas.stagger.utils.DocUtil;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import org.eclipse.jgit.diff.DiffEntry;
 
 import java.io.File;

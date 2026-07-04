@@ -37,10 +37,10 @@ import com.github.hsindumas.stagger.model.DocJavaField;
 import com.github.hsindumas.stagger.model.enums.EnumInfo;
 import com.github.hsindumas.stagger.model.enums.EnumInfoAndValues;
 import com.github.hsindumas.stagger.model.enums.Item;
-import com.power.common.model.EnumDictionary;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.EnumUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.model.EnumDictionary;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.EnumUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import org.apache.commons.lang3.StringUtils;
 

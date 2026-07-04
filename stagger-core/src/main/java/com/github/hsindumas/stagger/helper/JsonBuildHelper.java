@@ -36,7 +36,7 @@ import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.github.hsindumas.stagger.utils.JavaFieldUtil;
 import com.github.hsindumas.stagger.utils.JsonUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.util.Collections;
 import java.util.HashMap;

@@ -42,8 +42,8 @@ import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.github.hsindumas.stagger.utils.JavaFieldUtil;
 import com.github.hsindumas.stagger.utils.ParamUtil;
-import com.power.common.model.EnumDictionary;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.model.EnumDictionary;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

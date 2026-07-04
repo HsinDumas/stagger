@@ -39,8 +39,8 @@ import com.github.hsindumas.stagger.model.TagDoc;
 import com.github.hsindumas.stagger.model.openapi.OpenApiTag;
 import com.github.hsindumas.stagger.utils.JsonUtil;
 import com.github.hsindumas.stagger.utils.OpenApiSchemaUtil;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.FileUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.FileUtil;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import org.apache.commons.lang3.StringUtils;
 

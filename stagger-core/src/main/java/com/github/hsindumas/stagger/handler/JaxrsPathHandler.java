@@ -30,8 +30,8 @@ import com.github.hsindumas.stagger.constants.MediaType;
 import com.github.hsindumas.stagger.model.request.JaxrsPathMapping;
 import com.github.hsindumas.stagger.utils.DocUrlUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
-import com.power.common.util.StringUtil;
-import com.power.common.util.UrlUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.UrlUtil;
 
 import java.util.Collections;
 import java.util.List;

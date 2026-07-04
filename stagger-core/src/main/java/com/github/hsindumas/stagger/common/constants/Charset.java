@@ -1,4 +1,4 @@
-package com.power.common.constants;
+package com.github.hsindumas.stagger.common.constants;
 
 import java.nio.charset.StandardCharsets;
 

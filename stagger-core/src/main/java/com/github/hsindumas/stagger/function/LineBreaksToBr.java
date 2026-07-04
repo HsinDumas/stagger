@@ -20,10 +20,8 @@
  */
 package com.github.hsindumas.stagger.function;
 
-import com.power.common.util.HtmlUtil;
-
-import org.beetl.core.Context;
-import org.beetl.core.Function;
+import com.github.hsindumas.stagger.common.util.HtmlUtil;
+import com.github.hsindumas.stagger.template.engine.TemplateFunction;
 
 /**
  * beetl template function
@@ -31,10 +29,10 @@ import org.beetl.core.Function;
  * @author yu 2022/10/3.
  * @author HsinDumas
  */
-public class LineBreaksToBr implements Function {
+public class LineBreaksToBr implements TemplateFunction {
 
 	@Override
-	public String call(Object[] paras, Context ctx) {
+	public String call(Object[] paras) {
 		String str = String.valueOf(paras[0]);
 		return HtmlUtil.lineBreaksToBr(str);
 	}

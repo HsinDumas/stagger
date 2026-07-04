@@ -1,6 +1,5 @@
 package com.github.hsindumas.stagger.function;
 
-import org.beetl.core.Context;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -17,14 +16,12 @@ class WordXmlEscapeTest {
 
 	private static final String UNICODE_NON_BREAK_SPACE = "\u00A0";
 
-	private static Context context;
-
 	@ParameterizedTest
 	@MethodSource("provideNormalTestCases")
 	void testWordXmlEscape(String input, String expected) {
 		WordXmlEscape wordXmlEscape = new WordXmlEscape();
 
-		String result = wordXmlEscape.call(new Object[] { input }, context);
+		String result = wordXmlEscape.call(new Object[] { input });
 
 		assertEquals(expected, result);
 	}
@@ -34,7 +31,7 @@ class WordXmlEscapeTest {
 	void testWordXmlEscapeNullAndEmptyString(Object[] input) {
 		WordXmlEscape wordXmlEscape = new WordXmlEscape();
 
-		String result = wordXmlEscape.call(input, context);
+		String result = wordXmlEscape.call(input);
 
 		assertEquals("", result);
 	}

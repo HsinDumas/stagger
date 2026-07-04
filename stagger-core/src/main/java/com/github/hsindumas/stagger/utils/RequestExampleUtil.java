@@ -31,7 +31,7 @@ import com.github.hsindumas.stagger.model.ApiReqParam;
 import com.github.hsindumas.stagger.model.FormData;
 import com.github.hsindumas.stagger.model.request.ApiRequestExample;
 import com.github.hsindumas.stagger.model.request.CurlRequest;
-import com.power.common.util.UrlUtil;
+import com.github.hsindumas.stagger.common.util.UrlUtil;
 
 import java.util.ArrayList;
 import java.util.List;

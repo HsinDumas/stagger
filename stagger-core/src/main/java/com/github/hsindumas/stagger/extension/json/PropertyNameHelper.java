@@ -23,7 +23,7 @@ package com.github.hsindumas.stagger.extension.json;
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.DocAnnotationConstants;
 import com.github.hsindumas.stagger.utils.DocUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.util.List;
 

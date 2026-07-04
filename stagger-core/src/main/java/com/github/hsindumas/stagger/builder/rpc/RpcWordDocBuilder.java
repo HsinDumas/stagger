@@ -26,7 +26,7 @@ import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.rpc.RpcApiDoc;
 import com.github.hsindumas.stagger.utils.DocUtil;
-import org.beetl.core.Template;
+import com.github.hsindumas.stagger.template.engine.Template;
 
 import java.util.List;
 

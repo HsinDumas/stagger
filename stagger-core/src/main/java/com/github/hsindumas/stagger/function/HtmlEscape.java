@@ -22,8 +22,7 @@ package com.github.hsindumas.stagger.function;
 
 import com.github.hsindumas.stagger.utils.DocUtil;
 
-import org.beetl.core.Context;
-import org.beetl.core.Function;
+import com.github.hsindumas.stagger.template.engine.TemplateFunction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +41,7 @@ import java.util.Map;
  * @author HsinDumas
  * @since 2021/6/26
  */
-public class HtmlEscape implements Function {
+public class HtmlEscape implements TemplateFunction {
 
 	/**
 	 * Map to hold HTML escape sequences.
@@ -56,7 +55,7 @@ public class HtmlEscape implements Function {
 	}
 
 	@Override
-	public String call(Object[] params, Context ctx) {
+	public String call(Object[] params) {
 		if (params == null || params.length == 0 || params[0] == null) {
 			return "";
 		}

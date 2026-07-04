@@ -20,8 +20,8 @@
  */
 package com.github.hsindumas.stagger.model;
 
-import com.power.common.model.EnumDictionary;
-import com.power.common.util.EnumUtil;
+import com.github.hsindumas.stagger.common.model.EnumDictionary;
+import com.github.hsindumas.stagger.common.util.EnumUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

@@ -28,7 +28,7 @@ import com.github.hsindumas.stagger.constants.JSRAnnotationConstants;
 import com.github.hsindumas.stagger.constants.JSRAnnotationPropConstants;
 import com.github.hsindumas.stagger.model.CustomField;
 import com.github.hsindumas.stagger.model.DocJavaField;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

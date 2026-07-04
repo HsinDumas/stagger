@@ -28,9 +28,9 @@ import com.github.hsindumas.stagger.model.ApiDoc;
 import com.github.hsindumas.stagger.model.ApiSchema;
 import com.github.hsindumas.stagger.template.IDocBuildTemplate;
 import com.github.hsindumas.stagger.utils.DocUtil;
-import com.power.common.util.DateTimeUtil;
-import com.power.common.util.FileUtil;
-import org.beetl.core.Template;
+import com.github.hsindumas.stagger.common.util.DateTimeUtil;
+import com.github.hsindumas.stagger.common.util.FileUtil;
+import com.github.hsindumas.stagger.template.engine.Template;
 
 import java.util.List;
 import java.util.Objects;

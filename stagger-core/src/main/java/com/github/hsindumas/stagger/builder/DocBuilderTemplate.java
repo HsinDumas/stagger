@@ -36,11 +36,11 @@ import com.github.hsindumas.stagger.model.RevisionLog;
 import com.github.hsindumas.stagger.template.IDocBuildTemplate;
 import com.github.hsindumas.stagger.utils.BeetlTemplateUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.DateTimeUtil;
-import com.power.common.util.FileUtil;
-import com.power.common.util.StringUtil;
-import org.beetl.core.Template;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.DateTimeUtil;
+import com.github.hsindumas.stagger.common.util.FileUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
+import com.github.hsindumas.stagger.template.engine.Template;
 
 import java.util.ArrayList;
 import java.util.List;

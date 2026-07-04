@@ -30,7 +30,7 @@ import com.github.hsindumas.stagger.model.enums.EnumInfoAndValues;
 import com.github.hsindumas.stagger.utils.DocClassUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -25,8 +25,8 @@ import com.github.hsindumas.stagger.constants.DocValidatorAnnotationEnum;
 import com.github.hsindumas.stagger.constants.JSRAnnotationConstants;
 import com.github.hsindumas.stagger.constants.JSRAnnotationPropConstants;
 import com.mifmif.common.regex.Generex;
-import com.power.common.util.DateTimeUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.DateTimeUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;

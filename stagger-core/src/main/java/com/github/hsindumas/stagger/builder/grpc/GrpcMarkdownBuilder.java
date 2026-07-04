@@ -26,7 +26,7 @@ import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.grpc.GrpcApiDoc;
-import com.power.common.util.DateTimeUtil;
+import com.github.hsindumas.stagger.common.util.DateTimeUtil;
 
 import java.util.List;
 

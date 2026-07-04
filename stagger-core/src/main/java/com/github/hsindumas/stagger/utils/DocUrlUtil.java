@@ -21,8 +21,8 @@
 package com.github.hsindumas.stagger.utils;
 
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
-import com.power.common.util.StringUtil;
-import com.power.common.util.UrlUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.UrlUtil;
 
 import java.util.List;
 import java.util.Map;

@@ -23,7 +23,7 @@ package com.github.hsindumas.stagger.utils;
 import com.github.hsindumas.stagger.filter.ReturnTypeProcessor;
 import com.github.hsindumas.stagger.model.ApiReturn;
 import com.github.hsindumas.stagger.source.SourceClass;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

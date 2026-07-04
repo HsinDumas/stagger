@@ -18,7 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.beetl.core;
+package com.github.hsindumas.stagger.template.engine;
 
 import java.io.IOException;
 import java.io.InputStream;

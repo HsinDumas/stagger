@@ -37,8 +37,8 @@ import com.github.hsindumas.stagger.model.request.ServerEndpoint;
 import com.github.hsindumas.stagger.utils.DocClassUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
-import com.power.common.util.StringUtil;
-import com.power.common.util.ValidateUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.ValidateUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;

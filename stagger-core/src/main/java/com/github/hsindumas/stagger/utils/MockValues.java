@@ -21,7 +21,7 @@
 
 package com.github.hsindumas.stagger.utils;
 
-import com.power.common.util.IDCardUtil;
+import com.github.hsindumas.stagger.common.util.IDCardUtil;
 
 import java.util.concurrent.ThreadLocalRandom;
 

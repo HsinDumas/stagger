@@ -70,11 +70,11 @@ import com.github.hsindumas.stagger.utils.JsonUtil;
 import com.github.hsindumas.stagger.utils.OpenApiSchemaUtil;
 import com.github.hsindumas.stagger.utils.RequestExampleUtil;
 import com.github.hsindumas.stagger.utils.ApiParamTagUtil;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.RandomUtil;
-import com.power.common.util.StringUtil;
-import com.power.common.util.UrlUtil;
-import com.power.common.util.ValidateUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.RandomUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.UrlUtil;
+import com.github.hsindumas.stagger.common.util.ValidateUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 

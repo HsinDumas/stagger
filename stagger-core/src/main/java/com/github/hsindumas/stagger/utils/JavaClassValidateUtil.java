@@ -26,9 +26,9 @@ import com.github.hsindumas.stagger.constants.JSRAnnotationConstants;
 import com.github.hsindumas.stagger.constants.JavaTypeConstants;
 import com.github.hsindumas.stagger.constants.SolonAnnotations;
 import com.github.hsindumas.stagger.constants.SpringMvcAnnotations;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.StringUtil;
-import com.power.common.util.ValidateUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.ValidateUtil;
 
 import java.util.List;
 import java.util.Objects;

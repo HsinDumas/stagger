@@ -20,7 +20,7 @@
  */
 package com.github.hsindumas.stagger.extension.dict;
 
-import com.power.common.model.EnumDictionary;
+import com.github.hsindumas.stagger.common.model.EnumDictionary;
 
 import java.util.Collection;
 import java.util.Collections;

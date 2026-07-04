@@ -24,8 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.github.hsindumas.stagger.utils.DocUtil;
-import org.beetl.core.Context;
-import org.beetl.core.Function;
+import com.github.hsindumas.stagger.template.engine.TemplateFunction;
 
 /**
  * Function to escape XML content in Beetl templates.
@@ -35,7 +34,7 @@ import org.beetl.core.Function;
  * @author yu 2021/6/26.
  * @author HsinDumas
  */
-public class WordXmlEscape implements Function {
+public class WordXmlEscape implements TemplateFunction {
 
 	/*
 	 * Represents a non-breaking space character (U+00A0) commonly used in Word documents.
@@ -54,7 +53,7 @@ public class WordXmlEscape implements Function {
 	}
 
 	@Override
-	public String call(Object[] params, Context ctx) {
+	public String call(Object[] params) {
 		if (params == null || params.length == 0 || params[0] == null) {
 			return "";
 		}

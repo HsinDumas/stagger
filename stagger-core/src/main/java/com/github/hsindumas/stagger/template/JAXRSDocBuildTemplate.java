@@ -70,9 +70,9 @@ import com.github.hsindumas.stagger.utils.JavaFieldUtil;
 import com.github.hsindumas.stagger.utils.JsonUtil;
 import com.github.hsindumas.stagger.utils.RequestExampleUtil;
 import com.github.hsindumas.stagger.utils.ApiParamTagUtil;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.RandomUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.RandomUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;

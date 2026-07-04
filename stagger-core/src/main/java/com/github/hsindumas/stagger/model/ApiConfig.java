@@ -27,7 +27,7 @@ import com.github.hsindumas.stagger.constants.OpenApiTagNameTypeEnum;
 import com.github.hsindumas.stagger.handler.ICustomJavaMethodHandler;
 import com.github.hsindumas.stagger.model.jmeter.JMeter;
 import com.github.hsindumas.stagger.model.rpc.RpcApiDependency;
-import com.power.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
 
 import java.util.List;
 import java.util.Objects;

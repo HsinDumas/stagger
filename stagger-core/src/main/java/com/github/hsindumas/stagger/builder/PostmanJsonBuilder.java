@@ -42,9 +42,9 @@ import com.github.hsindumas.stagger.model.postman.request.header.HeaderBean;
 import com.github.hsindumas.stagger.template.IDocBuildTemplate;
 import com.github.hsindumas.stagger.utils.DocPathUtil;
 import com.github.hsindumas.stagger.utils.JsonUtil;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.FileUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.FileUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 
 import java.util.ArrayList;

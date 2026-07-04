@@ -31,8 +31,8 @@ import com.github.hsindumas.stagger.model.RpcJavaMethod;
 import com.github.hsindumas.stagger.model.rpc.RpcApiDoc;
 import com.github.hsindumas.stagger.utils.DocPathUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

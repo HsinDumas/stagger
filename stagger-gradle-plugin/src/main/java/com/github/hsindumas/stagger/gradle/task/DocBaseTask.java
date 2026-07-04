@@ -24,9 +24,9 @@ package com.github.hsindumas.stagger.gradle.task;
 
 import org.gradle.work.DisableCachingByDefault;
 
-import com.power.common.constants.Charset;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.RegexUtil;
+import com.github.hsindumas.stagger.common.constants.Charset;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.RegexUtil;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.gradle.constant.GlobalConstants;
@@ -36,7 +36,7 @@ import com.github.hsindumas.stagger.gradle.util.ArtifactFilterUtil;
 import com.github.hsindumas.stagger.gradle.util.GradleUtil;
 import com.github.hsindumas.stagger.gradle.util.I18nMsgUtil;
 import com.github.hsindumas.stagger.gradle.util.SourceSetUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import com.github.hsindumas.stagger.helper.SortedClassLibraryBuilder;
 import org.gradle.api.DefaultTask;

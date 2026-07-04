@@ -23,7 +23,7 @@ package com.github.hsindumas.stagger.model.postman;
 import java.util.UUID;
 
 import com.google.gson.annotations.SerializedName;
-import com.power.common.util.DateTimeUtil;
+import com.github.hsindumas.stagger.common.util.DateTimeUtil;
 
 import org.apache.commons.lang3.StringUtils;
 

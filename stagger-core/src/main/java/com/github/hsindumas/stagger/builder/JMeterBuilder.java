@@ -27,8 +27,8 @@ import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiDoc;
 import com.github.hsindumas.stagger.template.IDocBuildTemplate;
-import com.power.common.util.DateTimeUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.DateTimeUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.util.List;
 import java.util.Objects;

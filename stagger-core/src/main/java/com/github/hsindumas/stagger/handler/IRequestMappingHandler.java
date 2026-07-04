@@ -28,9 +28,9 @@ import com.github.hsindumas.stagger.model.request.RequestMapping;
 import com.github.hsindumas.stagger.utils.DocUrlUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.StringUtil;
-import com.power.common.util.UrlUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.UrlUtil;
 
 import java.util.ArrayList;
 import java.util.List;

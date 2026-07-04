@@ -24,8 +24,8 @@ import com.github.hsindumas.stagger.constants.ParamTypeConstants;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiMethodDoc;
 import com.github.hsindumas.stagger.model.BodyAdvice;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.util.List;
 import java.util.Optional;

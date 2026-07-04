@@ -23,7 +23,7 @@
 package com.github.hsindumas.stagger.gradle.util;
 
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
-import com.power.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
 import org.gradle.api.Project;
 import org.gradle.api.file.SourceDirectorySet;
 import org.gradle.api.internal.tasks.DefaultSourceSetContainer;

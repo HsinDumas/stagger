@@ -24,7 +24,7 @@ package com.github.hsindumas.stagger.model;
 import com.github.hsindumas.stagger.constants.MediaType;
 import com.github.hsindumas.stagger.model.request.ApiRequestExample;
 import com.github.hsindumas.stagger.utils.ParamUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;

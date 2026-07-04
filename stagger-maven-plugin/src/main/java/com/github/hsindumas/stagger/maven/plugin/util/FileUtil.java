@@ -23,7 +23,7 @@
 
 package com.github.hsindumas.stagger.maven.plugin.util;
 
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

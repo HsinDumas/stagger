@@ -24,7 +24,7 @@ import com.github.hsindumas.stagger.function.HtmlEscape;
 import com.github.hsindumas.stagger.function.LineBreaksToBr;
 import com.github.hsindumas.stagger.function.RemoveLineBreaks;
 import com.github.hsindumas.stagger.function.WordXmlEscape;
-import com.power.common.util.FileUtil;
+import com.github.hsindumas.stagger.common.util.FileUtil;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
@@ -54,8 +54,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.beetl.core.Function;
-import org.beetl.core.Template;
+import com.github.hsindumas.stagger.template.engine.TemplateFunction;
+import com.github.hsindumas.stagger.template.engine.Template;
 
 /**
  * Template handle util (Beetl syntax on top of FreeMarker runtime)
@@ -222,9 +222,9 @@ public class BeetlTemplateUtil {
 
 	private static final class BeetlFunctionMethod implements TemplateMethodModelEx {
 
-		private final Function function;
+		private final TemplateFunction function;
 
-		private BeetlFunctionMethod(Function function) {
+		private BeetlFunctionMethod(TemplateFunction function) {
 			this.function = function;
 		}
 
@@ -236,7 +236,7 @@ public class BeetlTemplateUtil {
 				Object argument = arguments.get(i);
 				params[i] = unwrapModel(argument);
 			}
-			return function.call(params, null);
+			return function.call(params);
 		}
 
 	}

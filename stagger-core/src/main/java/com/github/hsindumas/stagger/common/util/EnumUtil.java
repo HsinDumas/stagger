@@ -1,6 +1,6 @@
-package com.power.common.util;
+package com.github.hsindumas.stagger.common.util;
 
-import com.power.common.model.EnumDictionary;
+import com.github.hsindumas.stagger.common.model.EnumDictionary;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

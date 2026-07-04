@@ -31,9 +31,9 @@ import com.github.hsindumas.stagger.model.FieldJsonAnnotationInfo;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.StringEscapeUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.StringEscapeUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.util.Map;
 import java.util.Objects;

@@ -18,9 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.beetl.core.resource;
-
-import org.beetl.core.Resource;
+package com.github.hsindumas.stagger.template.engine;
 
 /**
  * Classpath resource loader compatible with the previous Beetl API usage.

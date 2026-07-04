@@ -31,8 +31,8 @@ import com.github.hsindumas.stagger.model.ApiConstant;
 import com.github.hsindumas.stagger.model.ApiDataDictionary;
 import com.github.hsindumas.stagger.model.ApiErrorCodeDictionary;
 import com.github.hsindumas.stagger.model.BodyAdvice;
-import com.power.common.util.FileUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.FileUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import org.gradle.api.Project;
 import org.gradle.api.logging.Logger;
 

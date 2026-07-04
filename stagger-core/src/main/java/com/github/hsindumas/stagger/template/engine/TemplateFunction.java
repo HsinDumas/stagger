@@ -18,20 +18,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.beetl.core;
+package com.github.hsindumas.stagger.template.engine;
 
 /**
  * Compatibility function contract used by the existing template helper functions.
  */
 @FunctionalInterface
-public interface Function {
+public interface TemplateFunction {
 
 	/**
 	 * Execute the function.
 	 * @param params function arguments
-	 * @param ctx function context
 	 * @return function result
 	 */
-	Object call(Object[] params, Context ctx);
+	Object call(Object[] params);
 
 }

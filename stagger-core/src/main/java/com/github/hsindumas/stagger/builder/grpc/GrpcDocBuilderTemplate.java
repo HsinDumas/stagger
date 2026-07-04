@@ -32,11 +32,11 @@ import com.github.hsindumas.stagger.model.ApiErrorCode;
 import com.github.hsindumas.stagger.model.grpc.GrpcApiDoc;
 import com.github.hsindumas.stagger.utils.BeetlTemplateUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.FileUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.FileUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
-import org.beetl.core.Template;
+import com.github.hsindumas.stagger.template.engine.Template;
 
 import java.util.ArrayList;
 import java.util.List;

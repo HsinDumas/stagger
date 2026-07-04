@@ -28,8 +28,8 @@ import com.github.hsindumas.stagger.constants.DocTags;
 import com.github.hsindumas.stagger.constants.ParamTypeConstants;
 import com.github.hsindumas.stagger.model.ApiParam;
 import com.github.hsindumas.stagger.model.enums.EnumInfoAndValues;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

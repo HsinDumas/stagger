@@ -21,9 +21,7 @@
 package com.github.hsindumas.stagger.function;
 
 import com.github.hsindumas.stagger.utils.DocUtil;
-
-import org.beetl.core.Context;
-import org.beetl.core.Function;
+import com.github.hsindumas.stagger.template.engine.TemplateFunction;
 
 /**
  * beetl template function
@@ -31,10 +29,10 @@ import org.beetl.core.Function;
  * @author yu 2021/7/24.
  * @author HsinDumas
  */
-public class RemoveLineBreaks implements Function {
+public class RemoveLineBreaks implements TemplateFunction {
 
 	@Override
-	public String call(Object[] paras, Context ctx) {
+	public String call(Object[] paras) {
 		String str = String.valueOf(paras[0]).replaceAll("\n", " ").replaceAll("\r", " ");
 		return DocUtil.getEscapeAndCleanComment(str).replaceAll(System.lineSeparator(), "");
 	}

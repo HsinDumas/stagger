@@ -25,7 +25,7 @@ import com.github.hsindumas.stagger.constants.Methods;
 import com.github.hsindumas.stagger.model.ApiMethodReqParam;
 import com.github.hsindumas.stagger.model.ApiParam;
 import com.github.hsindumas.stagger.model.ApiReqParam;
-import com.power.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
 
 import java.util.ArrayList;
 import java.util.List;

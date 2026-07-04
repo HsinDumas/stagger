@@ -26,8 +26,8 @@ import com.github.hsindumas.stagger.constants.ComponentTypeEnum;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiParam;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.ArrayList;

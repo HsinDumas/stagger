@@ -36,7 +36,7 @@ import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.github.hsindumas.stagger.utils.OpenApiSchemaUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

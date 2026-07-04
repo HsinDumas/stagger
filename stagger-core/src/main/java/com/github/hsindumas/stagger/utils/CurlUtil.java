@@ -24,8 +24,8 @@ import com.github.hsindumas.stagger.constants.MediaType;
 import com.github.hsindumas.stagger.model.ApiReqParam;
 import com.github.hsindumas.stagger.model.FormData;
 import com.github.hsindumas.stagger.model.request.CurlRequest;
-import com.power.common.util.CollectionUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.util.List;
 import java.util.Objects;

@@ -20,7 +20,7 @@
  */
 package com.github.hsindumas.stagger.model;
 
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

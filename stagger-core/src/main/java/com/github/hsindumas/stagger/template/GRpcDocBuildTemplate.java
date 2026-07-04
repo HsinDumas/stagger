@@ -42,8 +42,8 @@ import com.github.hsindumas.stagger.model.grpc.proto.ProtoJson;
 import com.github.hsindumas.stagger.model.grpc.proto.Service;
 import com.github.hsindumas.stagger.model.grpc.proto.ServiceMethod;
 import com.github.hsindumas.stagger.utils.DocUtil;
-import com.power.common.util.FileUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.FileUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 
 import java.io.BufferedReader;
 import java.io.File;

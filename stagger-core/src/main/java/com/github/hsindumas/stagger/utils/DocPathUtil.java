@@ -20,8 +20,8 @@
  */
 package com.github.hsindumas.stagger.utils;
 
-import com.power.common.util.PathUtil;
-import com.power.common.util.StringUtil;
+import com.github.hsindumas.stagger.common.util.PathUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;

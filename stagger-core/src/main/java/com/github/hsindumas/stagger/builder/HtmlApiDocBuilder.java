@@ -27,9 +27,9 @@ import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiDoc;
 import com.github.hsindumas.stagger.template.IDocBuildTemplate;
 import com.github.hsindumas.stagger.utils.BeetlTemplateUtil;
-import com.power.common.util.FileUtil;
+import com.github.hsindumas.stagger.common.util.FileUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.beetl.core.Template;
+import com.github.hsindumas.stagger.template.engine.Template;
 
 import java.util.List;
 import java.util.Objects;
