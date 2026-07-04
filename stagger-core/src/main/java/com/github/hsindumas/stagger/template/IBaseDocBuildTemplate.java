@@ -110,7 +110,8 @@ public interface IBaseDocBuildTemplate {
 		if (Objects.nonNull(actualTypesMap)) {
 			for (Map.Entry<String, ?> entry : actualTypesMap.entrySet()) {
 				returnType = returnType.replace(entry.getKey(), DocUtil.getTypeCanonicalName(entry.getValue()));
-				originalReturnType = originalReturnType.replace(entry.getKey(), DocUtil.getTypeCanonicalName(entry.getValue()));
+				originalReturnType = originalReturnType.replace(entry.getKey(),
+						DocUtil.getTypeCanonicalName(entry.getValue()));
 			}
 		}
 
@@ -158,8 +159,8 @@ public interface IBaseDocBuildTemplate {
 	}
 
 	/**
-	 * For responseBodyAdvice wrappers, preserve collection/array return type information on
-	 * the wrapper's data field when generic resolution degrades to object.
+	 * For responseBodyAdvice wrappers, preserve collection/array return type information
+	 * on the wrapper's data field when generic resolution degrades to object.
 	 * @param responseParams wrapped response params
 	 * @param actualReturnType original method return type (without wrapper)
 	 * @param projectBuilder project builder
