@@ -1,0 +1,56 @@
+name: Sync Wiki
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docs/wiki/**'
+      - '.github/workflows/sync-wiki.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: ${{ github.repository == 'HsinDumas/stagger' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Sync docs/wiki to GitHub Wiki
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          REPO_WIKI_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git"
+          TMP_DIR="$(mktemp -d)"
+          WIKI_DIR="$TMP_DIR/wiki"
+
+          git clone "$REPO_WIKI_URL" "$WIKI_DIR"
+
+          # Clean existing markdown pages while preserving wiki git metadata.
+          find "$WIKI_DIR" -maxdepth 1 -type f -name '*.md' -delete
+
+          # Copy source wiki pages.
+          cp docs/wiki/*.md "$WIKI_DIR/"
+
+          # Map in-repo wiki index to GitHub wiki home page.
+          cp docs/wiki/README.md "$WIKI_DIR/Home.md"
+
+          cd "$WIKI_DIR"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add .
+            git commit -m "docs(wiki): sync from docs/wiki"
+            git push origin HEAD
+            echo "Wiki synchronized."
+          else
+            echo "No wiki changes detected."
+          fi
