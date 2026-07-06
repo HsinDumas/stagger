@@ -57,13 +57,18 @@ Detailed migration notes and contributor validation commands are documented in `
 
 ## 🚀 Quick Start
 
+Use the latest release from https://github.com/HsinDumas/stagger/releases (tag format: `vX.Y.Z`), then replace `REPLACE_WITH_LATEST_RELEASE` below (for example: `3.2.2`).
+
 ### Maven
 
 ```xml
 <plugin>
     <groupId>com.github.hsindumas</groupId>
     <artifactId>stagger-maven-plugin</artifactId>
-    <version>1.0.0</version>
+    <version>REPLACE_WITH_LATEST_RELEASE</version>
+    <configuration>
+        <configFile>${project.basedir}/src/main/resources/stagger.json</configFile>
+    </configuration>
     <executions>
         <execution>
             <goals>
@@ -74,16 +79,35 @@ Detailed migration notes and contributor validation commands are documented in `
 </plugin>
 ```
 
+```bash
+mvn -Dfile.encoding=UTF-8 stagger:html
+```
+
 ### Gradle
 
-```gradle
+```kotlin
 plugins {
-    id 'com.github.hsindumas.stagger' version '1.0.0'
+    id("com.github.hsindumas.stagger") version "REPLACE_WITH_LATEST_RELEASE"
 }
 
 stagger {
-    sourceCodePath = "src/main/java"
-    classAbsPath = "build/classes/java/main"
+    configFile = file("src/main/resources/stagger.json")
+}
+```
+
+```bash
+./gradlew restHtml
+# Optional: override config path at runtime
+./gradlew restHtml -Pstagger.configFile=src/main/resources/stagger.json
+```
+
+### Minimal `stagger.json`
+
+```json
+{
+  "allInOne": true,
+  "isStrict": false,
+  "outPath": "build/stagger"
 }
 ```
 
@@ -140,8 +164,7 @@ Apache License 2.0 - See LICENSE file
 
 ## 👏 Acknowledgments
 
-- **Upstream Inspiration**: [smart-doc](https://github.com/smart-doc-group/smart-doc)
-- **Tribute**: Respect to [shalousun](https://github.com/shalousun) and all smart-doc contributors for pioneering non-intrusive documentation generation.
+- **Upstream Project**: [smart-doc](https://github.com/smart-doc-group/smart-doc)
 - **Current Maintainer**: [HsinDumas](https://github.com/HsinDumas)
 
 ## 🤝 Contributing
@@ -150,5 +173,4 @@ Pull requests welcome! Please open an issue first for major changes.
 
 ---
 
-**Project Lineage**: Forked from [smart-doc](https://github.com/smart-doc-group/smart-doc)  
-**Enhanced with**: Gradle monorepo + JDK 25 toolchain + complete JavaParser integration
+**Engineering Focus**: Gradle monorepo + JDK 25 toolchain + complete JavaParser integration
