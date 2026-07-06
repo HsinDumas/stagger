@@ -148,66 +148,27 @@ stagger {
 }
 ```
 
-## 📦 Monorepo Structure
-
-This is a modern maintenance fork of stagger, organized as a monorepo:
-
-```
-stagger/
-├── stagger-core/           # Core documentation engine
-├── stagger-maven-plugin/   # Maven plugin
-├── stagger-gradle-plugin/  # Gradle plugin
-├── build.gradle.kts        # Root Gradle build
-└── settings.gradle.kts     # Module settings
-```
-
 ## 🔧 Building
 
 ```bash
 # Build all modules
 ./gradlew clean build -x test
 
-# Build specific module
+# Build specific modules
 ./gradlew :stagger-core:build -x test
 ./gradlew :stagger-maven-plugin:build -x test
-
-# Build Gradle plugin
 ./gradlew :stagger-gradle-plugin:build -x test
 ```
-
-## 🐛 Key Improvements
-
-### Gradle 9.x Compatibility Fix
-
-```java
-// ❌ Old (Removed in Gradle 9.0)
-project.getConvention()
-    .getPlugin(JavaPluginConvention.class)
-    .getSourceSets();
-
-// ✅ New (Gradle 7.1+)
-project.getExtensions()
-    .getByType(JavaPluginExtension.class)
-    .getSourceSets();
-```
-
-### Unified Monorepo
-
-Original stagger was scattered across 4 separate repositories. Now unified in a single repo for easier version management and maintenance.
 
 ## 📄 License
 
 Apache License 2.0 - See LICENSE file
 
-## 👏 Acknowledgments
-
-- **Upstream Project**: [smart-doc](https://github.com/smart-doc-group/smart-doc)
-- **Current Maintainer**: [HsinDumas](https://github.com/HsinDumas)
-
 ## 🤝 Contributing
 
 Pull requests welcome! Please open an issue first for major changes.
 
----
+## 👏 Acknowledgments
 
-**Engineering Focus**: Gradle monorepo + JDK 25 toolchain + complete JavaParser integration
+- **Upstream Project**: [smart-doc](https://github.com/smart-doc-group/smart-doc)
+- **Current Maintainer**: [HsinDumas](https://github.com/HsinDumas)

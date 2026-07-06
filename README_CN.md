@@ -148,66 +148,27 @@ stagger {
 }
 ```
 
-## 📦 项目结构
-
-这是 stagger 的现代化维护分支，采用 Monorepo 结构：
-
-```
-stagger/
-├── stagger-core/           # 核心文档生成引擎
-├── stagger-maven-plugin/   # Maven 插件
-├── stagger-gradle-plugin/  # Gradle 插件
-├── build.gradle.kts        # 根 Gradle 构建
-└── settings.gradle.kts     # 模块配置
-```
-
 ## 🔧 构建
 
 ```bash
 # 构建全部模块
 ./gradlew clean build -x test
 
-# 构建特定模块
+# 构建指定模块
 ./gradlew :stagger-core:build -x test
 ./gradlew :stagger-maven-plugin:build -x test
-
-# 构建 Gradle 插件
 ./gradlew :stagger-gradle-plugin:build -x test
 ```
-
-## 🐛 主要改进
-
-### Gradle 9.x 兼容性修复
-
-```java
-// ❌ 旧方式（Gradle 9.0 已移除）
-project.getConvention()
-    .getPlugin(JavaPluginConvention.class)
-    .getSourceSets();
-
-// ✅ 新方式（Gradle 7.1+）
-project.getExtensions()
-    .getByType(JavaPluginExtension.class)
-    .getSourceSets();
-```
-
-### 统一 Monorepo 管理
-
-原 stagger 分散在 4 个独立仓库，现已统一为单仓库，便于版本同步和维护。
 
 ## 📄 许可证
 
 Apache License 2.0 - 详见 LICENSE 文件
 
-## 👏 致谢
-
-- **上游项目**: [smart-doc](https://github.com/smart-doc-group/smart-doc)
-- **当前维护**: [HsinDumas](https://github.com/HsinDumas)
-
 ## 🤝 贡献
 
 欢迎提交 Pull Request！大改动请先开 Issue 讨论。
 
----
+## 👏 致谢
 
-**工程侧重点**: Gradle Monorepo + JDK 25 toolchain + 完整 JavaParser 集成
+- **上游项目**: [smart-doc](https://github.com/smart-doc-group/smart-doc)
+- **当前维护**: [HsinDumas](https://github.com/HsinDumas)
