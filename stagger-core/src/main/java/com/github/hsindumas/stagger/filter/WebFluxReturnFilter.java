@@ -31,23 +31,22 @@ import com.github.hsindumas.stagger.model.ApiReturn;
  */
 public class WebFluxReturnFilter implements ReturnTypeFilter {
 
-	/**
-	 * Flux
-	 */
-	private static final String FLUX = "reactor.core.publisher.Flux";
+    /**
+     * Flux
+     */
+    private static final String FLUX = "reactor.core.publisher.Flux";
 
-	@Override
-	public ApiReturn doFilter(String fullyName) {
-		// support web flux
-		if (fullyName.startsWith(FLUX)) {
-			ApiReturn apiReturn = new ApiReturn();
-			// rewrite type name
-			fullyName = fullyName.replace(FLUX, JavaTypeConstants.JAVA_LIST_FULLY);
-			apiReturn.setGenericCanonicalName(fullyName);
-			apiReturn.setSimpleName(JavaTypeConstants.JAVA_LIST_FULLY);
-			return apiReturn;
-		}
-		return null;
-	}
-
+    @Override
+    public ApiReturn doFilter(String fullyName) {
+        // support web flux
+        if (fullyName.startsWith(FLUX)) {
+            ApiReturn apiReturn = new ApiReturn();
+            // rewrite type name
+            fullyName = fullyName.replace(FLUX, JavaTypeConstants.JAVA_LIST_FULLY);
+            apiReturn.setGenericCanonicalName(fullyName);
+            apiReturn.setSimpleName(JavaTypeConstants.JAVA_LIST_FULLY);
+            return apiReturn;
+        }
+        return null;
+    }
 }

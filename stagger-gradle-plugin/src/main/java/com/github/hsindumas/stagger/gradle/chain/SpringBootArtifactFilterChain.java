@@ -30,43 +30,42 @@ import com.github.hsindumas.stagger.gradle.model.CustomArtifact;
  */
 public class SpringBootArtifactFilterChain implements FilterChain {
 
-	private FilterChain filterChain;
+    private FilterChain filterChain;
 
-	@Override
-	public void setNext(FilterChain nextInChain) {
-		this.filterChain = nextInChain;
-	}
+    @Override
+    public void setNext(FilterChain nextInChain) {
+        this.filterChain = nextInChain;
+    }
 
-	@Override
-	public boolean ignoreArtifactById(CustomArtifact artifact) {
-		String artifactId = artifact.getArtifactId();
-		switch (artifactId) {
-			case "spring-boot":
-			case "spring-boot-starter-actuator":
-			case "spring-boot-starter":
-			case "spring-boot-starter-undertow":
-			case "spring-boot-starter-aop":
-			case "spring-boot-starter-json":
-			case "spring-boot-starter-web":
-			case "spring-boot-starter-logging":
-			case "spring-boot-starter-tomcat":
-			case "spring-boot-starter-validation":
-			case "spring-boot-starter-security":
-			case "spring-boot-starter-data-redis":
-			case "spring-boot-starter-activemq":
-			case "spring-boot-starter-log4j2":
-			case "spring-boot-actuator-autoconfigure":
-			case "spring-boot-starter-oauth2-client":
-			case "spring-boot-starter-quartz":
-			case "spring-boot-starter-batch":
-			case "spring-boot-starter-jdbc":
-			case "spring-cloud-starter-feign":
-			case "spring-cloud-starter-openfeign":
-			case "spring-cloud-starter":
-				return true;
-			default:
-				return this.ignore(filterChain, artifact);
-		}
-	}
-
+    @Override
+    public boolean ignoreArtifactById(CustomArtifact artifact) {
+        String artifactId = artifact.getArtifactId();
+        switch (artifactId) {
+            case "spring-boot":
+            case "spring-boot-starter-actuator":
+            case "spring-boot-starter":
+            case "spring-boot-starter-undertow":
+            case "spring-boot-starter-aop":
+            case "spring-boot-starter-json":
+            case "spring-boot-starter-web":
+            case "spring-boot-starter-logging":
+            case "spring-boot-starter-tomcat":
+            case "spring-boot-starter-validation":
+            case "spring-boot-starter-security":
+            case "spring-boot-starter-data-redis":
+            case "spring-boot-starter-activemq":
+            case "spring-boot-starter-log4j2":
+            case "spring-boot-actuator-autoconfigure":
+            case "spring-boot-starter-oauth2-client":
+            case "spring-boot-starter-quartz":
+            case "spring-boot-starter-batch":
+            case "spring-boot-starter-jdbc":
+            case "spring-cloud-starter-feign":
+            case "spring-cloud-starter-openfeign":
+            case "spring-cloud-starter":
+                return true;
+            default:
+                return this.ignore(filterChain, artifact);
+        }
+    }
 }

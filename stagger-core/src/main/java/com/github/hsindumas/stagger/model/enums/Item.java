@@ -20,8 +20,6 @@
  */
 package com.github.hsindumas.stagger.model.enums;
 
-import com.google.gson.annotations.Expose;
-
 import java.io.Serializable;
 
 /**
@@ -33,72 +31,70 @@ import java.io.Serializable;
  **/
 public class Item implements Serializable {
 
-	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = -1517636497626246584L;
+    /**
+     * serialVersionUID
+     */
+    private static final long serialVersionUID = -1517636497626246584L;
 
-	/**
-	 * { * "name": "WAIT_PAY", * "type": "string", * "value": "0", * "description": "未支付"
-	 * * }
-	 */
-	private String name;
+    /**
+     * { * "name": "WAIT_PAY", * "type": "string", * "value": "0", * "description": "未支付"
+     * * }
+     */
+    private String name;
 
-	/**
-	 * string, number, boolean, object, array
-	 */
-	private String type;
+    /**
+     * string, number, boolean, object, array
+     */
+    private String type;
 
-	/**
-	 * value
-	 */
-	private String value;
+    /**
+     * value
+     */
+    private String value;
 
-	/**
-	 * description
-	 */
-	private String description;
+    /**
+     * description
+     */
+    private String description;
 
-	public Item() {
-	}
+    public Item() {}
 
-	public Item(String name, String type, String value, String description) {
-		this.name = name;
-		this.type = type;
-		this.value = value;
-		this.description = description;
-	}
+    public Item(String name, String type, String value, String description) {
+        this.name = name;
+        this.type = type;
+        this.value = value;
+        this.description = description;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

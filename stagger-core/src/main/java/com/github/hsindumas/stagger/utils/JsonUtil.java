@@ -26,7 +26,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
 import java.util.Objects;
 
 /**
@@ -37,54 +36,53 @@ import java.util.Objects;
  */
 public class JsonUtil {
 
-	/**
-	 * private constructor
-	 */
-	private JsonUtil() {
-		throw new IllegalStateException("Utility class");
-	}
+    /**
+     * private constructor
+     */
+    private JsonUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * Convert a JSON string to pretty print
-	 * @param jsonString json string
-	 * @return Format json string
-	 */
-	public static String toPrettyFormat(String jsonString) {
-		if (Objects.isNull(jsonString)) {
-			return null;
-		}
-		if (!jsonString.startsWith("[") && !jsonString.startsWith("{")) {
-			return jsonString;
-		}
-		try {
-			JsonElement jsonElement = JsonParser.parseString(jsonString);
-			Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-			return gson.toJson(jsonElement);
-		}
-		catch (Exception e) {
-			return jsonString;
-		}
-	}
+    /**
+     * Convert a JSON string to pretty print
+     * @param jsonString json string
+     * @return Format json string
+     */
+    public static String toPrettyFormat(String jsonString) {
+        if (Objects.isNull(jsonString)) {
+            return null;
+        }
+        if (!jsonString.startsWith("[") && !jsonString.startsWith("{")) {
+            return jsonString;
+        }
+        try {
+            JsonElement jsonElement = JsonParser.parseString(jsonString);
+            Gson gson =
+                    new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+            return gson.toJson(jsonElement);
+        } catch (Exception e) {
+            return jsonString;
+        }
+    }
 
-	/**
-	 * Convert a JSON to String and pretty print
-	 * @param src Json
-	 * @return Format json string
-	 */
-	public static String toPrettyJson(Object src) {
-		Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-		return gson.toJson(src);
-	}
+    /**
+     * Convert a JSON to String and pretty print
+     * @param src Json
+     * @return Format json string
+     */
+    public static String toPrettyJson(Object src) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+        return gson.toJson(src);
+    }
 
-	/**
-	 * Convert a JSON string to object
-	 * @param <T> type
-	 * @param json json string
-	 * @param clazz class
-	 * @return Object
-	 */
-	public static <T> T toObject(String json, Class<T> clazz) {
-		return new Gson().fromJson(json, clazz);
-	}
-
+    /**
+     * Convert a JSON string to object
+     * @param <T> type
+     * @param json json string
+     * @param clazz class
+     * @return Object
+     */
+    public static <T> T toObject(String json, Class<T> clazz) {
+        return new Gson().fromJson(json, clazz);
+    }
 }

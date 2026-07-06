@@ -1,12 +1,18 @@
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.api.attributes.Bundling
+import org.gradle.api.attributes.Category
+import org.gradle.api.attributes.LibraryElements
+import org.gradle.api.attributes.Usage
+import org.gradle.api.attributes.java.TargetJvmEnvironment
 import org.gradle.external.javadoc.StandardJavadocDocletOptions
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 
 plugins {
     `java-library`
     checkstyle
-    id("io.spring.javaformat")
+    id("com.diffplug.spotless")
+    id("com.palantir.java-format")
 }
 
 group = "com.github.hsindumas"
@@ -45,4 +51,35 @@ checkstyle {
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
+}
+
+// Keep historical task names used by CI and local scripts.
+if (tasks.findByName("checkFormatMain") == null) {
+    tasks.register("checkFormatMain") {
+        dependsOn("spotlessJavaCheck")
+    }
+}
+
+if (tasks.findByName("checkFormatTest") == null) {
+    tasks.register("checkFormatTest") {
+        dependsOn("spotlessJavaCheck")
+    }
+}
+
+if (tasks.findByName("formatMain") == null) {
+    tasks.register("formatMain") {
+        dependsOn("spotlessJavaApply")
+    }
+}
+
+if (tasks.findByName("formatTest") == null) {
+    tasks.register("formatTest") {
+        dependsOn("spotlessJavaApply")
+    }
+}
+
+if (tasks.findByName("format") == null) {
+    tasks.register("format") {
+        dependsOn("spotlessApply")
+    }
 }

@@ -1,55 +1,60 @@
 package com.github.hsindumas.stagger.function;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
-
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author HsinDumas
  */
 class WordXmlEscapeTest {
 
-	private static final String UNICODE_NON_BREAK_SPACE = "\u00A0";
+    private static final String UNICODE_NON_BREAK_SPACE = "\u00A0";
 
-	@ParameterizedTest
-	@MethodSource("provideNormalTestCases")
-	void testWordXmlEscape(String input, String expected) {
-		WordXmlEscape wordXmlEscape = new WordXmlEscape();
+    @ParameterizedTest
+    @MethodSource("provideNormalTestCases")
+    void testWordXmlEscape(String input, String expected) {
+        WordXmlEscape wordXmlEscape = new WordXmlEscape();
 
-		String result = wordXmlEscape.call(new Object[] { input });
+        String result = wordXmlEscape.call(new Object[] {input});
 
-		assertEquals(expected, result);
-	}
+        assertEquals(expected, result);
+    }
 
-	@ParameterizedTest
-	@NullAndEmptySource
-	void testWordXmlEscapeNullAndEmptyString(Object[] input) {
-		WordXmlEscape wordXmlEscape = new WordXmlEscape();
+    @ParameterizedTest
+    @NullAndEmptySource
+    void testWordXmlEscapeNullAndEmptyString(Object[] input) {
+        WordXmlEscape wordXmlEscape = new WordXmlEscape();
 
-		String result = wordXmlEscape.call(input);
+        String result = wordXmlEscape.call(input);
 
-		assertEquals("", result);
-	}
+        assertEquals("", result);
+    }
 
-	/**
-	 * Provides test cases for normal inputs.
-	 * @return a stream of arguments for testing
-	 */
-	static Stream<Arguments> provideNormalTestCases() {
-		return Stream.of(Arguments.of(" ", UNICODE_NON_BREAK_SPACE),
-				Arguments.of("&nbsp;&nbsp;", UNICODE_NON_BREAK_SPACE), Arguments.of("&nbsp;", ""),
-				// Combination of doubled non-breaking spaces and empty spaces
-				Arguments.of("&nbsp;&nbsp; abc&nbsp;",
-						String.format("%s%sabc", UNICODE_NON_BREAK_SPACE, UNICODE_NON_BREAK_SPACE)),
-				Arguments.of("<br/>", ""), Arguments.of("&", "&amp;"), Arguments.of("<", "&lt;"),
-				Arguments.of("Hello & <br/>",
-						String.format("Hello%s&amp;%s", UNICODE_NON_BREAK_SPACE, UNICODE_NON_BREAK_SPACE)),
-				Arguments.of("", ""), Arguments.of(null, ""));
-	}
-
+    /**
+     * Provides test cases for normal inputs.
+     * @return a stream of arguments for testing
+     */
+    static Stream<Arguments> provideNormalTestCases() {
+        return Stream.of(
+                Arguments.of(" ", UNICODE_NON_BREAK_SPACE),
+                Arguments.of("&nbsp;&nbsp;", UNICODE_NON_BREAK_SPACE),
+                Arguments.of("&nbsp;", ""),
+                // Combination of doubled non-breaking spaces and empty spaces
+                Arguments.of(
+                        "&nbsp;&nbsp; abc&nbsp;",
+                        String.format("%s%sabc", UNICODE_NON_BREAK_SPACE, UNICODE_NON_BREAK_SPACE)),
+                Arguments.of("<br/>", ""),
+                Arguments.of("&", "&amp;"),
+                Arguments.of("<", "&lt;"),
+                Arguments.of(
+                        "Hello & <br/>",
+                        String.format("Hello%s&amp;%s", UNICODE_NON_BREAK_SPACE, UNICODE_NON_BREAK_SPACE)),
+                Arguments.of("", ""),
+                Arguments.of(null, ""));
+    }
 }

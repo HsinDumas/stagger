@@ -31,71 +31,71 @@ import java.util.Objects;
  */
 public class EnumValue implements Serializable {
 
-	private static final long serialVersionUID = 5233061948196060934L;
+    private static final long serialVersionUID = 5233061948196060934L;
 
-	/**
-	 * The name of the enum value.
-	 */
-	private String name;
+    /**
+     * The name of the enum value.
+     */
+    private String name;
 
-	/**
-	 * The number associated with the enum value (optional, not used in current JSON
-	 * structure).
-	 */
-	private int number;
+    /**
+     * The number associated with the enum value (optional, not used in current JSON
+     * structure).
+     */
+    private int number;
 
-	/**
-	 * The description of the enum value.
-	 */
-	private String description;
+    /**
+     * The description of the enum value.
+     */
+    private String description;
 
-	public static EnumValue builder() {
-		return new EnumValue();
-	}
+    public static EnumValue builder() {
+        return new EnumValue();
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public EnumValue setName(String name) {
-		this.name = name;
-		return this;
-	}
+    public EnumValue setName(String name) {
+        this.name = name;
+        return this;
+    }
 
-	public int getNumber() {
-		return number;
-	}
+    public int getNumber() {
+        return number;
+    }
 
-	public EnumValue setNumber(int number) {
-		this.number = number;
-		return this;
-	}
+    public EnumValue setNumber(int number) {
+        this.number = number;
+        return this;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public EnumValue setDescription(String description) {
-		this.description = description;
-		return this;
-	}
+    public EnumValue setDescription(String description) {
+        this.description = description;
+        return this;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		EnumValue enumValue = (EnumValue) o;
-		return number == enumValue.number && Objects.equals(name, enumValue.name)
-				&& Objects.equals(description, enumValue.description);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        EnumValue enumValue = (EnumValue) o;
+        return number == enumValue.number
+                && Objects.equals(name, enumValue.name)
+                && Objects.equals(description, enumValue.description);
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(name, number, description);
-	}
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, number, description);
+    }
 }

@@ -21,7 +21,6 @@
 package com.github.hsindumas.stagger.filter;
 
 import com.github.hsindumas.stagger.model.ApiReturn;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,39 +33,38 @@ import java.util.Objects;
  */
 public class ReturnTypeProcessor {
 
-	/**
-	 * return type filter
-	 */
-	private final List<ReturnTypeFilter> filters = new ArrayList<>();
+    /**
+     * return type filter
+     */
+    private final List<ReturnTypeFilter> filters = new ArrayList<>();
 
-	/**
-	 * return type
-	 */
-	private String typeName;
+    /**
+     * return type
+     */
+    private String typeName;
 
-	public String getTypeName() {
-		return typeName;
-	}
+    public String getTypeName() {
+        return typeName;
+    }
 
-	public void setTypeName(String typeName) {
-		this.typeName = typeName;
-	}
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
-	/**
-	 * process return type
-	 * @return ApiReturn
-	 */
-	public ApiReturn process() {
-		filters.add(new WebFluxReturnFilter());
-		filters.add(new BoxReturnFilter());
-		filters.add(new DefaultReturnFilter());
-		for (ReturnTypeFilter filter : filters) {
-			ApiReturn apiReturn = filter.doFilter(typeName);
-			if (Objects.nonNull(apiReturn)) {
-				return apiReturn;
-			}
-		}
-		return null;
-	}
-
+    /**
+     * process return type
+     * @return ApiReturn
+     */
+    public ApiReturn process() {
+        filters.add(new WebFluxReturnFilter());
+        filters.add(new BoxReturnFilter());
+        filters.add(new DefaultReturnFilter());
+        for (ReturnTypeFilter filter : filters) {
+            ApiReturn apiReturn = filter.doFilter(typeName);
+            if (Objects.nonNull(apiReturn)) {
+                return apiReturn;
+            }
+        }
+        return null;
+    }
 }

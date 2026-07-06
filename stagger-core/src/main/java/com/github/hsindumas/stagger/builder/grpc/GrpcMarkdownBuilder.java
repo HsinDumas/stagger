@@ -22,12 +22,11 @@
 package com.github.hsindumas.stagger.builder.grpc;
 
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
+import com.github.hsindumas.stagger.common.util.DateTimeUtil;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.grpc.GrpcApiDoc;
-import com.github.hsindumas.stagger.common.util.DateTimeUtil;
-
 import java.util.List;
 
 /**
@@ -39,44 +38,51 @@ import java.util.List;
  */
 public class GrpcMarkdownBuilder {
 
-	/**
-	 * private constructor
-	 */
-	private GrpcMarkdownBuilder() {
-		throw new IllegalStateException("Utility class");
-	}
+    /**
+     * private constructor
+     */
+    private GrpcMarkdownBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * build api doc.
-	 * @param config ApiConfig
-	 */
-	public static void buildApiDoc(ApiConfig config) {
-		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
-	}
+    /**
+     * build api doc.
+     * @param config ApiConfig
+     */
+    public static void buildApiDoc(ApiConfig config) {
+        buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
+    }
 
-	/**
-	 * Only for stagger maven plugin and gradle plugin.
-	 * @param apiConfig ApiConfig
-	 * @param configBuilder ProjectDocConfigBuilder
-	 */
-	public static void buildApiDoc(ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
-		GrpcDocBuilderTemplate grpcDocBuilderTemplate = new GrpcDocBuilderTemplate();
-		List<GrpcApiDoc> apiDocList = grpcDocBuilderTemplate.getApiDoc(false, true, false, apiConfig, configBuilder);
-		if (apiConfig.isAllInOne()) {
-			String version = apiConfig.isCoverOld() ? "" : "-V" + DateTimeUtil.long2Str(System.currentTimeMillis(),
-					DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
-			String docName = grpcDocBuilderTemplate.allInOneDocName(apiConfig, "grpc-all" + version,
-					DocGlobalConstants.MARKDOWN_EXTENSION);
-			grpcDocBuilderTemplate.buildAllInOne(apiDocList, apiConfig, configBuilder,
-					DocGlobalConstants.GRPC_ALL_IN_ONE_MD_TPL, docName);
-		}
-		else {
-			grpcDocBuilderTemplate.buildApiDoc(apiDocList, apiConfig, DocGlobalConstants.GRPC_API_MD_TPL,
-					DocGlobalConstants.MARKDOWN_API_FILE_EXTENSION);
+    /**
+     * Only for stagger maven plugin and gradle plugin.
+     * @param apiConfig ApiConfig
+     * @param configBuilder ProjectDocConfigBuilder
+     */
+    public static void buildApiDoc(ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
+        GrpcDocBuilderTemplate grpcDocBuilderTemplate = new GrpcDocBuilderTemplate();
+        List<GrpcApiDoc> apiDocList = grpcDocBuilderTemplate.getApiDoc(false, true, false, apiConfig, configBuilder);
+        if (apiConfig.isAllInOne()) {
+            String version = apiConfig.isCoverOld()
+                    ? ""
+                    : "-V"
+                            + DateTimeUtil.long2Str(
+                                    System.currentTimeMillis(), DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
+            String docName = grpcDocBuilderTemplate.allInOneDocName(
+                    apiConfig, "grpc-all" + version, DocGlobalConstants.MARKDOWN_EXTENSION);
+            grpcDocBuilderTemplate.buildAllInOne(
+                    apiDocList, apiConfig, configBuilder, DocGlobalConstants.GRPC_ALL_IN_ONE_MD_TPL, docName);
+        } else {
+            grpcDocBuilderTemplate.buildApiDoc(
+                    apiDocList,
+                    apiConfig,
+                    DocGlobalConstants.GRPC_API_MD_TPL,
+                    DocGlobalConstants.MARKDOWN_API_FILE_EXTENSION);
 
-			grpcDocBuilderTemplate.buildErrorCodeDoc(apiConfig, DocGlobalConstants.ERROR_CODE_LIST_MD_TPL,
-					DocGlobalConstants.ERROR_CODE_LIST_MD, configBuilder);
-		}
-	}
-
+            grpcDocBuilderTemplate.buildErrorCodeDoc(
+                    apiConfig,
+                    DocGlobalConstants.ERROR_CODE_LIST_MD_TPL,
+                    DocGlobalConstants.ERROR_CODE_LIST_MD,
+                    configBuilder);
+        }
+    }
 }

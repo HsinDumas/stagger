@@ -33,40 +33,39 @@ import java.util.Optional;
  */
 public interface SourceClass {
 
-	String qualifiedName();
+    String qualifiedName();
 
-	String simpleName();
+    String simpleName();
 
-	List<SourceAnnotation> annotations();
+    List<SourceAnnotation> annotations();
 
-	List<SourceMethod> methods();
+    List<SourceMethod> methods();
 
-	List<SourceField> fields();
+    List<SourceField> fields();
 
-	List<SourceTypeParam> typeParameters();
+    List<SourceTypeParam> typeParameters();
 
-	Optional<SourceType> superType();
+    Optional<SourceType> superType();
 
-	List<SourceType> interfaces();
+    List<SourceType> interfaces();
 
-	String comment();
+    String comment();
 
-	List<SourceDocletTag> docletTags();
+    List<SourceDocletTag> docletTags();
 
-	boolean isEnum();
+    boolean isEnum();
 
-	default List<String> enumConstants() {
-		return Collections.emptyList();
-	}
+    default List<String> enumConstants() {
+        return Collections.emptyList();
+    }
 
-	boolean isInterface();
+    boolean isInterface();
 
-	boolean isAnnotation();
+    boolean isAnnotation();
 
-	boolean isRecord();
+    boolean isRecord();
 
-	boolean isSealed();
+    boolean isSealed();
 
-	List<String> permittedSubtypes();
-
+    List<String> permittedSubtypes();
 }

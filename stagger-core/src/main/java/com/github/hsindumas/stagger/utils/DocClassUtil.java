@@ -20,11 +20,10 @@
  */
 package com.github.hsindumas.stagger.utils;
 
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.filter.ReturnTypeProcessor;
 import com.github.hsindumas.stagger.model.ApiReturn;
 import com.github.hsindumas.stagger.source.SourceClass;
-import com.github.hsindumas.stagger.common.util.StringUtil;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,495 +41,478 @@ import java.util.Stack;
  */
 public class DocClassUtil {
 
-	/**
-	 * private constructor
-	 */
-	private DocClassUtil() {
-		throw new IllegalStateException("Utility class");
-	}
+    /**
+     * private constructor
+     */
+    private DocClassUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * Determine whether class metadata represents annotation or enum type.
-	 * @param javaClass class metadata
-	 * @return true when class is annotation or enum
-	 */
-	public static boolean isAnnotationOrEnum(Object javaClass) {
-		return Objects.nonNull(javaClass) && (DocUtil.isClassAnnotation(javaClass) || DocUtil.isClassEnum(javaClass));
-	}
+    /**
+     * Determine whether class metadata represents annotation or enum type.
+     * @param javaClass class metadata
+     * @return true when class is annotation or enum
+     */
+    public static boolean isAnnotationOrEnum(Object javaClass) {
+        return Objects.nonNull(javaClass) && (DocUtil.isClassAnnotation(javaClass) || DocUtil.isClassEnum(javaClass));
+    }
 
-	/**
-	 * Determine whether source class metadata represents annotation or enum type.
-	 * @param sourceClass source class metadata
-	 * @return true when source class is annotation or enum
-	 */
-	public static boolean isAnnotationOrEnum(SourceClass sourceClass) {
-		return Objects.nonNull(sourceClass) && (sourceClass.isAnnotation() || sourceClass.isEnum());
-	}
+    /**
+     * Determine whether source class metadata represents annotation or enum type.
+     * @param sourceClass source class metadata
+     * @return true when source class is annotation or enum
+     */
+    public static boolean isAnnotationOrEnum(SourceClass sourceClass) {
+        return Objects.nonNull(sourceClass) && (sourceClass.isAnnotation() || sourceClass.isEnum());
+    }
 
-	/**
-	 * get class names by generic class name
-	 * @param typeName generic class name
-	 * @return array of string
-	 */
-	public static String[] getSimpleGicName(String typeName) {
-		if (JavaClassValidateUtil.isCollection(typeName)) {
-			typeName = typeName + "<T>";
-		}
-		else if (JavaClassValidateUtil.isArray(typeName)) {
-			typeName = typeName.substring(0, typeName.lastIndexOf("["));
-			typeName = "java.util.List<" + typeName + ">";
-		}
-		else if (JavaClassValidateUtil.isMap(typeName)) {
-			typeName = typeName + "<String,T>";
-		}
-		if (typeName.contains("<")) {
-			String pre = typeName.substring(0, typeName.indexOf("<"));
-			if (JavaClassValidateUtil.isMap(pre)) {
-				return getMapKeyValueType(typeName);
-			}
-			if (JavaClassValidateUtil.isCollection(pre)) {
-				String type = typeName.substring(typeName.indexOf("<") + 1, typeName.lastIndexOf(">"));
-				return type.split(" ");
-			}
+    /**
+     * get class names by generic class name
+     * @param typeName generic class name
+     * @return array of string
+     */
+    public static String[] getSimpleGicName(String typeName) {
+        if (JavaClassValidateUtil.isCollection(typeName)) {
+            typeName = typeName + "<T>";
+        } else if (JavaClassValidateUtil.isArray(typeName)) {
+            typeName = typeName.substring(0, typeName.lastIndexOf("["));
+            typeName = "java.util.List<" + typeName + ">";
+        } else if (JavaClassValidateUtil.isMap(typeName)) {
+            typeName = typeName + "<String,T>";
+        }
+        if (typeName.contains("<")) {
+            String pre = typeName.substring(0, typeName.indexOf("<"));
+            if (JavaClassValidateUtil.isMap(pre)) {
+                return getMapKeyValueType(typeName);
+            }
+            if (JavaClassValidateUtil.isCollection(pre)) {
+                String type = typeName.substring(typeName.indexOf("<") + 1, typeName.lastIndexOf(">"));
+                return type.split(" ");
+            }
 
-			String[] arr = Arrays.stream(getGicName(typeName))
-				.map(str -> str.split(","))
-				.map(Arrays::asList)
-				.flatMap(Collection::stream)
-				.toArray(String[]::new);
+            String[] arr = Arrays.stream(getGicName(typeName))
+                    .map(str -> str.split(","))
+                    .map(Arrays::asList)
+                    .flatMap(Collection::stream)
+                    .toArray(String[]::new);
 
-			return classNameFix(arr);
-		}
-		else {
-			return new String[0];
-		}
-	}
+            return classNameFix(arr);
+        } else {
+            return new String[0];
+        }
+    }
 
-	/**
-	 * get class names by generic class name.<br>
-	 * "controller.R<T,A>$Data<T,A>" =====> ["T,A", "T,A"]
-	 * @param typeName generic class name
-	 * @return array of string
-	 */
-	static String[] getGicName(String typeName) {
-		StringBuilder builder = new StringBuilder(typeName.length());
-		List<String> ginNameList = new ArrayList<>();
-		int ltLen = 0;
-		for (char c : typeName.toCharArray()) {
-			if (c == '<' || c == '>') {
-				ltLen += (c == '<') ? 1 : -1;
-				// Skip the outermost symbols <
-				if (c == '<' && ltLen == 1) {
-					continue;
-				}
-			}
-			if (ltLen > 0) {
-				builder.append(c);
-			}
-			else if (ltLen == 0 && c == '>') {
-				ginNameList.add(builder.toString());
-				builder.setLength(0);
-			}
-		}
-		return ginNameList.toArray(new String[0]);
-	}
+    /**
+     * get class names by generic class name.<br>
+     * "controller.R<T,A>$Data<T,A>" =====> ["T,A", "T,A"]
+     * @param typeName generic class name
+     * @return array of string
+     */
+    static String[] getGicName(String typeName) {
+        StringBuilder builder = new StringBuilder(typeName.length());
+        List<String> ginNameList = new ArrayList<>();
+        int ltLen = 0;
+        for (char c : typeName.toCharArray()) {
+            if (c == '<' || c == '>') {
+                ltLen += (c == '<') ? 1 : -1;
+                // Skip the outermost symbols <
+                if (c == '<' && ltLen == 1) {
+                    continue;
+                }
+            }
+            if (ltLen > 0) {
+                builder.append(c);
+            } else if (ltLen == 0 && c == '>') {
+                ginNameList.add(builder.toString());
+                builder.setLength(0);
+            }
+        }
+        return ginNameList.toArray(new String[0]);
+    }
 
-	/**
-	 * Get a simple type name from a generic class name
-	 * @param gicName Generic class name
-	 * @return String
-	 */
-	public static String getSimpleName(String gicName) {
-		// remove strings contained in '< >' and < >. e.g. controller.R<T,A>$Data<T,A>
-		// =====> controller.R$Data
-		StringBuilder builder = new StringBuilder(gicName.length());
-		int ltLen = 0;
-		for (char c : gicName.toCharArray()) {
-			if (c == '<' || c == '>') {
-				ltLen += (c == '<') ? 1 : -1;
-			}
-			else if (ltLen <= 0) {
-				builder.append(c);
-			}
-		}
-		return builder.toString();
-	}
+    /**
+     * Get a simple type name from a generic class name
+     * @param gicName Generic class name
+     * @return String
+     */
+    public static String getSimpleName(String gicName) {
+        // remove strings contained in '< >' and < >. e.g. controller.R<T,A>$Data<T,A>
+        // =====> controller.R$Data
+        StringBuilder builder = new StringBuilder(gicName.length());
+        int ltLen = 0;
+        for (char c : gicName.toCharArray()) {
+            if (c == '<' || c == '>') {
+                ltLen += (c == '<') ? 1 : -1;
+            } else if (ltLen <= 0) {
+                builder.append(c);
+            }
+        }
+        return builder.toString();
+    }
 
-	/**
-	 * Automatic repair of generic split class names
-	 * @param arr arr of class name
-	 * @return array of String
-	 */
-	private static String[] classNameFix(String[] arr) {
-		List<String> classes = new ArrayList<>();
-		List<Integer> indexList = new ArrayList<>();
-		int globIndex = 0;
-		int length = arr.length;
-		for (int i = 0; i < length; i++) {
-			if (!classes.isEmpty()) {
-				int index = classes.size() - 1;
-				if (!isClassName(classes.get(index))) {
-					globIndex = globIndex + 1;
-					if (globIndex < length) {
-						indexList.add(globIndex);
-						String className = classes.get(index) + "," + arr[globIndex];
-						classes.set(index, className);
-					}
-				}
-				else {
-					globIndex = globIndex + 1;
-					if (globIndex < length) {
-						if (isClassName(arr[globIndex])) {
-							indexList.add(globIndex);
-							classes.add(arr[globIndex]);
-						}
-						else {
-							if (!indexList.contains(globIndex) && !indexList.contains(globIndex + 1)) {
-								indexList.add(globIndex);
-								classes.add(arr[globIndex] + "," + arr[globIndex + 1]);
-								globIndex = globIndex + 1;
-								indexList.add(globIndex);
-							}
-						}
-					}
-				}
-			}
-			else {
-				if (isClassName(arr[i])) {
-					indexList.add(i);
-					classes.add(arr[i]);
-				}
-				else {
-					if (!indexList.contains(i) && !indexList.contains(i + 1)) {
-						globIndex = i + 1;
-						classes.add(arr[i] + "," + arr[globIndex]);
-						indexList.add(i);
-						indexList.add(i + 1);
-					}
-				}
-			}
-		}
-		return classes.toArray(new String[0]);
-	}
+    /**
+     * Automatic repair of generic split class names
+     * @param arr arr of class name
+     * @return array of String
+     */
+    private static String[] classNameFix(String[] arr) {
+        List<String> classes = new ArrayList<>();
+        List<Integer> indexList = new ArrayList<>();
+        int globIndex = 0;
+        int length = arr.length;
+        for (int i = 0; i < length; i++) {
+            if (!classes.isEmpty()) {
+                int index = classes.size() - 1;
+                if (!isClassName(classes.get(index))) {
+                    globIndex = globIndex + 1;
+                    if (globIndex < length) {
+                        indexList.add(globIndex);
+                        String className = classes.get(index) + "," + arr[globIndex];
+                        classes.set(index, className);
+                    }
+                } else {
+                    globIndex = globIndex + 1;
+                    if (globIndex < length) {
+                        if (isClassName(arr[globIndex])) {
+                            indexList.add(globIndex);
+                            classes.add(arr[globIndex]);
+                        } else {
+                            if (!indexList.contains(globIndex) && !indexList.contains(globIndex + 1)) {
+                                indexList.add(globIndex);
+                                classes.add(arr[globIndex] + "," + arr[globIndex + 1]);
+                                globIndex = globIndex + 1;
+                                indexList.add(globIndex);
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (isClassName(arr[i])) {
+                    indexList.add(i);
+                    classes.add(arr[i]);
+                } else {
+                    if (!indexList.contains(i) && !indexList.contains(i + 1)) {
+                        globIndex = i + 1;
+                        classes.add(arr[i] + "," + arr[globIndex]);
+                        indexList.add(i);
+                        indexList.add(i + 1);
+                    }
+                }
+            }
+        }
+        return classes.toArray(new String[0]);
+    }
 
-	/**
-	 * get map key and value type name populate into array.
-	 * @param genericName generic class name
-	 * @return array of string
-	 */
-	public static String[] getMapKeyValueType(String genericName) {
-		if (StringUtil.isEmpty(genericName)) {
-			return new String[0];
-		}
-		// Find the positions of the outermost '<' and '>' characters
-		int leftAngleBracket = genericName.indexOf('<');
-		// If no matching angle brackets are found, return new String[0]
-		if (leftAngleBracket == -1) {
-			return new String[0];
-		}
-		int rightAngleBracket = findMatchingAngleBracket(genericName, leftAngleBracket);
+    /**
+     * get map key and value type name populate into array.
+     * @param genericName generic class name
+     * @return array of string
+     */
+    public static String[] getMapKeyValueType(String genericName) {
+        if (StringUtil.isEmpty(genericName)) {
+            return new String[0];
+        }
+        // Find the positions of the outermost '<' and '>' characters
+        int leftAngleBracket = genericName.indexOf('<');
+        // If no matching angle brackets are found, return new String[0]
+        if (leftAngleBracket == -1) {
+            return new String[0];
+        }
+        int rightAngleBracket = findMatchingAngleBracket(genericName, leftAngleBracket);
 
-		// If no matching angle brackets are found, return new String[0]
-		if (rightAngleBracket == -1) {
-			return new String[0];
-		}
-		// Extract the content inside "Map<...>"
-		String insideMap = genericName.substring(leftAngleBracket + 1, rightAngleBracket);
+        // If no matching angle brackets are found, return new String[0]
+        if (rightAngleBracket == -1) {
+            return new String[0];
+        }
+        // Extract the content inside "Map<...>"
+        String insideMap = genericName.substring(leftAngleBracket + 1, rightAngleBracket);
 
-		// Split the content into the key and value parts
-		return splitKeyValue(insideMap);
-	}
+        // Split the content into the key and value parts
+        return splitKeyValue(insideMap);
+    }
 
-	/**
-	 * Splits the content inside a generic Map declaration into key and value parts. This
-	 * method identifies the position of the comma that separates the key and value types,
-	 * ensuring that it is outside any nested angle brackets.
-	 * @param insideMap The string inside the angle brackets of the Map declaration, e.g.,
-	 * "A, Map<B, C>".
-	 * @return An array of two elements: the key type and the value type, or {@code null}
-	 * if the format is invalid.
-	 */
-	private static String[] splitKeyValue(String insideMap) {
-		int commaIndex = findCommaOutsideBrackets(insideMap);
-		if (commaIndex == -1) {
-			return new String[0];
-		}
+    /**
+     * Splits the content inside a generic Map declaration into key and value parts. This
+     * method identifies the position of the comma that separates the key and value types,
+     * ensuring that it is outside any nested angle brackets.
+     * @param insideMap The string inside the angle brackets of the Map declaration, e.g.,
+     * "A, Map<B, C>".
+     * @return An array of two elements: the key type and the value type, or {@code null}
+     * if the format is invalid.
+     */
+    private static String[] splitKeyValue(String insideMap) {
+        int commaIndex = findCommaOutsideBrackets(insideMap);
+        if (commaIndex == -1) {
+            return new String[0];
+        }
 
-		String key = insideMap.substring(0, commaIndex).trim();
-		String value = insideMap.substring(commaIndex + 1).trim();
-		return new String[] { key, value };
-	}
+        String key = insideMap.substring(0, commaIndex).trim();
+        String value = insideMap.substring(commaIndex + 1).trim();
+        return new String[] {key, value};
+    }
 
-	/**
-	 * Finds the position of the closing '>' that matches the opening '<' at the given
-	 * position. This method scans the string starting from the position of the first '<'
-	 * and tracks the depth of nested angle brackets to find the correct closing '>'.
-	 * @param str The string to search in.
-	 * @param start The position of the first '<'.
-	 * @return The index of the matching '>', or -1 if no matching bracket is found.
-	 */
-	private static int findMatchingAngleBracket(String str, int start) {
-		int depth = 0;
-		for (int i = start; i < str.length(); i++) {
-			char ch = str.charAt(i);
-			if (ch == '<') {
-				depth++;
-			}
-			else if (ch == '>') {
-				depth--;
-				if (depth == 0) {
-					return i;
-				}
-			}
-		}
-		// No matching closing angle bracket found
-		return -1;
-	}
+    /**
+     * Finds the position of the closing '>' that matches the opening '<' at the given
+     * position. This method scans the string starting from the position of the first '<'
+     * and tracks the depth of nested angle brackets to find the correct closing '>'.
+     * @param str The string to search in.
+     * @param start The position of the first '<'.
+     * @return The index of the matching '>', or -1 if no matching bracket is found.
+     */
+    private static int findMatchingAngleBracket(String str, int start) {
+        int depth = 0;
+        for (int i = start; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if (ch == '<') {
+                depth++;
+            } else if (ch == '>') {
+                depth--;
+                if (depth == 0) {
+                    return i;
+                }
+            }
+        }
+        // No matching closing angle bracket found
+        return -1;
+    }
 
-	/**
-	 * Finds the position of the comma that separates the key and value types in a generic
-	 * declaration. This method ensures that the comma is not inside any nested angle
-	 * brackets.
-	 * @param str The string to search in, e.g., "A, Map<B, C>".
-	 * @return The index of the comma, or -1 if no suitable comma is found.
-	 */
-	private static int findCommaOutsideBrackets(String str) {
-		int depth = 0;
-		for (int i = 0; i < str.length(); i++) {
-			char ch = str.charAt(i);
-			if (ch == '<') {
-				depth++;
-			}
-			else if (ch == '>') {
-				depth--;
-			}
-			else if (ch == ',' && depth == 0) {
-				return i;
-			}
-		}
-		// No comma found outside nested angle brackets
-		return -1;
-	}
+    /**
+     * Finds the position of the comma that separates the key and value types in a generic
+     * declaration. This method ensures that the comma is not inside any nested angle
+     * brackets.
+     * @param str The string to search in, e.g., "A, Map<B, C>".
+     * @return The index of the comma, or -1 if no suitable comma is found.
+     */
+    private static int findCommaOutsideBrackets(String str) {
+        int depth = 0;
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if (ch == '<') {
+                depth++;
+            } else if (ch == '>') {
+                depth--;
+            } else if (ch == ',' && depth == 0) {
+                return i;
+            }
+        }
+        // No comma found outside nested angle brackets
+        return -1;
+    }
 
-	/**
-	 * Convert the parameter types exported to the api document
-	 * @param javaTypeName java simple typeName
-	 * @return String
-	 */
-	public static String processTypeNameForParams(String javaTypeName) {
-		if (StringUtil.isEmpty(javaTypeName)) {
-			return "object";
-		}
-		if (javaTypeName.length() == 1) {
-			return "object";
-		}
-		if (javaTypeName.contains("[]")) {
-			return "array";
-		}
-		javaTypeName = javaTypeName.toLowerCase();
-		switch (javaTypeName) {
-			case "java.lang.string":
-			case "string":
-			case "char":
-			case "java.util.date":
-			case "java.util.calendar":
-			case "java.time.zoneoffset":
-			case "java.time.offsettime":
-			case "date":
-			case "java.util.uuid":
-			case "uuid":
-			case "localdatetime":
-			case "java.time.instant":
-			case "java.time.localdatetime":
-			case "java.time.localdate":
-			case "java.time.localtime":
-			case "java.time.year":
-			case "java.time.yearmonth":
-			case "java.time.monthday":
-			case "java.time.period":
-			case "localdate":
-			case "offsetdatetime":
-			case "localtime":
-			case "timestamp":
-			case "zoneddatetime":
-			case "period":
-			case "java.time.zoneddatetime":
-			case "java.time.offsetdatetime":
-			case "java.sql.timestamp":
-			case "java.lang.character":
-			case "character":
-			case "org.bson.types.objectid":
-				return "string";
-			case "java.util.list":
-			case "list":
-			case "java.util.set":
-			case "set":
-			case "java.util.linkedlist":
-			case "linkedlist":
-			case "java.util.arraylist":
-			case "arraylist":
-			case "java.util.treeset":
-			case "treeset":
-			case "enumset":
-				return "array";
-			case "java.lang.byte":
-			case "byte":
-				return "int8";
-			case "java.lang.integer":
-			case "integer":
-			case "int":
-				return "int32";
-			case "short":
-			case "java.lang.short":
-				return "int16";
-			case "double":
-			case "java.lang.double":
-				return "double";
-			case "java.lang.long":
-			case "long":
-				return "int64";
-			case "java.lang.float":
-			case "float":
-				return "float";
-			case "java.math.bigdecimal":
-			case "bigdecimal":
-			case "biginteger":
-				return "number";
-			case "java.lang.boolean":
-			case "boolean":
-				return "boolean";
-			case "map":
-				return "map";
-			case "multipartfile":
-				return "file";
-			default:
-				return "object";
-		}
+    /**
+     * Convert the parameter types exported to the api document
+     * @param javaTypeName java simple typeName
+     * @return String
+     */
+    public static String processTypeNameForParams(String javaTypeName) {
+        if (StringUtil.isEmpty(javaTypeName)) {
+            return "object";
+        }
+        if (javaTypeName.length() == 1) {
+            return "object";
+        }
+        if (javaTypeName.contains("[]")) {
+            return "array";
+        }
+        javaTypeName = javaTypeName.toLowerCase();
+        switch (javaTypeName) {
+            case "java.lang.string":
+            case "string":
+            case "char":
+            case "java.util.date":
+            case "java.util.calendar":
+            case "java.time.zoneoffset":
+            case "java.time.offsettime":
+            case "date":
+            case "java.util.uuid":
+            case "uuid":
+            case "localdatetime":
+            case "java.time.instant":
+            case "java.time.localdatetime":
+            case "java.time.localdate":
+            case "java.time.localtime":
+            case "java.time.year":
+            case "java.time.yearmonth":
+            case "java.time.monthday":
+            case "java.time.period":
+            case "localdate":
+            case "offsetdatetime":
+            case "localtime":
+            case "timestamp":
+            case "zoneddatetime":
+            case "period":
+            case "java.time.zoneddatetime":
+            case "java.time.offsetdatetime":
+            case "java.sql.timestamp":
+            case "java.lang.character":
+            case "character":
+            case "org.bson.types.objectid":
+                return "string";
+            case "java.util.list":
+            case "list":
+            case "java.util.set":
+            case "set":
+            case "java.util.linkedlist":
+            case "linkedlist":
+            case "java.util.arraylist":
+            case "arraylist":
+            case "java.util.treeset":
+            case "treeset":
+            case "enumset":
+                return "array";
+            case "java.lang.byte":
+            case "byte":
+                return "int8";
+            case "java.lang.integer":
+            case "integer":
+            case "int":
+                return "int32";
+            case "short":
+            case "java.lang.short":
+                return "int16";
+            case "double":
+            case "java.lang.double":
+                return "double";
+            case "java.lang.long":
+            case "long":
+                return "int64";
+            case "java.lang.float":
+            case "float":
+                return "float";
+            case "java.math.bigdecimal":
+            case "bigdecimal":
+            case "biginteger":
+                return "number";
+            case "java.lang.boolean":
+            case "boolean":
+                return "boolean";
+            case "map":
+                return "map";
+            case "multipartfile":
+                return "file";
+            default:
+                return "object";
+        }
+    }
 
-	}
+    /**
+     * process return type
+     * @param fullyName fully name
+     * @return ApiReturn
+     */
+    public static ApiReturn processReturnType(String fullyName) {
+        ReturnTypeProcessor processor = new ReturnTypeProcessor();
+        processor.setTypeName(fullyName);
+        return processor.process();
+    }
 
-	/**
-	 * process return type
-	 * @param fullyName fully name
-	 * @return ApiReturn
-	 */
-	public static ApiReturn processReturnType(String fullyName) {
-		ReturnTypeProcessor processor = new ReturnTypeProcessor();
-		processor.setTypeName(fullyName);
-		return processor.process();
-	}
+    /**
+     * rewrite request param
+     * @param typeName param type name
+     * @return String
+     */
+    public static String rewriteRequestParam(String typeName) {
+        if (typeName.equals("org.springframework.data.domain.Pageable")) {
+            return "com.github.hsindumas.stagger.model.framework.PageableAsQueryParam";
+        }
+        return typeName;
+    }
 
-	/**
-	 * rewrite request param
-	 * @param typeName param type name
-	 * @return String
-	 */
-	public static String rewriteRequestParam(String typeName) {
-		if (typeName.equals("org.springframework.data.domain.Pageable")) {
-			return "com.github.hsindumas.stagger.model.framework.PageableAsQueryParam";
-		}
-		return typeName;
-	}
+    /**
+     * Check if the given string is a valid class name.
+     * @param className The string to check.
+     * @return True if the string is a valid class name, false otherwise.
+     */
+    private static boolean isClassName(String className) {
+        className = className.replaceAll("[^<>]", "");
+        Stack<Character> stack = new Stack<>();
+        for (char c : className.toCharArray()) {
+            if (c == '<') {
+                stack.push('>');
+            } else if (stack.isEmpty() || c != stack.pop()) {
+                return false;
+            }
+        }
+        return stack.isEmpty();
+    }
 
-	/**
-	 * Check if the given string is a valid class name.
-	 * @param className The string to check.
-	 * @return True if the string is a valid class name, false otherwise.
-	 */
-	private static boolean isClassName(String className) {
-		className = className.replaceAll("[^<>]", "");
-		Stack<Character> stack = new Stack<>();
-		for (char c : className.toCharArray()) {
-			if (c == '<') {
-				stack.push('>');
-			}
-			else if (stack.isEmpty() || c != stack.pop()) {
-				return false;
-			}
-		}
-		return stack.isEmpty();
-	}
+    /**
+     * Get class annotations
+     * @param cls JavaClass
+     * @return List of annotation objects
+     */
+    public static List<?> getAnnotations(Object cls) {
+        Object superClass = getSuperJavaClass(cls);
+        List<Object> classAnnotations = new ArrayList<>();
+        try {
+            if (Objects.nonNull(superClass)) {
+                classAnnotations.addAll(getClassAnnotations(superClass));
+            }
+        } catch (Throwable e) {
+            throw new RuntimeException(
+                    "Could not obtain annotations for class: " + getClassFullyQualifiedName(cls) + "\n" + e);
+        }
+        classAnnotations.addAll(getClassAnnotations(cls));
+        return classAnnotations;
+    }
 
-	/**
-	 * Get class annotations
-	 * @param cls JavaClass
-	 * @return List of annotation objects
-	 */
-	public static List<?> getAnnotations(Object cls) {
-		Object superClass = getSuperJavaClass(cls);
-		List<Object> classAnnotations = new ArrayList<>();
-		try {
-			if (Objects.nonNull(superClass)) {
-				classAnnotations.addAll(getClassAnnotations(superClass));
-			}
-		}
-		catch (Throwable e) {
-			throw new RuntimeException(
-					"Could not obtain annotations for class: " + getClassFullyQualifiedName(cls) + "\n" + e);
-		}
-		classAnnotations.addAll(getClassAnnotations(cls));
-		return classAnnotations;
-	}
+    @SuppressWarnings("unchecked")
+    private static List<?> getClassAnnotations(Object cls) {
+        if (Objects.isNull(cls)) {
+            return Collections.emptyList();
+        }
+        try {
+            Object value = cls.getClass().getMethod("getAnnotations").invoke(cls);
+            if (value instanceof List<?>) {
+                return (List<?>) value;
+            }
+        } catch (ReflectiveOperationException | RuntimeException ignored) {
+            // Gracefully degrade when parser implementation does not expose this method.
+        }
+        return Collections.emptyList();
+    }
 
-	@SuppressWarnings("unchecked")
-	private static List<?> getClassAnnotations(Object cls) {
-		if (Objects.isNull(cls)) {
-			return Collections.emptyList();
-		}
-		try {
-			Object value = cls.getClass().getMethod("getAnnotations").invoke(cls);
-			if (value instanceof List<?>) {
-				return (List<?>) value;
-			}
-		}
-		catch (ReflectiveOperationException | RuntimeException ignored) {
-			// Gracefully degrade when parser implementation does not expose this method.
-		}
-		return Collections.emptyList();
-	}
+    private static Object getSuperJavaClass(Object cls) {
+        if (Objects.isNull(cls)) {
+            return null;
+        }
+        try {
+            return cls.getClass().getMethod("getSuperJavaClass").invoke(cls);
+        } catch (ReflectiveOperationException | RuntimeException ignored) {
+            // Gracefully degrade when superclass metadata is not available.
+            return null;
+        }
+    }
 
-	private static Object getSuperJavaClass(Object cls) {
-		if (Objects.isNull(cls)) {
-			return null;
-		}
-		try {
-			return cls.getClass().getMethod("getSuperJavaClass").invoke(cls);
-		}
-		catch (ReflectiveOperationException | RuntimeException ignored) {
-			// Gracefully degrade when superclass metadata is not available.
-			return null;
-		}
-	}
+    private static String getClassFullyQualifiedName(Object cls) {
+        if (Objects.isNull(cls)) {
+            return StringUtil.EMPTY;
+        }
+        try {
+            Object value = cls.getClass().getMethod("getFullyQualifiedName").invoke(cls);
+            if (value instanceof String) {
+                return (String) value;
+            }
+        } catch (ReflectiveOperationException | RuntimeException ignored) {
+            // Gracefully degrade when class canonical name metadata is not available.
+        }
+        return StringUtil.EMPTY;
+    }
 
-	private static String getClassFullyQualifiedName(Object cls) {
-		if (Objects.isNull(cls)) {
-			return StringUtil.EMPTY;
-		}
-		try {
-			Object value = cls.getClass().getMethod("getFullyQualifiedName").invoke(cls);
-			if (value instanceof String) {
-				return (String) value;
-			}
-		}
-		catch (ReflectiveOperationException | RuntimeException ignored) {
-			// Gracefully degrade when class canonical name metadata is not available.
-		}
-		return StringUtil.EMPTY;
-	}
-
-	/**
-	 * Create an instance of the given class using its default constructor.
-	 * @param <T> The type of the class to create an instance of.
-	 * @param classWithNoArgsConstructor The class to create an instance of.
-	 * @return An instance of the given class.
-	 */
-	public static <T> T newInstance(Class<T> classWithNoArgsConstructor) {
-		try {
-			return classWithNoArgsConstructor.getConstructor().newInstance();
-		}
-		catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | InstantiationException e) {
-			throw new IllegalArgumentException("Class must have the NoArgsConstructor");
-		}
-	}
-
+    /**
+     * Create an instance of the given class using its default constructor.
+     * @param <T> The type of the class to create an instance of.
+     * @param classWithNoArgsConstructor The class to create an instance of.
+     * @return An instance of the given class.
+     */
+    public static <T> T newInstance(Class<T> classWithNoArgsConstructor) {
+        try {
+            return classWithNoArgsConstructor.getConstructor().newInstance();
+        } catch (IllegalAccessException
+                | InvocationTargetException
+                | NoSuchMethodException
+                | InstantiationException e) {
+            throw new IllegalArgumentException("Class must have the NoArgsConstructor");
+        }
+    }
 }

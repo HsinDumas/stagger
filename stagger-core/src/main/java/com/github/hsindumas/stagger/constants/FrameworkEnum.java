@@ -21,7 +21,6 @@
 package com.github.hsindumas.stagger.constants;
 
 import com.github.hsindumas.stagger.common.util.StringUtil;
-
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -33,94 +32,94 @@ import java.util.stream.Collectors;
  */
 public enum FrameworkEnum {
 
-	/**
-	 * Apache Dubbo
-	 */
-	DUBBO("dubbo", "com.github.hsindumas.stagger.template.RpcDocBuildTemplate"),
+    /**
+     * Apache Dubbo
+     */
+    DUBBO("dubbo", "com.github.hsindumas.stagger.template.RpcDocBuildTemplate"),
 
-	/**
-	 * Spring Framework
-	 */
-	SPRING("spring", "com.github.hsindumas.stagger.template.SpringBootDocBuildTemplate"),
+    /**
+     * Spring Framework
+     */
+    SPRING("spring", "com.github.hsindumas.stagger.template.SpringBootDocBuildTemplate"),
 
-	/**
-	 * Solon
-	 */
-	SOLON("solon", "com.github.hsindumas.stagger.template.SolonDocBuildTemplate"),
+    /**
+     * Solon
+     */
+    SOLON("solon", "com.github.hsindumas.stagger.template.SolonDocBuildTemplate"),
 
-	/**
-	 * JAX-RS
-	 */
-	JAX_RS("JAX-RS", "com.github.hsindumas.stagger.template.JAXRSDocBuildTemplate"),
+    /**
+     * JAX-RS
+     */
+    JAX_RS("JAX-RS", "com.github.hsindumas.stagger.template.JAXRSDocBuildTemplate"),
 
-	/**
-	 * grpc
-	 */
-	GRPC("grpc", "com.github.hsindumas.stagger.template.GRpcDocBuildTemplate"),
+    /**
+     * grpc
+     */
+    GRPC("grpc", "com.github.hsindumas.stagger.template.GRpcDocBuildTemplate"),
+    ;
 
-	;
+    /**
+     * Framework name
+     */
+    private final String framework;
 
-	/**
-	 * Framework name
-	 */
-	private final String framework;
+    /**
+     * Framework IDocBuildTemplate implement
+     */
+    private final String className;
 
-	/**
-	 * Framework IDocBuildTemplate implement
-	 */
-	private final String className;
+    /**
+     * Constructor
+     * @param framework framework name
+     * @param className class name
+     */
+    FrameworkEnum(String framework, String className) {
+        this.framework = framework;
+        this.className = className;
+    }
 
-	/**
-	 * Constructor
-	 * @param framework framework name
-	 * @param className class name
-	 */
-	FrameworkEnum(String framework, String className) {
-		this.framework = framework;
-		this.className = className;
-	}
+    /**
+     * Get class name by framework.
+     * @param framework framework name
+     * @return class name
+     */
+    public static String getClassNameByFramework(String framework) {
+        String className = "";
+        if (StringUtil.isEmpty(framework)) {
+            return className;
+        }
+        for (FrameworkEnum frameworkEnum : FrameworkEnum.values()) {
+            if (frameworkEnum.framework.equalsIgnoreCase(framework)) {
+                className = frameworkEnum.className;
+                break;
+            }
+        }
+        return className;
+    }
 
-	/**
-	 * Get class name by framework.
-	 * @param framework framework name
-	 * @return class name
-	 */
-	public static String getClassNameByFramework(String framework) {
-		String className = "";
-		if (StringUtil.isEmpty(framework)) {
-			return className;
-		}
-		for (FrameworkEnum frameworkEnum : FrameworkEnum.values()) {
-			if (frameworkEnum.framework.equalsIgnoreCase(framework)) {
-				className = frameworkEnum.className;
-				break;
-			}
-		}
-		return className;
-	}
+    /**
+     * Get all supported frameworks.
+     * @return all supported frameworks
+     */
+    public static String allFramework() {
+        return Arrays.stream(FrameworkEnum.values())
+                .map(FrameworkEnum::getFramework)
+                .collect(Collectors.joining(","));
+    }
 
-	/**
-	 * Get all supported frameworks.
-	 * @return all supported frameworks
-	 */
-	public static String allFramework() {
-		return Arrays.stream(FrameworkEnum.values()).map(FrameworkEnum::getFramework).collect(Collectors.joining(","));
-	}
+    /**
+     * Get framework name.
+     * @return framework name
+     */
+    public String getFramework() {
+        return framework;
+    }
 
-	/**
-	 * Get framework name.
-	 * @return framework name
-	 */
-	public String getFramework() {
-		return framework;
-	}
-
-	/**
-	 * Get class name.
-	 * @return class name
-	 */
-	public String getClassName() {
-		return className;
-	}
-
+    /**
+     * Get class name.
+     * @return class name
+     */
+    public String getClassName() {
+        return className;
+    }
 }

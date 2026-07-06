@@ -23,7 +23,6 @@
 package com.github.hsindumas.stagger.gradle.chain;
 
 import com.github.hsindumas.stagger.gradle.model.CustomArtifact;
-
 import java.util.Objects;
 
 /**
@@ -32,32 +31,30 @@ import java.util.Objects;
  */
 public interface FilterChain {
 
-	/**
-	 * Set next filter chain
-	 * @param nextInChain Filter chain
-	 */
-	void setNext(FilterChain nextInChain);
+    /**
+     * Set next filter chain
+     * @param nextInChain Filter chain
+     */
+    void setNext(FilterChain nextInChain);
 
-	/**
-	 * Ignore Artifact via ID
-	 * @param artifact Artifact
-	 * @return boolean
-	 */
-	boolean ignoreArtifactById(CustomArtifact artifact);
+    /**
+     * Ignore Artifact via ID
+     * @param artifact Artifact
+     * @return boolean
+     */
+    boolean ignoreArtifactById(CustomArtifact artifact);
 
-	/**
-	 * FilterChain
-	 * @param nextInChain FilterChain
-	 * @param artifact CustomArtifact
-	 * @return boolean
-	 */
-	default boolean ignore(FilterChain nextInChain, CustomArtifact artifact) {
-		if (Objects.nonNull(nextInChain)) {
-			return nextInChain.ignoreArtifactById(artifact);
-		}
-		else {
-			return false;
-		}
-	}
-
+    /**
+     * FilterChain
+     * @param nextInChain FilterChain
+     * @param artifact CustomArtifact
+     * @return boolean
+     */
+    default boolean ignore(FilterChain nextInChain, CustomArtifact artifact) {
+        if (Objects.nonNull(nextInChain)) {
+            return nextInChain.ignoreArtifactById(artifact);
+        } else {
+            return false;
+        }
+    }
 }

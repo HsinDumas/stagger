@@ -22,12 +22,11 @@
  */
 package com.github.hsindumas.stagger.gradle.task;
 
-import org.gradle.work.DisableCachingByDefault;
-
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.builder.openapi.SwaggerBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import org.gradle.api.logging.Logger;
+import org.gradle.work.DisableCachingByDefault;
 
 /**
  * Support Swagger 2.0
@@ -36,19 +35,16 @@ import org.gradle.api.logging.Logger;
  * @author HsinDumas
  */
 @DisableCachingByDefault(
-		because = "Invokes external documentation generation and depends on project state; not cacheable yet.")
-
+        because = "Invokes external documentation generation and depends on project state; not cacheable yet.")
 public class SwaggerTask extends DocBaseTask {
 
-	@Override
-	public void executeAction(ApiConfig apiConfig, Logger logger) {
-		try {
-			ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
-			SwaggerBuilder.buildOpenApi(apiConfig, configBuilder);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+    @Override
+    public void executeAction(ApiConfig apiConfig, Logger logger) {
+        try {
+            ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
+            SwaggerBuilder.buildOpenApi(apiConfig, configBuilder);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

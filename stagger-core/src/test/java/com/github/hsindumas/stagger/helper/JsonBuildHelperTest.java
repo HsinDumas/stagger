@@ -2,13 +2,11 @@ package com.github.hsindumas.stagger.helper;
 
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
-import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import com.github.hsindumas.stagger.utils.DocUtil;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
 import java.util.HashSet;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author muyuanjin
@@ -17,49 +15,54 @@ import java.util.HashSet;
  */
 class JsonBuildHelperTest {
 
-	/**
-	 * com.github.hsindumas.stagger.helper.JsonBuildHelper#buildJson issue:NPE in
-	 * JsonBuildHelper #789
-	 */
-	@Test
-	void testBuildJsonWithNPE() {
-		ApiConfig apiConfig = new ApiConfig();
-		JavaProjectBuilder projectBuilder = JavaProjectBuilderHelper.create();
-		Assertions.assertNotNull(projectBuilder.getClassByName(getClass().getName()));
-		Object taskType = projectBuilder.getClassByName(Task.class.getName());
-		Assertions.assertNotNull(taskType);
-		Assertions.assertFalse(DocUtil.getClassMethods(taskType).isEmpty());
-		ProjectDocConfigBuilder builder = new ProjectDocConfigBuilder(apiConfig, projectBuilder);
-		Assertions.assertNull(builder.getClassByName(getClass().getName()));
-		Assertions.assertNotNull(builder.getClassByName(Task.class.getName()));
-		Assertions.assertFalse(DocUtil.getClassMethods(builder.getClassByName(Task.class.getName())).isEmpty());
-		String json = JsonBuildHelper.buildJson(Task.class.getName(), Task.class.getCanonicalName(), false, 0,
-				new HashMap<>(16), new HashSet<>(), new HashSet<>(), builder);
-		Assertions.assertNotNull(json);
-		Assertions.assertTrue(json.contains("taskType"));
-	}
+    /**
+     * com.github.hsindumas.stagger.helper.JsonBuildHelper#buildJson issue:NPE in
+     * JsonBuildHelper #789
+     */
+    @Test
+    void testBuildJsonWithNPE() {
+        ApiConfig apiConfig = new ApiConfig();
+        JavaProjectBuilder projectBuilder = JavaProjectBuilderHelper.create();
+        Assertions.assertNotNull(projectBuilder.getClassByName(getClass().getName()));
+        Object taskType = projectBuilder.getClassByName(Task.class.getName());
+        Assertions.assertNotNull(taskType);
+        Assertions.assertFalse(DocUtil.getClassMethods(taskType).isEmpty());
+        ProjectDocConfigBuilder builder = new ProjectDocConfigBuilder(apiConfig, projectBuilder);
+        Assertions.assertNull(builder.getClassByName(getClass().getName()));
+        Assertions.assertNotNull(builder.getClassByName(Task.class.getName()));
+        Assertions.assertFalse(DocUtil.getClassMethods(builder.getClassByName(Task.class.getName()))
+                .isEmpty());
+        String json = JsonBuildHelper.buildJson(
+                Task.class.getName(),
+                Task.class.getCanonicalName(),
+                false,
+                0,
+                new HashMap<>(16),
+                new HashSet<>(),
+                new HashSet<>(),
+                builder);
+        Assertions.assertNotNull(json);
+        Assertions.assertTrue(json.contains("taskType"));
+    }
 
-	interface Serialize<T extends Serialize<T>> {
+    interface Serialize<T extends Serialize<T>> {
 
-		@SuppressWarnings("unchecked")
-		default Class<T> getOriginalClass() {
-			return (Class<T>) this.getClass();
-		}
+        @SuppressWarnings("unchecked")
+        default Class<T> getOriginalClass() {
+            return (Class<T>) this.getClass();
+        }
+    }
 
-	}
+    public static class Task implements Serialize<Task> {
 
-	public static class Task implements Serialize<Task> {
+        private String taskType;
 
-		private String taskType;
+        public String getTaskType() {
+            return taskType;
+        }
 
-		public String getTaskType() {
-			return taskType;
-		}
-
-		public void setTaskType(String taskType) {
-			this.taskType = taskType;
-		}
-
-	}
-
+        public void setTaskType(String taskType) {
+            this.taskType = taskType;
+        }
+    }
 }

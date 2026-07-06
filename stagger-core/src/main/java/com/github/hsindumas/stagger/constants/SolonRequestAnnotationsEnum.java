@@ -31,69 +31,69 @@ import java.util.List;
  */
 public enum SolonRequestAnnotationsEnum {
 
-	/**
-	 * Solon Request Annotation PathVar
-	 */
-	PATH_VAR("Path"),
+    /**
+     * Solon Request Annotation PathVar
+     */
+    PATH_VAR("Path"),
 
-	/**
-	 * Solon Request Annotation PathVar full
-	 */
-	PATH_VAR_FULLY("org.noear.solon.annotation.Path"),
+    /**
+     * Solon Request Annotation PathVar full
+     */
+    PATH_VAR_FULLY("org.noear.solon.annotation.Path"),
 
-	/**
-	 * Solon Request Annotation Param
-	 */
-	REQ_PARAM("Param"),
+    /**
+     * Solon Request Annotation Param
+     */
+    REQ_PARAM("Param"),
 
-	/**
-	 * Solon Request Annotation Param full
-	 */
-	REQ_PARAM_FULLY("org.noear.solon.annotation.Param"),
+    /**
+     * Solon Request Annotation Param full
+     */
+    REQ_PARAM_FULLY("org.noear.solon.annotation.Param"),
 
-	/**
-	 * Solon Request Annotation Body
-	 */
-	REQUEST_BODY("Body"),
+    /**
+     * Solon Request Annotation Body
+     */
+    REQUEST_BODY("Body"),
 
-	/**
-	 * Solon Request Annotation Body full
-	 */
-	REQUEST_BODY_FULLY("org.noear.solon.annotation.Body"),
+    /**
+     * Solon Request Annotation Body full
+     */
+    REQUEST_BODY_FULLY("org.noear.solon.annotation.Body"),
 
-	/**
-	 * Solon Request Annotation Header
-	 */
-	REQUEST_HERDER("Header"),
+    /**
+     * Solon Request Annotation Header
+     */
+    REQUEST_HERDER("Header"),
 
-	/**
-	 * Solon Request Annotation Header full
-	 */
-	REQUEST_HERDER_FULLY("org.noear.solon.annotation.Header"),;
+    /**
+     * Solon Request Annotation Header full
+     */
+    REQUEST_HERDER_FULLY("org.noear.solon.annotation.Header"),
+    ;
 
-	/**
-	 * Solon Request Annotation value
-	 */
-	private final String value;
+    /**
+     * Solon Request Annotation value
+     */
+    private final String value;
 
-	/**
-	 * Create enum entry.
-	 * @param value annotation simple or fully-qualified name
-	 */
-	SolonRequestAnnotationsEnum(String value) {
-		this.value = value;
-	}
+    /**
+     * Create enum entry.
+     * @param value annotation simple or fully-qualified name
+     */
+    SolonRequestAnnotationsEnum(String value) {
+        this.value = value;
+    }
 
-	/**
-	 * List supported Solon request annotation names.
-	 * @return annotation names
-	 */
-	public static List<String> listMvcRequestAnnotations() {
-		List<String> annotations = new ArrayList<>();
-		for (SolonRequestAnnotationsEnum annotation : SolonRequestAnnotationsEnum.values()) {
-			annotations.add(annotation.value);
-		}
-		return annotations;
-	}
-
+    /**
+     * List supported Solon request annotation names.
+     * @return annotation names
+     */
+    public static List<String> listMvcRequestAnnotations() {
+        List<String> annotations = new ArrayList<>();
+        for (SolonRequestAnnotationsEnum annotation : SolonRequestAnnotationsEnum.values()) {
+            annotations.add(annotation.value);
+        }
+        return annotations;
+    }
 }

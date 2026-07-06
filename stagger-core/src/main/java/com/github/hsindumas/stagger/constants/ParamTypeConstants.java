@@ -29,34 +29,33 @@ package com.github.hsindumas.stagger.constants;
  */
 public interface ParamTypeConstants {
 
-	/**
-	 * param type enum
-	 */
-	String PARAM_TYPE_ENUM = "enum";
+    /**
+     * param type enum
+     */
+    String PARAM_TYPE_ENUM = "enum";
 
-	/**
-	 * param type array
-	 */
-	String PARAM_TYPE_ARRAY = "array";
+    /**
+     * param type array
+     */
+    String PARAM_TYPE_ARRAY = "array";
 
-	/**
-	 * param type file
-	 */
-	String PARAM_TYPE_FILE = "file";
+    /**
+     * param type file
+     */
+    String PARAM_TYPE_FILE = "file";
 
-	/**
-	 * param type text
-	 */
-	String PARAM_TYPE_TEXT = "text";
+    /**
+     * param type text
+     */
+    String PARAM_TYPE_TEXT = "text";
 
-	/**
-	 * param type map
-	 */
-	String PARAM_TYPE_MAP = "map";
+    /**
+     * param type map
+     */
+    String PARAM_TYPE_MAP = "map";
 
-	/**
-	 * param type object
-	 */
-	String PARAM_TYPE_OBJECT = "object";
-
+    /**
+     * param type object
+     */
+    String PARAM_TYPE_OBJECT = "object";
 }

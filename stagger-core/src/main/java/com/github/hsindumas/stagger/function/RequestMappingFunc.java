@@ -28,10 +28,8 @@ import com.github.hsindumas.stagger.model.request.RequestMapping;
  * @author yu 2022/12/02.
  * @author HsinDumas
  */
-
 @FunctionalInterface
 public interface RequestMappingFunc {
 
-	void process(String className, RequestMapping requestMapping);
-
+    void process(String className, RequestMapping requestMapping);
 }

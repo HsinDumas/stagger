@@ -31,242 +31,240 @@ import java.util.List;
  */
 public class DocJavaField {
 
-	/**
-	 * field info
-	 */
-	private Object javaField;
+    /**
+     * field info
+     */
+    private Object javaField;
 
-	/**
-	 * comment
-	 */
-	private String comment;
+    /**
+     * comment
+     */
+    private String comment;
 
-	/**
-	 * tags
-	 */
-	private List<?> docletTags;
+    /**
+     * tags
+     */
+    private List<?> docletTags;
 
-	/**
-	 * annotations
-	 */
-	private List<?> annotations;
+    /**
+     * annotations
+     */
+    private List<?> annotations;
 
-	/**
-	 * field fullyQualifiedName
-	 */
-	private String typeFullyQualifiedName;
+    /**
+     * field fullyQualifiedName
+     */
+    private String typeFullyQualifiedName;
 
-	/**
-	 * field genericCanonicalName
-	 */
-	private String typeGenericCanonicalName;
+    /**
+     * field genericCanonicalName
+     */
+    private String typeGenericCanonicalName;
 
-	/**
-	 * genericFullyQualifiedName
-	 */
-	private String typeGenericFullyQualifiedName;
+    /**
+     * genericFullyQualifiedName
+     */
+    private String typeGenericFullyQualifiedName;
 
-	/**
-	 * field generic actualJavaType;
-	 */
-	private String actualJavaType;
+    /**
+     * field generic actualJavaType;
+     */
+    private String actualJavaType;
 
-	/**
-	 * field name
-	 */
-	private String fieldName;
+    /**
+     * field name
+     */
+    private String fieldName;
 
-	private boolean array;
+    private boolean array;
 
-	private boolean primitive;
+    private boolean primitive;
 
-	private boolean collection;
+    private boolean collection;
 
-	private boolean file;
+    private boolean file;
 
-	private boolean isEnum;
+    private boolean isEnum;
 
-	/**
-	 * owner class
-	 */
-	private String declaringClassName;
+    /**
+     * owner class
+     */
+    private String declaringClassName;
 
-	private String typeSimpleName;
+    private String typeSimpleName;
 
-	public static DocJavaField builder() {
-		return new DocJavaField();
-	}
+    public static DocJavaField builder() {
+        return new DocJavaField();
+    }
 
-	@SuppressWarnings("unchecked")
-	public <T> T getJavaField() {
-		return (T) javaField;
-	}
+    @SuppressWarnings("unchecked")
+    public <T> T getJavaField() {
+        return (T) javaField;
+    }
 
-	public DocJavaField setJavaField(Object javaField) {
-		this.javaField = javaField;
-		return this;
-	}
+    public DocJavaField setJavaField(Object javaField) {
+        this.javaField = javaField;
+        return this;
+    }
 
-	public String getComment() {
-		return comment;
-	}
+    public String getComment() {
+        return comment;
+    }
 
-	public DocJavaField setComment(String comment) {
-		this.comment = comment;
-		return this;
-	}
+    public DocJavaField setComment(String comment) {
+        this.comment = comment;
+        return this;
+    }
 
-	public String getTypeFullyQualifiedName() {
-		return typeFullyQualifiedName;
-	}
+    public String getTypeFullyQualifiedName() {
+        return typeFullyQualifiedName;
+    }
 
-	public DocJavaField setTypeFullyQualifiedName(String typeFullyQualifiedName) {
-		this.typeFullyQualifiedName = typeFullyQualifiedName;
-		return this;
-	}
+    public DocJavaField setTypeFullyQualifiedName(String typeFullyQualifiedName) {
+        this.typeFullyQualifiedName = typeFullyQualifiedName;
+        return this;
+    }
 
-	public String getTypeGenericCanonicalName() {
-		return typeGenericCanonicalName;
-	}
+    public String getTypeGenericCanonicalName() {
+        return typeGenericCanonicalName;
+    }
 
-	public DocJavaField setTypeGenericCanonicalName(String typeGenericCanonicalName) {
-		this.typeGenericCanonicalName = typeGenericCanonicalName;
-		return this;
-	}
+    public DocJavaField setTypeGenericCanonicalName(String typeGenericCanonicalName) {
+        this.typeGenericCanonicalName = typeGenericCanonicalName;
+        return this;
+    }
 
-	public String getActualJavaType() {
-		return actualJavaType;
-	}
+    public String getActualJavaType() {
+        return actualJavaType;
+    }
 
-	public DocJavaField setActualJavaType(String actualJavaType) {
-		this.actualJavaType = actualJavaType;
-		return this;
-	}
+    public DocJavaField setActualJavaType(String actualJavaType) {
+        this.actualJavaType = actualJavaType;
+        return this;
+    }
 
-	public List<?> getDocletTags() {
-		if (docletTags == null) {
-			return new ArrayList<>();
-		}
-		return docletTags;
-	}
+    public List<?> getDocletTags() {
+        if (docletTags == null) {
+            return new ArrayList<>();
+        }
+        return docletTags;
+    }
 
-	public DocJavaField setDocletTags(List<?> docletTags) {
-		this.docletTags = docletTags;
-		return this;
-	}
+    public DocJavaField setDocletTags(List<?> docletTags) {
+        this.docletTags = docletTags;
+        return this;
+    }
 
-	public List<?> getAnnotations() {
-		List<?> fieldAnnotations = getJavaFieldAnnotations(javaField);
-		if (fieldAnnotations != null && !fieldAnnotations.isEmpty()) {
-			return fieldAnnotations;
-		}
-		if (annotations == null) {
-			return new ArrayList<>();
-		}
-		return this.annotations;
-	}
+    public List<?> getAnnotations() {
+        List<?> fieldAnnotations = getJavaFieldAnnotations(javaField);
+        if (fieldAnnotations != null && !fieldAnnotations.isEmpty()) {
+            return fieldAnnotations;
+        }
+        if (annotations == null) {
+            return new ArrayList<>();
+        }
+        return this.annotations;
+    }
 
-	@SuppressWarnings("unchecked")
-	private static List<?> getJavaFieldAnnotations(Object field) {
-		if (field == null) {
-			return null;
-		}
-		try {
-			Object value = field.getClass().getMethod("getAnnotations").invoke(field);
-			if (value instanceof List<?>) {
-				return (List<?>) value;
-			}
-		}
-		catch (ReflectiveOperationException ignore) {
-			// Keep compatibility with parser implementations that do not expose
-			// annotations.
-		}
-		return null;
-	}
+    @SuppressWarnings("unchecked")
+    private static List<?> getJavaFieldAnnotations(Object field) {
+        if (field == null) {
+            return null;
+        }
+        try {
+            Object value = field.getClass().getMethod("getAnnotations").invoke(field);
+            if (value instanceof List<?>) {
+                return (List<?>) value;
+            }
+        } catch (ReflectiveOperationException ignore) {
+            // Keep compatibility with parser implementations that do not expose
+            // annotations.
+        }
+        return null;
+    }
 
-	public DocJavaField setAnnotations(List<?> annotations) {
-		this.annotations = annotations;
-		return this;
-	}
+    public DocJavaField setAnnotations(List<?> annotations) {
+        this.annotations = annotations;
+        return this;
+    }
 
-	public boolean isArray() {
-		return array;
-	}
+    public boolean isArray() {
+        return array;
+    }
 
-	public DocJavaField setArray(boolean array) {
-		this.array = array;
-		return this;
-	}
+    public DocJavaField setArray(boolean array) {
+        this.array = array;
+        return this;
+    }
 
-	public boolean isPrimitive() {
-		return primitive;
-	}
+    public boolean isPrimitive() {
+        return primitive;
+    }
 
-	public DocJavaField setPrimitive(boolean primitive) {
-		this.primitive = primitive;
-		return this;
-	}
+    public DocJavaField setPrimitive(boolean primitive) {
+        this.primitive = primitive;
+        return this;
+    }
 
-	public boolean isCollection() {
-		return collection;
-	}
+    public boolean isCollection() {
+        return collection;
+    }
 
-	public DocJavaField setCollection(boolean collection) {
-		this.collection = collection;
-		return this;
-	}
+    public DocJavaField setCollection(boolean collection) {
+        this.collection = collection;
+        return this;
+    }
 
-	public boolean isFile() {
-		return file;
-	}
+    public boolean isFile() {
+        return file;
+    }
 
-	public DocJavaField setFile(boolean file) {
-		this.file = file;
-		return this;
-	}
+    public DocJavaField setFile(boolean file) {
+        this.file = file;
+        return this;
+    }
 
-	public boolean isEnum() {
-		return isEnum;
-	}
+    public boolean isEnum() {
+        return isEnum;
+    }
 
-	public void setEnum(boolean anEnum) {
-		isEnum = anEnum;
-	}
+    public void setEnum(boolean anEnum) {
+        isEnum = anEnum;
+    }
 
-	public String getFieldName() {
-		return fieldName;
-	}
+    public String getFieldName() {
+        return fieldName;
+    }
 
-	public DocJavaField setFieldName(String fieldName) {
-		this.fieldName = fieldName;
-		return this;
-	}
+    public DocJavaField setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+        return this;
+    }
 
-	public String getDeclaringClassName() {
-		return declaringClassName;
-	}
+    public String getDeclaringClassName() {
+        return declaringClassName;
+    }
 
-	public DocJavaField setDeclaringClassName(String declaringClassName) {
-		this.declaringClassName = declaringClassName;
-		return this;
-	}
+    public DocJavaField setDeclaringClassName(String declaringClassName) {
+        this.declaringClassName = declaringClassName;
+        return this;
+    }
 
-	public String getTypeGenericFullyQualifiedName() {
-		return typeGenericFullyQualifiedName;
-	}
+    public String getTypeGenericFullyQualifiedName() {
+        return typeGenericFullyQualifiedName;
+    }
 
-	public DocJavaField setTypeGenericFullyQualifiedName(String typeGenericFullyQualifiedName) {
-		this.typeGenericFullyQualifiedName = typeGenericFullyQualifiedName;
-		return this;
-	}
+    public DocJavaField setTypeGenericFullyQualifiedName(String typeGenericFullyQualifiedName) {
+        this.typeGenericFullyQualifiedName = typeGenericFullyQualifiedName;
+        return this;
+    }
 
-	public String getTypeSimpleName() {
-		return typeSimpleName;
-	}
+    public String getTypeSimpleName() {
+        return typeSimpleName;
+    }
 
-	public DocJavaField setTypeSimpleName(String typeSimpleName) {
-		this.typeSimpleName = typeSimpleName;
-		return this;
-	}
-
+    public DocJavaField setTypeSimpleName(String typeSimpleName) {
+        this.typeSimpleName = typeSimpleName;
+        return this;
+    }
 }

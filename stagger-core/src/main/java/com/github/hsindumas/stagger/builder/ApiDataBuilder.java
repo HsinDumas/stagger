@@ -20,10 +20,10 @@
  */
 package com.github.hsindumas.stagger.builder;
 
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiAllData;
 import com.github.hsindumas.stagger.model.ApiConfig;
-import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 
 /**
  * Build Api Data
@@ -34,45 +34,44 @@ import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
  */
 public class ApiDataBuilder {
 
-	/**
-	 * private constructor
-	 */
-	private ApiDataBuilder() {
-		throw new IllegalStateException("Utility class");
-	}
+    /**
+     * private constructor
+     */
+    private ApiDataBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * Get list of ApiDoc
-	 * @param config ApiConfig
-	 * @return List of ApiDoc
-	 */
-	public static ApiAllData getApiData(ApiConfig config) {
-		return getApiData(config, Boolean.FALSE);
-	}
+    /**
+     * Get list of ApiDoc
+     * @param config ApiConfig
+     * @return List of ApiDoc
+     */
+    public static ApiAllData getApiData(ApiConfig config) {
+        return getApiData(config, Boolean.FALSE);
+    }
 
-	/**
-	 * Retrieves API data based on the given configuration.
-	 * @param config The API configuration object containing request parameters and data
-	 * source information.
-	 * @param toTree A flag indicating whether to convert the parameter data into a tree
-	 * structure.
-	 * @return An ApiAllData object containing all the API data information.
-	 */
-	private static ApiAllData getApiData(ApiConfig config, boolean toTree) {
-		config.setParamsDataToTree(toTree);
-		DocBuilderTemplate builderTemplate = new DocBuilderTemplate();
-		builderTemplate.checkAndInitForGetApiData(config);
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		return builderTemplate.getApiData(config, javaProjectBuilder);
-	}
+    /**
+     * Retrieves API data based on the given configuration.
+     * @param config The API configuration object containing request parameters and data
+     * source information.
+     * @param toTree A flag indicating whether to convert the parameter data into a tree
+     * structure.
+     * @return An ApiAllData object containing all the API data information.
+     */
+    private static ApiAllData getApiData(ApiConfig config, boolean toTree) {
+        config.setParamsDataToTree(toTree);
+        DocBuilderTemplate builderTemplate = new DocBuilderTemplate();
+        builderTemplate.checkAndInitForGetApiData(config);
+        JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
+        return builderTemplate.getApiData(config, javaProjectBuilder);
+    }
 
-	/**
-	 * Get list of ApiDoc as a tree structure.
-	 * @param config ApiConfig
-	 * @return List of ApiDoc
-	 */
-	public static ApiAllData getApiDataTree(ApiConfig config) {
-		return getApiData(config, Boolean.TRUE);
-	}
-
+    /**
+     * Get list of ApiDoc as a tree structure.
+     * @param config ApiConfig
+     * @return List of ApiDoc
+     */
+    public static ApiAllData getApiDataTree(ApiConfig config) {
+        return getApiData(config, Boolean.TRUE);
+    }
 }

@@ -22,9 +22,13 @@
 package com.github.hsindumas.stagger.builder.openapi;
 
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.FileUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.constants.MediaType;
 import com.github.hsindumas.stagger.constants.ParamTypeConstants;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiDoc;
@@ -36,12 +40,6 @@ import com.github.hsindumas.stagger.model.ApiSchema;
 import com.github.hsindumas.stagger.model.openapi.OpenApiTag;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JsonUtil;
-import com.github.hsindumas.stagger.common.util.CollectionUtil;
-import com.github.hsindumas.stagger.common.util.FileUtil;
-import com.github.hsindumas.stagger.common.util.StringUtil;
-import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,6 +48,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Swagger Builder
@@ -60,236 +59,236 @@ import java.util.stream.Stream;
  */
 public class SwaggerBuilder extends AbstractOpenApiBuilder {
 
-	/**
-	 * Singleton
-	 */
-	private static final SwaggerBuilder INSTANCE = new SwaggerBuilder();
+    /**
+     * Singleton
+     */
+    private static final SwaggerBuilder INSTANCE = new SwaggerBuilder();
 
-	/**
-	 * private constructor
-	 */
-	private SwaggerBuilder() {
-	}
+    /**
+     * private constructor
+     */
+    private SwaggerBuilder() {}
 
-	/**
-	 * For unit testing
-	 * @param config Configuration of stagger
-	 */
-	public static void buildOpenApi(ApiConfig config) {
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		buildOpenApi(config, javaProjectBuilder);
-	}
+    /**
+     * For unit testing
+     * @param config Configuration of stagger
+     */
+    public static void buildOpenApi(ApiConfig config) {
+        JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
+        buildOpenApi(config, javaProjectBuilder);
+    }
 
-	/**
-	 * Only for stagger maven plugin and gradle plugin.
-	 * @param config Configuration of stagger
-	 * @param projectBuilder Java source project builder
-	 */
-	public static void buildOpenApi(ApiConfig config, JavaProjectBuilder projectBuilder) {
-		ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(config, projectBuilder);
-		buildOpenApi(config, configBuilder);
-	}
+    /**
+     * Only for stagger maven plugin and gradle plugin.
+     * @param config Configuration of stagger
+     * @param projectBuilder Java source project builder
+     */
+    public static void buildOpenApi(ApiConfig config, JavaProjectBuilder projectBuilder) {
+        ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(config, projectBuilder);
+        buildOpenApi(config, configBuilder);
+    }
 
-	/**
-	 * Build open api with project doc config builder.
-	 * @param config Configuration of stagger
-	 * @param configBuilder Project doc config builder
-	 */
-	public static void buildOpenApi(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
-		ApiSchema<ApiDoc> apiSchema = INSTANCE.getOpenApiDocs(config, configBuilder);
-		INSTANCE.openApiCreate(config, apiSchema);
-	}
+    /**
+     * Build open api with project doc config builder.
+     * @param config Configuration of stagger
+     * @param configBuilder Project doc config builder
+     */
+    public static void buildOpenApi(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
+        ApiSchema<ApiDoc> apiSchema = INSTANCE.getOpenApiDocs(config, configBuilder);
+        INSTANCE.openApiCreate(config, apiSchema);
+    }
 
-	@Override
-	public String getModuleName() {
-		return DocGlobalConstants.OPENAPI_2_COMPONENT_KRY;
-	}
+    @Override
+    public String getModuleName() {
+        return DocGlobalConstants.OPENAPI_2_COMPONENT_KRY;
+    }
 
-	/**
-	 * Build OpenApi
-	 * @param config Configuration of stagger
-	 */
-	@Override
-	public void openApiCreate(ApiConfig config, ApiSchema<ApiDoc> apiSchema) {
-		this.setComponentKey(getModuleName());
-		Map<String, Object> json = new HashMap<>(8);
-		json.put("swagger", "2.0");
-		json.put("info", buildInfo(config));
-		json.put("host", config.getServerUrl() == null ? "127.0.0.1" : config.getServerUrl());
-		json.put("basePath", StringUtils.isNotBlank(config.getPathPrefix()) ? config.getPathPrefix()
-				: DocGlobalConstants.PATH_DELIMITER);
-		Set<OpenApiTag> tags = new HashSet<>();
-		json.put("tags", tags);
-		json.put("paths", buildPaths(config, apiSchema, tags, true));
-		json.put("definitions", buildComponentsSchema(apiSchema));
+    /**
+     * Build OpenApi
+     * @param config Configuration of stagger
+     */
+    @Override
+    public void openApiCreate(ApiConfig config, ApiSchema<ApiDoc> apiSchema) {
+        this.setComponentKey(getModuleName());
+        Map<String, Object> json = new HashMap<>(8);
+        json.put("swagger", "2.0");
+        json.put("info", buildInfo(config));
+        json.put("host", config.getServerUrl() == null ? "127.0.0.1" : config.getServerUrl());
+        json.put(
+                "basePath",
+                StringUtils.isNotBlank(config.getPathPrefix())
+                        ? config.getPathPrefix()
+                        : DocGlobalConstants.PATH_DELIMITER);
+        Set<OpenApiTag> tags = new HashSet<>();
+        json.put("tags", tags);
+        json.put("paths", buildPaths(config, apiSchema, tags, true));
+        json.put("definitions", buildComponentsSchema(apiSchema));
 
-		String filePath = config.getOutPath();
-		filePath = filePath + DocGlobalConstants.SWAGGER_JSON;
-		String data = JsonUtil.toPrettyJson(json);
-		FileUtil.nioWriteFile(data, filePath);
-	}
+        String filePath = config.getOutPath();
+        filePath = filePath + DocGlobalConstants.SWAGGER_JSON;
+        String data = JsonUtil.toPrettyJson(json);
+        FileUtil.nioWriteFile(data, filePath);
+    }
 
-	/**
-	 * Build openapi info
-	 * @param apiConfig Configuration of stagger
-	 */
-	private static Map<String, Object> buildInfo(ApiConfig apiConfig) {
-		Map<String, Object> infoMap = new HashMap<>(8);
-		infoMap.put("title", apiConfig.getProjectName() == null ? "Project Name is Null." : apiConfig.getProjectName());
-		infoMap.put("version", "1.0.0");
-		return infoMap;
-	}
+    /**
+     * Build openapi info
+     * @param apiConfig Configuration of stagger
+     */
+    private static Map<String, Object> buildInfo(ApiConfig apiConfig) {
+        Map<String, Object> infoMap = new HashMap<>(8);
+        infoMap.put("title", apiConfig.getProjectName() == null ? "Project Name is Null." : apiConfig.getProjectName());
+        infoMap.put("version", "1.0.0");
+        return infoMap;
+    }
 
-	/**
-	 * Build request
-	 * @param apiConfig Configuration of stagger
-	 * @param apiMethodDoc ApiMethodDoc
-	 * @param apiDoc apiDoc
-	 */
-	public Map<String, Object> buildPathUrlsRequest(ApiConfig apiConfig, ApiMethodDoc apiMethodDoc, ApiDoc apiDoc,
-			List<ApiExceptionStatus> apiExceptionStatuses) {
-		Map<String, Object> request = new HashMap<>(20);
-		request.put("summary", apiMethodDoc.getDesc());
-		request.put("description", apiMethodDoc.getDetail());
-		request.put("tags",
-				Stream.of(apiDoc.getName(), apiDoc.getDesc(), apiMethodDoc.getGroup())
-					.filter(StringUtil::isNotEmpty)
-					.toArray(String[]::new));
-		List<Map<String, Object>> parameters = this.buildParameters(apiMethodDoc);
-		// requestBody
-		if (CollectionUtil.isNotEmpty(apiMethodDoc.getRequestParams())) {
-			Map<String, Object> parameter = new HashMap<>(16);
-			parameter.put("in", "body");
-			parameter.putAll(this.buildContentBody(apiConfig, apiMethodDoc, false));
-			parameters.add(parameter);
-		}
-		if (this.hasFile(parameters)) {
-			List<String> formData = new ArrayList<>();
-			formData.add(MediaType.MULTIPART_FORM_DATA);
-			request.put("consumes", formData);
-		}
-		request.put("parameters", parameters);
-		request.put("responses", this.buildResponses(apiConfig, apiMethodDoc, apiExceptionStatuses));
-		request.put("deprecated", apiMethodDoc.isDeprecated());
-		// make sure operationId is unique and can be used as a method name
-		request.put("operationId",
-				apiMethodDoc.getName() + "_" + apiMethodDoc.getMethodId() + "UsingOn" + apiMethodDoc.getType());
+    /**
+     * Build request
+     * @param apiConfig Configuration of stagger
+     * @param apiMethodDoc ApiMethodDoc
+     * @param apiDoc apiDoc
+     */
+    public Map<String, Object> buildPathUrlsRequest(
+            ApiConfig apiConfig,
+            ApiMethodDoc apiMethodDoc,
+            ApiDoc apiDoc,
+            List<ApiExceptionStatus> apiExceptionStatuses) {
+        Map<String, Object> request = new HashMap<>(20);
+        request.put("summary", apiMethodDoc.getDesc());
+        request.put("description", apiMethodDoc.getDetail());
+        request.put(
+                "tags",
+                Stream.of(apiDoc.getName(), apiDoc.getDesc(), apiMethodDoc.getGroup())
+                        .filter(StringUtil::isNotEmpty)
+                        .toArray(String[]::new));
+        List<Map<String, Object>> parameters = this.buildParameters(apiMethodDoc);
+        // requestBody
+        if (CollectionUtil.isNotEmpty(apiMethodDoc.getRequestParams())) {
+            Map<String, Object> parameter = new HashMap<>(16);
+            parameter.put("in", "body");
+            parameter.putAll(this.buildContentBody(apiConfig, apiMethodDoc, false));
+            parameters.add(parameter);
+        }
+        if (this.hasFile(parameters)) {
+            List<String> formData = new ArrayList<>();
+            formData.add(MediaType.MULTIPART_FORM_DATA);
+            request.put("consumes", formData);
+        }
+        request.put("parameters", parameters);
+        request.put("responses", this.buildResponses(apiConfig, apiMethodDoc, apiExceptionStatuses));
+        request.put("deprecated", apiMethodDoc.isDeprecated());
+        // make sure operationId is unique and can be used as a method name
+        request.put(
+                "operationId",
+                apiMethodDoc.getName() + "_" + apiMethodDoc.getMethodId() + "UsingOn" + apiMethodDoc.getType());
 
-		return request;
-	}
+        return request;
+    }
 
-	/**
-	 * Check if the parameter contains a file
-	 * @param parameters list of parameters
-	 * @return true if it contains a file
-	 */
-	private boolean hasFile(List<Map<String, Object>> parameters) {
-		for (Map<String, Object> param : parameters) {
-			if (DocGlobalConstants.SWAGGER_FILE_TAG.equals(param.get("in"))) {
-				return true;
-			}
-		}
-		return false;
-	}
+    /**
+     * Check if the parameter contains a file
+     * @param parameters list of parameters
+     * @return true if it contains a file
+     */
+    private boolean hasFile(List<Map<String, Object>> parameters) {
+        for (Map<String, Object> param : parameters) {
+            if (DocGlobalConstants.SWAGGER_FILE_TAG.equals(param.get("in"))) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * response body
-	 * @param apiMethodDoc ApiMethodDoc
-	 */
-	@Override
-	public Map<String, Object> buildResponsesBody(ApiConfig apiConfig, ApiMethodDoc apiMethodDoc) {
-		Map<String, Object> responseBody = new HashMap<>(10);
-		responseBody.put("description", "OK");
-		if (CollectionUtil.isNotEmpty(apiMethodDoc.getResponseParams())
-				|| Objects.nonNull(apiMethodDoc.getReturnSchema())) {
-			responseBody.putAll(this.buildContentBody(apiConfig, apiMethodDoc, true));
-		}
-		return responseBody;
-	}
+    /**
+     * response body
+     * @param apiMethodDoc ApiMethodDoc
+     */
+    @Override
+    public Map<String, Object> buildResponsesBody(ApiConfig apiConfig, ApiMethodDoc apiMethodDoc) {
+        Map<String, Object> responseBody = new HashMap<>(10);
+        responseBody.put("description", "OK");
+        if (CollectionUtil.isNotEmpty(apiMethodDoc.getResponseParams())
+                || Objects.nonNull(apiMethodDoc.getReturnSchema())) {
+            responseBody.putAll(this.buildContentBody(apiConfig, apiMethodDoc, true));
+        }
+        return responseBody;
+    }
 
-	@Override
-	public List<Map<String, Object>> buildParameters(ApiMethodDoc apiMethodDoc) {
-		{
-			Map<String, Object> parameters;
-			List<Map<String, Object>> parametersList = new ArrayList<>();
-			// Handling path parameters
-			for (ApiParam apiParam : apiMethodDoc.getPathParams()) {
-				parameters = this.getStringParams(apiParam, false);
-				parameters.put("type", DocUtil.javaTypeToOpenApiTypeConvert(apiParam.getType()));
-				parameters.put("in", "path");
-				parametersList.add(parameters);
-			}
-			for (ApiParam apiParam : apiMethodDoc.getQueryParams()) {
-				if (apiParam.getType().equals(ParamTypeConstants.PARAM_TYPE_ARRAY) || apiParam.isHasItems()) {
-					parameters = this.getStringParams(apiParam, false);
-					parameters.put("type", ParamTypeConstants.PARAM_TYPE_ARRAY);
-					parameters.put("items", this.getStringParams(apiParam, true));
-					parametersList.add(parameters);
-				}
-				else {
-					parameters = this.getStringParams(apiParam, false);
-					parameters.put("type", DocUtil.javaTypeToOpenApiTypeConvert(apiParam.getType()));
-					parametersList.add(parameters);
-				}
-			}
-			// with headers
-			if (!CollectionUtil.isEmpty(apiMethodDoc.getRequestHeaders())) {
-				for (ApiReqParam header : apiMethodDoc.getRequestHeaders()) {
-					parameters = new HashMap<>(20);
-					parameters.put("name", header.getName());
-					parameters.put("type", DocUtil.javaTypeToOpenApiTypeConvert(header.getType()));
-					parameters.put("description", header.getDesc());
-					parameters.put("required", header.isRequired());
-					parameters.put("example", getExampleValueBasedOnTypeForApiReqParam(header));
-					parameters.put("schema", buildParametersSchema(header));
-					parameters.put("in", "header");
-					parametersList.add(parameters);
-				}
-			}
-			return parametersList;
-		}
-	}
+    @Override
+    public List<Map<String, Object>> buildParameters(ApiMethodDoc apiMethodDoc) {
+        {
+            Map<String, Object> parameters;
+            List<Map<String, Object>> parametersList = new ArrayList<>();
+            // Handling path parameters
+            for (ApiParam apiParam : apiMethodDoc.getPathParams()) {
+                parameters = this.getStringParams(apiParam, false);
+                parameters.put("type", DocUtil.javaTypeToOpenApiTypeConvert(apiParam.getType()));
+                parameters.put("in", "path");
+                parametersList.add(parameters);
+            }
+            for (ApiParam apiParam : apiMethodDoc.getQueryParams()) {
+                if (apiParam.getType().equals(ParamTypeConstants.PARAM_TYPE_ARRAY) || apiParam.isHasItems()) {
+                    parameters = this.getStringParams(apiParam, false);
+                    parameters.put("type", ParamTypeConstants.PARAM_TYPE_ARRAY);
+                    parameters.put("items", this.getStringParams(apiParam, true));
+                    parametersList.add(parameters);
+                } else {
+                    parameters = this.getStringParams(apiParam, false);
+                    parameters.put("type", DocUtil.javaTypeToOpenApiTypeConvert(apiParam.getType()));
+                    parametersList.add(parameters);
+                }
+            }
+            // with headers
+            if (!CollectionUtil.isEmpty(apiMethodDoc.getRequestHeaders())) {
+                for (ApiReqParam header : apiMethodDoc.getRequestHeaders()) {
+                    parameters = new HashMap<>(20);
+                    parameters.put("name", header.getName());
+                    parameters.put("type", DocUtil.javaTypeToOpenApiTypeConvert(header.getType()));
+                    parameters.put("description", header.getDesc());
+                    parameters.put("required", header.isRequired());
+                    parameters.put("example", getExampleValueBasedOnTypeForApiReqParam(header));
+                    parameters.put("schema", buildParametersSchema(header));
+                    parameters.put("in", "header");
+                    parametersList.add(parameters);
+                }
+            }
+            return parametersList;
+        }
+    }
 
-	@Override
-	public Map<String, Object> getStringParams(ApiParam apiParam, boolean hasItems) {
-		Map<String, Object> parameters;
-		parameters = new HashMap<>(20);
-		if (!hasItems) {
-			if ("file".equalsIgnoreCase(apiParam.getType())) {
-				parameters.put("in", DocGlobalConstants.SWAGGER_FILE_TAG);
-			}
-			else {
-				parameters.put("in", "query");
-			}
-			parameters.put("name", apiParam.getField());
-			parameters.put("description", apiParam.getDesc());
-			parameters.put("required", apiParam.isRequired());
-			parameters.put("type", apiParam.getType());
-		}
-		else {
-			if (ParamTypeConstants.PARAM_TYPE_OBJECT.equals(apiParam.getType())
-					|| (ParamTypeConstants.PARAM_TYPE_ARRAY.equals(apiParam.getType()) && apiParam.isHasItems())) {
-				parameters.put("type", "object(complex POJO please use @RequestBody)");
-			}
-			else {
-				String desc = apiParam.getDesc();
-				if (desc.contains(ParamTypeConstants.PARAM_TYPE_FILE)) {
-					parameters.put("type", ParamTypeConstants.PARAM_TYPE_FILE);
-				}
-				else if (desc.contains("string")) {
-					parameters.put("type", "string");
-				}
-				else {
-					parameters.put("type", "integer");
-				}
-			}
-		}
-		return parameters;
-	}
+    @Override
+    public Map<String, Object> getStringParams(ApiParam apiParam, boolean hasItems) {
+        Map<String, Object> parameters;
+        parameters = new HashMap<>(20);
+        if (!hasItems) {
+            if ("file".equalsIgnoreCase(apiParam.getType())) {
+                parameters.put("in", DocGlobalConstants.SWAGGER_FILE_TAG);
+            } else {
+                parameters.put("in", "query");
+            }
+            parameters.put("name", apiParam.getField());
+            parameters.put("description", apiParam.getDesc());
+            parameters.put("required", apiParam.isRequired());
+            parameters.put("type", apiParam.getType());
+        } else {
+            if (ParamTypeConstants.PARAM_TYPE_OBJECT.equals(apiParam.getType())
+                    || (ParamTypeConstants.PARAM_TYPE_ARRAY.equals(apiParam.getType()) && apiParam.isHasItems())) {
+                parameters.put("type", "object(complex POJO please use @RequestBody)");
+            } else {
+                String desc = apiParam.getDesc();
+                if (desc.contains(ParamTypeConstants.PARAM_TYPE_FILE)) {
+                    parameters.put("type", ParamTypeConstants.PARAM_TYPE_FILE);
+                } else if (desc.contains("string")) {
+                    parameters.put("type", "string");
+                } else {
+                    parameters.put("type", "integer");
+                }
+            }
+        }
+        return parameters;
+    }
 
-	@Override
-	public Map<String, Object> buildComponentsSchema(ApiSchema<ApiDoc> apiSchema) {
-		return this.buildComponentData(apiSchema);
-	}
-
+    @Override
+    public Map<String, Object> buildComponentsSchema(ApiSchema<ApiDoc> apiSchema) {
+        return this.buildComponentData(apiSchema);
+    }
 }

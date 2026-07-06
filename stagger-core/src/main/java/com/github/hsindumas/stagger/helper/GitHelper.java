@@ -21,6 +21,10 @@
 package com.github.hsindumas.stagger.helper;
 
 import com.github.hsindumas.stagger.common.util.StringUtil;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -32,11 +36,6 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 /**
  * A git util build on JGit
  *
@@ -45,156 +44,148 @@ import java.util.Set;
  */
 public class GitHelper {
 
-	/**
-	 * Repository
-	 */
-	private Repository repository;
+    /**
+     * Repository
+     */
+    private Repository repository;
 
-	/**
-	 * Private constructor
-	 */
-	private GitHelper() {
-	}
+    /**
+     * Private constructor
+     */
+    private GitHelper() {}
 
-	/**
-	 * Create a new instance
-	 * @return GitHelper
-	 */
-	public static GitHelper create() {
-		GitHelper helper = new GitHelper();
-		helper.repository = helper.findRepo();
-		return helper;
-	}
+    /**
+     * Create a new instance
+     * @return GitHelper
+     */
+    public static GitHelper create() {
+        GitHelper helper = new GitHelper();
+        helper.repository = helper.findRepo();
+        return helper;
+    }
 
-	/**
-	 * Get diff between current commit and the commit with commitId
-	 * @param commitId commitId
-	 * @return {@code List<DiffEntry>}
-	 */
-	public List<DiffEntry> getDiff(String commitId) {
-		if (StringUtil.isEmpty(commitId) || notGitRepo()) {
-			return Collections.emptyList();
-		}
+    /**
+     * Get diff between current commit and the commit with commitId
+     * @param commitId commitId
+     * @return {@code List<DiffEntry>}
+     */
+    public List<DiffEntry> getDiff(String commitId) {
+        if (StringUtil.isEmpty(commitId) || notGitRepo()) {
+            return Collections.emptyList();
+        }
 
-		try (Git git = new Git(repository)) {
-			ObjectId commitObjectId = repository.resolve(commitId);
-			RevCommit commit = new RevWalk(repository).parseCommit(commitObjectId);
+        try (Git git = new Git(repository)) {
+            ObjectId commitObjectId = repository.resolve(commitId);
+            RevCommit commit = new RevWalk(repository).parseCommit(commitObjectId);
 
-			ObjectId treeId = commit.getTree().getId();
-			CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-			try (ObjectReader reader = repository.newObjectReader()) {
-				oldTreeIter.reset(reader, treeId);
-			}
+            ObjectId treeId = commit.getTree().getId();
+            CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
+            try (ObjectReader reader = repository.newObjectReader()) {
+                oldTreeIter.reset(reader, treeId);
+            }
 
-			ObjectId currentTreeId = repository.resolve("HEAD^{tree}");
-			CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
-			try (ObjectReader reader = repository.newObjectReader()) {
-				newTreeIter.reset(reader, currentTreeId);
-			}
+            ObjectId currentTreeId = repository.resolve("HEAD^{tree}");
+            CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+            try (ObjectReader reader = repository.newObjectReader()) {
+                newTreeIter.reset(reader, currentTreeId);
+            }
 
-			return git.diff().setNewTree(newTreeIter).setOldTree(oldTreeIter).call();
-		}
-		catch (IOException | GitAPIException e) {
-			throw new RuntimeException(e);
-		}
-	}
+            return git.diff().setNewTree(newTreeIter).setOldTree(oldTreeIter).call();
+        } catch (IOException | GitAPIException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	/**
-	 * Get uncommitted changes
-	 * @return {@code Set<String> }
-	 */
-	public Set<String> getUncommitted() {
-		if (notGitRepo()) {
-			return Collections.emptySet();
-		}
+    /**
+     * Get uncommitted changes
+     * @return {@code Set<String> }
+     */
+    public Set<String> getUncommitted() {
+        if (notGitRepo()) {
+            return Collections.emptySet();
+        }
 
-		try (Git git = new Git(repository)) {
-			return git.status().call().getUncommittedChanges();
-		}
-		catch (GitAPIException e) {
-			throw new RuntimeException(e);
-		}
-	}
+        try (Git git = new Git(repository)) {
+            return git.status().call().getUncommittedChanges();
+        } catch (GitAPIException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	/**
-	 * Get untracked files
-	 * @return {@code Set<String> }
-	 */
-	public Set<String> getUntracked() {
-		if (notGitRepo()) {
-			return Collections.emptySet();
-		}
+    /**
+     * Get untracked files
+     * @return {@code Set<String> }
+     */
+    public Set<String> getUntracked() {
+        if (notGitRepo()) {
+            return Collections.emptySet();
+        }
 
-		try (Git git = new Git(repository)) {
-			return git.status().call().getUntracked();
-		}
-		catch (GitAPIException e) {
-			throw new RuntimeException(e);
-		}
-	}
+        try (Git git = new Git(repository)) {
+            return git.status().call().getUntracked();
+        } catch (GitAPIException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	/**
-	 * Get latest commit id
-	 * @return latest commit id
-	 */
-	public String getLatestCommitId() {
-		if (notGitRepo()) {
-			return "";
-		}
+    /**
+     * Get latest commit id
+     * @return latest commit id
+     */
+    public String getLatestCommitId() {
+        if (notGitRepo()) {
+            return "";
+        }
 
-		try {
-			ObjectId objectId = repository.resolve("HEAD");
-			// if not exist (the repository is init), return empty string
-			if (null == objectId) {
-				return "";
-			}
-			return objectId.getName();
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+        try {
+            ObjectId objectId = repository.resolve("HEAD");
+            // if not exist (the repository is init), return empty string
+            if (null == objectId) {
+                return "";
+            }
+            return objectId.getName();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	/**
-	 * Check git repository, if not exist or io exception, return null
-	 * @return Repository
-	 */
-	private Repository findRepo() {
-		try {
-			return new FileRepositoryBuilder().readEnvironment().findGitDir().build();
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		catch (Exception e) {
-			System.err.println("WARN: When detecting git repository, got exception:" + e.getMessage()
-					+ " Ignore it if this is not a git repository");
-			return null;
-		}
-	}
+    /**
+     * Check git repository, if not exist or io exception, return null
+     * @return Repository
+     */
+    private Repository findRepo() {
+        try {
+            return new FileRepositoryBuilder().readEnvironment().findGitDir().build();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.err.println("WARN: When detecting git repository, got exception:" + e.getMessage()
+                    + " Ignore it if this is not a git repository");
+            return null;
+        }
+    }
 
-	/**
-	 * Check if not git repository
-	 * @return boolean
-	 */
-	public boolean notGitRepo() {
-		return repository == null;
-	}
+    /**
+     * Check if not git repository
+     * @return boolean
+     */
+    public boolean notGitRepo() {
+        return repository == null;
+    }
 
-	/**
-	 * Check if git repository
-	 * @return boolean
-	 */
-	public boolean isGitRepo() {
-		return !notGitRepo();
-	}
+    /**
+     * Check if git repository
+     * @return boolean
+     */
+    public boolean isGitRepo() {
+        return !notGitRepo();
+    }
 
-	/**
-	 * Get work directory
-	 * @return work directory
-	 */
-	public String getWorkDir() {
-		return repository.getWorkTree().getAbsolutePath();
-	}
-
+    /**
+     * Get work directory
+     * @return work directory
+     */
+    public String getWorkDir() {
+        return repository.getWorkTree().getAbsolutePath();
+    }
 }

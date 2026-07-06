@@ -33,96 +33,95 @@ import java.util.Objects;
  */
 public class WebSocketDoc extends ApiDoc {
 
-	/**
-	 * the subProtocol list of webSocket
-	 * <p>
-	 * Sec-WebSocket-Protocol: soap, wamp
-	 */
-	private String subProtocols;
+    /**
+     * the subProtocol list of webSocket
+     * <p>
+     * Sec-WebSocket-Protocol: soap, wamp
+     */
+    private String subProtocols;
 
-	/**
-	 * path params
-	 */
-	private List<ApiParam> pathParams;
+    /**
+     * path params
+     */
+    private List<ApiParam> pathParams;
 
-	/**
-	 * message param
-	 */
-	private List<ApiParam> messageParams;
+    /**
+     * message param
+     */
+    private List<ApiParam> messageParams;
 
-	/**
-	 * response param
-	 */
-	private List<List<ApiParam>> responseParams;
+    /**
+     * response param
+     */
+    private List<List<ApiParam>> responseParams;
 
-	/**
-	 * webSocket url
-	 */
-	private String uri;
+    /**
+     * webSocket url
+     */
+    private String uri;
 
-	/**
-	 * webSocket deprecated
-	 */
-	private Boolean deprecated;
+    /**
+     * webSocket deprecated
+     */
+    private Boolean deprecated;
 
-	public WebSocketDoc() {
-		this.deprecated = false;
-	}
+    public WebSocketDoc() {
+        this.deprecated = false;
+    }
 
-	public String getSubProtocols() {
-		return subProtocols;
-	}
+    public String getSubProtocols() {
+        return subProtocols;
+    }
 
-	public void setSubProtocols(String subProtocols) {
-		this.subProtocols = subProtocols;
-	}
+    public void setSubProtocols(String subProtocols) {
+        this.subProtocols = subProtocols;
+    }
 
-	public List<ApiParam> getPathParams() {
-		if (Objects.isNull(this.pathParams)) {
-			return new ArrayList<>();
-		}
-		return pathParams;
-	}
+    public List<ApiParam> getPathParams() {
+        if (Objects.isNull(this.pathParams)) {
+            return new ArrayList<>();
+        }
+        return pathParams;
+    }
 
-	public void setPathParams(List<ApiParam> pathParams) {
-		this.pathParams = pathParams;
-	}
+    public void setPathParams(List<ApiParam> pathParams) {
+        this.pathParams = pathParams;
+    }
 
-	public List<ApiParam> getMessageParams() {
-		if (messageParams == null) {
-			return new ArrayList<>();
-		}
-		return messageParams;
-	}
+    public List<ApiParam> getMessageParams() {
+        if (messageParams == null) {
+            return new ArrayList<>();
+        }
+        return messageParams;
+    }
 
-	public WebSocketDoc setMessageParams(List<ApiParam> messageParams) {
-		this.messageParams = messageParams;
-		return this;
-	}
+    public WebSocketDoc setMessageParams(List<ApiParam> messageParams) {
+        this.messageParams = messageParams;
+        return this;
+    }
 
-	public List<List<ApiParam>> getResponseParams() {
-		return responseParams;
-	}
+    public List<List<ApiParam>> getResponseParams() {
+        return responseParams;
+    }
 
-	public WebSocketDoc setResponseParams(List<List<ApiParam>> responseParams) {
-		this.responseParams = responseParams;
-		return this;
-	}
+    public WebSocketDoc setResponseParams(List<List<ApiParam>> responseParams) {
+        this.responseParams = responseParams;
+        return this;
+    }
 
-	public String getUri() {
-		return uri;
-	}
+    public String getUri() {
+        return uri;
+    }
 
-	public void setUri(String uri) {
-		this.uri = uri;
-	}
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
 
-	public Boolean getDeprecated() {
-		return deprecated;
-	}
+    public Boolean getDeprecated() {
+        return deprecated;
+    }
 
-	public void setDeprecated(Boolean deprecated) {
-		this.deprecated = deprecated;
-	}
-
+    public void setDeprecated(Boolean deprecated) {
+        this.deprecated = deprecated;
+    }
 }

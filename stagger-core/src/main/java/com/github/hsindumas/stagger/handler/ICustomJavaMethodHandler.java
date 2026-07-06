@@ -21,7 +21,6 @@
 package com.github.hsindumas.stagger.handler;
 
 import com.github.hsindumas.stagger.model.DocJavaMethod;
-
 import java.util.List;
 
 /**
@@ -33,12 +32,11 @@ import java.util.List;
 @FunctionalInterface
 public interface ICustomJavaMethodHandler {
 
-	/**
-	 * handle customized operation for {@link DocJavaMethod}.
-	 * @param cls JavaClass
-	 * @param methodList DocJavaMethod list
-	 * @return {@code List<DocJavaMethod>}
-	 */
-	List<DocJavaMethod> apply(Object cls, List<DocJavaMethod> methodList);
-
+    /**
+     * handle customized operation for {@link DocJavaMethod}.
+     * @param cls JavaClass
+     * @param methodList DocJavaMethod list
+     * @return {@code List<DocJavaMethod>}
+     */
+    List<DocJavaMethod> apply(Object cls, List<DocJavaMethod> methodList);
 }

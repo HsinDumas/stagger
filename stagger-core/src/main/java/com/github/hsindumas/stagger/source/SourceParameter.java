@@ -31,12 +31,11 @@ import java.util.List;
  */
 public interface SourceParameter {
 
-	String name();
+    String name();
 
-	SourceType type();
+    SourceType type();
 
-	List<SourceAnnotation> annotations();
+    List<SourceAnnotation> annotations();
 
-	boolean isVarArgs();
-
+    boolean isVarArgs();
 }

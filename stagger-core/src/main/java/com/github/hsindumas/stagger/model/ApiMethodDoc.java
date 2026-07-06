@@ -21,11 +21,10 @@
 
 package com.github.hsindumas.stagger.model;
 
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.constants.MediaType;
 import com.github.hsindumas.stagger.model.request.ApiRequestExample;
 import com.github.hsindumas.stagger.utils.ParamUtil;
-import com.github.hsindumas.stagger.common.util.StringUtil;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,558 +42,556 @@ import java.util.Set;
  */
 public class ApiMethodDoc implements IMethod, Serializable, Cloneable {
 
-	private static final long serialVersionUID = 7211922919532562867L;
-
-	private ApiDoc clazzDoc;
-
-	/**
-	 * methodId handled by md5
-	 *
-	 * @since 1.7.3 +
-	 */
-	private String methodId;
-
-	/**
-	 * method name
-	 *
-	 * @since 1.7.3 +
-	 */
-	private String name;
-
-	/**
-	 * declaring class name
-	 */
-	private String declaringClassName;
-
-	/**
-	 * method order
-	 *
-	 * @since 1.7+
-	 */
-	private int order;
-
-	/**
-	 * method description
-	 */
-	private String desc;
-
-	/**
-	 * detailed introduction of the method
-	 */
-	private String detail;
-
-	/**
-	 * server url
-	 */
-	private String serverUrl;
-
-	/**
-	 * controller method url contains server
-	 */
-	private String url;
-
-	/**
-	 * controller path
-	 */
-	private String path;
-
-	/**
-	 * http request type
-	 */
-	private String type;
-
-	/**
-	 * http request author
-	 */
-	private String author;
-
-	/**
-	 * only used for generate markdown and adoc http readers
-	 */
-	private String headers;
-
-	/**
-	 * http contentType
-	 */
-	private String contentType = MediaType.APPLICATION_FORM_URLENCODED_VALUE;
-
-	/**
-	 * http request headers
-	 */
-	private List<ApiReqParam> requestHeaders;
-
-	/**
-	 * path params
-	 */
-	private List<ApiParam> pathParams;
-
-	/**
-	 * query params
-	 */
-	private List<ApiParam> queryParams;
-
-	/**
-	 * http request params
-	 */
-	private List<ApiParam> requestParams;
-
-	/**
-	 * http request-example usage(requestUrlParam + requestBody)
-	 */
-	private String requestUsage;
-
-	/**
-	 * request example detail
-	 */
-	private ApiRequestExample requestExample;
-
-	/**
-	 * http response usage
-	 */
-	private String responseUsage;
-
-	/**
-	 * http response params
-	 */
-	private List<ApiParam> responseParams;
-
-	/**
-	 * method deprecated
-	 */
-	private boolean deprecated;
-
-	/**
-	 * return schema
-	 */
-	private Map<String, Object> returnSchema;
-
-	/**
-	 * request schema
-	 */
-	private Map<String, Object> requestSchema;
-
-	/**
-	 * api group
-	 */
-	private String group;
-
-	/**
-	 * marking download
-	 */
-	private boolean download;
-
-	/**
-	 * link
-	 */
-	private String link;
-
-	/**
-	 * mark page
-	 */
-	private String page = "";
-
-	/**
-	 * request payload is array
-	 */
-	private Integer isRequestArray;
-
-	/**
-	 * request payload array element type
-	 */
-	private String requestArrayType;
-
-	/**
-	 * response payload is array
-	 */
-	private Integer isResponseArray;
-
-	/**
-	 * response payload array element type
-	 */
-	private String responseArrayType;
-
-	/**
-	 * tags
-	 */
-	private String[] tags;
-
-	/**
-	 * version
-	 */
-	private String version;
-
-	/**
-	 * extension attribution
-	 */
-	private Map<String, Object> extensions;
-
-	public String getVersion() {
-		return version;
-	}
-
-	public ApiMethodDoc setVersion(String version) {
-		this.version = version;
-		return this;
-	}
-
-	private final Set<TagDoc> tagRefs = Collections.synchronizedSet(new LinkedHashSet<>());
-
-	public Integer getIsRequestArray() {
-		return isRequestArray;
-	}
-
-	public void setIsRequestArray(Integer isRequestArray) {
-		this.isRequestArray = isRequestArray;
-	}
-
-	public String getRequestArrayType() {
-		return requestArrayType;
-	}
-
-	public void setRequestArrayType(String requestArrayType) {
-		this.requestArrayType = requestArrayType;
-	}
-
-	public Integer getIsResponseArray() {
-		return isResponseArray;
-	}
-
-	public void setIsResponseArray(Integer isResponseArray) {
-		this.isResponseArray = isResponseArray;
-	}
-
-	public String getResponseArrayType() {
-		return responseArrayType;
-	}
-
-	public void setResponseArrayType(String responseArrayType) {
-		this.responseArrayType = responseArrayType;
-	}
-
-	public String getMethodId() {
-		return methodId;
-	}
-
-	public void setMethodId(String methodId) {
-		this.methodId = methodId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDeclaringClassName() {
-		return declaringClassName;
-	}
-
-	public ApiMethodDoc setDeclaringClassName(String declaringClassName) {
-		this.declaringClassName = declaringClassName;
-		return this;
-	}
-
-	public String getDesc() {
-		return desc;
-	}
-
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getResponseUsage() {
-		return responseUsage;
-	}
-
-	public void setResponseUsage(String responseUsage) {
-		this.responseUsage = responseUsage;
-	}
-
-	public String getRequestUsage() {
-		return requestUsage;
-	}
-
-	public void setRequestUsage(String requestUsage) {
-		this.requestUsage = requestUsage;
-	}
-
-	public String getContentType() {
-		return contentType;
-	}
-
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
-
-	public String getHeaders() {
-		return headers;
-	}
-
-	public void setHeaders(String headers) {
-		this.headers = headers;
-	}
-
-	public int getOrder() {
-		return order;
-	}
-
-	public void setOrder(int order) {
-		this.order = order;
-	}
-
-	public List<ApiParam> getRequestParams() {
-		if (Objects.isNull(this.requestParams)) {
-			return new ArrayList<>();
-		}
-		return requestParams;
-	}
-
-	public void setRequestParams(List<ApiParam> requestParams) {
-		this.requestParams = requestParams;
-	}
-
-	public List<ApiParam> getResponseParams() {
-		return responseParams;
-	}
-
-	public void setResponseParams(List<ApiParam> responseParams) {
-		this.responseParams = responseParams;
-	}
-
-	public List<ApiReqParam> getRequestHeaders() {
-		return requestHeaders;
-	}
-
-	public void setRequestHeaders(List<ApiReqParam> requestHeaders) {
-		this.requestHeaders = requestHeaders;
-	}
-
-	public String getDetail() {
-		return detail;
-	}
-
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
-
-	public String getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	public String getServerUrl() {
-		return serverUrl;
-	}
-
-	public void setServerUrl(String serverUrl) {
-		this.serverUrl = serverUrl;
-	}
-
-	public ApiRequestExample getRequestExample() {
-		return requestExample;
-	}
-
-	public void setRequestExample(ApiRequestExample requestExample) {
-		this.requestExample = requestExample;
-	}
-
-	public boolean isDeprecated() {
-		return deprecated;
-	}
-
-	public void setDeprecated(boolean deprecated) {
-		this.deprecated = deprecated;
-	}
-
-	public List<ApiParam> getPathParams() {
-		if (Objects.isNull(this.pathParams)) {
-			return new ArrayList<>();
-		}
-		return pathParams;
-	}
-
-	public void setPathParams(List<ApiParam> pathParams) {
-		this.pathParams = pathParams;
-	}
-
-	public List<ApiParam> getQueryParams() {
-		if (Objects.isNull(this.queryParams)) {
-			return new ArrayList<>();
-		}
-		return queryParams;
-	}
-
-	public void setQueryParams(List<ApiParam> queryParams) {
-		this.queryParams = queryParams;
-	}
-
-	public Map<String, Object> getReturnSchema() {
-		return returnSchema;
-	}
-
-	public void setReturnSchema(Map<String, Object> returnSchema) {
-		this.returnSchema = returnSchema;
-	}
-
-	public Map<String, Object> getRequestSchema() {
-		return requestSchema;
-	}
-
-	public void setRequestSchema(Map<String, Object> requestSchema) {
-		this.requestSchema = requestSchema;
-	}
-
-	public String getGroup() {
-		return group;
-	}
-
-	public void setGroup(String group) {
-		this.group = group;
-	}
-
-	public boolean isDownload() {
-		return download;
-	}
-
-	public void setDownload(boolean download) {
-		this.download = download;
-	}
-
-	public String getLink() {
-		if (StringUtil.isNotEmpty(link)) {
-			return link;
-		}
-		if (StringUtil.isEmpty(desc)) {
-			return "undefined";
-		}
-		return desc.replace(" ", "_").toLowerCase();
-	}
-
-	public void setLink(String link) {
-		this.link = link;
-	}
-
-	public String getPage() {
-		return page;
-	}
-
-	public void setPage(String page) {
-		this.page = page;
-	}
-
-	public String[] getTags() {
-		return tags;
-	}
-
-	public ApiMethodDoc setTags(String[] tags) {
-		this.tags = tags;
-		return this;
-	}
-
-	public Set<TagDoc> getTagRefs() {
-		return tagRefs;
-	}
-
-	public ApiDoc getClazzDoc() {
-		return clazzDoc;
-	}
-
-	public void setClazzDoc(ApiDoc clazzDoc) {
-		this.clazzDoc = clazzDoc;
-	}
-
-	public Map<String, Object> getExtensions() {
-		return extensions;
-	}
-
-	public void setExtensions(Map<String, Object> extensions) {
-		this.extensions = extensions;
-	}
-
-	@Override
-	public String toString() {
-		final StringBuilder sb = new StringBuilder("{");
-		sb.append("\"methodId\":\"").append(methodId).append('\"');
-		sb.append(",\"name\":\"").append(name).append('\"');
-		sb.append(",\"order\":").append(order);
-		sb.append(",\"desc\":\"").append(desc).append('\"');
-		sb.append(",\"detail\":\"").append(detail).append('\"');
-		sb.append(",\"serverUrl\":\"").append(serverUrl).append('\"');
-		sb.append(",\"url\":\"").append(url).append('\"');
-		sb.append(",\"path\":\"").append(path).append('\"');
-		sb.append(",\"type\":\"").append(type).append('\"');
-		sb.append(",\"author\":\"").append(author).append('\"');
-		sb.append(",\"headers\":\"").append(headers).append('\"');
-		sb.append(",\"contentType\":\"").append(contentType).append('\"');
-		sb.append(",\"requestHeaders\":").append(requestHeaders);
-		sb.append(",\"pathParams\":").append(pathParams);
-		sb.append(",\"queryParams\":").append(queryParams);
-		sb.append(",\"requestParams\":").append(requestParams);
-		sb.append(",\"requestUsage\":\"").append(requestUsage).append('\"');
-		sb.append(",\"requestExample\":").append(requestExample);
-		sb.append(",\"responseUsage\":\"").append(responseUsage).append('\"');
-		sb.append(",\"responseParams\":").append(responseParams);
-		sb.append(",\"deprecated\":").append(deprecated);
-		sb.append(",\"extensions\":").append(extensions);
-		sb.append('}');
-		return sb.toString();
-	}
-
-	@Override
-	public ApiMethodDoc clone() {
-		try {
-			return (ApiMethodDoc) super.clone();
-		}
-		catch (CloneNotSupportedException e) {
-			throw new RuntimeException("clone apiMethodDoc is error", e);
-		}
-	}
-
-	@Override
-	public String getMethodName() {
-		return this.name;
-	}
-
-	@Override
-	public List<String> getArgsClasses() {
-		ArrayList<ApiParam> paramList = new ArrayList<>(this.pathParams);
-		paramList.addAll(this.requestParams);
-		paramList.addAll(this.queryParams);
-		return ParamUtil.extractQualifiedName(paramList);
-	}
-
-	@Override
-	public List<String> getReturnClasses() {
-		return ParamUtil.extractQualifiedName(this.responseParams);
-	}
-
+    private static final long serialVersionUID = 7211922919532562867L;
+
+    private ApiDoc clazzDoc;
+
+    /**
+     * methodId handled by md5
+     *
+     * @since 1.7.3 +
+     */
+    private String methodId;
+
+    /**
+     * method name
+     *
+     * @since 1.7.3 +
+     */
+    private String name;
+
+    /**
+     * declaring class name
+     */
+    private String declaringClassName;
+
+    /**
+     * method order
+     *
+     * @since 1.7+
+     */
+    private int order;
+
+    /**
+     * method description
+     */
+    private String desc;
+
+    /**
+     * detailed introduction of the method
+     */
+    private String detail;
+
+    /**
+     * server url
+     */
+    private String serverUrl;
+
+    /**
+     * controller method url contains server
+     */
+    private String url;
+
+    /**
+     * controller path
+     */
+    private String path;
+
+    /**
+     * http request type
+     */
+    private String type;
+
+    /**
+     * http request author
+     */
+    private String author;
+
+    /**
+     * only used for generate markdown and adoc http readers
+     */
+    private String headers;
+
+    /**
+     * http contentType
+     */
+    private String contentType = MediaType.APPLICATION_FORM_URLENCODED_VALUE;
+
+    /**
+     * http request headers
+     */
+    private List<ApiReqParam> requestHeaders;
+
+    /**
+     * path params
+     */
+    private List<ApiParam> pathParams;
+
+    /**
+     * query params
+     */
+    private List<ApiParam> queryParams;
+
+    /**
+     * http request params
+     */
+    private List<ApiParam> requestParams;
+
+    /**
+     * http request-example usage(requestUrlParam + requestBody)
+     */
+    private String requestUsage;
+
+    /**
+     * request example detail
+     */
+    private ApiRequestExample requestExample;
+
+    /**
+     * http response usage
+     */
+    private String responseUsage;
+
+    /**
+     * http response params
+     */
+    private List<ApiParam> responseParams;
+
+    /**
+     * method deprecated
+     */
+    private boolean deprecated;
+
+    /**
+     * return schema
+     */
+    private Map<String, Object> returnSchema;
+
+    /**
+     * request schema
+     */
+    private Map<String, Object> requestSchema;
+
+    /**
+     * api group
+     */
+    private String group;
+
+    /**
+     * marking download
+     */
+    private boolean download;
+
+    /**
+     * link
+     */
+    private String link;
+
+    /**
+     * mark page
+     */
+    private String page = "";
+
+    /**
+     * request payload is array
+     */
+    private Integer isRequestArray;
+
+    /**
+     * request payload array element type
+     */
+    private String requestArrayType;
+
+    /**
+     * response payload is array
+     */
+    private Integer isResponseArray;
+
+    /**
+     * response payload array element type
+     */
+    private String responseArrayType;
+
+    /**
+     * tags
+     */
+    private String[] tags;
+
+    /**
+     * version
+     */
+    private String version;
+
+    /**
+     * extension attribution
+     */
+    private Map<String, Object> extensions;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public ApiMethodDoc setVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    private final Set<TagDoc> tagRefs = Collections.synchronizedSet(new LinkedHashSet<>());
+
+    public Integer getIsRequestArray() {
+        return isRequestArray;
+    }
+
+    public void setIsRequestArray(Integer isRequestArray) {
+        this.isRequestArray = isRequestArray;
+    }
+
+    public String getRequestArrayType() {
+        return requestArrayType;
+    }
+
+    public void setRequestArrayType(String requestArrayType) {
+        this.requestArrayType = requestArrayType;
+    }
+
+    public Integer getIsResponseArray() {
+        return isResponseArray;
+    }
+
+    public void setIsResponseArray(Integer isResponseArray) {
+        this.isResponseArray = isResponseArray;
+    }
+
+    public String getResponseArrayType() {
+        return responseArrayType;
+    }
+
+    public void setResponseArrayType(String responseArrayType) {
+        this.responseArrayType = responseArrayType;
+    }
+
+    public String getMethodId() {
+        return methodId;
+    }
+
+    public void setMethodId(String methodId) {
+        this.methodId = methodId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDeclaringClassName() {
+        return declaringClassName;
+    }
+
+    public ApiMethodDoc setDeclaringClassName(String declaringClassName) {
+        this.declaringClassName = declaringClassName;
+        return this;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getResponseUsage() {
+        return responseUsage;
+    }
+
+    public void setResponseUsage(String responseUsage) {
+        this.responseUsage = responseUsage;
+    }
+
+    public String getRequestUsage() {
+        return requestUsage;
+    }
+
+    public void setRequestUsage(String requestUsage) {
+        this.requestUsage = requestUsage;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(String headers) {
+        this.headers = headers;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public List<ApiParam> getRequestParams() {
+        if (Objects.isNull(this.requestParams)) {
+            return new ArrayList<>();
+        }
+        return requestParams;
+    }
+
+    public void setRequestParams(List<ApiParam> requestParams) {
+        this.requestParams = requestParams;
+    }
+
+    public List<ApiParam> getResponseParams() {
+        return responseParams;
+    }
+
+    public void setResponseParams(List<ApiParam> responseParams) {
+        this.responseParams = responseParams;
+    }
+
+    public List<ApiReqParam> getRequestHeaders() {
+        return requestHeaders;
+    }
+
+    public void setRequestHeaders(List<ApiReqParam> requestHeaders) {
+        this.requestHeaders = requestHeaders;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getServerUrl() {
+        return serverUrl;
+    }
+
+    public void setServerUrl(String serverUrl) {
+        this.serverUrl = serverUrl;
+    }
+
+    public ApiRequestExample getRequestExample() {
+        return requestExample;
+    }
+
+    public void setRequestExample(ApiRequestExample requestExample) {
+        this.requestExample = requestExample;
+    }
+
+    public boolean isDeprecated() {
+        return deprecated;
+    }
+
+    public void setDeprecated(boolean deprecated) {
+        this.deprecated = deprecated;
+    }
+
+    public List<ApiParam> getPathParams() {
+        if (Objects.isNull(this.pathParams)) {
+            return new ArrayList<>();
+        }
+        return pathParams;
+    }
+
+    public void setPathParams(List<ApiParam> pathParams) {
+        this.pathParams = pathParams;
+    }
+
+    public List<ApiParam> getQueryParams() {
+        if (Objects.isNull(this.queryParams)) {
+            return new ArrayList<>();
+        }
+        return queryParams;
+    }
+
+    public void setQueryParams(List<ApiParam> queryParams) {
+        this.queryParams = queryParams;
+    }
+
+    public Map<String, Object> getReturnSchema() {
+        return returnSchema;
+    }
+
+    public void setReturnSchema(Map<String, Object> returnSchema) {
+        this.returnSchema = returnSchema;
+    }
+
+    public Map<String, Object> getRequestSchema() {
+        return requestSchema;
+    }
+
+    public void setRequestSchema(Map<String, Object> requestSchema) {
+        this.requestSchema = requestSchema;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public boolean isDownload() {
+        return download;
+    }
+
+    public void setDownload(boolean download) {
+        this.download = download;
+    }
+
+    public String getLink() {
+        if (StringUtil.isNotEmpty(link)) {
+            return link;
+        }
+        if (StringUtil.isEmpty(desc)) {
+            return "undefined";
+        }
+        return desc.replace(" ", "_").toLowerCase();
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
+    }
+
+    public String[] getTags() {
+        return tags;
+    }
+
+    public ApiMethodDoc setTags(String[] tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    public Set<TagDoc> getTagRefs() {
+        return tagRefs;
+    }
+
+    public ApiDoc getClazzDoc() {
+        return clazzDoc;
+    }
+
+    public void setClazzDoc(ApiDoc clazzDoc) {
+        this.clazzDoc = clazzDoc;
+    }
+
+    public Map<String, Object> getExtensions() {
+        return extensions;
+    }
+
+    public void setExtensions(Map<String, Object> extensions) {
+        this.extensions = extensions;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"methodId\":\"").append(methodId).append('\"');
+        sb.append(",\"name\":\"").append(name).append('\"');
+        sb.append(",\"order\":").append(order);
+        sb.append(",\"desc\":\"").append(desc).append('\"');
+        sb.append(",\"detail\":\"").append(detail).append('\"');
+        sb.append(",\"serverUrl\":\"").append(serverUrl).append('\"');
+        sb.append(",\"url\":\"").append(url).append('\"');
+        sb.append(",\"path\":\"").append(path).append('\"');
+        sb.append(",\"type\":\"").append(type).append('\"');
+        sb.append(",\"author\":\"").append(author).append('\"');
+        sb.append(",\"headers\":\"").append(headers).append('\"');
+        sb.append(",\"contentType\":\"").append(contentType).append('\"');
+        sb.append(",\"requestHeaders\":").append(requestHeaders);
+        sb.append(",\"pathParams\":").append(pathParams);
+        sb.append(",\"queryParams\":").append(queryParams);
+        sb.append(",\"requestParams\":").append(requestParams);
+        sb.append(",\"requestUsage\":\"").append(requestUsage).append('\"');
+        sb.append(",\"requestExample\":").append(requestExample);
+        sb.append(",\"responseUsage\":\"").append(responseUsage).append('\"');
+        sb.append(",\"responseParams\":").append(responseParams);
+        sb.append(",\"deprecated\":").append(deprecated);
+        sb.append(",\"extensions\":").append(extensions);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    @Override
+    public ApiMethodDoc clone() {
+        try {
+            return (ApiMethodDoc) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("clone apiMethodDoc is error", e);
+        }
+    }
+
+    @Override
+    public String getMethodName() {
+        return this.name;
+    }
+
+    @Override
+    public List<String> getArgsClasses() {
+        ArrayList<ApiParam> paramList = new ArrayList<>(this.pathParams);
+        paramList.addAll(this.requestParams);
+        paramList.addAll(this.queryParams);
+        return ParamUtil.extractQualifiedName(paramList);
+    }
+
+    @Override
+    public List<String> getReturnClasses() {
+        return ParamUtil.extractQualifiedName(this.responseParams);
+    }
 }

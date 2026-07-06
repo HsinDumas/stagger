@@ -20,11 +20,10 @@
  */
 package com.github.hsindumas.stagger.model.postman.request;
 
-import java.util.List;
-
+import com.github.hsindumas.stagger.model.postman.UrlBean;
 import com.github.hsindumas.stagger.model.postman.request.body.BodyBean;
 import com.github.hsindumas.stagger.model.postman.request.header.HeaderBean;
-import com.github.hsindumas.stagger.model.postman.UrlBean;
+import java.util.List;
 
 /**
  * @author xingzi
@@ -32,54 +31,53 @@ import com.github.hsindumas.stagger.model.postman.UrlBean;
  */
 public class RequestBean {
 
-	private String method;
+    private String method;
 
-	private BodyBean body;
+    private BodyBean body;
 
-	private UrlBean url;
+    private UrlBean url;
 
-	private String description;
+    private String description;
 
-	private List<HeaderBean> header;
+    private List<HeaderBean> header;
 
-	public String getMethod() {
-		return method;
-	}
+    public String getMethod() {
+        return method;
+    }
 
-	public void setMethod(String method) {
-		this.method = method;
-	}
+    public void setMethod(String method) {
+        this.method = method;
+    }
 
-	public BodyBean getBody() {
-		return body;
-	}
+    public BodyBean getBody() {
+        return body;
+    }
 
-	public void setBody(BodyBean body) {
-		this.body = body;
-	}
+    public void setBody(BodyBean body) {
+        this.body = body;
+    }
 
-	public UrlBean getUrl() {
-		return url;
-	}
+    public UrlBean getUrl() {
+        return url;
+    }
 
-	public void setUrl(UrlBean url) {
-		this.url = url;
-	}
+    public void setUrl(UrlBean url) {
+        this.url = url;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public List<HeaderBean> getHeader() {
-		return header;
-	}
+    public List<HeaderBean> getHeader() {
+        return header;
+    }
 
-	public void setHeader(List<HeaderBean> header) {
-		this.header = header;
-	}
-
+    public void setHeader(List<HeaderBean> header) {
+        this.header = header;
+    }
 }

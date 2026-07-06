@@ -22,7 +22,6 @@ package com.github.hsindumas.stagger.model.request;
 
 import com.github.hsindumas.stagger.model.ApiReqParam;
 import com.github.hsindumas.stagger.model.FormData;
-
 import java.util.List;
 
 /**
@@ -33,92 +32,91 @@ import java.util.List;
  */
 public class CurlRequest {
 
-	/**
-	 * Http method
-	 */
-	private String type;
+    /**
+     * Http method
+     */
+    private String type;
 
-	/**
-	 * Request headers
-	 */
-	private List<ApiReqParam> reqHeaders;
+    /**
+     * Request headers
+     */
+    private List<ApiReqParam> reqHeaders;
 
-	/**
-	 * Request file form data
-	 */
-	private List<FormData> fileFormDataList;
+    /**
+     * Request file form data
+     */
+    private List<FormData> fileFormDataList;
 
-	/**
-	 * Request url
-	 */
-	private String url;
+    /**
+     * Request url
+     */
+    private String url;
 
-	/**
-	 * Request body
-	 */
-	private String body;
+    /**
+     * Request body
+     */
+    private String body;
 
-	/**
-	 * Content-Type
-	 */
-	private String contentType;
+    /**
+     * Content-Type
+     */
+    private String contentType;
 
-	public static CurlRequest builder() {
-		return new CurlRequest();
-	}
+    public static CurlRequest builder() {
+        return new CurlRequest();
+    }
 
-	public List<FormData> getFileFormDataList() {
-		return fileFormDataList;
-	}
+    public List<FormData> getFileFormDataList() {
+        return fileFormDataList;
+    }
 
-	public CurlRequest setFileFormDataList(List<FormData> fileFormDataList) {
-		this.fileFormDataList = fileFormDataList;
-		return this;
-	}
+    public CurlRequest setFileFormDataList(List<FormData> fileFormDataList) {
+        this.fileFormDataList = fileFormDataList;
+        return this;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public CurlRequest setType(String type) {
-		this.type = type;
-		return this;
-	}
+    public CurlRequest setType(String type) {
+        this.type = type;
+        return this;
+    }
 
-	public List<ApiReqParam> getReqHeaders() {
-		return reqHeaders;
-	}
+    public List<ApiReqParam> getReqHeaders() {
+        return reqHeaders;
+    }
 
-	public CurlRequest setReqHeaders(List<ApiReqParam> reqHeaders) {
-		this.reqHeaders = reqHeaders;
-		return this;
-	}
+    public CurlRequest setReqHeaders(List<ApiReqParam> reqHeaders) {
+        this.reqHeaders = reqHeaders;
+        return this;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public CurlRequest setUrl(String url) {
-		this.url = url;
-		return this;
-	}
+    public CurlRequest setUrl(String url) {
+        this.url = url;
+        return this;
+    }
 
-	public String getBody() {
-		return body;
-	}
+    public String getBody() {
+        return body;
+    }
 
-	public CurlRequest setBody(String body) {
-		this.body = body;
-		return this;
-	}
+    public CurlRequest setBody(String body) {
+        this.body = body;
+        return this;
+    }
 
-	public String getContentType() {
-		return contentType;
-	}
+    public String getContentType() {
+        return contentType;
+    }
 
-	public CurlRequest setContentType(String contentType) {
-		this.contentType = contentType;
-		return this;
-	}
-
+    public CurlRequest setContentType(String contentType) {
+        this.contentType = contentType;
+        return this;
+    }
 }

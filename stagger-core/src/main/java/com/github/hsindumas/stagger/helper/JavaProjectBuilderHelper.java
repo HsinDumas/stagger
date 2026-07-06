@@ -28,28 +28,27 @@ package com.github.hsindumas.stagger.helper;
  */
 public class JavaProjectBuilderHelper {
 
-	/**
-	 * private constructor
-	 */
-	private JavaProjectBuilderHelper() {
-		throw new IllegalStateException("Utility class");
-	}
+    /**
+     * private constructor
+     */
+    private JavaProjectBuilderHelper() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * create a new {@link JavaProjectBuilder} object
-	 * @return a new {@link JavaProjectBuilder} object
-	 */
-	public static JavaProjectBuilder create() {
-		return new JavaProjectBuilder();
-	}
+    /**
+     * create a new {@link JavaProjectBuilder} object
+     * @return a new {@link JavaProjectBuilder} object
+     */
+    public static JavaProjectBuilder create() {
+        return new JavaProjectBuilder();
+    }
 
-	/**
-	 * create a new {@link JavaProjectBuilder} object
-	 * @param classLibraryBuilder the {@link SortedClassLibraryBuilder} object
-	 * @return a new {@link JavaProjectBuilder} object
-	 */
-	public static JavaProjectBuilder create(SortedClassLibraryBuilder classLibraryBuilder) {
-		return new JavaProjectBuilder(classLibraryBuilder);
-	}
-
+    /**
+     * create a new {@link JavaProjectBuilder} object
+     * @param classLibraryBuilder the {@link SortedClassLibraryBuilder} object
+     * @return a new {@link JavaProjectBuilder} object
+     */
+    public static JavaProjectBuilder create(SortedClassLibraryBuilder classLibraryBuilder) {
+        return new JavaProjectBuilder(classLibraryBuilder);
+    }
 }

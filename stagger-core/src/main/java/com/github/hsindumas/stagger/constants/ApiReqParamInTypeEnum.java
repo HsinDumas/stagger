@@ -28,40 +28,39 @@ package com.github.hsindumas.stagger.constants;
  **/
 public enum ApiReqParamInTypeEnum {
 
-	/**
-	 * header param
-	 */
-	HEADER("header"),
+    /**
+     * header param
+     */
+    HEADER("header"),
 
-	/**
-	 * query param
-	 */
-	QUERY("query"),
+    /**
+     * query param
+     */
+    QUERY("query"),
 
-	/**
-	 * path param
-	 */
-	PATH("path");
+    /**
+     * path param
+     */
+    PATH("path");
 
-	/**
-	 * value
-	 */
-	private final String value;
+    /**
+     * value
+     */
+    private final String value;
 
-	/**
-	 * constructor
-	 * @param value value
-	 */
-	ApiReqParamInTypeEnum(String value) {
-		this.value = value;
-	}
+    /**
+     * constructor
+     * @param value value
+     */
+    ApiReqParamInTypeEnum(String value) {
+        this.value = value;
+    }
 
-	/**
-	 * get value
-	 * @return value
-	 */
-	public String getValue() {
-		return value;
-	}
-
+    /**
+     * get value
+     * @return value
+     */
+    public String getValue() {
+        return value;
+    }
 }

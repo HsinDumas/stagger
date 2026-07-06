@@ -31,10 +31,9 @@ import java.util.Map;
  */
 public interface SourceDocletTag {
 
-	String name();
+    String name();
 
-	String value();
+    String value();
 
-	Map<String, String> namedParameters();
-
+    Map<String, String> namedParameters();
 }

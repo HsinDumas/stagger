@@ -31,74 +31,73 @@ import org.apache.maven.artifact.Artifact;
  */
 public class CommonArtifactFilterChain implements FilterChain {
 
-	private static final String LEGACY_DOC_PARSER_ARTIFACT = "q" + "dox";
+    private static final String LEGACY_DOC_PARSER_ARTIFACT = "q" + "dox";
 
-	private FilterChain filterChain;
+    private FilterChain filterChain;
 
-	@Override
-	public void setNext(FilterChain nextInChain) {
-		this.filterChain = nextInChain;
-	}
+    @Override
+    public void setNext(FilterChain nextInChain) {
+        this.filterChain = nextInChain;
+    }
 
-	@Override
-	public boolean ignoreArtifactById(Artifact artifact) {
-		String artifactId = artifact.getArtifactId();
-		switch (artifactId) {
-			case "jsqlparser":
-			case "disruptor":
-			case "snakeyaml":
-			case "spring-boot-autoconfigure":
-			case "forest-spring-boot-starter":
-			case "HikariCP":
-			case "mysql-connector-java":
-			case "mysql-connector-j":
-			case "classmate":
-			case "commons-codec":
-			case "commons-beanutils":
-			case "commons-beanutils-core":
-			case "spring-web":
-			case "spring-webmvc":
-			case "spring-r2dbc":
-			case "spring-orm":
-			case "spring-data-jpa":
-			case "spring-context-support":
-			case "spring-aspects":
-			case "hibernate-validator":
-			case "xstream":
-			case "spring-tx":
-			case "javassist":
-			case "javafaker":
-			case LEGACY_DOC_PARSER_ARTIFACT:
-			case "gson":
-			case "antlr4-runtime":
-			case "velocity":
-			case "beetl":
-			case "xml-apis":
-			case "mchange-commons-java":
-			case "druid":
-			case "mssql-jdbc":
-			case "easyexcel":
-			case "zookeeper":
-			case "okio":
-			case "okhttp":
-			case "joda-time":
-			case "protobuf-java":
-			case "jenkins-client":
-			case "jose4j":
-			case "gson-fire":
-			case "joda-convert":
-			case "kafka-clients":
-			case "kubernetes-client":
-			case "client-java-proto":
-			case "dynamic-datasource-spring-boot-starter":
-			case "java-driver-core":
-			case "java-driver-query-builder":
-			case "java-driver-mapper-runtime":
-			case "resteasy-core":
-				return true;
-			default:
-				return this.ignore(filterChain, artifact);
-		}
-	}
-
+    @Override
+    public boolean ignoreArtifactById(Artifact artifact) {
+        String artifactId = artifact.getArtifactId();
+        switch (artifactId) {
+            case "jsqlparser":
+            case "disruptor":
+            case "snakeyaml":
+            case "spring-boot-autoconfigure":
+            case "forest-spring-boot-starter":
+            case "HikariCP":
+            case "mysql-connector-java":
+            case "mysql-connector-j":
+            case "classmate":
+            case "commons-codec":
+            case "commons-beanutils":
+            case "commons-beanutils-core":
+            case "spring-web":
+            case "spring-webmvc":
+            case "spring-r2dbc":
+            case "spring-orm":
+            case "spring-data-jpa":
+            case "spring-context-support":
+            case "spring-aspects":
+            case "hibernate-validator":
+            case "xstream":
+            case "spring-tx":
+            case "javassist":
+            case "javafaker":
+            case LEGACY_DOC_PARSER_ARTIFACT:
+            case "gson":
+            case "antlr4-runtime":
+            case "velocity":
+            case "beetl":
+            case "xml-apis":
+            case "mchange-commons-java":
+            case "druid":
+            case "mssql-jdbc":
+            case "easyexcel":
+            case "zookeeper":
+            case "okio":
+            case "okhttp":
+            case "joda-time":
+            case "protobuf-java":
+            case "jenkins-client":
+            case "jose4j":
+            case "gson-fire":
+            case "joda-convert":
+            case "kafka-clients":
+            case "kubernetes-client":
+            case "client-java-proto":
+            case "dynamic-datasource-spring-boot-starter":
+            case "java-driver-core":
+            case "java-driver-query-builder":
+            case "java-driver-mapper-runtime":
+            case "resteasy-core":
+                return true;
+            default:
+                return this.ignore(filterChain, artifact);
+        }
+    }
 }

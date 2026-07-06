@@ -25,14 +25,13 @@ package com.github.hsindumas.stagger.model.jmeter;
  */
 public class JMeter {
 
-	private Boolean addPrometheusListener;
+    private Boolean addPrometheusListener;
 
-	public Boolean getAddPrometheusListener() {
-		return addPrometheusListener;
-	}
+    public Boolean getAddPrometheusListener() {
+        return addPrometheusListener;
+    }
 
-	public void setAddPrometheusListener(Boolean addPrometheusListener) {
-		this.addPrometheusListener = addPrometheusListener;
-	}
-
+    public void setAddPrometheusListener(Boolean addPrometheusListener) {
+        this.addPrometheusListener = addPrometheusListener;
+    }
 }

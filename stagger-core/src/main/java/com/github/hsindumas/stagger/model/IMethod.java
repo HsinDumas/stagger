@@ -28,28 +28,27 @@ import java.util.List;
  */
 public interface IMethod {
 
-	/**
-	 * get method declaring class name
-	 * @return method declaring class name
-	 */
-	String getDeclaringClassName();
+    /**
+     * get method declaring class name
+     * @return method declaring class name
+     */
+    String getDeclaringClassName();
 
-	/**
-	 * get method name
-	 * @return method name
-	 */
-	String getMethodName();
+    /**
+     * get method name
+     * @return method name
+     */
+    String getMethodName();
 
-	/**
-	 * get method args classes
-	 * @return method args classes
-	 */
-	List<String> getArgsClasses();
+    /**
+     * get method args classes
+     * @return method args classes
+     */
+    List<String> getArgsClasses();
 
-	/**
-	 * get method return classes
-	 * @return method return classes
-	 */
-	List<String> getReturnClasses();
-
+    /**
+     * get method return classes
+     * @return method return classes
+     */
+    List<String> getReturnClasses();
 }

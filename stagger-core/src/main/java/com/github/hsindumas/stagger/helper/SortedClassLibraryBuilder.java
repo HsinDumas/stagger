@@ -33,83 +33,78 @@ import java.util.function.Consumer;
  */
 public class SortedClassLibraryBuilder {
 
-	private static final String LEGACY_LIBRARY_BUILDER_CLASS = "com.thoughtworks." + "q" + "dox.library."
-			+ "SortedClassLibraryBuilder";
+    private static final String LEGACY_LIBRARY_BUILDER_CLASS =
+            "com.thoughtworks." + "q" + "dox.library." + "SortedClassLibraryBuilder";
 
-	private final Object delegate;
+    private final Object delegate;
 
-	/**
-	 * Creates a wrapper backed by the legacy parser class-library builder.
-	 */
-	public SortedClassLibraryBuilder() {
-		this.delegate = instantiateDelegate();
-	}
+    /**
+     * Creates a wrapper backed by the legacy parser class-library builder.
+     */
+    public SortedClassLibraryBuilder() {
+        this.delegate = instantiateDelegate();
+    }
 
-	Object getDelegate() {
-		return delegate;
-	}
+    Object getDelegate() {
+        return delegate;
+    }
 
-	/**
-	 * Bridge legacy parser error callback registration.
-	 * @param errorHandler callback invoked on parse errors
-	 */
-	public void setErrorHander(Consumer<Exception> errorHandler) {
-		invokeErrorHandler(Arrays.asList("setErrorHander", "setErrorHandler"), errorHandler);
-	}
+    /**
+     * Bridge legacy parser error callback registration.
+     * @param errorHandler callback invoked on parse errors
+     */
+    public void setErrorHander(Consumer<Exception> errorHandler) {
+        invokeErrorHandler(Arrays.asList("setErrorHander", "setErrorHandler"), errorHandler);
+    }
 
-	private static Object instantiateDelegate() {
-		try {
-			Class<?> builderClass = Class.forName(LEGACY_LIBRARY_BUILDER_CLASS);
-			return builderClass.getDeclaredConstructor().newInstance();
-		}
-		catch (ReflectiveOperationException | LinkageError e) {
-			return new NoOpClassLibraryBuilder();
-		}
-	}
+    private static Object instantiateDelegate() {
+        try {
+            Class<?> builderClass = Class.forName(LEGACY_LIBRARY_BUILDER_CLASS);
+            return builderClass.getDeclaredConstructor().newInstance();
+        } catch (ReflectiveOperationException | LinkageError e) {
+            return new NoOpClassLibraryBuilder();
+        }
+    }
 
-	private static final class NoOpClassLibraryBuilder {
+    private static final class NoOpClassLibraryBuilder {
 
-		public void setErrorHandler(Consumer<Exception> errorHandler) {
-			// No-op for source-backed parser fallback.
-		}
+        public void setErrorHandler(Consumer<Exception> errorHandler) {
+            // No-op for source-backed parser fallback.
+        }
 
-		public void setErrorHander(Consumer<Exception> errorHandler) {
-			// Keep typo-compatible alias to mirror upstream API.
-			this.setErrorHandler(errorHandler);
-		}
+        public void setErrorHander(Consumer<Exception> errorHandler) {
+            // Keep typo-compatible alias to mirror upstream API.
+            this.setErrorHandler(errorHandler);
+        }
+    }
 
-	}
-
-	private void invokeErrorHandler(List<String> methodNames, Consumer<Exception> errorHandler) {
-		Method targetMethod = Arrays.stream(delegate.getClass().getMethods())
-			.filter(method -> method.getParameterCount() == 1 && methodNames.contains(method.getName()))
-			.findFirst()
-			.orElse(null);
-		if (targetMethod == null) {
-			return;
-		}
-		Class<?> handlerType = targetMethod.getParameterTypes()[0];
-		Object handler = Proxy.newProxyInstance(handlerType.getClassLoader(), new Class<?>[] { handlerType },
-				(proxy, method, args) -> {
-					Exception exception = new Exception("Legacy parser error.");
-					if (args != null && args.length > 0) {
-						Object first = args[0];
-						if (first instanceof Exception) {
-							exception = (Exception) first;
-						}
-						else if (first instanceof Throwable) {
-							exception = new Exception((Throwable) first);
-						}
-					}
-					errorHandler.accept(exception);
-					return null;
-				});
-		try {
-			targetMethod.invoke(delegate, handler);
-		}
-		catch (ReflectiveOperationException e) {
-			throw new RuntimeException("Unable to register legacy parser error handler.", e);
-		}
-	}
-
+    private void invokeErrorHandler(List<String> methodNames, Consumer<Exception> errorHandler) {
+        Method targetMethod = Arrays.stream(delegate.getClass().getMethods())
+                .filter(method -> method.getParameterCount() == 1 && methodNames.contains(method.getName()))
+                .findFirst()
+                .orElse(null);
+        if (targetMethod == null) {
+            return;
+        }
+        Class<?> handlerType = targetMethod.getParameterTypes()[0];
+        Object handler = Proxy.newProxyInstance(
+                handlerType.getClassLoader(), new Class<?>[] {handlerType}, (proxy, method, args) -> {
+                    Exception exception = new Exception("Legacy parser error.");
+                    if (args != null && args.length > 0) {
+                        Object first = args[0];
+                        if (first instanceof Exception) {
+                            exception = (Exception) first;
+                        } else if (first instanceof Throwable) {
+                            exception = new Exception((Throwable) first);
+                        }
+                    }
+                    errorHandler.accept(exception);
+                    return null;
+                });
+        try {
+            targetMethod.invoke(delegate, handler);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException("Unable to register legacy parser error handler.", e);
+        }
+    }
 }

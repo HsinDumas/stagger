@@ -21,6 +21,10 @@
 
 package com.github.hsindumas.stagger.handler;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.doReturn;
+
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.constants.ParamTypeConstants;
 import com.github.hsindumas.stagger.model.ApiConfig;
@@ -37,10 +41,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.doReturn;
-
 /**
  * Tests for SpringMVCRequestHeaderHandler enum fallback behavior.
  *
@@ -48,101 +48,100 @@ import static org.mockito.Mockito.doReturn;
  */
 class SpringMVCRequestHeaderHandlerTest {
 
-	@TempDir
-	Path tempDir;
+    @TempDir
+    Path tempDir;
 
-	@Test
-	void shouldFillEnumValuesForDirectEnumHeaderWithSourceFallback() throws Exception {
-		Path javaRoot = this.tempDir.resolve("src/main/java");
-		Path packageRoot = javaRoot.resolve("sample/spring");
-		Files.createDirectories(packageRoot);
-		String source = "package sample.spring;\n\n" + "import org.springframework.web.bind.annotation.GetMapping;\n"
-				+ "import org.springframework.web.bind.annotation.RequestHeader;\n"
-				+ "import org.springframework.web.bind.annotation.RestController;\n\n" + "@RestController\n"
-				+ "public class SpringHeaderResource {\n" + "  enum Level { BASIC, PRO }\n\n"
-				+ "  @GetMapping(\"/header\")\n" + "  public String header(@RequestHeader(\"X-Level\") Level level) {\n"
-				+ "    return \"ok\";\n" + "  }\n" + "}\n";
-		Files.writeString(packageRoot.resolve("SpringHeaderResource.java"), source, StandardCharsets.UTF_8);
+    @Test
+    void shouldFillEnumValuesForDirectEnumHeaderWithSourceFallback() throws Exception {
+        Path javaRoot = this.tempDir.resolve("src/main/java");
+        Path packageRoot = javaRoot.resolve("sample/spring");
+        Files.createDirectories(packageRoot);
+        String source = "package sample.spring;\n\n" + "import org.springframework.web.bind.annotation.GetMapping;\n"
+                + "import org.springframework.web.bind.annotation.RequestHeader;\n"
+                + "import org.springframework.web.bind.annotation.RestController;\n\n" + "@RestController\n"
+                + "public class SpringHeaderResource {\n" + "  enum Level { BASIC, PRO }\n\n"
+                + "  @GetMapping(\"/header\")\n" + "  public String header(@RequestHeader(\"X-Level\") Level level) {\n"
+                + "    return \"ok\";\n" + "  }\n" + "}\n";
+        Files.writeString(packageRoot.resolve("SpringHeaderResource.java"), source, StandardCharsets.UTF_8);
 
-		ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
-		Object method = this.findMethod(builder, "sample.spring.SpringHeaderResource", "header");
-		Object parameter = DocUtil.getMethodParameters(method).get(0);
-		String enumType = DocUtil.getParameterGenericFullyQualifiedName(parameter);
+        ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
+        Object method = this.findMethod(builder, "sample.spring.SpringHeaderResource", "header");
+        Object parameter = DocUtil.getMethodParameters(method).get(0);
+        String enumType = DocUtil.getParameterGenericFullyQualifiedName(parameter);
 
-		ProjectDocConfigBuilder fallbackBuilder = Mockito.spy(builder);
-		doReturn(true).when(fallbackBuilder).isEnumType(enumType);
-		doReturn("BASIC").when(fallbackBuilder).getEnumSampleValue(enumType);
-		doReturn(null).when(fallbackBuilder).getClassByName(enumType);
+        ProjectDocConfigBuilder fallbackBuilder = Mockito.spy(builder);
+        doReturn(true).when(fallbackBuilder).isEnumType(enumType);
+        doReturn("BASIC").when(fallbackBuilder).getEnumSampleValue(enumType);
+        doReturn(null).when(fallbackBuilder).getClassByName(enumType);
 
-		List<ApiReqParam> headers = new SpringMVCRequestHeaderHandler().handle(method, fallbackBuilder);
-		assertEquals(1, headers.size());
+        List<ApiReqParam> headers = new SpringMVCRequestHeaderHandler().handle(method, fallbackBuilder);
+        assertEquals(1, headers.size());
 
-		ApiReqParam header = headers.get(0);
-		assertEquals("X-Level", header.getName());
-		assertEquals(ParamTypeConstants.PARAM_TYPE_ENUM, header.getType());
-		assertEquals("BASIC", header.getValue());
-		assertEquals(List.of("BASIC"), readEnumValues(header));
-	}
+        ApiReqParam header = headers.get(0);
+        assertEquals("X-Level", header.getName());
+        assertEquals(ParamTypeConstants.PARAM_TYPE_ENUM, header.getType());
+        assertEquals("BASIC", header.getValue());
+        assertEquals(List.of("BASIC"), readEnumValues(header));
+    }
 
-	@Test
-	void shouldFillEnumValuesForCollectionEnumHeaderWithSourceFallback() throws Exception {
-		Path javaRoot = this.tempDir.resolve("src/main/java");
-		Path packageRoot = javaRoot.resolve("sample/spring");
-		Files.createDirectories(packageRoot);
-		String source = "package sample.spring;\n\n" + "import java.util.List;\n"
-				+ "import org.springframework.web.bind.annotation.GetMapping;\n"
-				+ "import org.springframework.web.bind.annotation.RequestHeader;\n"
-				+ "import org.springframework.web.bind.annotation.RestController;\n\n" + "@RestController\n"
-				+ "public class SpringHeaderCollectionResource {\n" + "  enum Level { BASIC, PRO }\n\n"
-				+ "  @GetMapping(\"/headers\")\n"
-				+ "  public String headers(@RequestHeader(\"X-Levels\") List<Level> levels) {\n"
-				+ "    return \"ok\";\n" + "  }\n" + "}\n";
-		Files.writeString(packageRoot.resolve("SpringHeaderCollectionResource.java"), source, StandardCharsets.UTF_8);
+    @Test
+    void shouldFillEnumValuesForCollectionEnumHeaderWithSourceFallback() throws Exception {
+        Path javaRoot = this.tempDir.resolve("src/main/java");
+        Path packageRoot = javaRoot.resolve("sample/spring");
+        Files.createDirectories(packageRoot);
+        String source = "package sample.spring;\n\n" + "import java.util.List;\n"
+                + "import org.springframework.web.bind.annotation.GetMapping;\n"
+                + "import org.springframework.web.bind.annotation.RequestHeader;\n"
+                + "import org.springframework.web.bind.annotation.RestController;\n\n" + "@RestController\n"
+                + "public class SpringHeaderCollectionResource {\n" + "  enum Level { BASIC, PRO }\n\n"
+                + "  @GetMapping(\"/headers\")\n"
+                + "  public String headers(@RequestHeader(\"X-Levels\") List<Level> levels) {\n"
+                + "    return \"ok\";\n" + "  }\n" + "}\n";
+        Files.writeString(packageRoot.resolve("SpringHeaderCollectionResource.java"), source, StandardCharsets.UTF_8);
 
-		ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
-		Object method = this.findMethod(builder, "sample.spring.SpringHeaderCollectionResource", "headers");
-		Object parameter = DocUtil.getMethodParameters(method).get(0);
-		String parameterType = DocUtil.getParameterGenericFullyQualifiedName(parameter);
-		String enumType = DocClassUtil.getSimpleGicName(parameterType)[0];
+        ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
+        Object method = this.findMethod(builder, "sample.spring.SpringHeaderCollectionResource", "headers");
+        Object parameter = DocUtil.getMethodParameters(method).get(0);
+        String parameterType = DocUtil.getParameterGenericFullyQualifiedName(parameter);
+        String enumType = DocClassUtil.getSimpleGicName(parameterType)[0];
 
-		ProjectDocConfigBuilder fallbackBuilder = Mockito.spy(builder);
-		doReturn(true).when(fallbackBuilder).isEnumType(enumType);
-		doReturn("BASIC").when(fallbackBuilder).getEnumSampleValue(enumType);
-		doReturn(null).when(fallbackBuilder).getClassByName(enumType);
+        ProjectDocConfigBuilder fallbackBuilder = Mockito.spy(builder);
+        doReturn(true).when(fallbackBuilder).isEnumType(enumType);
+        doReturn("BASIC").when(fallbackBuilder).getEnumSampleValue(enumType);
+        doReturn(null).when(fallbackBuilder).getClassByName(enumType);
 
-		List<ApiReqParam> headers = new SpringMVCRequestHeaderHandler().handle(method, fallbackBuilder);
-		assertEquals(1, headers.size());
+        List<ApiReqParam> headers = new SpringMVCRequestHeaderHandler().handle(method, fallbackBuilder);
+        assertEquals(1, headers.size());
 
-		ApiReqParam header = headers.get(0);
-		assertEquals("X-Levels", header.getName());
-		assertEquals(ParamTypeConstants.PARAM_TYPE_ARRAY, header.getType());
-		assertEquals("BASIC,BASIC", header.getValue());
-		assertEquals(List.of("BASIC"), readEnumValues(header));
-	}
+        ApiReqParam header = headers.get(0);
+        assertEquals("X-Levels", header.getName());
+        assertEquals(ParamTypeConstants.PARAM_TYPE_ARRAY, header.getType());
+        assertEquals("BASIC,BASIC", header.getValue());
+        assertEquals(List.of("BASIC"), readEnumValues(header));
+    }
 
-	private ProjectDocConfigBuilder newBuilder(Path javaRoot) {
-		ApiConfig config = new ApiConfig();
-		config.setSourceCodePaths(SourceCodePath.builder().setDesc("temp-source").setPath(javaRoot.toString()));
-		config.setServerUrl("http://127.0.0.1:8080");
-		return new ProjectDocConfigBuilder(config, null);
-	}
+    private ProjectDocConfigBuilder newBuilder(Path javaRoot) {
+        ApiConfig config = new ApiConfig();
+        config.setSourceCodePaths(
+                SourceCodePath.builder().setDesc("temp-source").setPath(javaRoot.toString()));
+        config.setServerUrl("http://127.0.0.1:8080");
+        return new ProjectDocConfigBuilder(config, null);
+    }
 
-	private Object findMethod(ProjectDocConfigBuilder builder, String className, String methodName) {
-		Object javaClass = builder.getClassByName(className);
-		assertNotNull(javaClass, "Expected class to be loaded: " + className);
-		return DocUtil.getClassMethods(javaClass)
-			.stream()
-			.filter(method -> methodName.equals(DocUtil.getMethodName(method)))
-			.findFirst()
-			.orElseThrow(() -> new IllegalStateException("Method not found: " + methodName));
-	}
+    private Object findMethod(ProjectDocConfigBuilder builder, String className, String methodName) {
+        Object javaClass = builder.getClassByName(className);
+        assertNotNull(javaClass, "Expected class to be loaded: " + className);
+        return DocUtil.getClassMethods(javaClass).stream()
+                .filter(method -> methodName.equals(DocUtil.getMethodName(method)))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Method not found: " + methodName));
+    }
 
-	@SuppressWarnings("unchecked")
-	private static List<String> readEnumValues(ApiReqParam header) throws Exception {
-		Field enumValues = ApiReqParam.class.getDeclaredField("enumValues");
-		enumValues.setAccessible(true);
-		Object value = enumValues.get(header);
-		return value == null ? List.of() : (List<String>) value;
-	}
-
+    @SuppressWarnings("unchecked")
+    private static List<String> readEnumValues(ApiReqParam header) throws Exception {
+        Field enumValues = ApiReqParam.class.getDeclaredField("enumValues");
+        enumValues.setAccessible(true);
+        Object value = enumValues.get(header);
+        return value == null ? List.of() : (List<String>) value;
+    }
 }

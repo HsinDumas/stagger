@@ -20,11 +20,10 @@
  */
 package com.github.hsindumas.stagger.function;
 
+import com.github.hsindumas.stagger.template.engine.TemplateFunction;
+import com.github.hsindumas.stagger.utils.DocUtil;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import com.github.hsindumas.stagger.utils.DocUtil;
-import com.github.hsindumas.stagger.template.engine.TemplateFunction;
 
 /**
  * Function to escape XML content in Beetl templates.
@@ -36,34 +35,33 @@ import com.github.hsindumas.stagger.template.engine.TemplateFunction;
  */
 public class WordXmlEscape implements TemplateFunction {
 
-	/*
-	 * Represents a non-breaking space character (U+00A0) commonly used in Word documents.
-	 * In HTML, this character is typically represented as "&nbsp;".
-	 */
-	private static final String UNICODE_NON_BREAK_SPACE = "\u00A0";
+    /*
+     * Represents a non-breaking space character (U+00A0) commonly used in Word documents.
+     * In HTML, this character is typically represented as "&nbsp;".
+     */
+    private static final String UNICODE_NON_BREAK_SPACE = "\u00A0";
 
-	private static final Map<String, String> XML_ESCAPE_MAP;
+    private static final Map<String, String> XML_ESCAPE_MAP;
 
-	static {
-		XML_ESCAPE_MAP = new LinkedHashMap<>();
-		XML_ESCAPE_MAP.put(" ", UNICODE_NON_BREAK_SPACE);
-		XML_ESCAPE_MAP.put("&nbsp;&nbsp;", UNICODE_NON_BREAK_SPACE);
-		XML_ESCAPE_MAP.put("&nbsp;", "");
-		XML_ESCAPE_MAP.put("<br/>", "");
-	}
+    static {
+        XML_ESCAPE_MAP = new LinkedHashMap<>();
+        XML_ESCAPE_MAP.put(" ", UNICODE_NON_BREAK_SPACE);
+        XML_ESCAPE_MAP.put("&nbsp;&nbsp;", UNICODE_NON_BREAK_SPACE);
+        XML_ESCAPE_MAP.put("&nbsp;", "");
+        XML_ESCAPE_MAP.put("<br/>", "");
+    }
 
-	@Override
-	public String call(Object[] params) {
-		if (params == null || params.length == 0 || params[0] == null) {
-			return "";
-		}
+    @Override
+    public String call(Object[] params) {
+        if (params == null || params.length == 0 || params[0] == null) {
+            return "";
+        }
 
-		String xml = String.valueOf(params[0]);
-		for (Map.Entry<String, String> entry : XML_ESCAPE_MAP.entrySet()) {
-			xml = xml.replaceAll(entry.getKey(), entry.getValue());
-		}
+        String xml = String.valueOf(params[0]);
+        for (Map.Entry<String, String> entry : XML_ESCAPE_MAP.entrySet()) {
+            xml = xml.replaceAll(entry.getKey(), entry.getValue());
+        }
 
-		return DocUtil.getEscapeAndCleanComment(xml);
-	}
-
+        return DocUtil.getEscapeAndCleanComment(xml);
+    }
 }

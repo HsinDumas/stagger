@@ -33,31 +33,30 @@ import java.nio.charset.StandardCharsets;
  */
 public class Resource<T> {
 
-	private final String path;
+    private final String path;
 
-	private final ClassLoader classLoader;
+    private final ClassLoader classLoader;
 
-	/**
-	 * Construct resource.
-	 * @param path classpath resource path
-	 * @param classLoader class loader
-	 */
-	public Resource(String path, ClassLoader classLoader) {
-		this.path = path;
-		this.classLoader = classLoader;
-	}
+    /**
+     * Construct resource.
+     * @param path classpath resource path
+     * @param classLoader class loader
+     */
+    public Resource(String path, ClassLoader classLoader) {
+        this.path = path;
+        this.classLoader = classLoader;
+    }
 
-	/**
-	 * Open a UTF-8 reader.
-	 * @return reader
-	 * @throws IOException if resource cannot be found or read
-	 */
-	public Reader openReader() throws IOException {
-		InputStream inputStream = classLoader.getResourceAsStream(path);
-		if (inputStream == null) {
-			throw new IOException("Resource not found: " + path);
-		}
-		return new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-	}
-
+    /**
+     * Open a UTF-8 reader.
+     * @return reader
+     * @throws IOException if resource cannot be found or read
+     */
+    public Reader openReader() throws IOException {
+        InputStream inputStream = classLoader.getResourceAsStream(path);
+        if (inputStream == null) {
+            throw new IOException("Resource not found: " + path);
+        }
+        return new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+    }
 }

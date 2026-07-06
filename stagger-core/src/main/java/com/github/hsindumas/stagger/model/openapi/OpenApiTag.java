@@ -23,7 +23,6 @@ package com.github.hsindumas.stagger.model.openapi;
 
 import com.github.hsindumas.stagger.constants.OpenApiTagNameTypeEnum;
 import com.github.hsindumas.stagger.model.ApiDoc;
-
 import java.util.Objects;
 
 /**
@@ -35,85 +34,83 @@ import java.util.Objects;
  */
 public class OpenApiTag {
 
-	/**
-	 * the tag name
-	 */
-	private String name;
+    /**
+     * the tag name
+     */
+    private String name;
 
-	/**
-	 * the tag description
-	 */
-	private String description;
+    /**
+     * the tag description
+     */
+    private String description;
 
-	public OpenApiTag() {
-	}
+    public OpenApiTag() {}
 
-	public OpenApiTag(String name, String description) {
-		this.name = name;
-		this.description = description;
-	}
+    public OpenApiTag(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
-	/**
-	 * create open api tag
-	 * @param name tag name
-	 * @param description tag description
-	 * @return OpenApiTag
-	 */
-	public static OpenApiTag of(String name, String description) {
-		return new OpenApiTag(name, description);
-	}
+    /**
+     * create open api tag
+     * @param name tag name
+     * @param description tag description
+     * @return OpenApiTag
+     */
+    public static OpenApiTag of(String name, String description) {
+        return new OpenApiTag(name, description);
+    }
 
-	/**
-	 * create open api tag
-	 * @param openApiTagNameType open api tag name type
-	 * @param apiDoc api doc
-	 * @return OpenApiTag
-	 */
-	public static OpenApiTag of(OpenApiTagNameTypeEnum openApiTagNameType, ApiDoc apiDoc) {
-		if (Objects.isNull(openApiTagNameType)) {
-			return of(apiDoc.getName(), apiDoc.getDesc());
-		}
-		switch (openApiTagNameType) {
-			case DESCRIPTION:
-				return new OpenApiTag(apiDoc.getDesc(), apiDoc.getDesc());
-			case PACKAGE_NAME:
-				return new OpenApiTag(apiDoc.getPackageName(), apiDoc.getDesc());
-			default:
-				return of(apiDoc.getName(), apiDoc.getDesc());
-		}
-	}
+    /**
+     * create open api tag
+     * @param openApiTagNameType open api tag name type
+     * @param apiDoc api doc
+     * @return OpenApiTag
+     */
+    public static OpenApiTag of(OpenApiTagNameTypeEnum openApiTagNameType, ApiDoc apiDoc) {
+        if (Objects.isNull(openApiTagNameType)) {
+            return of(apiDoc.getName(), apiDoc.getDesc());
+        }
+        switch (openApiTagNameType) {
+            case DESCRIPTION:
+                return new OpenApiTag(apiDoc.getDesc(), apiDoc.getDesc());
+            case PACKAGE_NAME:
+                return new OpenApiTag(apiDoc.getPackageName(), apiDoc.getDesc());
+            default:
+                return of(apiDoc.getName(), apiDoc.getDesc());
+        }
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		OpenApiTag that = (OpenApiTag) o;
-		return Objects.equals(getName(), that.getName()) && Objects.equals(getDescription(), that.getDescription());
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        OpenApiTag that = (OpenApiTag) o;
+        return Objects.equals(getName(), that.getName()) && Objects.equals(getDescription(), that.getDescription());
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(getName(), getDescription());
-	}
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getDescription());
+    }
 }

@@ -33,64 +33,63 @@ import org.apache.maven.artifact.Artifact;
  */
 public class StartsWithFilterChain implements FilterChain {
 
-	private static final Set<String> PREFIX_SET = new HashSet<>();
+    private static final Set<String> PREFIX_SET = new HashSet<>();
 
-	static {
-		PREFIX_SET.add("maven");
-		PREFIX_SET.add("asm");
-		PREFIX_SET.add("tomcat");
-		PREFIX_SET.add("jboss");
-		PREFIX_SET.add("undertow");
-		PREFIX_SET.add("jackson");
-		PREFIX_SET.add("micrometer");
-		PREFIX_SET.add("spring-boot-actuator");
-		PREFIX_SET.add("sharding");
-		PREFIX_SET.add("mybatis-spring-boot-starter");
-		PREFIX_SET.add("flexmark");
-		PREFIX_SET.add("netty");
-		PREFIX_SET.add("hibernate-core");
-		PREFIX_SET.add("springdoc-openapi");
-		PREFIX_SET.add("poi");
-		PREFIX_SET.add("commons-io");
-		PREFIX_SET.add("commons-lang");
-		PREFIX_SET.add("commons-logging");
-		PREFIX_SET.add("jaxb");
-		PREFIX_SET.add("byte-buddy");
-		PREFIX_SET.add("rxjava");
-		PREFIX_SET.add("kotlin");
-		PREFIX_SET.add("checker-qual");
-		PREFIX_SET.add("nacos");
-		PREFIX_SET.add("junit");
-		PREFIX_SET.add("caffeine");
-		PREFIX_SET.add("lettuce-core");
-		PREFIX_SET.add("spring-oxm");
-		PREFIX_SET.add("spring-data-redis");
-		PREFIX_SET.add("json");
-		PREFIX_SET.add("springfox");
-		PREFIX_SET.add("elasticsearch");
-		PREFIX_SET.add("guava");
-		PREFIX_SET.add("fastjson");
-		PREFIX_SET.add("bcprov");
-		PREFIX_SET.add("aws-java-sdk");
-		PREFIX_SET.add("hadoop");
-		PREFIX_SET.add("xml");
-		PREFIX_SET.add("sundr-codegen");
-	}
+    static {
+        PREFIX_SET.add("maven");
+        PREFIX_SET.add("asm");
+        PREFIX_SET.add("tomcat");
+        PREFIX_SET.add("jboss");
+        PREFIX_SET.add("undertow");
+        PREFIX_SET.add("jackson");
+        PREFIX_SET.add("micrometer");
+        PREFIX_SET.add("spring-boot-actuator");
+        PREFIX_SET.add("sharding");
+        PREFIX_SET.add("mybatis-spring-boot-starter");
+        PREFIX_SET.add("flexmark");
+        PREFIX_SET.add("netty");
+        PREFIX_SET.add("hibernate-core");
+        PREFIX_SET.add("springdoc-openapi");
+        PREFIX_SET.add("poi");
+        PREFIX_SET.add("commons-io");
+        PREFIX_SET.add("commons-lang");
+        PREFIX_SET.add("commons-logging");
+        PREFIX_SET.add("jaxb");
+        PREFIX_SET.add("byte-buddy");
+        PREFIX_SET.add("rxjava");
+        PREFIX_SET.add("kotlin");
+        PREFIX_SET.add("checker-qual");
+        PREFIX_SET.add("nacos");
+        PREFIX_SET.add("junit");
+        PREFIX_SET.add("caffeine");
+        PREFIX_SET.add("lettuce-core");
+        PREFIX_SET.add("spring-oxm");
+        PREFIX_SET.add("spring-data-redis");
+        PREFIX_SET.add("json");
+        PREFIX_SET.add("springfox");
+        PREFIX_SET.add("elasticsearch");
+        PREFIX_SET.add("guava");
+        PREFIX_SET.add("fastjson");
+        PREFIX_SET.add("bcprov");
+        PREFIX_SET.add("aws-java-sdk");
+        PREFIX_SET.add("hadoop");
+        PREFIX_SET.add("xml");
+        PREFIX_SET.add("sundr-codegen");
+    }
 
-	private FilterChain filterChain;
+    private FilterChain filterChain;
 
-	@Override
-	public void setNext(FilterChain nextInChain) {
-		this.filterChain = nextInChain;
-	}
+    @Override
+    public void setNext(FilterChain nextInChain) {
+        this.filterChain = nextInChain;
+    }
 
-	@Override
-	public boolean ignoreArtifactById(Artifact artifact) {
-		String artifactId = artifact.getArtifactId();
-		if (PREFIX_SET.stream().anyMatch(artifactId::startsWith)) {
-			return true;
-		}
-		return this.ignore(filterChain, artifact);
-	}
-
+    @Override
+    public boolean ignoreArtifactById(Artifact artifact) {
+        String artifactId = artifact.getArtifactId();
+        if (PREFIX_SET.stream().anyMatch(artifactId::startsWith)) {
+            return true;
+        }
+        return this.ignore(filterChain, artifact);
+    }
 }

@@ -32,48 +32,47 @@ import java.util.List;
  **/
 public class EnumInfo implements Serializable {
 
-	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = -4902969363646799679L;
+    /**
+     * serialVersionUID
+     */
+    private static final long serialVersionUID = -4902969363646799679L;
 
-	/**
-	 * enum name
-	 */
-	private String name;
+    /**
+     * enum name
+     */
+    private String name;
 
-	/**
-	 * enum description
-	 */
-	private String description;
+    /**
+     * enum description
+     */
+    private String description;
 
-	/**
-	 * enum items
-	 */
-	private List<Item> items;
+    /**
+     * enum items
+     */
+    private List<Item> items;
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public List<Item> getItems() {
-		return items;
-	}
+    public List<Item> getItems() {
+        return items;
+    }
 
-	public void setItems(List<Item> items) {
-		this.items = items;
-	}
-
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
 }

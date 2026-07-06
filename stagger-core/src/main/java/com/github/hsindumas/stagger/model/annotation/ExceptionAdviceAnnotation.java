@@ -33,19 +33,18 @@ package com.github.hsindumas.stagger.model.annotation;
  */
 public class ExceptionAdviceAnnotation {
 
-	private String annotationName;
+    private String annotationName;
 
-	public static ExceptionAdviceAnnotation builder() {
-		return new ExceptionAdviceAnnotation();
-	}
+    public static ExceptionAdviceAnnotation builder() {
+        return new ExceptionAdviceAnnotation();
+    }
 
-	public String getAnnotationName() {
-		return annotationName;
-	}
+    public String getAnnotationName() {
+        return annotationName;
+    }
 
-	public ExceptionAdviceAnnotation setAnnotationName(String annotationName) {
-		this.annotationName = annotationName;
-		return this;
-	}
-
+    public ExceptionAdviceAnnotation setAnnotationName(String annotationName) {
+        this.annotationName = annotationName;
+        return this;
+    }
 }

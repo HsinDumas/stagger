@@ -22,17 +22,16 @@
  */
 package com.github.hsindumas.stagger.gradle.util;
 
-import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.common.util.CollectionUtil;
-import org.gradle.api.Project;
-import org.gradle.api.file.SourceDirectorySet;
-import org.gradle.api.internal.tasks.DefaultSourceSetContainer;
-import org.gradle.api.logging.Logger;
-
+import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import java.io.File;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
+import org.gradle.api.Project;
+import org.gradle.api.file.SourceDirectorySet;
+import org.gradle.api.internal.tasks.DefaultSourceSetContainer;
+import org.gradle.api.logging.Logger;
 
 /**
  * GradleSourceSetUtil
@@ -42,59 +41,57 @@ import java.util.Set;
  */
 public interface SourceSetUtil {
 
-	String SOURCE_SETS = "sourceSets";
+    String SOURCE_SETS = "sourceSets";
 
-	String MAIN = "main";
+    String MAIN = "main";
 
-	/**
-	 * inquire {@code SourceSet} configure the custom source code root directory
-	 * @param project project
-	 * @return source code root directory
-	 * @implNote limited support: not supported {@code SourceSet} inclusions and
-	 * exclusions are configured in {@link SourceDirectorySet#getExcludes()}
-	 * {@link SourceDirectorySet#getIncludes()} if {@code Stagger} support for passing
-	 * file trees, which can be used directly{@link SourceDirectorySet#getFiles()}
-	 * @see <a href=
-	 * "https://docs.gradle.org/current/userguide/building_java_projects.html#sec:java_source_sets">declare
-	 * source files through source sets</a>
-	 * @see <a href=
-	 * "https://docs.gradle.org/current/userguide/building_java_projects.html#sec:custom_java_source_set_paths">customize
-	 * file and directory locations</a>
-	 */
-	static Set<File> getMainJava(Project project) {
-		Object sets = project.getProperties().get(SOURCE_SETS);
-		if (!(sets instanceof DefaultSourceSetContainer)) {
-			return Collections.emptySet();
-		}
-		DefaultSourceSetContainer sourceSets = (DefaultSourceSetContainer) sets;
-		Logger log = project.getLogger();
+    /**
+     * inquire {@code SourceSet} configure the custom source code root directory
+     * @param project project
+     * @return source code root directory
+     * @implNote limited support: not supported {@code SourceSet} inclusions and
+     * exclusions are configured in {@link SourceDirectorySet#getExcludes()}
+     * {@link SourceDirectorySet#getIncludes()} if {@code Stagger} support for passing
+     * file trees, which can be used directly{@link SourceDirectorySet#getFiles()}
+     * @see <a href=
+     * "https://docs.gradle.org/current/userguide/building_java_projects.html#sec:java_source_sets">declare
+     * source files through source sets</a>
+     * @see <a href=
+     * "https://docs.gradle.org/current/userguide/building_java_projects.html#sec:custom_java_source_set_paths">customize
+     * file and directory locations</a>
+     */
+    static Set<File> getMainJava(Project project) {
+        Object sets = project.getProperties().get(SOURCE_SETS);
+        if (!(sets instanceof DefaultSourceSetContainer)) {
+            return Collections.emptySet();
+        }
+        DefaultSourceSetContainer sourceSets = (DefaultSourceSetContainer) sets;
+        Logger log = project.getLogger();
 
-		try {
-			Set<File> srcDirs = sourceSets.getAt(MAIN).getJava().getSrcDirs();
-			if (CollectionUtil.isEmpty(srcDirs)) {
-				log.info(I18nMsgUtil.get("path_fallback_prompt"), project.getPath());
-				return Collections.emptySet();
-			}
-			return srcDirs;
-		}
-		catch (Exception e) {
-			log.warn(I18nMsgUtil.get("unexpected_errors"), e.getLocalizedMessage());
-		}
-		return Collections.emptySet();
-	}
+        try {
+            Set<File> srcDirs = sourceSets.getAt(MAIN).getJava().getSrcDirs();
+            if (CollectionUtil.isEmpty(srcDirs)) {
+                log.info(I18nMsgUtil.get("path_fallback_prompt"), project.getPath());
+                return Collections.emptySet();
+            }
+            return srcDirs;
+        } catch (Exception e) {
+            log.warn(I18nMsgUtil.get("unexpected_errors"), e.getLocalizedMessage());
+        }
+        return Collections.emptySet();
+    }
 
-	/**
-	 * try using the default project structure: src/main/java
-	 * @param project Project
-	 * @return optional default project structure
-	 */
-	static Optional<File> getDefaultMainJava(Project project) {
-		String projectDir = project.getProjectDir().getPath();
-		String projectCodePath = String.join(DocGlobalConstants.FILE_SEPARATOR, projectDir,
-				DocGlobalConstants.PROJECT_CODE_PATH);
-		File src = new File(projectCodePath);
+    /**
+     * try using the default project structure: src/main/java
+     * @param project Project
+     * @return optional default project structure
+     */
+    static Optional<File> getDefaultMainJava(Project project) {
+        String projectDir = project.getProjectDir().getPath();
+        String projectCodePath =
+                String.join(DocGlobalConstants.FILE_SEPARATOR, projectDir, DocGlobalConstants.PROJECT_CODE_PATH);
+        File src = new File(projectCodePath);
 
-		return src.exists() && src.listFiles() != null ? Optional.of(src) : Optional.empty();
-	}
-
+        return src.exists() && src.listFiles() != null ? Optional.of(src) : Optional.empty();
+    }
 }

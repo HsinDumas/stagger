@@ -30,11 +30,10 @@ import com.github.hsindumas.stagger.model.ApiReturn;
  */
 public interface ReturnTypeFilter {
 
-	/**
-	 * filter return Type
-	 * @param fullyName full type name
-	 * @return ApiReturn
-	 */
-	ApiReturn doFilter(String fullyName);
-
+    /**
+     * filter return Type
+     * @param fullyName full type name
+     * @return ApiReturn
+     */
+    ApiReturn doFilter(String fullyName);
 }

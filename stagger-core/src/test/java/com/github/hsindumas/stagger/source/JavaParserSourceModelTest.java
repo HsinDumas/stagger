@@ -20,8 +20,10 @@
  */
 package com.github.hsindumas.stagger.source;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -30,11 +32,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Tests for {@link com.github.hsindumas.stagger.source.javaparser.JavaParserSourceModel}.
@@ -43,72 +42,69 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class JavaParserSourceModelTest {
 
-	@TempDir
-	Path tempDir;
+    @TempDir
+    Path tempDir;
 
-	@Test
-	void shouldBuildProjectAndExtractClassMetadata() throws IOException {
-		Path sourceRoot = this.tempDir.resolve("src/main/java/sample");
-		Files.createDirectories(sourceRoot);
-		String source = "package sample;\n\n" + "import java.util.List;\n\n" + "/**\n" + " * Demo class.\n"
-				+ " * @author Demo\n" + " */\n" + "@Deprecated\n" + "@SuppressWarnings({\"unchecked\", \"rawtypes\"})\n"
-				+ "public sealed class Demo permits DemoChild {\n" + "\t/** field comment */\n"
-				+ "\tprivate List<String> names = List.of();\n\n" + "\t/**\n" + "\t * Hello method.\n"
-				+ "\t * @param id identifier\n" + "\t */\n" + "\tpublic String hello(String id) {\n"
-				+ "\t\treturn id;\n" + "\t}\n" + "}\n\n" + "final class DemoChild extends Demo {\n" + "}\n";
-		Files.writeString(sourceRoot.resolve("Demo.java"), source, StandardCharsets.UTF_8);
+    @Test
+    void shouldBuildProjectAndExtractClassMetadata() throws IOException {
+        Path sourceRoot = this.tempDir.resolve("src/main/java/sample");
+        Files.createDirectories(sourceRoot);
+        String source = "package sample;\n\n" + "import java.util.List;\n\n" + "/**\n" + " * Demo class.\n"
+                + " * @author Demo\n" + " */\n" + "@Deprecated\n" + "@SuppressWarnings({\"unchecked\", \"rawtypes\"})\n"
+                + "public sealed class Demo permits DemoChild {\n" + "\t/** field comment */\n"
+                + "\tprivate List<String> names = List.of();\n\n" + "\t/**\n" + "\t * Hello method.\n"
+                + "\t * @param id identifier\n" + "\t */\n" + "\tpublic String hello(String id) {\n"
+                + "\t\treturn id;\n" + "\t}\n" + "}\n\n" + "final class DemoChild extends Demo {\n" + "}\n";
+        Files.writeString(sourceRoot.resolve("Demo.java"), source, StandardCharsets.UTF_8);
 
-		SourceScanRequest request = SourceScanRequest.builder()
-			.addSourceRoot(this.tempDir.resolve("src/main/java"))
-			.build();
-		SourceProject project = SourceProjects.create().build(request);
+        SourceScanRequest request = SourceScanRequest.builder()
+                .addSourceRoot(this.tempDir.resolve("src/main/java"))
+                .build();
+        SourceProject project = SourceProjects.create().build(request);
 
-		Optional<SourceClass> demoOptional = project.findClass("sample.Demo");
-		assertTrue(demoOptional.isPresent(), "Demo class should be discovered");
-		SourceClass demo = demoOptional.get();
-		assertEquals("Demo", demo.simpleName());
-		assertTrue(demo.isSealed(), "Demo should be marked as sealed");
-		assertFalse(demo.permittedSubtypes().isEmpty(), "Permitted subtypes should be extracted");
-		assertTrue(demo.fields().stream().anyMatch(field -> "names".equals(field.name())));
+        Optional<SourceClass> demoOptional = project.findClass("sample.Demo");
+        assertTrue(demoOptional.isPresent(), "Demo class should be discovered");
+        SourceClass demo = demoOptional.get();
+        assertEquals("Demo", demo.simpleName());
+        assertTrue(demo.isSealed(), "Demo should be marked as sealed");
+        assertFalse(demo.permittedSubtypes().isEmpty(), "Permitted subtypes should be extracted");
+        assertTrue(demo.fields().stream().anyMatch(field -> "names".equals(field.name())));
 
-		SourceMethod helloMethod = demo.methods()
-			.stream()
-			.filter(method -> "hello".equals(method.name()))
-			.findFirst()
-			.orElseThrow();
-		assertTrue(helloMethod.returnType().isPresent());
-		assertEquals(1, helloMethod.parameters().size());
-		assertEquals("id", helloMethod.parameters().get(0).name());
+        SourceMethod helloMethod = demo.methods().stream()
+                .filter(method -> "hello".equals(method.name()))
+                .findFirst()
+                .orElseThrow();
+        assertTrue(helloMethod.returnType().isPresent());
+        assertEquals(1, helloMethod.parameters().size());
+        assertEquals("id", helloMethod.parameters().get(0).name());
 
-		SourceAnnotation suppress = demo.annotations()
-			.stream()
-			.filter(annotation -> annotation.qualifiedName().endsWith("SuppressWarnings"))
-			.findFirst()
-			.orElseThrow();
-		Map<String, SourceAnnotationValue> members = suppress.members();
-		assertTrue(members.containsKey("value"));
-		List<SourceAnnotationValue> values = members.get("value").asList();
-		assertEquals(2, values.size());
-		assertEquals("unchecked", values.get(0).asString());
-	}
+        SourceAnnotation suppress = demo.annotations().stream()
+                .filter(annotation -> annotation.qualifiedName().endsWith("SuppressWarnings"))
+                .findFirst()
+                .orElseThrow();
+        Map<String, SourceAnnotationValue> members = suppress.members();
+        assertTrue(members.containsKey("value"));
+        List<SourceAnnotationValue> values = members.get("value").asList();
+        assertEquals(2, values.size());
+        assertEquals("unchecked", values.get(0).asString());
+    }
 
-	@Test
-	void shouldDiscoverNestedTypes() throws IOException {
-		Path sourceRoot = this.tempDir.resolve("src/main/java/sample");
-		Files.createDirectories(sourceRoot);
-		String source = "package sample;\n\n" + "class Outer {\n" + "\tstatic class Inner {\n" + "\t}\n" + "}\n";
-		Files.writeString(sourceRoot.resolve("Outer.java"), source, StandardCharsets.UTF_8);
+    @Test
+    void shouldDiscoverNestedTypes() throws IOException {
+        Path sourceRoot = this.tempDir.resolve("src/main/java/sample");
+        Files.createDirectories(sourceRoot);
+        String source = "package sample;\n\n" + "class Outer {\n" + "\tstatic class Inner {\n" + "\t}\n" + "}\n";
+        Files.writeString(sourceRoot.resolve("Outer.java"), source, StandardCharsets.UTF_8);
 
-		SourceScanRequest request = SourceScanRequest.builder()
-			.addSourceRoot(this.tempDir.resolve("src/main/java"))
-			.build();
-		SourceProject project = SourceProjects.create().build(request);
+        SourceScanRequest request = SourceScanRequest.builder()
+                .addSourceRoot(this.tempDir.resolve("src/main/java"))
+                .build();
+        SourceProject project = SourceProjects.create().build(request);
 
-		Optional<SourceClass> outer = project.findClass("sample.Outer");
-		Optional<SourceClass> inner = project.findClass("sample.Outer.Inner");
-		assertTrue(outer.isPresent());
-		assertTrue(inner.isPresent());
-		assertNotNull(project.classes());
-	}
-
+        Optional<SourceClass> outer = project.findClass("sample.Outer");
+        Optional<SourceClass> inner = project.findClass("sample.Outer.Inner");
+        assertTrue(outer.isPresent());
+        assertTrue(inner.isPresent());
+        assertNotNull(project.classes());
+    }
 }

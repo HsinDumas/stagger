@@ -31,8 +31,7 @@ import java.util.List;
  */
 public interface SourceTypeParam {
 
-	String name();
+    String name();
 
-	List<SourceType> bounds();
-
+    List<SourceType> bounds();
 }

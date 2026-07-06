@@ -34,100 +34,100 @@ import java.util.Objects;
  */
 public class DocJavaParameter implements Serializable {
 
-	private Object javaParameter;
+    private Object javaParameter;
 
-	private String genericCanonicalName;
+    private String genericCanonicalName;
 
-	private String genericFullyQualifiedName;
+    private String genericFullyQualifiedName;
 
-	private String fullyQualifiedName;
+    private String fullyQualifiedName;
 
-	private String typeValue;
+    private String typeValue;
 
-	private List<?> annotations;
+    private List<?> annotations;
 
-	@SuppressWarnings("unchecked")
-	public <T> T getJavaParameter() {
-		return (T) javaParameter;
-	}
+    @SuppressWarnings("unchecked")
+    public <T> T getJavaParameter() {
+        return (T) javaParameter;
+    }
 
-	public void setJavaParameter(Object javaParameter) {
-		this.javaParameter = javaParameter;
-	}
+    public void setJavaParameter(Object javaParameter) {
+        this.javaParameter = javaParameter;
+    }
 
-	public String getGenericCanonicalName() {
-		return genericCanonicalName;
-	}
+    public String getGenericCanonicalName() {
+        return genericCanonicalName;
+    }
 
-	public void setGenericCanonicalName(String genericCanonicalName) {
-		this.genericCanonicalName = genericCanonicalName;
-	}
+    public void setGenericCanonicalName(String genericCanonicalName) {
+        this.genericCanonicalName = genericCanonicalName;
+    }
 
-	public String getGenericFullyQualifiedName() {
-		return genericFullyQualifiedName;
-	}
+    public String getGenericFullyQualifiedName() {
+        return genericFullyQualifiedName;
+    }
 
-	public void setGenericFullyQualifiedName(String genericFullyQualifiedName) {
-		this.genericFullyQualifiedName = genericFullyQualifiedName;
-	}
+    public void setGenericFullyQualifiedName(String genericFullyQualifiedName) {
+        this.genericFullyQualifiedName = genericFullyQualifiedName;
+    }
 
-	public String getFullyQualifiedName() {
-		return fullyQualifiedName;
-	}
+    public String getFullyQualifiedName() {
+        return fullyQualifiedName;
+    }
 
-	public void setFullyQualifiedName(String fullyQualifiedName) {
-		this.fullyQualifiedName = fullyQualifiedName;
-	}
+    public void setFullyQualifiedName(String fullyQualifiedName) {
+        this.fullyQualifiedName = fullyQualifiedName;
+    }
 
-	public String getTypeValue() {
-		return typeValue;
-	}
+    public String getTypeValue() {
+        return typeValue;
+    }
 
-	public void setTypeValue(String typeValue) {
-		this.typeValue = typeValue;
-	}
+    public void setTypeValue(String typeValue) {
+        this.typeValue = typeValue;
+    }
 
-	public List<?> getAnnotations() {
-		return annotations;
-	}
+    public List<?> getAnnotations() {
+        return annotations;
+    }
 
-	public void setAnnotations(List<?> annotations) {
-		this.annotations = annotations;
-	}
+    public void setAnnotations(List<?> annotations) {
+        this.annotations = annotations;
+    }
 
-	@Override
-	public String toString() {
-		return "DocJavaParameter{" + "javaParameter=" + javaParameter + ", genericCanonicalName='"
-				+ genericCanonicalName + '\'' + ", genericFullyQualifiedName='" + genericFullyQualifiedName + '\''
-				+ ", fullyQualifiedName='" + fullyQualifiedName + '\'' + ", typeValue='" + typeValue + '\''
-				+ ", annotations=" + annotations + '}';
-	}
+    @Override
+    public String toString() {
+        return "DocJavaParameter{" + "javaParameter=" + javaParameter + ", genericCanonicalName='"
+                + genericCanonicalName + '\'' + ", genericFullyQualifiedName='" + genericFullyQualifiedName + '\''
+                + ", fullyQualifiedName='" + fullyQualifiedName + '\'' + ", typeValue='" + typeValue + '\''
+                + ", annotations=" + annotations + '}';
+    }
 
-	@Override
-	public int hashCode() {
-		int result = javaParameter != null ? javaParameter.hashCode() : 0;
-		result = 31 * result + (genericCanonicalName != null ? genericCanonicalName.hashCode() : 0);
-		result = 31 * result + (genericFullyQualifiedName != null ? genericFullyQualifiedName.hashCode() : 0);
-		result = 31 * result + (fullyQualifiedName != null ? fullyQualifiedName.hashCode() : 0);
-		result = 31 * result + (typeValue != null ? typeValue.hashCode() : 0);
-		result = 31 * result + (annotations != null ? annotations.hashCode() : 0);
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int result = javaParameter != null ? javaParameter.hashCode() : 0;
+        result = 31 * result + (genericCanonicalName != null ? genericCanonicalName.hashCode() : 0);
+        result = 31 * result + (genericFullyQualifiedName != null ? genericFullyQualifiedName.hashCode() : 0);
+        result = 31 * result + (fullyQualifiedName != null ? fullyQualifiedName.hashCode() : 0);
+        result = 31 * result + (typeValue != null ? typeValue.hashCode() : 0);
+        result = 31 * result + (annotations != null ? annotations.hashCode() : 0);
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-		DocJavaParameter that = (DocJavaParameter) obj;
-		return (Objects.equals(javaParameter, that.javaParameter))
-				&& (Objects.equals(genericCanonicalName, that.genericCanonicalName))
-				&& (Objects.equals(genericFullyQualifiedName, that.genericFullyQualifiedName))
-				&& (Objects.equals(fullyQualifiedName, that.fullyQualifiedName))
-				&& (Objects.equals(typeValue, that.typeValue)) && (Objects.equals(annotations, that.annotations));
-	}
-
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        DocJavaParameter that = (DocJavaParameter) obj;
+        return (Objects.equals(javaParameter, that.javaParameter))
+                && (Objects.equals(genericCanonicalName, that.genericCanonicalName))
+                && (Objects.equals(genericFullyQualifiedName, that.genericFullyQualifiedName))
+                && (Objects.equals(fullyQualifiedName, that.fullyQualifiedName))
+                && (Objects.equals(typeValue, that.typeValue))
+                && (Objects.equals(annotations, that.annotations));
+    }
 }

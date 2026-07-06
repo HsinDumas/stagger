@@ -7,7 +7,7 @@ jgit = "6.9.0.202403050737-r"
 javaparser = "3.28.2"
 junit = "5.14.1"
 mockito = "4.11.0"
-springJavaFormat = "0.0.47"
+palantirJavaFormat = "2.94.0"
 checkstyle = "10.20.1"
 mavenPluginApi = "3.9.9"
 mavenPluginAnnotations = "3.13.1"
@@ -38,6 +38,6 @@ mavenArtifact = { module = "org.apache.maven:maven-artifact", version.ref = "mav
 mavenDependencyTree = { module = "org.apache.maven.shared:maven-dependency-tree", version.ref = "mavenDependencyTree" }
 
 [plugins]
-springJavaFormat = { id = "io.spring.javaformat", version.ref = "springJavaFormat" }
+palantirJavaFormat = { id = "com.palantir.java-format", version.ref = "palantirJavaFormat" }
 pluginPublish = { id = "com.gradle.plugin-publish", version.ref = "pluginPublish" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }

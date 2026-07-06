@@ -29,74 +29,73 @@ package com.github.hsindumas.stagger.maven.plugin.constant;
  */
 public interface MojoConstants {
 
-	/**
-	 * api-html
-	 */
-	String HTML_MOJO = "html";
+    /**
+     * api-html
+     */
+    String HTML_MOJO = "html";
 
-	/**
-	 * api-markdown
-	 */
-	String MARKDOWN_MOJO = "markdown";
+    /**
+     * api-markdown
+     */
+    String MARKDOWN_MOJO = "markdown";
 
-	/**
-	 * api-jmeter
-	 */
-	String JMETER_MOJO = "jmeter";
+    /**
+     * api-jmeter
+     */
+    String JMETER_MOJO = "jmeter";
 
-	/**
-	 * api-openapi
-	 */
-	String OPENAPI_MOJO = "openapi";
+    /**
+     * api-openapi
+     */
+    String OPENAPI_MOJO = "openapi";
 
-	/**
-	 * api-swagger
-	 */
-	String SWAGGER_MOJO = "swagger";
+    /**
+     * api-swagger
+     */
+    String SWAGGER_MOJO = "swagger";
 
-	/**
-	 * api-postman
-	 */
-	String POSTMAN_MOJO = "postman";
+    /**
+     * api-postman
+     */
+    String POSTMAN_MOJO = "postman";
 
-	/**
-	 * api-word
-	 */
-	String WORD_MOJO = "word";
+    /**
+     * api-word
+     */
+    String WORD_MOJO = "word";
 
-	/**
-	 * rpc-word
-	 */
-	String RPC_WORD_MOJO = "rpc-word";
+    /**
+     * rpc-word
+     */
+    String RPC_WORD_MOJO = "rpc-word";
 
-	/**
-	 * rpc-html
-	 */
-	String RPC_HTML_MOJO = "rpc-html";
+    /**
+     * rpc-html
+     */
+    String RPC_HTML_MOJO = "rpc-html";
 
-	/**
-	 * rpc-markdown
-	 */
-	String RPC_MARKDOWN_MOJO = "rpc-markdown";
+    /**
+     * rpc-markdown
+     */
+    String RPC_MARKDOWN_MOJO = "rpc-markdown";
 
-	/**
-	 * websocket markdown
-	 */
-	String WEBSOCKET_MARKDOWN_MOJO = "websocket-markdown";
+    /**
+     * websocket markdown
+     */
+    String WEBSOCKET_MARKDOWN_MOJO = "websocket-markdown";
 
-	/**
-	 * websocket html.
-	 */
-	String WEBSOCKET_HTML_MOJO = "websocket-html";
+    /**
+     * websocket html.
+     */
+    String WEBSOCKET_HTML_MOJO = "websocket-html";
 
-	/**
-	 * grpc markdown.
-	 */
-	String GRPC_MARKDOWN_MOJO = "grpc-markdown";
+    /**
+     * grpc markdown.
+     */
+    String GRPC_MARKDOWN_MOJO = "grpc-markdown";
 
-	/**
-	 * grpc html.
-	 */
-	String GRPC_HTML_MOJO = "grpc-html";
-
+    /**
+     * grpc html.
+     */
+    String GRPC_HTML_MOJO = "grpc-html";
 }

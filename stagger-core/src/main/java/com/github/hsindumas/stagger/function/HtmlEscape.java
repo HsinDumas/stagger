@@ -20,10 +20,8 @@
  */
 package com.github.hsindumas.stagger.function;
 
-import com.github.hsindumas.stagger.utils.DocUtil;
-
 import com.github.hsindumas.stagger.template.engine.TemplateFunction;
-
+import com.github.hsindumas.stagger.utils.DocUtil;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,29 +41,28 @@ import java.util.Map;
  */
 public class HtmlEscape implements TemplateFunction {
 
-	/**
-	 * Map to hold HTML escape sequences.
-	 */
-	private static final Map<String, String> HTML_ESCAPE_MAP;
+    /**
+     * Map to hold HTML escape sequences.
+     */
+    private static final Map<String, String> HTML_ESCAPE_MAP;
 
-	static {
-		HTML_ESCAPE_MAP = new HashMap<>();
-		HTML_ESCAPE_MAP.put("<p>", "");
-		HTML_ESCAPE_MAP.put("</p>", " ");
-	}
+    static {
+        HTML_ESCAPE_MAP = new HashMap<>();
+        HTML_ESCAPE_MAP.put("<p>", "");
+        HTML_ESCAPE_MAP.put("</p>", " ");
+    }
 
-	@Override
-	public String call(Object[] params) {
-		if (params == null || params.length == 0 || params[0] == null) {
-			return "";
-		}
-		String html = String.valueOf(params[0]);
-		for (Map.Entry<String, String> entry : HTML_ESCAPE_MAP.entrySet()) {
-			html = html.replace(entry.getKey(), entry.getValue());
-		}
+    @Override
+    public String call(Object[] params) {
+        if (params == null || params.length == 0 || params[0] == null) {
+            return "";
+        }
+        String html = String.valueOf(params[0]);
+        for (Map.Entry<String, String> entry : HTML_ESCAPE_MAP.entrySet()) {
+            html = html.replace(entry.getKey(), entry.getValue());
+        }
 
-		html = DocUtil.getEscapeAndCleanComment(html);
-		return DocUtil.replaceNewLineToHtmlBr(html);
-	}
-
+        html = DocUtil.getEscapeAndCleanComment(html);
+        return DocUtil.replaceNewLineToHtmlBr(html);
+    }
 }

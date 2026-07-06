@@ -31,43 +31,42 @@ import org.apache.commons.lang3.StringUtils;
  */
 public enum ComponentTypeEnum {
 
-	/**
-	 * support @Validated
-	 */
-	RANDOM("RANDOM"),
-	/**
-	 * don't support @Validated, for openapi generator
-	 */
-	NORMAL("NORMAL");
+    /**
+     * support @Validated
+     */
+    RANDOM("RANDOM"),
+    /**
+     * don't support @Validated, for openapi generator
+     */
+    NORMAL("NORMAL");
 
-	ComponentTypeEnum(String componentType) {
-		this.componentType = componentType;
-	}
+    ComponentTypeEnum(String componentType) {
+        this.componentType = componentType;
+    }
 
-	/**
-	 * openapi component generator Key type
-	 */
-	private final String componentType;
+    /**
+     * openapi component generator Key type
+     */
+    private final String componentType;
 
-	/**
-	 * get random name
-	 * @param componentTypeEnum componentTypeEnum
-	 * @param apiMethodDoc apiMethodDoc
-	 * @return random name
-	 */
-	public static String getRandomName(ComponentTypeEnum componentTypeEnum, ApiMethodDoc apiMethodDoc) {
-		if (componentTypeEnum.equals(RANDOM)) {
-			return apiMethodDoc.getUrl();
-		}
-		return StringUtils.EMPTY;
-	}
+    /**
+     * get random name
+     * @param componentTypeEnum componentTypeEnum
+     * @param apiMethodDoc apiMethodDoc
+     * @return random name
+     */
+    public static String getRandomName(ComponentTypeEnum componentTypeEnum, ApiMethodDoc apiMethodDoc) {
+        if (componentTypeEnum.equals(RANDOM)) {
+            return apiMethodDoc.getUrl();
+        }
+        return StringUtils.EMPTY;
+    }
 
-	/**
-	 * get componentType
-	 * @return componentType
-	 */
-	public String getComponentType() {
-		return componentType;
-	}
-
+    /**
+     * get componentType
+     * @return componentType
+     */
+    public String getComponentType() {
+        return componentType;
+    }
 }

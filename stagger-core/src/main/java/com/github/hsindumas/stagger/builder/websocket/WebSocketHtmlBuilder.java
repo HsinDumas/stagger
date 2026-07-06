@@ -25,7 +25,6 @@ import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.WebSocketDoc;
-
 import java.util.List;
 
 /**
@@ -37,45 +36,47 @@ import java.util.List;
  */
 public class WebSocketHtmlBuilder {
 
-	/**
-	 * index.html
-	 */
-	private static final String INDEX_HTML = "websocket-index.html";
+    /**
+     * index.html
+     */
+    private static final String INDEX_HTML = "websocket-index.html";
 
-	/**
-	 * private constructor
-	 */
-	private WebSocketHtmlBuilder() {
-		throw new IllegalStateException("Utility class");
-	}
+    /**
+     * private constructor
+     */
+    private WebSocketHtmlBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * build websocket html doc.
-	 * @param config ApiConfig
-	 */
-	public static void buildApiDoc(ApiConfig config) {
-		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
-	}
+    /**
+     * build websocket html doc.
+     * @param config ApiConfig
+     */
+    public static void buildApiDoc(ApiConfig config) {
+        buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
+    }
 
-	/**
-	 * Only for stagger maven plugin and gradle plugin.
-	 * @param config ApiConfig
-	 * @param configBuilder ProjectDocConfigBuilder
-	 */
-	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
-		WebSocketDocBuilderTemplate webSocketDocBuilderTemplate = new WebSocketDocBuilderTemplate();
-		List<WebSocketDoc> webSocketDocList = webSocketDocBuilderTemplate.getWebSocketApiDoc(Boolean.FALSE, config,
-				configBuilder);
+    /**
+     * Only for stagger maven plugin and gradle plugin.
+     * @param config ApiConfig
+     * @param configBuilder ProjectDocConfigBuilder
+     */
+    public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
+        WebSocketDocBuilderTemplate webSocketDocBuilderTemplate = new WebSocketDocBuilderTemplate();
+        List<WebSocketDoc> webSocketDocList =
+                webSocketDocBuilderTemplate.getWebSocketApiDoc(Boolean.FALSE, config, configBuilder);
 
-		if (null == webSocketDocList || webSocketDocList.isEmpty()) {
-			return;
-		}
-		webSocketDocBuilderTemplate.copyJQueryAndCss(config);
-		webSocketDocBuilderTemplate.buildWebSocketAllInOne(webSocketDocList, config, configBuilder,
-				DocGlobalConstants.WEBSOCKET_ALL_IN_ONE_HTML_TPL, INDEX_HTML);
-		webSocketDocBuilderTemplate.buildSearchJs(webSocketDocList, config, configBuilder,
-				DocGlobalConstants.WEBSOCKET_ALL_IN_ONE_SEARCH_TPL, DocGlobalConstants.SEARCH_JS_OUT);
-
-	}
-
+        if (null == webSocketDocList || webSocketDocList.isEmpty()) {
+            return;
+        }
+        webSocketDocBuilderTemplate.copyJQueryAndCss(config);
+        webSocketDocBuilderTemplate.buildWebSocketAllInOne(
+                webSocketDocList, config, configBuilder, DocGlobalConstants.WEBSOCKET_ALL_IN_ONE_HTML_TPL, INDEX_HTML);
+        webSocketDocBuilderTemplate.buildSearchJs(
+                webSocketDocList,
+                config,
+                configBuilder,
+                DocGlobalConstants.WEBSOCKET_ALL_IN_ONE_SEARCH_TPL,
+                DocGlobalConstants.SEARCH_JS_OUT);
+    }
 }

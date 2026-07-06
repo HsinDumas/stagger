@@ -32,16 +32,15 @@ import java.util.ResourceBundle;
  */
 public interface I18nMsgUtil {
 
-	ResourceBundle LOG_MESSAGE = ResourceBundle.getBundle("LogPromptMessages");
+    ResourceBundle LOG_MESSAGE = ResourceBundle.getBundle("LogPromptMessages");
 
-	/**
-	 * Abbreviations, instead of full writing: 👇
-	 * @param key key
-	 * @return value
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	static String get(String key) {
-		return LOG_MESSAGE.getString(key);
-	}
-
+    /**
+     * Abbreviations, instead of full writing: 👇
+     * @param key key
+     * @return value
+     */
+    @SuppressWarnings("JavadocDeclaration")
+    static String get(String key) {
+        return LOG_MESSAGE.getString(key);
+    }
 }

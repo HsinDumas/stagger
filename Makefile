@@ -24,17 +24,17 @@ checkstyle-check:
 		:stagger-maven-plugin:checkstyleMain \
 		:stagger-gradle-plugin:checkstyleMain
 
-spring-javaformat-validate:
+palantir-java-format-validate:
 	./gradlew --no-daemon \
 		:stagger-core:checkFormatMain \
 		:stagger-maven-plugin:checkFormatMain \
 		:stagger-gradle-plugin:checkFormatMain
 
-spring-javaformat-apply:
+palantir-java-format-apply:
 	./gradlew --no-daemon \
 		:stagger-core:format \
 		:stagger-maven-plugin:format \
 		:stagger-gradle-plugin:format
 
-install: spring-javaformat-apply
+install: palantir-java-format-apply
 	./gradlew --no-daemon clean build -x test

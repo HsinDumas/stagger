@@ -28,47 +28,47 @@ package com.github.hsindumas.stagger.constants;
  */
 public enum Methods {
 
-	/**
-	 * http methods POST
-	 */
-	POST("POST"),
+    /**
+     * http methods POST
+     */
+    POST("POST"),
 
-	/**
-	 * http methods GET
-	 */
-	GET("GET"),
+    /**
+     * http methods GET
+     */
+    GET("GET"),
 
-	/**
-	 * http methods PUT
-	 */
-	PUT("PUT"),
+    /**
+     * http methods PUT
+     */
+    PUT("PUT"),
 
-	/**
-	 * http methods PATCH
-	 */
-	PATCH("PATCH"),
+    /**
+     * http methods PATCH
+     */
+    PATCH("PATCH"),
 
-	/**
-	 * http methods DELETE
-	 */
-	DELETE("DELETE"),
+    /**
+     * http methods DELETE
+     */
+    DELETE("DELETE"),
 
-	/**
-	 * http methods OPTIONS
-	 */
-	OPTIONS("OPTIONS"),;
+    /**
+     * http methods OPTIONS
+     */
+    OPTIONS("OPTIONS"),
+    ;
 
-	/**
-	 * http methods value
-	 */
-	private final String value;
+    /**
+     * http methods value
+     */
+    private final String value;
 
-	Methods(String value) {
-		this.value = value;
-	}
+    Methods(String value) {
+        this.value = value;
+    }
 
-	public String getValue() {
-		return value;
-	}
-
+    public String getValue() {
+        return value;
+    }
 }

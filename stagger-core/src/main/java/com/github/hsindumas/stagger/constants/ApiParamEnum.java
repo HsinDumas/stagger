@@ -30,21 +30,19 @@ package com.github.hsindumas.stagger.constants;
  */
 public enum ApiParamEnum {
 
-	/**
-	 * PathVariable，when param use `@PathVariable` annotation
-	 */
-	PATH,
+    /**
+     * PathVariable，when param use `@PathVariable` annotation
+     */
+    PATH,
 
-	/**
-	 * RequestParam
-	 */
-	QUERY,
+    /**
+     * RequestParam
+     */
+    QUERY,
 
-	/**
-	 * Body Param(from-data, x-www-form-urlencoded, raw(json))
-	 */
-	BODY,
-
-	;
-
+    /**
+     * Body Param(from-data, x-www-form-urlencoded, raw(json))
+     */
+    BODY,
+    ;
 }

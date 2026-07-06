@@ -32,23 +32,21 @@ import org.apache.maven.artifact.Artifact;
  */
 public interface FilterChain {
 
-	void setNext(FilterChain nextInChain);
+    void setNext(FilterChain nextInChain);
 
-	boolean ignoreArtifactById(Artifact artifact);
+    boolean ignoreArtifactById(Artifact artifact);
 
-	/**
-	 * Delegate to next chain element when present.
-	 * @param nextInChain next chain element
-	 * @param artifact artifact metadata
-	 * @return true when artifact should be ignored
-	 */
-	default boolean ignore(FilterChain nextInChain, Artifact artifact) {
-		if (Objects.nonNull(nextInChain)) {
-			return nextInChain.ignoreArtifactById(artifact);
-		}
-		else {
-			return false;
-		}
-	}
-
+    /**
+     * Delegate to next chain element when present.
+     * @param nextInChain next chain element
+     * @param artifact artifact metadata
+     * @return true when artifact should be ignored
+     */
+    default boolean ignore(FilterChain nextInChain, Artifact artifact) {
+        if (Objects.nonNull(nextInChain)) {
+            return nextInChain.ignoreArtifactById(artifact);
+        } else {
+            return false;
+        }
+    }
 }

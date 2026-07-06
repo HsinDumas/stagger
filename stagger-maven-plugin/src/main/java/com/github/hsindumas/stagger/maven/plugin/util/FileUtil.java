@@ -33,26 +33,24 @@ import java.util.regex.Pattern;
  */
 public class FileUtil {
 
-	private static String regex = "^[a-zA-Z]:";
+    private static String regex = "^[a-zA-Z]:";
 
-	private static Pattern pattern = Pattern.compile(regex);
+    private static Pattern pattern = Pattern.compile(regex);
 
-	/**
-	 * Determine whether a path is absolute on current platform.
-	 * @param path input path
-	 * @return true when absolute
-	 */
-	public static boolean isAbsPath(String path) {
-		if (StringUtil.isEmpty(path)) {
-			return false;
-		}
-		Matcher matcher = pattern.matcher(path);
-		if (matcher.find() || path.startsWith("/")) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
+    /**
+     * Determine whether a path is absolute on current platform.
+     * @param path input path
+     * @return true when absolute
+     */
+    public static boolean isAbsPath(String path) {
+        if (StringUtil.isEmpty(path)) {
+            return false;
+        }
+        Matcher matcher = pattern.matcher(path);
+        if (matcher.find() || path.startsWith("/")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

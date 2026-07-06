@@ -22,18 +22,17 @@
 package com.github.hsindumas.stagger.builder.rpc;
 
 import com.github.hsindumas.stagger.builder.IRpcDocBuilderTemplate;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
+import com.github.hsindumas.stagger.constants.CommonConstants;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.constants.FrameworkEnum;
-import com.github.hsindumas.stagger.constants.CommonConstants;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiGroup;
 import com.github.hsindumas.stagger.model.RpcJavaMethod;
 import com.github.hsindumas.stagger.model.rpc.RpcApiDoc;
 import com.github.hsindumas.stagger.utils.DocPathUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
-import com.github.hsindumas.stagger.common.util.CollectionUtil;
-import com.github.hsindumas.stagger.common.util.StringUtil;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,85 +47,82 @@ import java.util.stream.Collectors;
  */
 public class RpcDocBuilderTemplate implements IRpcDocBuilderTemplate<RpcApiDoc> {
 
-	@Override
-	public void checkAndInit(ApiConfig config, boolean checkOutPath) {
-		if (StringUtil.isEmpty(config.getFramework())) {
-			config.setFramework(FrameworkEnum.DUBBO.getFramework());
-		}
-		IRpcDocBuilderTemplate.super.checkAndInit(config, checkOutPath);
-		config.setOutPath(config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + DocGlobalConstants.RPC_OUT_DIR);
-	}
+    @Override
+    public void checkAndInit(ApiConfig config, boolean checkOutPath) {
+        if (StringUtil.isEmpty(config.getFramework())) {
+            config.setFramework(FrameworkEnum.DUBBO.getFramework());
+        }
+        IRpcDocBuilderTemplate.super.checkAndInit(config, checkOutPath);
+        config.setOutPath(config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + DocGlobalConstants.RPC_OUT_DIR);
+    }
 
-	@Override
-	public RpcApiDoc createEmptyApiDoc() {
-		return new RpcApiDoc();
-	}
+    @Override
+    public RpcApiDoc createEmptyApiDoc() {
+        return new RpcApiDoc();
+    }
 
-	/**
-	 * handle group api docs.
-	 * @param apiDocList list of apiDocList
-	 * @param apiConfig ApiConfig apiConfig
-	 * @return List of ApiDoc
-	 * @author wangaiping
-	 * @author HsinDumas
-	 */
+    /**
+     * handle group api docs.
+     * @param apiDocList list of apiDocList
+     * @param apiConfig ApiConfig apiConfig
+     * @return List of ApiDoc
+     * @author wangaiping
+     * @author HsinDumas
+     */
+    List<RpcApiDoc> handleApiGroup(List<RpcApiDoc> apiDocList, ApiConfig apiConfig) {
+        if (CollectionUtil.isEmpty(apiDocList) || apiConfig == null) {
+            return apiDocList;
+        }
+        List<ApiGroup> groups = apiConfig.getGroups();
+        List<RpcApiDoc> finalApiDocs = new ArrayList<>();
 
-	List<RpcApiDoc> handleApiGroup(List<RpcApiDoc> apiDocList, ApiConfig apiConfig) {
-		if (CollectionUtil.isEmpty(apiDocList) || apiConfig == null) {
-			return apiDocList;
-		}
-		List<ApiGroup> groups = apiConfig.getGroups();
-		List<RpcApiDoc> finalApiDocs = new ArrayList<>();
+        RpcApiDoc defaultGroup = RpcApiDoc.buildGroupApiDoc(CommonConstants.DEFAULT_GROUP_CODE);
+        // show default group
+        AtomicInteger order = new AtomicInteger(1);
+        finalApiDocs.add(defaultGroup);
 
-		RpcApiDoc defaultGroup = RpcApiDoc.buildGroupApiDoc(CommonConstants.DEFAULT_GROUP_CODE);
-		// show default group
-		AtomicInteger order = new AtomicInteger(1);
-		finalApiDocs.add(defaultGroup);
-
-		if (CollectionUtil.isEmpty(groups)) {
-			defaultGroup.setOrder(order.getAndIncrement());
-			defaultGroup.getChildrenApiDocs().addAll(apiDocList);
-			return finalApiDocs;
-		}
-		Map<String, String> hasInsert = new HashMap<>(16);
-		for (ApiGroup group : groups) {
-			RpcApiDoc groupApiDoc = RpcApiDoc.buildGroupApiDoc(group.getName());
-			finalApiDocs.add(groupApiDoc);
-			for (RpcApiDoc doc : apiDocList) {
-				if (hasInsert.containsKey(doc.getAlias())) {
-					continue;
-				}
-				if (!DocUtil.isMatch(group.getApis(), doc.getPackageName() + "." + doc.getName())) {
-					continue;
-				}
-				hasInsert.put(doc.getAlias(), null);
-				groupApiDoc.getChildrenApiDocs().add(doc);
-				doc.setOrder(groupApiDoc.getChildrenApiDocs().size());
-				doc.setGroup(group.getName());
-				if (StringUtil.isEmpty(group.getPaths())) {
-					continue;
-				}
-				List<RpcJavaMethod> methodDocs = doc.getList()
-					.stream()
-					.filter(l -> DocPathUtil.matches(l.getMethodDefinition(), group.getPaths(), null))
-					.collect(Collectors.toList());
-				doc.setList(methodDocs);
-			}
-		}
-		// Ungrouped join the default group
-		for (RpcApiDoc doc : apiDocList) {
-			String key = doc.getAlias();
-			if (!hasInsert.containsKey(key)) {
-				defaultGroup.getChildrenApiDocs().add(doc);
-				doc.setOrder(defaultGroup.getChildrenApiDocs().size());
-				hasInsert.put(doc.getAlias(), null);
-			}
-		}
-		if (CollectionUtil.isEmpty(defaultGroup.getChildrenApiDocs())) {
-			finalApiDocs.remove(defaultGroup);
-		}
-		finalApiDocs.forEach(group -> group.setOrder(order.getAndIncrement()));
-		return finalApiDocs;
-	}
-
+        if (CollectionUtil.isEmpty(groups)) {
+            defaultGroup.setOrder(order.getAndIncrement());
+            defaultGroup.getChildrenApiDocs().addAll(apiDocList);
+            return finalApiDocs;
+        }
+        Map<String, String> hasInsert = new HashMap<>(16);
+        for (ApiGroup group : groups) {
+            RpcApiDoc groupApiDoc = RpcApiDoc.buildGroupApiDoc(group.getName());
+            finalApiDocs.add(groupApiDoc);
+            for (RpcApiDoc doc : apiDocList) {
+                if (hasInsert.containsKey(doc.getAlias())) {
+                    continue;
+                }
+                if (!DocUtil.isMatch(group.getApis(), doc.getPackageName() + "." + doc.getName())) {
+                    continue;
+                }
+                hasInsert.put(doc.getAlias(), null);
+                groupApiDoc.getChildrenApiDocs().add(doc);
+                doc.setOrder(groupApiDoc.getChildrenApiDocs().size());
+                doc.setGroup(group.getName());
+                if (StringUtil.isEmpty(group.getPaths())) {
+                    continue;
+                }
+                List<RpcJavaMethod> methodDocs = doc.getList().stream()
+                        .filter(l -> DocPathUtil.matches(l.getMethodDefinition(), group.getPaths(), null))
+                        .collect(Collectors.toList());
+                doc.setList(methodDocs);
+            }
+        }
+        // Ungrouped join the default group
+        for (RpcApiDoc doc : apiDocList) {
+            String key = doc.getAlias();
+            if (!hasInsert.containsKey(key)) {
+                defaultGroup.getChildrenApiDocs().add(doc);
+                doc.setOrder(defaultGroup.getChildrenApiDocs().size());
+                hasInsert.put(doc.getAlias(), null);
+            }
+        }
+        if (CollectionUtil.isEmpty(defaultGroup.getChildrenApiDocs())) {
+            finalApiDocs.remove(defaultGroup);
+        }
+        finalApiDocs.forEach(group -> group.setOrder(order.getAndIncrement()));
+        return finalApiDocs;
+    }
 }

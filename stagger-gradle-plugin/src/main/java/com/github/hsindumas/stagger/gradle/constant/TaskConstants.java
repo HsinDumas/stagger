@@ -36,7 +36,6 @@ import com.github.hsindumas.stagger.gradle.task.SwaggerTask;
 import com.github.hsindumas.stagger.gradle.task.WebSocketHtmlTask;
 import com.github.hsindumas.stagger.gradle.task.WebSocketMarkdownTask;
 import com.github.hsindumas.stagger.gradle.task.WordTask;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,39 +45,37 @@ import java.util.Map;
  */
 public class TaskConstants {
 
-	/**
-	 * Map of Gradle Task
-	 */
-	public static Map<String, Class<? extends DocBaseTask>> taskMap = new HashMap<>();
+    /**
+     * Map of Gradle Task
+     */
+    public static Map<String, Class<? extends DocBaseTask>> taskMap = new HashMap<>();
 
-	static {
-		// create html
-		taskMap.put(GlobalConstants.REST_HTML_TASK, RestHtmlTask.class);
-		// create markdown
-		taskMap.put(GlobalConstants.REST_MARKDOWN_TASK, RestMarkdownTask.class);
-		// create jmeter
-		taskMap.put(GlobalConstants.JMETER_TASK, JMeterTask.class);
-		// create postman collection
-		taskMap.put(GlobalConstants.POSTMAN_TASK, PostmanTask.class);
-		// create open api
-		taskMap.put(GlobalConstants.OPEN_API_TASK, OpenApiTask.class);
-		// create rpc html
-		taskMap.put(GlobalConstants.RPC_HTML_TASK, RpcHtmlTask.class);
-		// create rpc Markdown
-		taskMap.put(GlobalConstants.RPC_MARKDOWN_TASK, RpcMarkdownTask.class);
-		// create word rest
-		taskMap.put(GlobalConstants.WORD_TASK, WordTask.class);
-		// create Swagger
-		taskMap.put(GlobalConstants.SWAGGER_TASK, SwaggerTask.class);
-		// create websocket html
-		taskMap.put(GlobalConstants.WEBSOCKET_HTML_TASK, WebSocketHtmlTask.class);
-		// create websocket markdown
-		taskMap.put(GlobalConstants.WEBSOCKET_MARKDOWN_TASK, WebSocketMarkdownTask.class);
-		// create gRPC html
-		taskMap.put(GlobalConstants.GRPC_HTML_TASK, GrpcHtmlTask.class);
-		// create gRPC markdown
-		taskMap.put(GlobalConstants.GRPC_MARKDOWN_TASK, GrpcMarkdownTask.class);
-
-	}
-
+    static {
+        // create html
+        taskMap.put(GlobalConstants.REST_HTML_TASK, RestHtmlTask.class);
+        // create markdown
+        taskMap.put(GlobalConstants.REST_MARKDOWN_TASK, RestMarkdownTask.class);
+        // create jmeter
+        taskMap.put(GlobalConstants.JMETER_TASK, JMeterTask.class);
+        // create postman collection
+        taskMap.put(GlobalConstants.POSTMAN_TASK, PostmanTask.class);
+        // create open api
+        taskMap.put(GlobalConstants.OPEN_API_TASK, OpenApiTask.class);
+        // create rpc html
+        taskMap.put(GlobalConstants.RPC_HTML_TASK, RpcHtmlTask.class);
+        // create rpc Markdown
+        taskMap.put(GlobalConstants.RPC_MARKDOWN_TASK, RpcMarkdownTask.class);
+        // create word rest
+        taskMap.put(GlobalConstants.WORD_TASK, WordTask.class);
+        // create Swagger
+        taskMap.put(GlobalConstants.SWAGGER_TASK, SwaggerTask.class);
+        // create websocket html
+        taskMap.put(GlobalConstants.WEBSOCKET_HTML_TASK, WebSocketHtmlTask.class);
+        // create websocket markdown
+        taskMap.put(GlobalConstants.WEBSOCKET_MARKDOWN_TASK, WebSocketMarkdownTask.class);
+        // create gRPC html
+        taskMap.put(GlobalConstants.GRPC_HTML_TASK, GrpcHtmlTask.class);
+        // create gRPC markdown
+        taskMap.put(GlobalConstants.GRPC_MARKDOWN_TASK, GrpcMarkdownTask.class);
+    }
 }

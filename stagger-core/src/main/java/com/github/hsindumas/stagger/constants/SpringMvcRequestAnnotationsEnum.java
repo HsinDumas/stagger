@@ -31,101 +31,99 @@ import java.util.List;
  */
 public enum SpringMvcRequestAnnotationsEnum {
 
-	/**
-	 * SpringMvc RequestAnnotation PathVariable
-	 */
-	PATH_VARIABLE("PathVariable"),
+    /**
+     * SpringMvc RequestAnnotation PathVariable
+     */
+    PATH_VARIABLE("PathVariable"),
 
-	/**
-	 * SpringMvc RequestAnnotation PathVariable fully
-	 */
-	PATH_VARIABLE_FULLY("org.springframework.web.bind.annotation.PathVariable"),
+    /**
+     * SpringMvc RequestAnnotation PathVariable fully
+     */
+    PATH_VARIABLE_FULLY("org.springframework.web.bind.annotation.PathVariable"),
 
-	/**
-	 * Spring HTTP Interface RequestAnnotation PathVariable fully
-	 */
-	PATH_VARIABLE_WEB_SERVICE_FULLY("org.springframework.web.service.annotation.PathVariable"),
+    /**
+     * Spring HTTP Interface RequestAnnotation PathVariable fully
+     */
+    PATH_VARIABLE_WEB_SERVICE_FULLY("org.springframework.web.service.annotation.PathVariable"),
 
-	/**
-	 * SpringMvc RequestAnnotation RequestParam
-	 */
-	REQ_PARAM("RequestParam"),
+    /**
+     * SpringMvc RequestAnnotation RequestParam
+     */
+    REQ_PARAM("RequestParam"),
 
-	/**
-	 * SpringMvc RequestAnnotation RequestParam fully
-	 */
-	REQ_PARAM_FULLY("org.springframework.web.bind.annotation.RequestParam"),
+    /**
+     * SpringMvc RequestAnnotation RequestParam fully
+     */
+    REQ_PARAM_FULLY("org.springframework.web.bind.annotation.RequestParam"),
 
-	/**
-	 * Spring HTTP Interface RequestAnnotation RequestParam fully
-	 */
-	REQ_PARAM_WEB_SERVICE_FULLY("org.springframework.web.service.annotation.RequestParam"),
+    /**
+     * Spring HTTP Interface RequestAnnotation RequestParam fully
+     */
+    REQ_PARAM_WEB_SERVICE_FULLY("org.springframework.web.service.annotation.RequestParam"),
 
-	/**
-	 * SpringMvc RequestAnnotation RequestBody
-	 */
-	REQUEST_BODY("RequestBody"),
+    /**
+     * SpringMvc RequestAnnotation RequestBody
+     */
+    REQUEST_BODY("RequestBody"),
 
-	/**
-	 * SpringMvc RequestAnnotation RequestBody fully
-	 */
-	REQUEST_BODY_FULLY("org.springframework.web.bind.annotation.RequestBody"),
+    /**
+     * SpringMvc RequestAnnotation RequestBody fully
+     */
+    REQUEST_BODY_FULLY("org.springframework.web.bind.annotation.RequestBody"),
 
-	/**
-	 * Spring HTTP Interface RequestAnnotation RequestBody fully
-	 */
-	REQUEST_BODY_WEB_SERVICE_FULLY("org.springframework.web.service.annotation.RequestBody"),
+    /**
+     * Spring HTTP Interface RequestAnnotation RequestBody fully
+     */
+    REQUEST_BODY_WEB_SERVICE_FULLY("org.springframework.web.service.annotation.RequestBody"),
 
-	/**
-	 * SpringMvc RequestAnnotation RequestHeader
-	 */
-	REQUEST_HERDER("RequestHeader"),
+    /**
+     * SpringMvc RequestAnnotation RequestHeader
+     */
+    REQUEST_HERDER("RequestHeader"),
 
-	/**
-	 * SpringMvc RequestAnnotation RequestHeader fully
-	 */
-	REQUEST_HERDER_FULLY("org.springframework.web.bind.annotation.RequestHeader"),
+    /**
+     * SpringMvc RequestAnnotation RequestHeader fully
+     */
+    REQUEST_HERDER_FULLY("org.springframework.web.bind.annotation.RequestHeader"),
 
-	/**
-	 * Spring HTTP Interface RequestAnnotation RequestHeader fully
-	 */
-	REQUEST_HERDER_WEB_SERVICE_FULLY("org.springframework.web.service.annotation.RequestHeader"),
+    /**
+     * Spring HTTP Interface RequestAnnotation RequestHeader fully
+     */
+    REQUEST_HERDER_WEB_SERVICE_FULLY("org.springframework.web.service.annotation.RequestHeader"),
 
-	/**
-	 * SpringMvc RequestAnnotation RequestPart
-	 */
-	REQUEST_PART("RequestPart"),
+    /**
+     * SpringMvc RequestAnnotation RequestPart
+     */
+    REQUEST_PART("RequestPart"),
 
-	/**
-	 * SpringMvc RequestAnnotation RequestPart fully
-	 */
-	REQUEST_PART_FULLY("org.springframework.web.bind.annotation.RequestPart"),
+    /**
+     * SpringMvc RequestAnnotation RequestPart fully
+     */
+    REQUEST_PART_FULLY("org.springframework.web.bind.annotation.RequestPart"),
+    ;
 
-	;
+    /**
+     * SpringMvc RequestAnnotation value
+     */
+    private final String value;
 
-	/**
-	 * SpringMvc RequestAnnotation value
-	 */
-	private final String value;
+    /**
+     * SpringMvc RequestAnnotation constructor
+     * @param value SpringMvc RequestAnnotation value
+     */
+    SpringMvcRequestAnnotationsEnum(String value) {
+        this.value = value;
+    }
 
-	/**
-	 * SpringMvc RequestAnnotation constructor
-	 * @param value SpringMvc RequestAnnotation value
-	 */
-	SpringMvcRequestAnnotationsEnum(String value) {
-		this.value = value;
-	}
-
-	/**
-	 * get SpringMvc RequestAnnotation list
-	 * @return SpringMvc RequestAnnotation list
-	 */
-	public static List<String> listSpringMvcRequestAnnotations() {
-		List<String> annotations = new ArrayList<>();
-		for (SpringMvcRequestAnnotationsEnum annotation : SpringMvcRequestAnnotationsEnum.values()) {
-			annotations.add(annotation.value);
-		}
-		return annotations;
-	}
-
+    /**
+     * get SpringMvc RequestAnnotation list
+     * @return SpringMvc RequestAnnotation list
+     */
+    public static List<String> listSpringMvcRequestAnnotations() {
+        List<String> annotations = new ArrayList<>();
+        for (SpringMvcRequestAnnotationsEnum annotation : SpringMvcRequestAnnotationsEnum.values()) {
+            annotations.add(annotation.value);
+        }
+        return annotations;
+    }
 }

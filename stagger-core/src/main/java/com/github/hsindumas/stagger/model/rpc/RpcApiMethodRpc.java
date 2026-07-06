@@ -26,6 +26,4 @@ import com.github.hsindumas.stagger.model.RpcJavaMethod;
  * @author yu 2020/5/16.
  * @author HsinDumas
  */
-public class RpcApiMethodRpc extends RpcJavaMethod {
-
-}
+public class RpcApiMethodRpc extends RpcJavaMethod {}

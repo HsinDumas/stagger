@@ -28,34 +28,33 @@ package com.github.hsindumas.stagger.constants;
  */
 public enum DocLanguage {
 
-	/**
-	 * English
-	 */
-	ENGLISH("en-US"),
-	/**
-	 * Chinese
-	 */
-	CHINESE("zh-CN");
+    /**
+     * English
+     */
+    ENGLISH("en-US"),
+    /**
+     * Chinese
+     */
+    CHINESE("zh-CN");
 
-	/**
-	 * language code
-	 */
-	public final String code;
+    /**
+     * language code
+     */
+    public final String code;
 
-	/**
-	 * constructor
-	 * @param code language code
-	 */
-	DocLanguage(String code) {
-		this.code = code;
-	}
+    /**
+     * constructor
+     * @param code language code
+     */
+    DocLanguage(String code) {
+        this.code = code;
+    }
 
-	/**
-	 * get language code
-	 * @return language code
-	 */
-	public String getCode() {
-		return this.code;
-	}
-
+    /**
+     * get language code
+     * @return language code
+     */
+    public String getCode() {
+        return this.code;
+    }
 }

@@ -32,40 +32,39 @@ package com.github.hsindumas.stagger.constants;
  */
 public enum FormDataContentTypeEnum {
 
-	/**
-	 * application/json: Complex values or arrays of complex values.
-	 */
-	APPLICATION_JSON("application/json"),
+    /**
+     * application/json: Complex values or arrays of complex values.
+     */
+    APPLICATION_JSON("application/json"),
 
-	/**
-	 * text/plain: Primitive values or arrays of primitive values.
-	 */
-	TEXT_PLAIN("text/plain"),
+    /**
+     * text/plain: Primitive values or arrays of primitive values.
+     */
+    TEXT_PLAIN("text/plain"),
 
-	/**
-	 * application/octet-stream: Binary or base64 encoded strings.
-	 */
-	APPLICATION_OCTET_STREAM("application/octet-stream");
+    /**
+     * application/octet-stream: Binary or base64 encoded strings.
+     */
+    APPLICATION_OCTET_STREAM("application/octet-stream");
 
-	/**
-	 * The Content-Type value.
-	 */
-	private final String value;
+    /**
+     * The Content-Type value.
+     */
+    private final String value;
 
-	/**
-	 * Constructor to set the Content-Type value.
-	 * @param value the Content-Type value
-	 */
-	FormDataContentTypeEnum(String value) {
-		this.value = value;
-	}
+    /**
+     * Constructor to set the Content-Type value.
+     * @param value the Content-Type value
+     */
+    FormDataContentTypeEnum(String value) {
+        this.value = value;
+    }
 
-	/**
-	 * Returns the Content-Type value.
-	 * @return the Content-Type value
-	 */
-	public String getValue() {
-		return value;
-	}
-
+    /**
+     * Returns the Content-Type value.
+     * @return the Content-Type value
+     */
+    public String getValue() {
+        return value;
+    }
 }

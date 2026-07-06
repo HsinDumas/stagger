@@ -22,25 +22,24 @@
  */
 package com.github.hsindumas.stagger.gradle.util;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.github.hsindumas.stagger.common.util.FileUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiConstant;
 import com.github.hsindumas.stagger.model.ApiDataDictionary;
 import com.github.hsindumas.stagger.model.ApiErrorCodeDictionary;
 import com.github.hsindumas.stagger.model.BodyAdvice;
-import com.github.hsindumas.stagger.common.util.FileUtil;
-import com.github.hsindumas.stagger.common.util.StringUtil;
-import org.gradle.api.Project;
-import org.gradle.api.logging.Logger;
-
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Objects;
+import org.gradle.api.Project;
+import org.gradle.api.logging.Logger;
 
 /**
  * @author yu 2020/2/16.
@@ -48,107 +47,105 @@ import java.util.Objects;
  */
 public class GradleUtil {
 
-	/**
-	 * Gson Object
-	 */
-	public static final Gson GSON = new GsonBuilder().addDeserializationExclusionStrategy(new ExclusionStrategy() {
-		@Override
-		public boolean shouldSkipField(FieldAttributes fieldAttributes) {
-			return false;
-		}
+    /**
+     * Gson Object
+     */
+    public static final Gson GSON = new GsonBuilder()
+            .addDeserializationExclusionStrategy(new ExclusionStrategy() {
+                @Override
+                public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+                    return false;
+                }
 
-		@Override
-		public boolean shouldSkipClass(Class<?> clazz) {
-			return false;
-		}
-	}).create();
+                @Override
+                public boolean shouldSkipClass(Class<?> clazz) {
+                    return false;
+                }
+            })
+            .create();
 
-	/**
-	 * Build ApiConfig
-	 * @param configFile config file
-	 * @param project Project object
-	 * @param increment increment
-	 * @param log gradle plugin log
-	 * @return com.power.doc.model.ApiConfig
-	 */
-	public static ApiConfig buildConfig(File configFile, Project project, Boolean increment, Logger log) {
-		try {
-			ClassLoader classLoader = ClassLoaderUtil.getRuntimeClassLoader(project);
-			String data = FileUtil.getFileContent(new FileInputStream(configFile));
-			ApiConfig apiConfig = GSON.fromJson(data, ApiConfig.class);
-			apiConfig.setClassLoader(classLoader);
-			List<ApiDataDictionary> apiDataDictionaries = apiConfig.getDataDictionaries();
-			List<ApiErrorCodeDictionary> apiErrorCodes = apiConfig.getErrorCodeDictionaries();
-			List<ApiConstant> apiConstants = apiConfig.getApiConstants();
-			if (Objects.nonNull(apiErrorCodes)) {
-				apiErrorCodes.forEach(apiErrorCode -> {
-					String className = apiErrorCode.getEnumClassName();
-					apiErrorCode.setEnumClass(getClassByClassName(className, classLoader));
-				});
-			}
-			if (Objects.nonNull(apiDataDictionaries)) {
-				apiDataDictionaries.forEach(apiDataDictionary -> {
-					String className = apiDataDictionary.getEnumClassName();
-					apiDataDictionary.setEnumClass(getClassByClassName(className, classLoader));
-				});
-			}
-			if (Objects.nonNull(apiConstants)) {
-				apiConstants.forEach(apiConstant -> {
-					String className = apiConstant.getConstantsClassName();
-					apiConstant.setConstantsClass(getClassByClassName(className, classLoader));
-				});
-			}
-			BodyAdvice responseBodyAdvice = apiConfig.getResponseBodyAdvice();
-			BodyAdvice requestBodyAdvice = apiConfig.getRequestBodyAdvice();
-			if (Objects.nonNull(responseBodyAdvice) && StringUtil.isNotEmpty(responseBodyAdvice.getClassName())) {
-				responseBodyAdvice.setWrapperClass(getClassByClassName(responseBodyAdvice.getClassName(), classLoader));
-			}
-			if (Objects.nonNull(requestBodyAdvice) && StringUtil.isNotEmpty(requestBodyAdvice.getClassName())) {
-				requestBodyAdvice.setWrapperClass(getClassByClassName(requestBodyAdvice.getClassName(), classLoader));
-			}
+    /**
+     * Build ApiConfig
+     * @param configFile config file
+     * @param project Project object
+     * @param increment increment
+     * @param log gradle plugin log
+     * @return com.power.doc.model.ApiConfig
+     */
+    public static ApiConfig buildConfig(File configFile, Project project, Boolean increment, Logger log) {
+        try {
+            ClassLoader classLoader = ClassLoaderUtil.getRuntimeClassLoader(project);
+            String data = FileUtil.getFileContent(new FileInputStream(configFile));
+            ApiConfig apiConfig = GSON.fromJson(data, ApiConfig.class);
+            apiConfig.setClassLoader(classLoader);
+            List<ApiDataDictionary> apiDataDictionaries = apiConfig.getDataDictionaries();
+            List<ApiErrorCodeDictionary> apiErrorCodes = apiConfig.getErrorCodeDictionaries();
+            List<ApiConstant> apiConstants = apiConfig.getApiConstants();
+            if (Objects.nonNull(apiErrorCodes)) {
+                apiErrorCodes.forEach(apiErrorCode -> {
+                    String className = apiErrorCode.getEnumClassName();
+                    apiErrorCode.setEnumClass(getClassByClassName(className, classLoader));
+                });
+            }
+            if (Objects.nonNull(apiDataDictionaries)) {
+                apiDataDictionaries.forEach(apiDataDictionary -> {
+                    String className = apiDataDictionary.getEnumClassName();
+                    apiDataDictionary.setEnumClass(getClassByClassName(className, classLoader));
+                });
+            }
+            if (Objects.nonNull(apiConstants)) {
+                apiConstants.forEach(apiConstant -> {
+                    String className = apiConstant.getConstantsClassName();
+                    apiConstant.setConstantsClass(getClassByClassName(className, classLoader));
+                });
+            }
+            BodyAdvice responseBodyAdvice = apiConfig.getResponseBodyAdvice();
+            BodyAdvice requestBodyAdvice = apiConfig.getRequestBodyAdvice();
+            if (Objects.nonNull(responseBodyAdvice) && StringUtil.isNotEmpty(responseBodyAdvice.getClassName())) {
+                responseBodyAdvice.setWrapperClass(getClassByClassName(responseBodyAdvice.getClassName(), classLoader));
+            }
+            if (Objects.nonNull(requestBodyAdvice) && StringUtil.isNotEmpty(requestBodyAdvice.getClassName())) {
+                requestBodyAdvice.setWrapperClass(getClassByClassName(requestBodyAdvice.getClassName(), classLoader));
+            }
 
-			if (StringUtil.isEmpty(apiConfig.getProjectName())) {
-				apiConfig.setProjectName(project.getName());
-			}
-			addSourcePaths(project, apiConfig, log);
-			if (Objects.nonNull(increment)) {
-				// overwrite by plugin
-				apiConfig.setIncrement(increment);
-			}
+            if (StringUtil.isEmpty(apiConfig.getProjectName())) {
+                apiConfig.setProjectName(project.getName());
+            }
+            addSourcePaths(project, apiConfig, log);
+            if (Objects.nonNull(increment)) {
+                // overwrite by plugin
+                apiConfig.setIncrement(increment);
+            }
 
-			apiConfig.setBaseDir(project.getProjectDir().getAbsolutePath());
+            apiConfig.setBaseDir(project.getProjectDir().getAbsolutePath());
 
-			return apiConfig;
-		}
-		catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
+            return apiConfig;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-	}
+    /**
+     * Get Class by name
+     * @param className class name
+     * @param classLoader urls
+     * @return Class
+     */
+    public static Class<?> getClassByClassName(String className, ClassLoader classLoader) {
+        if (StringUtil.isEmpty(className)) {
+            return null;
+        }
 
-	/**
-	 * Get Class by name
-	 * @param className class name
-	 * @param classLoader urls
-	 * @return Class
-	 */
-	public static Class<?> getClassByClassName(String className, ClassLoader classLoader) {
-		if (StringUtil.isEmpty(className)) {
-			return null;
-		}
+        try {
+            return classLoader.loadClass(className);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-		try {
-			return classLoader.loadClass(className);
-		}
-		catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	private static void addSourcePaths(Project project, ApiConfig apiConfig, Logger log) {
-		// do nothing
-	}
-
+    private static void addSourcePaths(Project project, ApiConfig apiConfig, Logger log) {
+        // do nothing
+    }
 }

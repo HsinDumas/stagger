@@ -33,35 +33,34 @@ import com.github.hsindumas.stagger.utils.JavaClassUtil;
  */
 public class SpringMVCRequestHeaderHandler implements IHeaderHandler {
 
-	@Override
-	public boolean isMapping(String annotationName) {
-		String simpleName = JavaClassUtil.getClassSimpleName(annotationName);
-		switch (simpleName) {
-			case SpringMvcAnnotations.GET_MAPPING:
-			case SpringMvcAnnotations.REQUEST_MAPPING:
-			case SpringMvcAnnotations.POST_MAPPING:
-			case SpringMvcAnnotations.PUT_MAPPING:
-			case SpringMvcAnnotations.PATCH_MAPPING:
-			case SpringMvcAnnotations.DELETE_MAPPING:
-			case SpringMvcAnnotations.HTTP_EXCHANGE:
-			case SpringMvcAnnotations.GET_EXCHANGE:
-			case SpringMvcAnnotations.POST_EXCHANGE:
-			case SpringMvcAnnotations.PUT_EXCHANGE:
-			case SpringMvcAnnotations.PATCH_EXCHANGE:
-			case SpringMvcAnnotations.DELETE_EXCHANGE:
-				return true;
-			default:
-				return false;
-		}
-	}
+    @Override
+    public boolean isMapping(String annotationName) {
+        String simpleName = JavaClassUtil.getClassSimpleName(annotationName);
+        switch (simpleName) {
+            case SpringMvcAnnotations.GET_MAPPING:
+            case SpringMvcAnnotations.REQUEST_MAPPING:
+            case SpringMvcAnnotations.POST_MAPPING:
+            case SpringMvcAnnotations.PUT_MAPPING:
+            case SpringMvcAnnotations.PATCH_MAPPING:
+            case SpringMvcAnnotations.DELETE_MAPPING:
+            case SpringMvcAnnotations.HTTP_EXCHANGE:
+            case SpringMvcAnnotations.GET_EXCHANGE:
+            case SpringMvcAnnotations.POST_EXCHANGE:
+            case SpringMvcAnnotations.PUT_EXCHANGE:
+            case SpringMvcAnnotations.PATCH_EXCHANGE:
+            case SpringMvcAnnotations.DELETE_EXCHANGE:
+                return true;
+            default:
+                return false;
+        }
+    }
 
-	@Override
-	public HeaderAnnotation getHeaderAnnotation() {
-		return HeaderAnnotation.builder()
-			.setAnnotationName(SpringMvcAnnotations.REQUEST_HEADER)
-			.setValueProp(DocAnnotationConstants.VALUE_PROP)
-			.setDefaultValueProp(DocAnnotationConstants.DEFAULT_VALUE_PROP)
-			.setRequiredProp(DocAnnotationConstants.REQUIRED_PROP);
-	}
-
+    @Override
+    public HeaderAnnotation getHeaderAnnotation() {
+        return HeaderAnnotation.builder()
+                .setAnnotationName(SpringMvcAnnotations.REQUEST_HEADER)
+                .setValueProp(DocAnnotationConstants.VALUE_PROP)
+                .setDefaultValueProp(DocAnnotationConstants.DEFAULT_VALUE_PROP)
+                .setRequiredProp(DocAnnotationConstants.REQUIRED_PROP);
+    }
 }

@@ -29,19 +29,18 @@ package com.github.hsindumas.stagger.constants;
  */
 public interface JSRAnnotationPropConstants {
 
-	/**
-	 * max property
-	 */
-	String MAX_PROP = "max";
+    /**
+     * max property
+     */
+    String MAX_PROP = "max";
 
-	/**
-	 * min property
-	 */
-	String MIN_PROP = "min";
+    /**
+     * min property
+     */
+    String MIN_PROP = "min";
 
-	/**
-	 * value property
-	 */
-	String VALUE = "value";
-
+    /**
+     * value property
+     */
+    String VALUE = "value";
 }

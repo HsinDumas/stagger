@@ -25,7 +25,6 @@ import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.grpc.GrpcApiDoc;
-
 import java.util.List;
 
 /**
@@ -37,39 +36,42 @@ import java.util.List;
  */
 public class GrpcHtmlBuilder {
 
-	/**
-	 * index.html
-	 */
-	private static final String INDEX_HTML = "grpc-index.html";
+    /**
+     * index.html
+     */
+    private static final String INDEX_HTML = "grpc-index.html";
 
-	/**
-	 * private constructor
-	 */
-	private GrpcHtmlBuilder() {
-		throw new IllegalStateException("Utility class");
-	}
+    /**
+     * private constructor
+     */
+    private GrpcHtmlBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * build grpc api
-	 * @param config config
-	 */
-	public static void buildApiDoc(ApiConfig config) {
-		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
-	}
+    /**
+     * build grpc api
+     * @param config config
+     */
+    public static void buildApiDoc(ApiConfig config) {
+        buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
+    }
 
-	/**
-	 * Only for stagger maven plugin and gradle plugin.
-	 * @param apiConfig ApiConfig
-	 * @param configBuilder ProjectDocConfigBuilder
-	 */
-	public static void buildApiDoc(ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
-		GrpcDocBuilderTemplate grpcDocBuilderTemplate = new GrpcDocBuilderTemplate();
-		List<GrpcApiDoc> apiDocList = grpcDocBuilderTemplate.getApiDoc(false, true, false, apiConfig, configBuilder);
-		grpcDocBuilderTemplate.copyJQueryAndCss(apiConfig);
-		grpcDocBuilderTemplate.buildAllInOne(apiDocList, apiConfig, configBuilder,
-				DocGlobalConstants.GRPC_ALL_IN_ONE_HTML_TPL, INDEX_HTML);
-		grpcDocBuilderTemplate.buildSearchJs(apiDocList, apiConfig, configBuilder,
-				DocGlobalConstants.GRPC_ALL_IN_ONE_SEARCH_TPL, DocGlobalConstants.SEARCH_JS_OUT);
-	}
-
+    /**
+     * Only for stagger maven plugin and gradle plugin.
+     * @param apiConfig ApiConfig
+     * @param configBuilder ProjectDocConfigBuilder
+     */
+    public static void buildApiDoc(ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
+        GrpcDocBuilderTemplate grpcDocBuilderTemplate = new GrpcDocBuilderTemplate();
+        List<GrpcApiDoc> apiDocList = grpcDocBuilderTemplate.getApiDoc(false, true, false, apiConfig, configBuilder);
+        grpcDocBuilderTemplate.copyJQueryAndCss(apiConfig);
+        grpcDocBuilderTemplate.buildAllInOne(
+                apiDocList, apiConfig, configBuilder, DocGlobalConstants.GRPC_ALL_IN_ONE_HTML_TPL, INDEX_HTML);
+        grpcDocBuilderTemplate.buildSearchJs(
+                apiDocList,
+                apiConfig,
+                configBuilder,
+                DocGlobalConstants.GRPC_ALL_IN_ONE_SEARCH_TPL,
+                DocGlobalConstants.SEARCH_JS_OUT);
+    }
 }

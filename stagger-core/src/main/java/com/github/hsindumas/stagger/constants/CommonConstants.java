@@ -30,14 +30,13 @@ import com.google.gson.GsonBuilder;
  */
 public interface CommonConstants {
 
-	/**
-	 * Default code used for the fallback API group.
-	 */
-	String DEFAULT_GROUP_CODE = "default";
+    /**
+     * Default code used for the fallback API group.
+     */
+    String DEFAULT_GROUP_CODE = "default";
 
-	/**
-	 * Shared Gson instance for deterministic JSON serialization.
-	 */
-	Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-
+    /**
+     * Shared Gson instance for deterministic JSON serialization.
+     */
+    Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 }

@@ -32,14 +32,13 @@ import java.util.Optional;
  */
 public interface SourceAnnotationValue {
 
-	String asString();
+    String asString();
 
-	List<SourceAnnotationValue> asList();
+    List<SourceAnnotationValue> asList();
 
-	Optional<SourceAnnotation> asAnnotation();
+    Optional<SourceAnnotation> asAnnotation();
 
-	Optional<SourceType> asType();
+    Optional<SourceType> asType();
 
-	Object raw();
-
+    Object raw();
 }

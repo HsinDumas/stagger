@@ -29,6 +29,4 @@ import com.github.hsindumas.stagger.model.AbstractRpcApiDoc;
  * @author HsinDumas
  * @since 3.0.7
  */
-public class GrpcApiDoc extends AbstractRpcApiDoc<GrpcJavaMethod> {
-
-}
+public class GrpcApiDoc extends AbstractRpcApiDoc<GrpcJavaMethod> {}

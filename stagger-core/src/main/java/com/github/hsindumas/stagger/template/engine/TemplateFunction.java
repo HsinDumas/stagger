@@ -26,11 +26,10 @@ package com.github.hsindumas.stagger.template.engine;
 @FunctionalInterface
 public interface TemplateFunction {
 
-	/**
-	 * Execute the function.
-	 * @param params function arguments
-	 * @return function result
-	 */
-	Object call(Object[] params);
-
+    /**
+     * Execute the function.
+     * @param params function arguments
+     * @return function result
+     */
+    Object call(Object[] params);
 }

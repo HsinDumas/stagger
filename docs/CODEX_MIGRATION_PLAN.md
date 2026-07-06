@@ -27,7 +27,7 @@
 | EE 命名空间 | 无任何 `import javax/jakarta`；仅硬编码字符串出现在 `JavaClassValidateUtil / DefaultClassConstants / JakartaJaxrsAnnotations / JAXRSAnnotations(@Deprecated) / ValidatorAnnotations(@Deprecated)` | 已完成双写，仅需查漏补缺 |
 | Spring 版本硬编码 | 通过全限定类名字符串匹配（`org.springframework.web.bind.annotation.*`） | 无版本硬编码，兼容 Boot 4 主要靠源码分析层 |
 | 构建 | 根 `pom.xml` + `stagger-core/pom.xml` + `stagger-maven-plugin/pom.xml`；`stagger-gradle-plugin/build.gradle` 独立 Groovy DSL；父 pom `java.version=1.8` | 全部换 Gradle（Kotlin DSL） |
-| 代码风格 | `spring-javaformat`（`failOnError/failOnWarnings=true`，`-Xdoclint:all`）；`.springjavaformatconfig`、`.editorconfig` 存在 | Gradle 需集成 `io.spring.javaformat`；`@author`/Javadoc 必须完整 |
+| 代码风格 | `palantir-java-format`（通过 Spotless 任务接入，`-Xdoclint:all`）；`.editorconfig` 存在 | Gradle 需集成 `com.palantir.java-format`；`@author`/Javadoc 必须完整 |
 | @author 覆盖率 | 310 / 324 (95.7%)；Top 作者：`yu / linwumingshi / xingzi / yu3.sun / chenchuxin / Fio / shalousun ...` | 变更文件需追加 `@author HsinDumas`（保留原作者行） |
 | groupId 现状 | `com.github.hsindumas`（Maven 侧）+ `com.ly.stagger`（Gradle 插件侧） | **统一改为 `com.github.hsindumas`** |
 
@@ -160,7 +160,7 @@ stagger/
 plugins {
     `java-library`
     checkstyle
-    id("io.spring.javaformat")
+    id("com.palantir.java-format")
 }
 
 group = "com.github.hsindumas"
@@ -404,7 +404,7 @@ public interface SourceDocletTag {
 
 - 只针对**本次迁移实际修改过内容**的 `.java` 文件生效；纯 rename（仅目录移动、无文本变动）**不追加**。M1 之后每个 PR 结束前跑一次追加脚本，只处理 `git diff --diff-filter=AM` 的文件。
 - 位置：在**最后一个** `@author` 行下追加一行；若原文件缺 `@author`，则在类 Javadoc 末尾（`*/` 之前）追加。
-- 追加内容固定：` * @author HsinDumas`（保持 spring-javaformat 风格：星号后一个空格）。
+- 追加内容固定：` * @author HsinDumas`（保持 palantir-java-format 风格：星号后一个空格）。
 - 幂等：文件已含 `@author HsinDumas` 时跳过。
 - 建议 Codex 用 JavaParser 写一个小工具处理，比 `sed` 更安全（脚本示例见附录 B）。
 
@@ -446,7 +446,7 @@ public interface SourceDocletTag {
   - `samples/spring-boot-3x/` 生成结果与旧基线一致（QDox → JavaParser 允许字段顺序差异）。
   - `samples/spring-boot-4x/` 生成结果符合预期。
   - `samples/jaxrs-jakarta/` 覆盖 Jakarta 分支。
-- **格式**：`./gradlew spring-javaformat:check` + `./gradlew checkstyleMain` 全绿。
+- **格式**：`./gradlew checkFormatMain` + `./gradlew checkstyleMain` 全绿。
 - **发布**：`./gradlew publishToMavenLocal` 输出的 pom `groupId=com.github.hsindumas`；依赖树无 `com.thoughtworks.qdox`。
 - **静态扫描**：`rg 'com\.thoughtworks\.qdox|io\.github\.smartdoc|io\.github\.stagger|com\.ly\.doc\.gradle|com\.ly\.stagger|com\.github\.shalousun'` 全为空。
 
@@ -469,7 +469,7 @@ public interface SourceDocletTag {
    - Gradle 侧用 `de.benediktritter.maven-plugin-development` 或 `com.gradleup.maven-plugin`（选社区活跃的一个）生成 `plugin.xml`，产物 packaging 保持 `maven-plugin`。
 7. **Spring Boot 4 milestone 稳定性**
    - Boot 4 目前 milestone；只做识别与样例验证，**不要**把 Boot 4 作为 stagger 自身运行时依赖。
-8. **spring-javaformat 与 `@author` 追加**
+8. **palantir-java-format 与 `@author` 追加**
    - 追加脚本要保持 `* @author HsinDumas`（单空格、无多余空行）；建议用 JavaParser AST 修改而非 sed，避免误伤字符串字面量。
 9. **groupId 迁移的下游影响**
    - `com.github.hsindumas:*` 老坐标在 Central 仍存在；新 `com.github.hsindumas:*` 首次发布需要在 Sonatype Central 上完成命名空间验证（域名/GitHub 二选一，`github.com/hsindumas` 更便捷）。M2 或 M5 之前需要 HsinDumas 完成 namespace claim。

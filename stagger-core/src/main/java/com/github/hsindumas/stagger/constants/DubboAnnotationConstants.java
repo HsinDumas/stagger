@@ -28,26 +28,25 @@ package com.github.hsindumas.stagger.constants;
  */
 public interface DubboAnnotationConstants {
 
-	/**
-	 * dubbo service annotation {@code org.apache.dubbo.config.annotation.Service}
-	 */
-	String SERVICE = "org.apache.dubbo.config.annotation.Service";
+    /**
+     * dubbo service annotation {@code org.apache.dubbo.config.annotation.Service}
+     */
+    String SERVICE = "org.apache.dubbo.config.annotation.Service";
 
-	/**
-	 * dubbo service {@code org.apache.dubbo.config.annotation.DubboService}
-	 * @since dubbo 2.7.7
-	 */
-	String DUBBO_SERVICE = "org.apache.dubbo.config.annotation.DubboService";
+    /**
+     * dubbo service {@code org.apache.dubbo.config.annotation.DubboService}
+     * @since dubbo 2.7.7
+     */
+    String DUBBO_SERVICE = "org.apache.dubbo.config.annotation.DubboService";
 
-	/**
-	 * support ali dubbo {@code com.alibaba.dubbo.config.annotation.Service}
-	 */
-	String ALI_DUBBO_SERVICE = "com.alibaba.dubbo.config.annotation.Service";
+    /**
+     * support ali dubbo {@code com.alibaba.dubbo.config.annotation.Service}
+     */
+    String ALI_DUBBO_SERVICE = "com.alibaba.dubbo.config.annotation.Service";
 
-	/**
-	 * dubbo swagger.
-	 * {@code org.apache.dubbo.rpc.protocol.rest.integration.swagger.DubboSwaggerApiListingResource}
-	 */
-	String DUBBO_SWAGGER = "org.apache.dubbo.rpc.protocol.rest.integration.swagger.DubboSwaggerApiListingResource";
-
+    /**
+     * dubbo swagger.
+     * {@code org.apache.dubbo.rpc.protocol.rest.integration.swagger.DubboSwaggerApiListingResource}
+     */
+    String DUBBO_SWAGGER = "org.apache.dubbo.rpc.protocol.rest.integration.swagger.DubboSwaggerApiListingResource";
 }

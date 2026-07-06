@@ -25,47 +25,46 @@ package com.github.hsindumas.stagger.template.engine;
  */
 public class ClasspathResourceLoader {
 
-	private final String root;
+    private final String root;
 
-	/**
-	 * Build loader.
-	 * @param root classpath root
-	 */
-	public ClasspathResourceLoader(String root) {
-		this.root = normalizeRoot(root);
-	}
+    /**
+     * Build loader.
+     * @param root classpath root
+     */
+    public ClasspathResourceLoader(String root) {
+        this.root = normalizeRoot(root);
+    }
 
-	/**
-	 * Resolve a classpath resource.
-	 * @param source source path under root
-	 * @return resource
-	 */
-	public Resource<?> getResource(String source) {
-		String path = normalizePath(source);
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		if (loader == null) {
-			loader = ClasspathResourceLoader.class.getClassLoader();
-		}
-		return new Resource<>(path, loader);
-	}
+    /**
+     * Resolve a classpath resource.
+     * @param source source path under root
+     * @return resource
+     */
+    public Resource<?> getResource(String source) {
+        String path = normalizePath(source);
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        if (loader == null) {
+            loader = ClasspathResourceLoader.class.getClassLoader();
+        }
+        return new Resource<>(path, loader);
+    }
 
-	private String normalizeRoot(String input) {
-		if (input == null || input.isEmpty() || "/".equals(input)) {
-			return "";
-		}
-		String normalized = input.startsWith("/") ? input.substring(1) : input;
-		if (!normalized.endsWith("/")) {
-			normalized = normalized + "/";
-		}
-		return normalized;
-	}
+    private String normalizeRoot(String input) {
+        if (input == null || input.isEmpty() || "/".equals(input)) {
+            return "";
+        }
+        String normalized = input.startsWith("/") ? input.substring(1) : input;
+        if (!normalized.endsWith("/")) {
+            normalized = normalized + "/";
+        }
+        return normalized;
+    }
 
-	private String normalizePath(String source) {
-		if (source == null || source.isEmpty()) {
-			return root;
-		}
-		String normalizedSource = source.startsWith("/") ? source.substring(1) : source;
-		return root + normalizedSource;
-	}
-
+    private String normalizePath(String source) {
+        if (source == null || source.isEmpty()) {
+            return root;
+        }
+        String normalizedSource = source.startsWith("/") ? source.substring(1) : source;
+        return root + normalizedSource;
+    }
 }

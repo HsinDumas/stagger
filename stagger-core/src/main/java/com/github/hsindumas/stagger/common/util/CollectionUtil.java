@@ -10,26 +10,25 @@ import java.util.List;
  */
 public final class CollectionUtil {
 
-	private CollectionUtil() {
-		throw new IllegalStateException("Utility class");
-	}
+    private CollectionUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	public static <T> boolean isNotEmpty(Collection<T> collection) {
-		return !isEmpty(collection);
-	}
+    public static <T> boolean isNotEmpty(Collection<T> collection) {
+        return !isEmpty(collection);
+    }
 
-	public static <T> boolean isEmpty(Collection<T> collection) {
-		return collection == null || collection.isEmpty();
-	}
+    public static <T> boolean isEmpty(Collection<T> collection) {
+        return collection == null || collection.isEmpty();
+    }
 
-	@SafeVarargs
-	public static <T> List<T> asList(T... values) {
-		if (values == null || values.length == 0) {
-			return Collections.emptyList();
-		}
-		List<T> result = new ArrayList<>(values.length);
-		Collections.addAll(result, values);
-		return result;
-	}
-
+    @SafeVarargs
+    public static <T> List<T> asList(T... values) {
+        if (values == null || values.length == 0) {
+            return Collections.emptyList();
+        }
+        List<T> result = new ArrayList<>(values.length);
+        Collections.addAll(result, values);
+        return result;
+    }
 }

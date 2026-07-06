@@ -29,31 +29,30 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class SystemPlaceholders {
 
-	public static final String PLACEHOLDER_PREFIX = "${";
+    public static final String PLACEHOLDER_PREFIX = "${";
 
-	/**
-	 * Suffix for system property placeholders: "}".
-	 */
-	public static final String PLACEHOLDER_SUFFIX = "}";
+    /**
+     * Suffix for system property placeholders: "}".
+     */
+    public static final String PLACEHOLDER_SUFFIX = "}";
 
-	/**
-	 * Value separator for system property placeholders: ":".
-	 */
-	public static final String VALUE_SEPARATOR = ":";
+    /**
+     * Value separator for system property placeholders: ":".
+     */
+    public static final String VALUE_SEPARATOR = ":";
 
-	public static final String SIMPLE_PREFIX = "{";
+    public static final String SIMPLE_PREFIX = "{";
 
-	private SystemPlaceholders() {
+    private SystemPlaceholders() {}
 
-	}
+    public static boolean hasSystemProperties(String url) {
+        return !StringUtils.isBlank(url)
+                && url.contains(PLACEHOLDER_PREFIX)
+                && url.contains(PLACEHOLDER_SUFFIX)
+                && url.contains(VALUE_SEPARATOR);
+    }
 
-	public static boolean hasSystemProperties(String url) {
-		return !StringUtils.isBlank(url) && url.contains(PLACEHOLDER_PREFIX) && url.contains(PLACEHOLDER_SUFFIX)
-				&& url.contains(VALUE_SEPARATOR);
-	}
-
-	public static String replaceSystemProperties(String url) {
-		return null;
-	}
-
+    public static String replaceSystemProperties(String url) {
+        return null;
+    }
 }

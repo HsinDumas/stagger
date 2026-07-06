@@ -39,31 +39,30 @@ import org.apache.maven.artifact.Artifact;
  */
 public class ArtifactFilterUtil {
 
-	/**
-	 * ignoreArtifact
-	 * @param artifact Artifact
-	 * @return boolean
-	 */
-	public static boolean ignoreArtifact(Artifact artifact) {
-		if ("test".equals(artifact.getScope())) {
-			return true;
-		}
-		FilterChain groupFilterChain = new GroupIdFilterChain();
-		FilterChain startsWithFilterChain = new StartsWithFilterChain();
-		FilterChain containsFilterChain = new ContainsFilterChain();
-		FilterChain commonArtifactFilterChain = new CommonArtifactFilterChain();
+    /**
+     * ignoreArtifact
+     * @param artifact Artifact
+     * @return boolean
+     */
+    public static boolean ignoreArtifact(Artifact artifact) {
+        if ("test".equals(artifact.getScope())) {
+            return true;
+        }
+        FilterChain groupFilterChain = new GroupIdFilterChain();
+        FilterChain startsWithFilterChain = new StartsWithFilterChain();
+        FilterChain containsFilterChain = new ContainsFilterChain();
+        FilterChain commonArtifactFilterChain = new CommonArtifactFilterChain();
 
-		groupFilterChain.setNext(startsWithFilterChain);
-		startsWithFilterChain.setNext(containsFilterChain);
-		containsFilterChain.setNext(commonArtifactFilterChain);
-		FilterChain springBootArtifactFilterChain = new SpringBootArtifactFilterChain();
-		commonArtifactFilterChain.setNext(springBootArtifactFilterChain);
-		return groupFilterChain.ignoreArtifactById(artifact);
-	}
+        groupFilterChain.setNext(startsWithFilterChain);
+        startsWithFilterChain.setNext(containsFilterChain);
+        containsFilterChain.setNext(commonArtifactFilterChain);
+        FilterChain springBootArtifactFilterChain = new SpringBootArtifactFilterChain();
+        commonArtifactFilterChain.setNext(springBootArtifactFilterChain);
+        return groupFilterChain.ignoreArtifactById(artifact);
+    }
 
-	public static boolean ignoreSpringBootArtifactById(Artifact artifact) {
-		FilterChain springBootArtifactFilterChain = new SpringBootArtifactFilterChain();
-		return springBootArtifactFilterChain.ignoreArtifactById(artifact);
-	}
-
+    public static boolean ignoreSpringBootArtifactById(Artifact artifact) {
+        FilterChain springBootArtifactFilterChain = new SpringBootArtifactFilterChain();
+        return springBootArtifactFilterChain.ignoreArtifactById(artifact);
+    }
 }

@@ -43,18 +43,16 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 @Mojo(name = MojoConstants.GRPC_HTML_MOJO, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class GrpcHtmlMojo extends BaseDocsGeneratorMojo {
 
-	@Override
-	public void executeMojo(ApiConfig apiConfig) {
-		try {
-			ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
-			GrpcHtmlBuilder.buildApiDoc(apiConfig, configBuilder);
-		}
-		catch (Throwable e) {
-			getLog().error(e);
-			if (apiConfig.isStrict()) {
-				throw new RuntimeException(e.getMessage());
-			}
-		}
-	}
-
+    @Override
+    public void executeMojo(ApiConfig apiConfig) {
+        try {
+            ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
+            GrpcHtmlBuilder.buildApiDoc(apiConfig, configBuilder);
+        } catch (Throwable e) {
+            getLog().error(e);
+            if (apiConfig.isStrict()) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
+    }
 }

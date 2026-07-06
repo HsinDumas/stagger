@@ -26,29 +26,28 @@ package com.github.hsindumas.stagger.constants;
  */
 public interface HighLightJsConstants {
 
-	/**
-	 * HighLightJs CSS URL Format
-	 */
-	String HIGH_LIGHT_CSS_URL_FORMAT = "https://cdn.bootcdn.net/ajax/libs/highlight.js/10.3.2/styles/%s.min.css";
+    /**
+     * HighLightJs CSS URL Format
+     */
+    String HIGH_LIGHT_CSS_URL_FORMAT = "https://cdn.bootcdn.net/ajax/libs/highlight.js/10.3.2/styles/%s.min.css";
 
-	/**
-	 * Default Style
-	 */
-	String HIGH_LIGHT_DEFAULT_STYLE = "xt256";
+    /**
+     * Default Style
+     */
+    String HIGH_LIGHT_DEFAULT_STYLE = "xt256";
 
-	/**
-	 * Highlight.js CSS Default
-	 */
-	String HIGH_LIGHT_CSS_DEFAULT = "xt256.min.css";
+    /**
+     * Highlight.js CSS Default
+     */
+    String HIGH_LIGHT_CSS_DEFAULT = "xt256.min.css";
 
-	/**
-	 * Highlight.js CSS RandomLight
-	 */
-	String HIGH_LIGHT_CSS_RANDOM_LIGHT = "randomLight";
+    /**
+     * Highlight.js CSS RandomLight
+     */
+    String HIGH_LIGHT_CSS_RANDOM_LIGHT = "randomLight";
 
-	/**
-	 * Highlight.js CSS RandomDark
-	 */
-	String HIGH_LIGHT_CSS_RANDOM_DARK = "randomDark";
-
+    /**
+     * Highlight.js CSS RandomDark
+     */
+    String HIGH_LIGHT_CSS_RANDOM_DARK = "randomDark";
 }

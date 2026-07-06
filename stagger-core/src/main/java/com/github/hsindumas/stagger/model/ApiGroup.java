@@ -30,50 +30,49 @@ package com.github.hsindumas.stagger.model;
  */
 public class ApiGroup {
 
-	/**
-	 * group name
-	 */
-	private String name;
+    /**
+     * group name
+     */
+    private String name;
 
-	/**
-	 * package name support patten
-	 */
-	private String apis;
+    /**
+     * package name support patten
+     */
+    private String apis;
 
-	/**
-	 * url path support patten
-	 */
-	private String paths;
+    /**
+     * url path support patten
+     */
+    private String paths;
 
-	public static ApiGroup builder() {
-		return new ApiGroup();
-	}
+    public static ApiGroup builder() {
+        return new ApiGroup();
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public ApiGroup setName(String name) {
-		this.name = name;
-		return this;
-	}
+    public ApiGroup setName(String name) {
+        this.name = name;
+        return this;
+    }
 
-	public String getApis() {
-		return apis;
-	}
+    public String getApis() {
+        return apis;
+    }
 
-	public ApiGroup setApis(String apis) {
-		this.apis = apis;
-		return this;
-	}
+    public ApiGroup setApis(String apis) {
+        this.apis = apis;
+        return this;
+    }
 
-	public String getPaths() {
-		return paths;
-	}
+    public String getPaths() {
+        return paths;
+    }
 
-	public ApiGroup setPaths(String paths) {
-		this.paths = paths;
-		return this;
-	}
-
+    public ApiGroup setPaths(String paths) {
+        this.paths = paths;
+        return this;
+    }
 }

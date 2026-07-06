@@ -26,6 +26,4 @@ package com.github.hsindumas.stagger.model;
  * @author yu 2020/1/29.
  * @author HsinDumas
  */
-public class RpcJavaMethod extends JavadocJavaMethod {
-
-}
+public class RpcJavaMethod extends JavadocJavaMethod {}

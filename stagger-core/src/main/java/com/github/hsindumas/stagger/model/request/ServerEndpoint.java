@@ -31,80 +31,78 @@ import java.util.List;
  */
 public class ServerEndpoint {
 
-	/**
-	 * The URI or URI-template that the annotated class should be mapped to.
-	 */
-	private String url;
+    /**
+     * The URI or URI-template that the annotated class should be mapped to.
+     */
+    private String url;
 
-	/**
-	 * the subProtocol list of annotation
-	 */
-	private List<String> subProtocols;
+    /**
+     * the subProtocol list of annotation
+     */
+    private List<String> subProtocols;
 
-	/**
-	 * the decoders class list of annotation
-	 */
-	private List<String> decoders;
+    /**
+     * the decoders class list of annotation
+     */
+    private List<String> decoders;
 
-	/**
-	 * the encoders class list of annotation
-	 */
-	private List<String> encoders;
+    /**
+     * the encoders class list of annotation
+     */
+    private List<String> encoders;
 
-	public ServerEndpoint() {
-	}
+    public ServerEndpoint() {}
 
-	/**
-	 * builder ServerEndpoint
-	 * @return ServerEndpoint
-	 */
-	public static ServerEndpoint builder() {
-		return new ServerEndpoint();
-	}
+    /**
+     * builder ServerEndpoint
+     * @return ServerEndpoint
+     */
+    public static ServerEndpoint builder() {
+        return new ServerEndpoint();
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public ServerEndpoint setUrl(String url) {
-		this.url = url;
-		return this;
-	}
+    public ServerEndpoint setUrl(String url) {
+        this.url = url;
+        return this;
+    }
 
-	public List<String> getSubProtocols() {
-		if (subProtocols == null) {
-			subProtocols = Collections.emptyList();
-		}
-		return subProtocols;
-	}
+    public List<String> getSubProtocols() {
+        if (subProtocols == null) {
+            subProtocols = Collections.emptyList();
+        }
+        return subProtocols;
+    }
 
-	public ServerEndpoint setSubProtocols(List<String> subProtocols) {
-		this.subProtocols = subProtocols;
-		return this;
-	}
+    public ServerEndpoint setSubProtocols(List<String> subProtocols) {
+        this.subProtocols = subProtocols;
+        return this;
+    }
 
-	public List<String> getDecoders() {
-		if (decoders == null) {
-			decoders = Collections.emptyList();
-		}
-		return decoders;
-	}
+    public List<String> getDecoders() {
+        if (decoders == null) {
+            decoders = Collections.emptyList();
+        }
+        return decoders;
+    }
 
-	public ServerEndpoint setDecoders(List<String> decoders) {
-		this.decoders = decoders;
-		return this;
-	}
+    public ServerEndpoint setDecoders(List<String> decoders) {
+        this.decoders = decoders;
+        return this;
+    }
 
-	public List<String> getEncoders() {
-		if (encoders == null) {
-			encoders = Collections.emptyList();
-		}
-		return encoders;
-	}
+    public List<String> getEncoders() {
+        if (encoders == null) {
+            encoders = Collections.emptyList();
+        }
+        return encoders;
+    }
 
-	public ServerEndpoint setEncoders(List<String> encoders) {
-		this.encoders = encoders;
-		return this;
-	}
-
+    public ServerEndpoint setEncoders(List<String> encoders) {
+        this.encoders = encoders;
+        return this;
+    }
 }

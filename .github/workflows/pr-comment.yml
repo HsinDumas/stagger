@@ -37,7 +37,7 @@ jobs:
             In addition, if you have added new features, please provide example code in the repository [HsinDumas/stagger-example-cn](https://github.com/HsinDumas/stagger-example-cn). This will help other users understand how to use the new features.
             
             **Code Style Reminder:**  
-            The code should use the Spring code style. Please format your code using the command `./gradlew format`. You can also install the [Spring Java Format](https://github.com/spring-io/spring-javaformat) plugin for convenience.
+            The code should use Palantir Java Format style. Please format your code using the command `./gradlew format`. You can also install the [Palantir Java Format](https://github.com/palantir/palantir-java-format) plugin for convenience.
             
             ---
             
@@ -58,4 +58,4 @@ jobs:
             另外，如果您添加了新功能，请在仓库[HsinDumas/stagger-example-cn](https://github.com/HsinDumas/stagger-example-cn)中提供示例代码。这将帮助其他用户了解如何使用新功能。
             
             **代码风格提示：**  
-            请使用 Spring 代码风格。您可以通过命令 `./gradlew format` 格式化代码。为了方便操作，您还可以安装 [Spring Java Format](https://github.com/spring-io/spring-javaformat) 插件。
+            请使用 Palantir Java Format 代码风格。您可以通过命令 `./gradlew format` 格式化代码。为了方便操作，您还可以安装 [Palantir Java Format](https://github.com/palantir/palantir-java-format) 插件。

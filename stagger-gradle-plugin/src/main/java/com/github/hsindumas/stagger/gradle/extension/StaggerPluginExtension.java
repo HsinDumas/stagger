@@ -33,76 +33,75 @@ import java.util.Set;
  */
 public class StaggerPluginExtension {
 
-	/**
-	 * get config file
-	 */
-	private File configFile;
+    /**
+     * get config file
+     */
+    private File configFile;
 
-	/**
-	 * exclude artifact
-	 */
-	private final Set<String> exclude = new HashSet<>();
+    /**
+     * exclude artifact
+     */
+    private final Set<String> exclude = new HashSet<>();
 
-	/**
-	 * include artifact
-	 */
-	private final Set<String> include = new HashSet<>();
+    /**
+     * include artifact
+     */
+    private final Set<String> include = new HashSet<>();
 
-	/**
-	 * Whether build documents incrementally or not
-	 */
-	private Boolean increment = false;
+    /**
+     * Whether build documents incrementally or not
+     */
+    private Boolean increment = false;
 
-	/**
-	 * Stagger config file, like stagger.json
-	 * @return Config File
-	 */
-	public File getConfigFile() {
-		return configFile;
-	}
+    /**
+     * Stagger config file, like stagger.json
+     * @return Config File
+     */
+    public File getConfigFile() {
+        return configFile;
+    }
 
-	public void setConfigFile(File configFile) {
-		this.configFile = configFile;
-	}
+    public void setConfigFile(File configFile) {
+        this.configFile = configFile;
+    }
 
-	/**
-	 * Excludes artifacts
-	 * @param excludes Array of artifact
-	 * @return StaggerPluginExtension
-	 */
-	public StaggerPluginExtension exclude(String... excludes) {
-		this.exclude.addAll(Arrays.asList(excludes));
-		return this;
-	}
+    /**
+     * Excludes artifacts
+     * @param excludes Array of artifact
+     * @return StaggerPluginExtension
+     */
+    public StaggerPluginExtension exclude(String... excludes) {
+        this.exclude.addAll(Arrays.asList(excludes));
+        return this;
+    }
 
-	/**
-	 * Get sets of exclude
-	 * @return Set
-	 */
-	public Set<String> getExclude() {
-		return exclude;
-	}
+    /**
+     * Get sets of exclude
+     * @return Set
+     */
+    public Set<String> getExclude() {
+        return exclude;
+    }
 
-	/**
-	 * Includes artifacts
-	 * @param includes Array of artifact
-	 * @return StaggerPluginExtension
-	 */
-	public StaggerPluginExtension include(String... includes) {
-		this.include.addAll(Arrays.asList(includes));
-		return this;
-	}
+    /**
+     * Includes artifacts
+     * @param includes Array of artifact
+     * @return StaggerPluginExtension
+     */
+    public StaggerPluginExtension include(String... includes) {
+        this.include.addAll(Arrays.asList(includes));
+        return this;
+    }
 
-	public Set<String> getInclude() {
-		return include;
-	}
+    public Set<String> getInclude() {
+        return include;
+    }
 
-	public Boolean getIncrement() {
-		return increment;
-	}
+    public Boolean getIncrement() {
+        return increment;
+    }
 
-	public void setIncrement(Boolean increment) {
-		this.increment = increment;
-	}
-
+    public void setIncrement(Boolean increment) {
+        this.increment = increment;
+    }
 }

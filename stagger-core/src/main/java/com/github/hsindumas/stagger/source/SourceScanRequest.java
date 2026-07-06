@@ -38,82 +38,79 @@ import java.util.Objects;
  */
 public final class SourceScanRequest {
 
-	private final List<Path> sourceRoots;
+    private final List<Path> sourceRoots;
 
-	private final Charset charset;
+    private final Charset charset;
 
-	private SourceScanRequest(List<Path> sourceRoots, Charset charset) {
-		this.sourceRoots = Collections.unmodifiableList(new ArrayList<>(sourceRoots));
-		this.charset = charset;
-	}
+    private SourceScanRequest(List<Path> sourceRoots, Charset charset) {
+        this.sourceRoots = Collections.unmodifiableList(new ArrayList<>(sourceRoots));
+        this.charset = charset;
+    }
 
-	public static Builder builder() {
-		return new Builder();
-	}
+    public static Builder builder() {
+        return new Builder();
+    }
 
-	public List<Path> getSourceRoots() {
-		return sourceRoots;
-	}
+    public List<Path> getSourceRoots() {
+        return sourceRoots;
+    }
 
-	public Charset getCharset() {
-		return charset;
-	}
+    public Charset getCharset() {
+        return charset;
+    }
 
-	/**
-	 * Builder for {@link SourceScanRequest}.
-	 */
-	public static final class Builder {
+    /**
+     * Builder for {@link SourceScanRequest}.
+     */
+    public static final class Builder {
 
-		private final List<Path> sourceRoots = new ArrayList<>();
+        private final List<Path> sourceRoots = new ArrayList<>();
 
-		private Charset charset = StandardCharsets.UTF_8;
+        private Charset charset = StandardCharsets.UTF_8;
 
-		private Builder() {
-		}
+        private Builder() {}
 
-		/**
-		 * Add one source root.
-		 * @param sourceRoot source root path
-		 * @return this builder
-		 */
-		public Builder addSourceRoot(Path sourceRoot) {
-			this.sourceRoots.add(Objects.requireNonNull(sourceRoot, "sourceRoot"));
-			return this;
-		}
+        /**
+         * Add one source root.
+         * @param sourceRoot source root path
+         * @return this builder
+         */
+        public Builder addSourceRoot(Path sourceRoot) {
+            this.sourceRoots.add(Objects.requireNonNull(sourceRoot, "sourceRoot"));
+            return this;
+        }
 
-		/**
-		 * Add multiple source roots.
-		 * @param roots source root paths
-		 * @return this builder
-		 */
-		public Builder addSourceRoots(Collection<Path> roots) {
-			if (Objects.isNull(roots)) {
-				return this;
-			}
-			for (Path root : roots) {
-				this.addSourceRoot(root);
-			}
-			return this;
-		}
+        /**
+         * Add multiple source roots.
+         * @param roots source root paths
+         * @return this builder
+         */
+        public Builder addSourceRoots(Collection<Path> roots) {
+            if (Objects.isNull(roots)) {
+                return this;
+            }
+            for (Path root : roots) {
+                this.addSourceRoot(root);
+            }
+            return this;
+        }
 
-		/**
-		 * Set source file charset.
-		 * @param charset source charset
-		 * @return this builder
-		 */
-		public Builder setCharset(Charset charset) {
-			this.charset = Objects.requireNonNull(charset, "charset");
-			return this;
-		}
+        /**
+         * Set source file charset.
+         * @param charset source charset
+         * @return this builder
+         */
+        public Builder setCharset(Charset charset) {
+            this.charset = Objects.requireNonNull(charset, "charset");
+            return this;
+        }
 
-		/**
-		 * Build immutable request instance.
-		 * @return source scan request
-		 */
-		public SourceScanRequest build() {
-			return new SourceScanRequest(this.sourceRoots, this.charset);
-		}
-
-	}
-
+        /**
+         * Build immutable request instance.
+         * @return source scan request
+         */
+        public SourceScanRequest build() {
+            return new SourceScanRequest(this.sourceRoots, this.charset);
+        }
+    }
 }

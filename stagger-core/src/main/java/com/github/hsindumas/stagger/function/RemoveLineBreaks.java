@@ -20,8 +20,8 @@
  */
 package com.github.hsindumas.stagger.function;
 
-import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.template.engine.TemplateFunction;
+import com.github.hsindumas.stagger.utils.DocUtil;
 
 /**
  * beetl template function
@@ -31,10 +31,9 @@ import com.github.hsindumas.stagger.template.engine.TemplateFunction;
  */
 public class RemoveLineBreaks implements TemplateFunction {
 
-	@Override
-	public String call(Object[] paras) {
-		String str = String.valueOf(paras[0]).replaceAll("\n", " ").replaceAll("\r", " ");
-		return DocUtil.getEscapeAndCleanComment(str).replaceAll(System.lineSeparator(), "");
-	}
-
+    @Override
+    public String call(Object[] paras) {
+        String str = String.valueOf(paras[0]).replaceAll("\n", " ").replaceAll("\r", " ");
+        return DocUtil.getEscapeAndCleanComment(str).replaceAll(System.lineSeparator(), "");
+    }
 }

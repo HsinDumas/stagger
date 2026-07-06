@@ -22,12 +22,11 @@
  */
 package com.github.hsindumas.stagger.gradle.task;
 
-import org.gradle.work.DisableCachingByDefault;
-
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.builder.websocket.WebSocketMarkdownBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import org.gradle.api.logging.Logger;
+import org.gradle.work.DisableCachingByDefault;
 
 /**
  * Support for WebSocket markdown
@@ -37,19 +36,16 @@ import org.gradle.api.logging.Logger;
  * @since 3.0.3
  */
 @DisableCachingByDefault(
-		because = "Invokes external documentation generation and depends on project state; not cacheable yet.")
-
+        because = "Invokes external documentation generation and depends on project state; not cacheable yet.")
 public class WebSocketMarkdownTask extends DocBaseTask {
 
-	@Override
-	public void executeAction(ApiConfig apiConfig, Logger logger) {
-		try {
-			ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
-			WebSocketMarkdownBuilder.buildApiDoc(apiConfig, configBuilder);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+    @Override
+    public void executeAction(ApiConfig apiConfig, Logger logger) {
+        try {
+            ProjectDocConfigBuilder configBuilder = new ProjectDocConfigBuilder(apiConfig, javaProjectBuilder);
+            WebSocketMarkdownBuilder.buildApiDoc(apiConfig, configBuilder);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

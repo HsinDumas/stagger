@@ -31,175 +31,185 @@ import java.util.Objects;
  */
 public class ServiceMethod implements Serializable {
 
-	private static final long serialVersionUID = 8899124161932913904L;
+    private static final long serialVersionUID = 8899124161932913904L;
 
-	/**
-	 * The name of the method.
-	 */
-	private String name;
+    /**
+     * The name of the method.
+     */
+    private String name;
 
-	/**
-	 * Description or additional information about the method.
-	 */
-	private String description;
+    /**
+     * Description or additional information about the method.
+     */
+    private String description;
 
-	/**
-	 * The request type of the method.
-	 */
-	private String requestType;
+    /**
+     * The request type of the method.
+     */
+    private String requestType;
 
-	/**
-	 * The long request type of the method.
-	 */
-	private String requestLongType;
+    /**
+     * The long request type of the method.
+     */
+    private String requestLongType;
 
-	/**
-	 * The full request type of the method.
-	 */
-	private String requestFullType;
+    /**
+     * The full request type of the method.
+     */
+    private String requestFullType;
 
-	/**
-	 * Indicates if the method supports request streaming.
-	 */
-	private boolean requestStreaming;
+    /**
+     * Indicates if the method supports request streaming.
+     */
+    private boolean requestStreaming;
 
-	/**
-	 * The response type of the method.
-	 */
-	private String responseType;
+    /**
+     * The response type of the method.
+     */
+    private String responseType;
 
-	/**
-	 * The long response type of the method.
-	 */
-	private String responseLongType;
+    /**
+     * The long response type of the method.
+     */
+    private String responseLongType;
 
-	/**
-	 * The full response type of the method.
-	 */
-	private String responseFullType;
+    /**
+     * The full response type of the method.
+     */
+    private String responseFullType;
 
-	/**
-	 * Indicates if the method supports response streaming.
-	 */
-	private boolean responseStreaming;
+    /**
+     * Indicates if the method supports response streaming.
+     */
+    private boolean responseStreaming;
 
-	public static ServiceMethod builder() {
-		return new ServiceMethod();
-	}
+    public static ServiceMethod builder() {
+        return new ServiceMethod();
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public ServiceMethod setName(String name) {
-		this.name = name;
-		return this;
-	}
+    public ServiceMethod setName(String name) {
+        this.name = name;
+        return this;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public ServiceMethod setDescription(String description) {
-		this.description = description;
-		return this;
-	}
+    public ServiceMethod setDescription(String description) {
+        this.description = description;
+        return this;
+    }
 
-	public String getRequestType() {
-		return requestType;
-	}
+    public String getRequestType() {
+        return requestType;
+    }
 
-	public ServiceMethod setRequestType(String requestType) {
-		this.requestType = requestType;
-		return this;
-	}
+    public ServiceMethod setRequestType(String requestType) {
+        this.requestType = requestType;
+        return this;
+    }
 
-	public String getRequestLongType() {
-		return requestLongType;
-	}
+    public String getRequestLongType() {
+        return requestLongType;
+    }
 
-	public ServiceMethod setRequestLongType(String requestLongType) {
-		this.requestLongType = requestLongType;
-		return this;
-	}
+    public ServiceMethod setRequestLongType(String requestLongType) {
+        this.requestLongType = requestLongType;
+        return this;
+    }
 
-	public String getRequestFullType() {
-		return requestFullType;
-	}
+    public String getRequestFullType() {
+        return requestFullType;
+    }
 
-	public ServiceMethod setRequestFullType(String requestFullType) {
-		this.requestFullType = requestFullType;
-		return this;
-	}
+    public ServiceMethod setRequestFullType(String requestFullType) {
+        this.requestFullType = requestFullType;
+        return this;
+    }
 
-	public boolean isRequestStreaming() {
-		return requestStreaming;
-	}
+    public boolean isRequestStreaming() {
+        return requestStreaming;
+    }
 
-	public ServiceMethod setRequestStreaming(boolean requestStreaming) {
-		this.requestStreaming = requestStreaming;
-		return this;
-	}
+    public ServiceMethod setRequestStreaming(boolean requestStreaming) {
+        this.requestStreaming = requestStreaming;
+        return this;
+    }
 
-	public String getResponseType() {
-		return responseType;
-	}
+    public String getResponseType() {
+        return responseType;
+    }
 
-	public ServiceMethod setResponseType(String responseType) {
-		this.responseType = responseType;
-		return this;
-	}
+    public ServiceMethod setResponseType(String responseType) {
+        this.responseType = responseType;
+        return this;
+    }
 
-	public String getResponseLongType() {
-		return responseLongType;
-	}
+    public String getResponseLongType() {
+        return responseLongType;
+    }
 
-	public ServiceMethod setResponseLongType(String responseLongType) {
-		this.responseLongType = responseLongType;
-		return this;
-	}
+    public ServiceMethod setResponseLongType(String responseLongType) {
+        this.responseLongType = responseLongType;
+        return this;
+    }
 
-	public String getResponseFullType() {
-		return responseFullType;
-	}
+    public String getResponseFullType() {
+        return responseFullType;
+    }
 
-	public ServiceMethod setResponseFullType(String responseFullType) {
-		this.responseFullType = responseFullType;
-		return this;
-	}
+    public ServiceMethod setResponseFullType(String responseFullType) {
+        this.responseFullType = responseFullType;
+        return this;
+    }
 
-	public boolean isResponseStreaming() {
-		return responseStreaming;
-	}
+    public boolean isResponseStreaming() {
+        return responseStreaming;
+    }
 
-	public ServiceMethod setResponseStreaming(boolean responseStreaming) {
-		this.responseStreaming = responseStreaming;
-		return this;
-	}
+    public ServiceMethod setResponseStreaming(boolean responseStreaming) {
+        this.responseStreaming = responseStreaming;
+        return this;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		ServiceMethod that = (ServiceMethod) o;
-		return requestStreaming == that.requestStreaming && responseStreaming == that.responseStreaming
-				&& Objects.equals(name, that.name) && Objects.equals(description, that.description)
-				&& Objects.equals(requestType, that.requestType)
-				&& Objects.equals(requestLongType, that.requestLongType)
-				&& Objects.equals(requestFullType, that.requestFullType)
-				&& Objects.equals(responseType, that.responseType)
-				&& Objects.equals(responseLongType, that.responseLongType)
-				&& Objects.equals(responseFullType, that.responseFullType);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ServiceMethod that = (ServiceMethod) o;
+        return requestStreaming == that.requestStreaming
+                && responseStreaming == that.responseStreaming
+                && Objects.equals(name, that.name)
+                && Objects.equals(description, that.description)
+                && Objects.equals(requestType, that.requestType)
+                && Objects.equals(requestLongType, that.requestLongType)
+                && Objects.equals(requestFullType, that.requestFullType)
+                && Objects.equals(responseType, that.responseType)
+                && Objects.equals(responseLongType, that.responseLongType)
+                && Objects.equals(responseFullType, that.responseFullType);
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(name, description, requestType, requestLongType, requestFullType, requestStreaming,
-				responseType, responseLongType, responseFullType, responseStreaming);
-	}
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                name,
+                description,
+                requestType,
+                requestLongType,
+                requestFullType,
+                requestStreaming,
+                responseType,
+                responseLongType,
+                responseFullType,
+                responseStreaming);
+    }
 }

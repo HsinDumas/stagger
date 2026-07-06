@@ -20,14 +20,13 @@
  */
 package com.github.hsindumas.stagger.builder;
 
+import com.github.hsindumas.stagger.common.util.DateTimeUtil;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.factory.BuildTemplateFactory;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiDoc;
 import com.github.hsindumas.stagger.template.IDocBuildTemplate;
-import com.github.hsindumas.stagger.common.util.DateTimeUtil;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -39,52 +38,60 @@ import java.util.Objects;
  */
 public class ApiDocBuilder {
 
-	/**
-	 * private constructor
-	 */
-	private ApiDocBuilder() {
-		throw new IllegalStateException("Utility class");
-	}
+    /**
+     * private constructor
+     */
+    private ApiDocBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * @param config ApiConfig
-	 */
-	public static void buildApiDoc(ApiConfig config) {
-		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
-	}
+    /**
+     * @param config ApiConfig
+     */
+    public static void buildApiDoc(ApiConfig config) {
+        buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
+    }
 
-	/**
-	 * Only for stagger maven plugin and gradle plugin.
-	 * @param config ApiConfig
-	 * @param configBuilder ProjectDocConfigBuilder
-	 */
-	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
-		DocBuilderTemplate builderTemplate = new DocBuilderTemplate();
-		builderTemplate.checkAndInit(config, Boolean.TRUE);
-		config.setAdoc(false);
-		config.setParamsDataToTree(false);
-		IDocBuildTemplate<ApiDoc> docBuildTemplate = BuildTemplateFactory.getDocBuildTemplate(config.getFramework(),
-				config.getClassLoader());
-		Objects.requireNonNull(docBuildTemplate, "doc build template is null");
-		List<ApiDoc> apiDocList = docBuildTemplate.getApiData(configBuilder).getApiDatas();
-		if (config.isAllInOne()) {
-			String version = config.isCoverOld() ? "" : "-V" + DateTimeUtil.long2Str(System.currentTimeMillis(),
-					DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
-			String docName = builderTemplate.allInOneDocName(config,
-					"AllInOne" + version + DocGlobalConstants.MARKDOWN_EXTENSION,
-					DocGlobalConstants.MARKDOWN_EXTENSION);
-			apiDocList = docBuildTemplate.handleApiGroup(apiDocList, config);
-			builderTemplate.buildAllInOne(apiDocList, config, configBuilder, DocGlobalConstants.ALL_IN_ONE_MD_TPL,
-					docName);
-		}
-		else {
-			builderTemplate.buildApiDoc(apiDocList, config, DocGlobalConstants.API_DOC_MD_TPL,
-					DocGlobalConstants.MARKDOWN_API_FILE_EXTENSION);
-			builderTemplate.buildErrorCodeDoc(config, DocGlobalConstants.ERROR_CODE_LIST_MD_TPL,
-					DocGlobalConstants.ERROR_CODE_LIST_MD, configBuilder);
-			builderTemplate.buildDirectoryDataDoc(config, configBuilder, DocGlobalConstants.DICT_LIST_MD_TPL,
-					DocGlobalConstants.DICT_LIST_MD);
-		}
-	}
-
+    /**
+     * Only for stagger maven plugin and gradle plugin.
+     * @param config ApiConfig
+     * @param configBuilder ProjectDocConfigBuilder
+     */
+    public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
+        DocBuilderTemplate builderTemplate = new DocBuilderTemplate();
+        builderTemplate.checkAndInit(config, Boolean.TRUE);
+        config.setAdoc(false);
+        config.setParamsDataToTree(false);
+        IDocBuildTemplate<ApiDoc> docBuildTemplate =
+                BuildTemplateFactory.getDocBuildTemplate(config.getFramework(), config.getClassLoader());
+        Objects.requireNonNull(docBuildTemplate, "doc build template is null");
+        List<ApiDoc> apiDocList = docBuildTemplate.getApiData(configBuilder).getApiDatas();
+        if (config.isAllInOne()) {
+            String version = config.isCoverOld()
+                    ? ""
+                    : "-V"
+                            + DateTimeUtil.long2Str(
+                                    System.currentTimeMillis(), DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
+            String docName = builderTemplate.allInOneDocName(
+                    config,
+                    "AllInOne" + version + DocGlobalConstants.MARKDOWN_EXTENSION,
+                    DocGlobalConstants.MARKDOWN_EXTENSION);
+            apiDocList = docBuildTemplate.handleApiGroup(apiDocList, config);
+            builderTemplate.buildAllInOne(
+                    apiDocList, config, configBuilder, DocGlobalConstants.ALL_IN_ONE_MD_TPL, docName);
+        } else {
+            builderTemplate.buildApiDoc(
+                    apiDocList,
+                    config,
+                    DocGlobalConstants.API_DOC_MD_TPL,
+                    DocGlobalConstants.MARKDOWN_API_FILE_EXTENSION);
+            builderTemplate.buildErrorCodeDoc(
+                    config,
+                    DocGlobalConstants.ERROR_CODE_LIST_MD_TPL,
+                    DocGlobalConstants.ERROR_CODE_LIST_MD,
+                    configBuilder);
+            builderTemplate.buildDirectoryDataDoc(
+                    config, configBuilder, DocGlobalConstants.DICT_LIST_MD_TPL, DocGlobalConstants.DICT_LIST_MD);
+        }
+    }
 }

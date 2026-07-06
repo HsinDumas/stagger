@@ -25,9 +25,8 @@ import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.rpc.RpcApiDoc;
-import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.template.engine.Template;
-
+import com.github.hsindumas.stagger.utils.DocUtil;
 import java.util.List;
 
 /**
@@ -39,64 +38,62 @@ import java.util.List;
  */
 public class RpcWordDocBuilder {
 
-	/**
-	 * template docx
-	 */
-	private static final String TEMPLATE_DOCX = "template/word/template.docx";
+    /**
+     * template docx
+     */
+    private static final String TEMPLATE_DOCX = "template/word/template.docx";
 
-	/**
-	 * build docx file name
-	 */
-	private static final String INDEX_DOC = "rpc-index.docx";
+    /**
+     * build docx file name
+     */
+    private static final String INDEX_DOC = "rpc-index.docx";
 
-	/**
-	 * build error code docx file name
-	 */
-	private static final String BUILD_ERROR_DOCX = "error.docx";
+    /**
+     * build error code docx file name
+     */
+    private static final String BUILD_ERROR_DOCX = "error.docx";
 
-	/**
-	 * build directory data docx file name
-	 */
-	private static final String BUILD_DICT_DOCX = "dict.docx";
+    /**
+     * build directory data docx file name
+     */
+    private static final String BUILD_DICT_DOCX = "dict.docx";
 
-	/**
-	 * private constructor
-	 */
-	private RpcWordDocBuilder() {
-		throw new IllegalStateException("Utility class");
-	}
+    /**
+     * private constructor
+     */
+    private RpcWordDocBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * build dubbo api
-	 * @param config config
-	 * @throws Exception exception
-	 */
-	public static void buildApiDoc(ApiConfig config) throws Exception {
-		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
-	}
+    /**
+     * build dubbo api
+     * @param config config
+     * @throws Exception exception
+     */
+    public static void buildApiDoc(ApiConfig config) throws Exception {
+        buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
+    }
 
-	/**
-	 * build dubbo api
-	 * @param config config
-	 * @param configBuilder ProjectDocConfigBuilder
-	 * @throws Exception exception
-	 */
-	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) throws Exception {
-		RpcDocBuilderTemplate rpcDocBuilderTemplate = new RpcDocBuilderTemplate();
-		List<RpcApiDoc> apiDocList = rpcDocBuilderTemplate.getApiDoc(false, true, false, config, configBuilder);
+    /**
+     * build dubbo api
+     * @param config config
+     * @param configBuilder ProjectDocConfigBuilder
+     * @throws Exception exception
+     */
+    public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) throws Exception {
+        RpcDocBuilderTemplate rpcDocBuilderTemplate = new RpcDocBuilderTemplate();
+        List<RpcApiDoc> apiDocList = rpcDocBuilderTemplate.getApiDoc(false, true, false, config, configBuilder);
 
-		if (config.isAllInOne()) {
-			String docName = rpcDocBuilderTemplate.allInOneDocName(config, INDEX_DOC,
-					DocGlobalConstants.WORD_DOC_EXTENSION);
-			apiDocList = rpcDocBuilderTemplate.handleApiGroup(apiDocList, config);
-			Template tpl = rpcDocBuilderTemplate.buildAllInOneWord(apiDocList, config, configBuilder,
-					DocGlobalConstants.RPC_ALL_IN_ONE_WORD_TPL, docName);
+        if (config.isAllInOne()) {
+            String docName =
+                    rpcDocBuilderTemplate.allInOneDocName(config, INDEX_DOC, DocGlobalConstants.WORD_DOC_EXTENSION);
+            apiDocList = rpcDocBuilderTemplate.handleApiGroup(apiDocList, config);
+            Template tpl = rpcDocBuilderTemplate.buildAllInOneWord(
+                    apiDocList, config, configBuilder, DocGlobalConstants.RPC_ALL_IN_ONE_WORD_TPL, docName);
 
-			String outPath = config.getOutPath();
-			DocUtil.copyAndReplaceDocx(tpl.render(), outPath + DocGlobalConstants.FILE_SEPARATOR + docName,
-					TEMPLATE_DOCX);
-		}
-
-	}
-
+            String outPath = config.getOutPath();
+            DocUtil.copyAndReplaceDocx(
+                    tpl.render(), outPath + DocGlobalConstants.FILE_SEPARATOR + docName, TEMPLATE_DOCX);
+        }
+    }
 }

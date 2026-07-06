@@ -20,7 +20,10 @@
  */
 package com.github.hsindumas.stagger.template;
 
+import static com.github.hsindumas.stagger.constants.DocGlobalConstants.NO_COMMENTS_FOUND;
+
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.constants.DocTags;
 import com.github.hsindumas.stagger.constants.ParamTypeConstants;
@@ -37,8 +40,6 @@ import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.github.hsindumas.stagger.utils.OpenApiSchemaUtil;
-import com.github.hsindumas.stagger.common.util.StringUtil;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -49,8 +50,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.github.hsindumas.stagger.constants.DocGlobalConstants.NO_COMMENTS_FOUND;
-
 /**
  * Base Doc Build Template
  *
@@ -59,392 +58,442 @@ import static com.github.hsindumas.stagger.constants.DocGlobalConstants.NO_COMME
  */
 public interface IBaseDocBuildTemplate {
 
-	/**
-	 * Comment Resolve
-	 * @param comment comment
-	 * @return String
-	 */
-	default String paramCommentResolve(String comment) {
-		if (StringUtil.isEmpty(comment)) {
-			comment = NO_COMMENTS_FOUND;
-		}
-		else {
-			if (comment.contains("|")) {
-				comment = comment.substring(0, comment.indexOf("|"));
-			}
-		}
-		return comment;
-	}
+    /**
+     * Comment Resolve
+     * @param comment comment
+     * @return String
+     */
+    default String paramCommentResolve(String comment) {
+        if (StringUtil.isEmpty(comment)) {
+            comment = NO_COMMENTS_FOUND;
+        } else {
+            if (comment.contains("|")) {
+                comment = comment.substring(0, comment.indexOf("|"));
+            }
+        }
+        return comment;
+    }
 
-	/**
-	 * Build return api params
-	 * @param docJavaMethod JavaMethod
-	 * @param projectBuilder ProjectDocConfigBuilder
-	 * @return List
-	 */
-	default List<ApiParam> buildReturnApiParams(DocJavaMethod docJavaMethod, ProjectDocConfigBuilder projectBuilder) {
-		Object method = docJavaMethod.getJavaMethod();
-		String returnTypeCanonicalName = DocUtil.getMethodReturnTypeCanonicalName(method);
-		if ("void".equals(returnTypeCanonicalName)
-				&& Objects.isNull(projectBuilder.getApiConfig().getResponseBodyAdvice())) {
-			return new ArrayList<>(0);
-		}
-		Object downloadTag = DocUtil.getMethodTagByName(method, DocTags.DOWNLOAD);
-		if (Objects.nonNull(downloadTag)) {
-			return new ArrayList<>(0);
-		}
-		String returnTypeGenericCanonicalName = DocUtil.getMethodReturnTypeGenericCanonicalName(method);
-		String originalReturnTypeGenericCanonicalName = returnTypeGenericCanonicalName;
-		boolean responseBodyAdviceEnabled = Objects.nonNull(projectBuilder.getApiConfig().getResponseBodyAdvice())
-				&& Objects.isNull(DocUtil.getMethodTagByName(method, DocTags.IGNORE_RESPONSE_BODY_ADVICE));
-		if (responseBodyAdviceEnabled) {
-			String responseBodyAdvice = projectBuilder.getApiConfig().getResponseBodyAdvice().getClassName();
-			if (!returnTypeGenericCanonicalName.startsWith(responseBodyAdvice)) {
-				returnTypeGenericCanonicalName = responseBodyAdvice + "<" + returnTypeGenericCanonicalName + ">";
-			}
-		}
-		Map<String, ?> actualTypesMap = docJavaMethod.getActualTypesMap();
-		ApiReturn apiReturn = DocClassUtil.processReturnType(returnTypeGenericCanonicalName);
-		String returnType = apiReturn.getGenericCanonicalName();
-		String originalReturnType = originalReturnTypeGenericCanonicalName;
-		if (Objects.nonNull(actualTypesMap)) {
-			for (Map.Entry<String, ?> entry : actualTypesMap.entrySet()) {
-				returnType = returnType.replace(entry.getKey(), DocUtil.getTypeCanonicalName(entry.getValue()));
-				originalReturnType = originalReturnType.replace(entry.getKey(),
-						DocUtil.getTypeCanonicalName(entry.getValue()));
-			}
-		}
+    /**
+     * Build return api params
+     * @param docJavaMethod JavaMethod
+     * @param projectBuilder ProjectDocConfigBuilder
+     * @return List
+     */
+    default List<ApiParam> buildReturnApiParams(DocJavaMethod docJavaMethod, ProjectDocConfigBuilder projectBuilder) {
+        Object method = docJavaMethod.getJavaMethod();
+        String returnTypeCanonicalName = DocUtil.getMethodReturnTypeCanonicalName(method);
+        if ("void".equals(returnTypeCanonicalName)
+                && Objects.isNull(projectBuilder.getApiConfig().getResponseBodyAdvice())) {
+            return new ArrayList<>(0);
+        }
+        Object downloadTag = DocUtil.getMethodTagByName(method, DocTags.DOWNLOAD);
+        if (Objects.nonNull(downloadTag)) {
+            return new ArrayList<>(0);
+        }
+        String returnTypeGenericCanonicalName = DocUtil.getMethodReturnTypeGenericCanonicalName(method);
+        String originalReturnTypeGenericCanonicalName = returnTypeGenericCanonicalName;
+        boolean responseBodyAdviceEnabled =
+                Objects.nonNull(projectBuilder.getApiConfig().getResponseBodyAdvice())
+                        && Objects.isNull(DocUtil.getMethodTagByName(method, DocTags.IGNORE_RESPONSE_BODY_ADVICE));
+        if (responseBodyAdviceEnabled) {
+            String responseBodyAdvice =
+                    projectBuilder.getApiConfig().getResponseBodyAdvice().getClassName();
+            if (!returnTypeGenericCanonicalName.startsWith(responseBodyAdvice)) {
+                returnTypeGenericCanonicalName = responseBodyAdvice + "<" + returnTypeGenericCanonicalName + ">";
+            }
+        }
+        Map<String, ?> actualTypesMap = docJavaMethod.getActualTypesMap();
+        ApiReturn apiReturn = DocClassUtil.processReturnType(returnTypeGenericCanonicalName);
+        String returnType = apiReturn.getGenericCanonicalName();
+        String originalReturnType = originalReturnTypeGenericCanonicalName;
+        if (Objects.nonNull(actualTypesMap)) {
+            for (Map.Entry<String, ?> entry : actualTypesMap.entrySet()) {
+                returnType = returnType.replace(entry.getKey(), DocUtil.getTypeCanonicalName(entry.getValue()));
+                originalReturnType =
+                        originalReturnType.replace(entry.getKey(), DocUtil.getTypeCanonicalName(entry.getValue()));
+            }
+        }
 
-		String typeName = apiReturn.getSimpleName();
-		if (this.ignoreReturnObject(typeName, projectBuilder.getApiConfig().getIgnoreRequestParams())) {
-			return new ArrayList<>(0);
-		}
-		if (JavaClassValidateUtil.isPrimitive(typeName)) {
-			docJavaMethod.setReturnSchema(OpenApiSchemaUtil.primaryTypeSchema(typeName));
-			return new ArrayList<>(0);
-		}
-		if (JavaClassValidateUtil.isCollection(typeName)) {
-			if (returnType.contains("<")) {
-				String gicName = returnType.substring(returnType.indexOf("<") + 1, returnType.lastIndexOf(">"));
-				if (JavaClassValidateUtil.isPrimitive(gicName)) {
-					docJavaMethod.setReturnSchema(OpenApiSchemaUtil.arrayTypeSchema(gicName));
-					return new ArrayList<>(0);
-				}
-				return ParamsBuildHelper.buildParams(gicName, "", 0, null, Boolean.TRUE, new HashMap<>(16),
-						projectBuilder, null, docJavaMethod.getJsonViewClasses(), 0, Boolean.FALSE, null);
-			}
-			else {
-				return new ArrayList<>(0);
-			}
-		}
-		if (JavaClassValidateUtil.isMap(typeName)) {
-			String[] keyValue = DocClassUtil.getMapKeyValueType(returnType);
-			if (keyValue.length == 0) {
-				return new ArrayList<>(0);
-			}
-			return ParamsBuildHelper.buildParams(returnType, "", 0, null, Boolean.TRUE, new HashMap<>(16),
-					projectBuilder, null, docJavaMethod.getJsonViewClasses(), 0, Boolean.FALSE, null);
-		}
-		if (StringUtil.isNotEmpty(returnType)) {
-			List<ApiParam> returnParams = ParamsBuildHelper.buildParams(returnType, "", 0, null, Boolean.TRUE,
-					new HashMap<>(16), projectBuilder, null, docJavaMethod.getJsonViewClasses(), 0, Boolean.FALSE,
-					null);
-			if (responseBodyAdviceEnabled) {
-				this.replaceResponseBodyAdviceCollectionDataType(returnParams, originalReturnType, projectBuilder,
-						docJavaMethod.getJsonViewClasses());
-			}
-			return returnParams;
-		}
-		return new ArrayList<>(0);
-	}
+        String typeName = apiReturn.getSimpleName();
+        if (this.ignoreReturnObject(typeName, projectBuilder.getApiConfig().getIgnoreRequestParams())) {
+            return new ArrayList<>(0);
+        }
+        if (JavaClassValidateUtil.isPrimitive(typeName)) {
+            docJavaMethod.setReturnSchema(OpenApiSchemaUtil.primaryTypeSchema(typeName));
+            return new ArrayList<>(0);
+        }
+        if (JavaClassValidateUtil.isCollection(typeName)) {
+            if (returnType.contains("<")) {
+                String gicName = returnType.substring(returnType.indexOf("<") + 1, returnType.lastIndexOf(">"));
+                if (JavaClassValidateUtil.isPrimitive(gicName)) {
+                    docJavaMethod.setReturnSchema(OpenApiSchemaUtil.arrayTypeSchema(gicName));
+                    return new ArrayList<>(0);
+                }
+                return ParamsBuildHelper.buildParams(
+                        gicName,
+                        "",
+                        0,
+                        null,
+                        Boolean.TRUE,
+                        new HashMap<>(16),
+                        projectBuilder,
+                        null,
+                        docJavaMethod.getJsonViewClasses(),
+                        0,
+                        Boolean.FALSE,
+                        null);
+            } else {
+                return new ArrayList<>(0);
+            }
+        }
+        if (JavaClassValidateUtil.isMap(typeName)) {
+            String[] keyValue = DocClassUtil.getMapKeyValueType(returnType);
+            if (keyValue.length == 0) {
+                return new ArrayList<>(0);
+            }
+            return ParamsBuildHelper.buildParams(
+                    returnType,
+                    "",
+                    0,
+                    null,
+                    Boolean.TRUE,
+                    new HashMap<>(16),
+                    projectBuilder,
+                    null,
+                    docJavaMethod.getJsonViewClasses(),
+                    0,
+                    Boolean.FALSE,
+                    null);
+        }
+        if (StringUtil.isNotEmpty(returnType)) {
+            List<ApiParam> returnParams = ParamsBuildHelper.buildParams(
+                    returnType,
+                    "",
+                    0,
+                    null,
+                    Boolean.TRUE,
+                    new HashMap<>(16),
+                    projectBuilder,
+                    null,
+                    docJavaMethod.getJsonViewClasses(),
+                    0,
+                    Boolean.FALSE,
+                    null);
+            if (responseBodyAdviceEnabled) {
+                this.replaceResponseBodyAdviceCollectionDataType(
+                        returnParams, originalReturnType, projectBuilder, docJavaMethod.getJsonViewClasses());
+            }
+            return returnParams;
+        }
+        return new ArrayList<>(0);
+    }
 
-	/**
-	 * For responseBodyAdvice wrappers, preserve collection/array return type information
-	 * on the wrapper's data field when generic resolution degrades to object.
-	 * @param responseParams wrapped response params
-	 * @param actualReturnType original method return type (without wrapper)
-	 * @param projectBuilder project builder
-	 * @param methodJsonViewClasses json view classes on method
-	 */
-	default void replaceResponseBodyAdviceCollectionDataType(List<ApiParam> responseParams, String actualReturnType,
-			ProjectDocConfigBuilder projectBuilder, Set<String> methodJsonViewClasses) {
-		if (responseParams == null || responseParams.isEmpty() || StringUtil.isEmpty(actualReturnType)) {
-			return;
-		}
-		String actualSimpleName = DocClassUtil.getSimpleName(actualReturnType);
-		String normalizedSimpleName = actualSimpleName.contains(".") ? actualSimpleName
-				: "java.util." + actualSimpleName;
-		boolean isCollectionType = JavaClassValidateUtil.isCollection(actualSimpleName)
-				|| JavaClassValidateUtil.isCollection(normalizedSimpleName);
-		boolean isArrayType = JavaClassValidateUtil.isArray(actualSimpleName)
-				|| JavaClassValidateUtil.isArray(normalizedSimpleName);
-		if (!isCollectionType && !isArrayType) {
-			return;
-		}
+    /**
+     * For responseBodyAdvice wrappers, preserve collection/array return type information
+     * on the wrapper's data field when generic resolution degrades to object.
+     * @param responseParams wrapped response params
+     * @param actualReturnType original method return type (without wrapper)
+     * @param projectBuilder project builder
+     * @param methodJsonViewClasses json view classes on method
+     */
+    default void replaceResponseBodyAdviceCollectionDataType(
+            List<ApiParam> responseParams,
+            String actualReturnType,
+            ProjectDocConfigBuilder projectBuilder,
+            Set<String> methodJsonViewClasses) {
+        if (responseParams == null || responseParams.isEmpty() || StringUtil.isEmpty(actualReturnType)) {
+            return;
+        }
+        String actualSimpleName = DocClassUtil.getSimpleName(actualReturnType);
+        String normalizedSimpleName =
+                actualSimpleName.contains(".") ? actualSimpleName : "java.util." + actualSimpleName;
+        boolean isCollectionType = JavaClassValidateUtil.isCollection(actualSimpleName)
+                || JavaClassValidateUtil.isCollection(normalizedSimpleName);
+        boolean isArrayType =
+                JavaClassValidateUtil.isArray(actualSimpleName) || JavaClassValidateUtil.isArray(normalizedSimpleName);
+        if (!isCollectionType && !isArrayType) {
+            return;
+        }
 
-		ApiParam dataParam = null;
-		for (ApiParam responseParam : responseParams) {
-			if ("data".equals(responseParam.getField())) {
-				dataParam = responseParam;
-				break;
-			}
-		}
-		if (Objects.isNull(dataParam)) {
-			return;
-		}
+        ApiParam dataParam = null;
+        for (ApiParam responseParam : responseParams) {
+            if ("data".equals(responseParam.getField())) {
+                dataParam = responseParam;
+                break;
+            }
+        }
+        if (Objects.isNull(dataParam)) {
+            return;
+        }
 
-		int dataParamId = dataParam.getId();
-		List<ApiParam> directChildren = responseParams.stream()
-			.filter(param -> param.getPid() == dataParamId)
-			.collect(Collectors.toList());
-		boolean hasChildren = !directChildren.isEmpty();
-		boolean hasPlaceholderAnyObjectChild = directChildren.stream()
-			.anyMatch(param -> StringUtil.isNotEmpty(param.getField()) && param.getField().contains("any object"));
-		if (ParamTypeConstants.PARAM_TYPE_ARRAY.equals(dataParam.getType()) && hasChildren) {
-			return;
-		}
-		if (hasPlaceholderAnyObjectChild) {
-			Set<Integer> removeParentIds = new HashSet<>();
-			removeParentIds.add(dataParamId);
-			responseParams.removeIf(param -> {
-				boolean shouldRemove = removeParentIds.contains(param.getPid());
-				if (shouldRemove) {
-					removeParentIds.add(param.getId());
-				}
-				return shouldRemove;
-			});
-			hasChildren = false;
-		}
-		dataParam.setType(ParamTypeConstants.PARAM_TYPE_ARRAY);
-		if (hasChildren) {
-			return;
-		}
+        int dataParamId = dataParam.getId();
+        List<ApiParam> directChildren = responseParams.stream()
+                .filter(param -> param.getPid() == dataParamId)
+                .collect(Collectors.toList());
+        boolean hasChildren = !directChildren.isEmpty();
+        boolean hasPlaceholderAnyObjectChild = directChildren.stream()
+                .anyMatch(param -> StringUtil.isNotEmpty(param.getField())
+                        && param.getField().contains("any object"));
+        if (ParamTypeConstants.PARAM_TYPE_ARRAY.equals(dataParam.getType()) && hasChildren) {
+            return;
+        }
+        if (hasPlaceholderAnyObjectChild) {
+            Set<Integer> removeParentIds = new HashSet<>();
+            removeParentIds.add(dataParamId);
+            responseParams.removeIf(param -> {
+                boolean shouldRemove = removeParentIds.contains(param.getPid());
+                if (shouldRemove) {
+                    removeParentIds.add(param.getId());
+                }
+                return shouldRemove;
+            });
+            hasChildren = false;
+        }
+        dataParam.setType(ParamTypeConstants.PARAM_TYPE_ARRAY);
+        if (hasChildren) {
+            return;
+        }
 
-		String[] genericTypeNames = DocClassUtil.getSimpleGicName(actualReturnType);
-		if (genericTypeNames.length == 0) {
-			return;
-		}
-		String itemType = genericTypeNames[0];
-		if (JavaClassValidateUtil.isPrimitive(itemType)) {
-			return;
-		}
-		responseParams.addAll(ParamsBuildHelper.buildParams(itemType, "", 1, null, Boolean.TRUE, new HashMap<>(16),
-				projectBuilder, null, methodJsonViewClasses, dataParamId, Boolean.FALSE, null));
-	}
+        String[] genericTypeNames = DocClassUtil.getSimpleGicName(actualReturnType);
+        if (genericTypeNames.length == 0) {
+            return;
+        }
+        String itemType = genericTypeNames[0];
+        if (JavaClassValidateUtil.isPrimitive(itemType)) {
+            return;
+        }
+        responseParams.addAll(ParamsBuildHelper.buildParams(
+                itemType,
+                "",
+                1,
+                null,
+                Boolean.TRUE,
+                new HashMap<>(16),
+                projectBuilder,
+                null,
+                methodJsonViewClasses,
+                dataParamId,
+                Boolean.FALSE,
+                null));
+    }
 
-	/**
-	 * Convert params data to tree
-	 * @param apiMethodDoc ApiMethodDoc
-	 */
-	default void convertParamsDataToTree(ApiMethodDoc apiMethodDoc) {
-		apiMethodDoc.setPathParams(ApiParamTreeUtil.apiParamToTree(apiMethodDoc.getPathParams()));
-		apiMethodDoc.setQueryParams(ApiParamTreeUtil.apiParamToTree(apiMethodDoc.getQueryParams()));
-		apiMethodDoc.setRequestParams(ApiParamTreeUtil.apiParamToTree(apiMethodDoc.getRequestParams()));
-	}
+    /**
+     * Convert params data to tree
+     * @param apiMethodDoc ApiMethodDoc
+     */
+    default void convertParamsDataToTree(ApiMethodDoc apiMethodDoc) {
+        apiMethodDoc.setPathParams(ApiParamTreeUtil.apiParamToTree(apiMethodDoc.getPathParams()));
+        apiMethodDoc.setQueryParams(ApiParamTreeUtil.apiParamToTree(apiMethodDoc.getQueryParams()));
+        apiMethodDoc.setRequestParams(ApiParamTreeUtil.apiParamToTree(apiMethodDoc.getRequestParams()));
+    }
 
-	/**
-	 * Retrieves and processes the list of parameters for a given Java method, applying
-	 * various transformations and ignoring specified parameters.
-	 * @param builder The project documentation configuration builder.
-	 * @param docJavaMethod The documented Java method.
-	 * @param frameworkAnnotations The framework annotations used to identify specific
-	 * annotations.
-	 * @return A list of processed {@link DocJavaParameter} objects.
-	 */
-	default List<DocJavaParameter> getJavaParameterList(ProjectDocConfigBuilder builder,
-			final DocJavaMethod docJavaMethod, FrameworkAnnotations frameworkAnnotations) {
-		Object javaMethod = docJavaMethod.getJavaMethod();
-		Map<String, String> replacementMap = builder.getReplaceClassMap();
-		Map<String, String> paramTagMap = docJavaMethod.getParamTagMap();
-		List<?> parameterList = DocUtil.getMethodParameters(javaMethod);
-		if (parameterList.isEmpty()) {
-			return new ArrayList<>(0);
-		}
-		Set<String> ignoreSets = ignoreParamsSets(javaMethod);
-		List<DocJavaParameter> apiJavaParameterList = new ArrayList<>(parameterList.size());
-		Map<String, ?> actualTypesMap = docJavaMethod.getActualTypesMap();
-		for (Object parameter : parameterList) {
-			String paramName = DocUtil.getParameterName(parameter);
-			if (ignoreSets.contains(paramName)) {
-				continue;
-			}
-			DocJavaParameter apiJavaParameter = new DocJavaParameter();
-			apiJavaParameter.setJavaParameter(parameter);
-			Object javaType = invokeParameterType(parameter);
-			String javaTypeCanonicalName = DocUtil.getTypeCanonicalName(javaType);
-			if (Objects.nonNull(actualTypesMap) && Objects.nonNull(actualTypesMap.get(javaTypeCanonicalName))) {
-				javaType = actualTypesMap.get(javaTypeCanonicalName);
-			}
-			apiJavaParameter.setTypeValue(DocUtil.getTypeValue(javaType));
-			StringBuilder genericCanonicalName = new StringBuilder(DocUtil.getTypeGenericCanonicalName(javaType));
-			String fullyQualifiedName = DocUtil.getTypeFullyQualifiedName(javaType);
-			apiJavaParameter.setFullyQualifiedName(fullyQualifiedName);
-			String genericFullyQualifiedName = DocUtil.getTypeGenericFullyQualifiedName(javaType);
-			String commentClass = paramTagMap.get(paramName);
-			// ignore request params
-			if (Objects.nonNull(commentClass) && commentClass.contains(DocTags.IGNORE)) {
-				continue;
-			}
-			String rewriteClassName = getRewriteClassName(replacementMap, genericFullyQualifiedName, commentClass);
-			// rewrite class
-			if (JavaClassValidateUtil.isClassName(rewriteClassName)) {
-				genericCanonicalName = new StringBuilder(rewriteClassName);
-				genericFullyQualifiedName = DocClassUtil.getSimpleName(rewriteClassName);
-			}
-			if (JavaClassValidateUtil.isMvcIgnoreParams(genericCanonicalName.toString(),
-					builder.getApiConfig().getIgnoreRequestParams())) {
-				continue;
-			}
-			genericFullyQualifiedName = DocClassUtil.rewriteRequestParam(genericFullyQualifiedName);
-			genericCanonicalName = new StringBuilder(DocClassUtil.rewriteRequestParam(genericCanonicalName.toString()));
-			List<?> annotations = DocUtil.getParameterAnnotations(parameter);
-			apiJavaParameter.setAnnotations(annotations);
-			for (Object annotation : annotations) {
-				String annotationName = DocUtil.getAnnotationTypeValue(annotation);
-				if (Objects.nonNull(frameworkAnnotations)
-						&& frameworkAnnotations.getRequestBodyAnnotation().getAnnotationName().equals(annotationName)) {
-					if (Objects.nonNull(builder.getApiConfig().getRequestBodyAdvice()) && Objects
-						.isNull(DocUtil.getMethodTagByName(javaMethod, DocTags.IGNORE_REQUEST_BODY_ADVICE))) {
-						String requestBodyAdvice = builder.getApiConfig().getRequestBodyAdvice().getClassName();
-						genericFullyQualifiedName = requestBodyAdvice;
-						genericCanonicalName = new StringBuilder(requestBodyAdvice + "<" + genericCanonicalName + ">");
-					}
-				}
-			}
-			if (JavaClassValidateUtil.isCollection(genericFullyQualifiedName)
-					|| JavaClassValidateUtil.isArray(genericFullyQualifiedName)) {
-				if (JavaClassValidateUtil.isCollection(genericCanonicalName.toString())) {
-					genericCanonicalName.append("<T>");
-				}
-			}
-			apiJavaParameter.setGenericCanonicalName(genericCanonicalName.toString());
-			apiJavaParameter.setGenericFullyQualifiedName(genericFullyQualifiedName);
-			apiJavaParameterList.add(apiJavaParameter);
-		}
-		return apiJavaParameterList;
-	}
+    /**
+     * Retrieves and processes the list of parameters for a given Java method, applying
+     * various transformations and ignoring specified parameters.
+     * @param builder The project documentation configuration builder.
+     * @param docJavaMethod The documented Java method.
+     * @param frameworkAnnotations The framework annotations used to identify specific
+     * annotations.
+     * @return A list of processed {@link DocJavaParameter} objects.
+     */
+    default List<DocJavaParameter> getJavaParameterList(
+            ProjectDocConfigBuilder builder,
+            final DocJavaMethod docJavaMethod,
+            FrameworkAnnotations frameworkAnnotations) {
+        Object javaMethod = docJavaMethod.getJavaMethod();
+        Map<String, String> replacementMap = builder.getReplaceClassMap();
+        Map<String, String> paramTagMap = docJavaMethod.getParamTagMap();
+        List<?> parameterList = DocUtil.getMethodParameters(javaMethod);
+        if (parameterList.isEmpty()) {
+            return new ArrayList<>(0);
+        }
+        Set<String> ignoreSets = ignoreParamsSets(javaMethod);
+        List<DocJavaParameter> apiJavaParameterList = new ArrayList<>(parameterList.size());
+        Map<String, ?> actualTypesMap = docJavaMethod.getActualTypesMap();
+        for (Object parameter : parameterList) {
+            String paramName = DocUtil.getParameterName(parameter);
+            if (ignoreSets.contains(paramName)) {
+                continue;
+            }
+            DocJavaParameter apiJavaParameter = new DocJavaParameter();
+            apiJavaParameter.setJavaParameter(parameter);
+            Object javaType = invokeParameterType(parameter);
+            String javaTypeCanonicalName = DocUtil.getTypeCanonicalName(javaType);
+            if (Objects.nonNull(actualTypesMap) && Objects.nonNull(actualTypesMap.get(javaTypeCanonicalName))) {
+                javaType = actualTypesMap.get(javaTypeCanonicalName);
+            }
+            apiJavaParameter.setTypeValue(DocUtil.getTypeValue(javaType));
+            StringBuilder genericCanonicalName = new StringBuilder(DocUtil.getTypeGenericCanonicalName(javaType));
+            String fullyQualifiedName = DocUtil.getTypeFullyQualifiedName(javaType);
+            apiJavaParameter.setFullyQualifiedName(fullyQualifiedName);
+            String genericFullyQualifiedName = DocUtil.getTypeGenericFullyQualifiedName(javaType);
+            String commentClass = paramTagMap.get(paramName);
+            // ignore request params
+            if (Objects.nonNull(commentClass) && commentClass.contains(DocTags.IGNORE)) {
+                continue;
+            }
+            String rewriteClassName = getRewriteClassName(replacementMap, genericFullyQualifiedName, commentClass);
+            // rewrite class
+            if (JavaClassValidateUtil.isClassName(rewriteClassName)) {
+                genericCanonicalName = new StringBuilder(rewriteClassName);
+                genericFullyQualifiedName = DocClassUtil.getSimpleName(rewriteClassName);
+            }
+            if (JavaClassValidateUtil.isMvcIgnoreParams(
+                    genericCanonicalName.toString(), builder.getApiConfig().getIgnoreRequestParams())) {
+                continue;
+            }
+            genericFullyQualifiedName = DocClassUtil.rewriteRequestParam(genericFullyQualifiedName);
+            genericCanonicalName = new StringBuilder(DocClassUtil.rewriteRequestParam(genericCanonicalName.toString()));
+            List<?> annotations = DocUtil.getParameterAnnotations(parameter);
+            apiJavaParameter.setAnnotations(annotations);
+            for (Object annotation : annotations) {
+                String annotationName = DocUtil.getAnnotationTypeValue(annotation);
+                if (Objects.nonNull(frameworkAnnotations)
+                        && frameworkAnnotations
+                                .getRequestBodyAnnotation()
+                                .getAnnotationName()
+                                .equals(annotationName)) {
+                    if (Objects.nonNull(builder.getApiConfig().getRequestBodyAdvice())
+                            && Objects.isNull(
+                                    DocUtil.getMethodTagByName(javaMethod, DocTags.IGNORE_REQUEST_BODY_ADVICE))) {
+                        String requestBodyAdvice =
+                                builder.getApiConfig().getRequestBodyAdvice().getClassName();
+                        genericFullyQualifiedName = requestBodyAdvice;
+                        genericCanonicalName = new StringBuilder(requestBodyAdvice + "<" + genericCanonicalName + ">");
+                    }
+                }
+            }
+            if (JavaClassValidateUtil.isCollection(genericFullyQualifiedName)
+                    || JavaClassValidateUtil.isArray(genericFullyQualifiedName)) {
+                if (JavaClassValidateUtil.isCollection(genericCanonicalName.toString())) {
+                    genericCanonicalName.append("<T>");
+                }
+            }
+            apiJavaParameter.setGenericCanonicalName(genericCanonicalName.toString());
+            apiJavaParameter.setGenericFullyQualifiedName(genericFullyQualifiedName);
+            apiJavaParameterList.add(apiJavaParameter);
+        }
+        return apiJavaParameterList;
+    }
 
-	/**
-	 * Retrieves the rewritten class name based on the provided map, full type name, and
-	 * comment class.
-	 * @param replacementMap The map containing replacements for class names.
-	 * @param fullTypeName The fully qualified type name.
-	 * @param commentClass The comment associated with the class, if any.
-	 * @return The rewritten class name or the original class name if no valid rewrite is
-	 * found.
-	 */
-	default String getRewriteClassName(Map<String, String> replacementMap, String fullTypeName, String commentClass) {
-		String rewriteClassName;
-		if (Objects.nonNull(commentClass) && !DocGlobalConstants.NO_COMMENTS_FOUND.equals(commentClass)) {
-			String[] comments = commentClass.split("\\|");
-			if (comments.length < 1) {
-				return replacementMap.get(fullTypeName);
-			}
-			rewriteClassName = comments[comments.length - 1];
-			if (JavaClassValidateUtil.isClassName(rewriteClassName)) {
-				return rewriteClassName;
-			}
-		}
-		return replacementMap.get(fullTypeName);
-	}
+    /**
+     * Retrieves the rewritten class name based on the provided map, full type name, and
+     * comment class.
+     * @param replacementMap The map containing replacements for class names.
+     * @param fullTypeName The fully qualified type name.
+     * @param commentClass The comment associated with the class, if any.
+     * @return The rewritten class name or the original class name if no valid rewrite is
+     * found.
+     */
+    default String getRewriteClassName(Map<String, String> replacementMap, String fullTypeName, String commentClass) {
+        String rewriteClassName;
+        if (Objects.nonNull(commentClass) && !DocGlobalConstants.NO_COMMENTS_FOUND.equals(commentClass)) {
+            String[] comments = commentClass.split("\\|");
+            if (comments.length < 1) {
+                return replacementMap.get(fullTypeName);
+            }
+            rewriteClassName = comments[comments.length - 1];
+            if (JavaClassValidateUtil.isClassName(rewriteClassName)) {
+                return rewriteClassName;
+            }
+        }
+        return replacementMap.get(fullTypeName);
+    }
 
-	/**
-	 * Retrieves a set of parameter names to be ignored based on the `@ignoreParams` tag
-	 * in the method's documentation.
-	 * @param method The Java method to inspect for the ignore parameters tag.
-	 * @return A set of parameter names that should be ignored.
-	 */
-	default Set<String> ignoreParamsSets(Object method) {
-		Set<String> ignoreSets = new HashSet<>();
-		Object ignoreParam = DocUtil.getMethodTagByName(method, DocTags.IGNORE_PARAMS);
-		if (Objects.nonNull(ignoreParam)) {
-			String[] igParams = DocUtil.getDocletTagValue(ignoreParam).split(" ");
-			Collections.addAll(ignoreSets, igParams);
-		}
-		return ignoreSets;
-	}
+    /**
+     * Retrieves a set of parameter names to be ignored based on the `@ignoreParams` tag
+     * in the method's documentation.
+     * @param method The Java method to inspect for the ignore parameters tag.
+     * @return A set of parameter names that should be ignored.
+     */
+    default Set<String> ignoreParamsSets(Object method) {
+        Set<String> ignoreSets = new HashSet<>();
+        Object ignoreParam = DocUtil.getMethodTagByName(method, DocTags.IGNORE_PARAMS);
+        if (Objects.nonNull(ignoreParam)) {
+            String[] igParams = DocUtil.getDocletTagValue(ignoreParam).split(" ");
+            Collections.addAll(ignoreSets, igParams);
+        }
+        return ignoreSets;
+    }
 
-	/**
-	 * Retrieves the simplified return type of a Java method, handling generic types and
-	 * array notations.
-	 * @param javaMethod The Java method whose return type needs to be processed.
-	 * @param actualTypesMap A map containing actual type mappings.
-	 * @return The simplified return type as a string.
-	 */
-	default String getMethodReturnType(Object javaMethod, Map<String, ?> actualTypesMap) {
-		String simpleReturn = this.replaceTypeName(DocUtil.getMethodReturnTypeCanonicalName(javaMethod), actualTypesMap,
-				Boolean.TRUE);
-		String returnClass = this.replaceTypeName(DocUtil.getMethodReturnTypeGenericCanonicalName(javaMethod),
-				actualTypesMap, Boolean.TRUE);
-		returnClass = returnClass.replace(simpleReturn, JavaClassUtil.getClassSimpleName(simpleReturn));
-		String[] arrays = DocClassUtil.getSimpleGicName(returnClass);
-		for (String str : arrays) {
-			if (str.contains("[")) {
-				str = str.substring(0, str.indexOf("["));
-			}
-			String[] generics = str.split("[<,]");
-			for (String generic : generics) {
-				if (generic.contains("extends")) {
-					String className = generic.substring(generic.lastIndexOf(" ") + 1);
-					returnClass = returnClass.replace(className, JavaClassUtil.getClassSimpleName(className));
-				}
-				if (generic.length() != 1 && !generic.contains("extends")) {
-					returnClass = returnClass.replaceAll(generic, JavaClassUtil.getClassSimpleName(generic));
-				}
+    /**
+     * Retrieves the simplified return type of a Java method, handling generic types and
+     * array notations.
+     * @param javaMethod The Java method whose return type needs to be processed.
+     * @param actualTypesMap A map containing actual type mappings.
+     * @return The simplified return type as a string.
+     */
+    default String getMethodReturnType(Object javaMethod, Map<String, ?> actualTypesMap) {
+        String simpleReturn = this.replaceTypeName(
+                DocUtil.getMethodReturnTypeCanonicalName(javaMethod), actualTypesMap, Boolean.TRUE);
+        String returnClass = this.replaceTypeName(
+                DocUtil.getMethodReturnTypeGenericCanonicalName(javaMethod), actualTypesMap, Boolean.TRUE);
+        returnClass = returnClass.replace(simpleReturn, JavaClassUtil.getClassSimpleName(simpleReturn));
+        String[] arrays = DocClassUtil.getSimpleGicName(returnClass);
+        for (String str : arrays) {
+            if (str.contains("[")) {
+                str = str.substring(0, str.indexOf("["));
+            }
+            String[] generics = str.split("[<,]");
+            for (String generic : generics) {
+                if (generic.contains("extends")) {
+                    String className = generic.substring(generic.lastIndexOf(" ") + 1);
+                    returnClass = returnClass.replace(className, JavaClassUtil.getClassSimpleName(className));
+                }
+                if (generic.length() != 1 && !generic.contains("extends")) {
+                    returnClass = returnClass.replaceAll(generic, JavaClassUtil.getClassSimpleName(generic));
+                }
+            }
+        }
+        return returnClass;
+    }
 
-			}
-		}
-		return returnClass;
-	}
+    /**
+     * Replaces type names in the given string based on the provided map of actual types.
+     * @param type The type name to be replaced.
+     * @param actualTypesMap A map containing the actual types to be used for replacement.
+     * @param simple A flag indicating whether to use simple names for replacement.
+     * @return The type name after replacement.
+     */
+    default String replaceTypeName(String type, Map<String, ?> actualTypesMap, boolean simple) {
+        if (Objects.isNull(actualTypesMap)) {
+            return type;
+        }
+        for (Map.Entry<String, ?> entry : actualTypesMap.entrySet()) {
+            if (type.contains(entry.getKey())) {
+                if (simple) {
+                    return type.replace(entry.getKey(), DocUtil.getTypeGenericValue(entry.getValue()));
+                } else {
+                    return type.replace(entry.getKey(), DocUtil.getTypeGenericFullyQualifiedName(entry.getValue()));
+                }
+            }
+        }
+        return type;
+    }
 
-	/**
-	 * Replaces type names in the given string based on the provided map of actual types.
-	 * @param type The type name to be replaced.
-	 * @param actualTypesMap A map containing the actual types to be used for replacement.
-	 * @param simple A flag indicating whether to use simple names for replacement.
-	 * @return The type name after replacement.
-	 */
-	default String replaceTypeName(String type, Map<String, ?> actualTypesMap, boolean simple) {
-		if (Objects.isNull(actualTypesMap)) {
-			return type;
-		}
-		for (Map.Entry<String, ?> entry : actualTypesMap.entrySet()) {
-			if (type.contains(entry.getKey())) {
-				if (simple) {
-					return type.replace(entry.getKey(), DocUtil.getTypeGenericValue(entry.getValue()));
-				}
-				else {
-					return type.replace(entry.getKey(), DocUtil.getTypeGenericFullyQualifiedName(entry.getValue()));
-				}
-			}
-		}
-		return type;
-	}
+    /**
+     * Resolve parameter type metadata without binding to a specific parser type.
+     * @param parameter parameter metadata object
+     * @return parameter type metadata object or null
+     */
+    default Object invokeParameterType(Object parameter) {
+        if (Objects.isNull(parameter)) {
+            return null;
+        }
+        try {
+            return parameter.getClass().getMethod("getType").invoke(parameter);
+        } catch (ReflectiveOperationException | RuntimeException ignored) {
+            return null;
+        }
+    }
 
-	/**
-	 * Resolve parameter type metadata without binding to a specific parser type.
-	 * @param parameter parameter metadata object
-	 * @return parameter type metadata object or null
-	 */
-	default Object invokeParameterType(Object parameter) {
-		if (Objects.isNull(parameter)) {
-			return null;
-		}
-		try {
-			return parameter.getClass().getMethod("getType").invoke(parameter);
-		}
-		catch (ReflectiveOperationException | RuntimeException ignored) {
-			return null;
-		}
-	}
-
-	/**
-	 * Determines whether the return object should be ignored based on its type name and a
-	 * list of ignored parameters.
-	 * @param typeName The name of the type to check.
-	 * @param ignoreParams A list of parameter names that should be ignored.
-	 * @return true if the return object should be ignored; false otherwise.
-	 */
-	boolean ignoreReturnObject(String typeName, List<String> ignoreParams);
-
+    /**
+     * Determines whether the return object should be ignored based on its type name and a
+     * list of ignored parameters.
+     * @param typeName The name of the type to check.
+     * @param ignoreParams A list of parameter names that should be ignored.
+     * @return true if the return object should be ignored; false otherwise.
+     */
+    boolean ignoreReturnObject(String typeName, List<String> ignoreParams);
 }

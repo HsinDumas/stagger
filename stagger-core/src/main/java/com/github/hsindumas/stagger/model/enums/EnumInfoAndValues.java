@@ -1,7 +1,6 @@
 package com.github.hsindumas.stagger.model.enums;
 
 import com.github.hsindumas.stagger.model.ApiParam;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,73 +13,72 @@ import java.util.List;
  */
 public class EnumInfoAndValues implements Serializable {
 
-	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = 6164712273272981975L;
+    /**
+     * serialVersionUID
+     */
+    private static final long serialVersionUID = 6164712273272981975L;
 
-	/**
-	 * Enum metadata.
-	 */
-	private EnumInfo enumInfo;
+    /**
+     * Enum metadata.
+     */
+    private EnumInfo enumInfo;
 
-	/**
-	 * ApiParam enumValue<br>
-	 * Use in openapi api document
-	 * @see ApiParam#getEnumValues()
-	 */
-	private List<String> enumValues;
+    /**
+     * ApiParam enumValue<br>
+     * Use in openapi api document
+     * @see ApiParam#getEnumValues()
+     */
+    private List<String> enumValues;
 
-	/**
-	 * ApiParam value
-	 * @see ApiParam#getValue()
-	 */
-	private Object value;
+    /**
+     * ApiParam value
+     * @see ApiParam#getValue()
+     */
+    private Object value;
 
-	/**
-	 * ApiParam value default enum; when type is not enum type, will set this type to
-	 * {@link ApiParam#setType(String)}
-	 */
-	private String type;
+    /**
+     * ApiParam value default enum; when type is not enum type, will set this type to
+     * {@link ApiParam#setType(String)}
+     */
+    private String type;
 
-	public static EnumInfoAndValues builder() {
-		return new EnumInfoAndValues();
-	}
+    public static EnumInfoAndValues builder() {
+        return new EnumInfoAndValues();
+    }
 
-	public EnumInfo getEnumInfo() {
-		return enumInfo;
-	}
+    public EnumInfo getEnumInfo() {
+        return enumInfo;
+    }
 
-	public EnumInfoAndValues setEnumInfo(EnumInfo enumInfo) {
-		this.enumInfo = enumInfo;
-		return this;
-	}
+    public EnumInfoAndValues setEnumInfo(EnumInfo enumInfo) {
+        this.enumInfo = enumInfo;
+        return this;
+    }
 
-	public List<String> getEnumValues() {
-		return enumValues;
-	}
+    public List<String> getEnumValues() {
+        return enumValues;
+    }
 
-	public EnumInfoAndValues setEnumValues(List<String> enumValues) {
-		this.enumValues = enumValues;
-		return this;
-	}
+    public EnumInfoAndValues setEnumValues(List<String> enumValues) {
+        this.enumValues = enumValues;
+        return this;
+    }
 
-	public Object getValue() {
-		return value;
-	}
+    public Object getValue() {
+        return value;
+    }
 
-	public EnumInfoAndValues setValue(Object value) {
-		this.value = value;
-		return this;
-	}
+    public EnumInfoAndValues setValue(Object value) {
+        this.value = value;
+        return this;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public EnumInfoAndValues setType(String type) {
-		this.type = type;
-		return this;
-	}
-
+    public EnumInfoAndValues setType(String type) {
+        this.type = type;
+        return this;
+    }
 }

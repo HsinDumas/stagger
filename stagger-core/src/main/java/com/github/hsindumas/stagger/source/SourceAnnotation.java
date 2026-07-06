@@ -31,8 +31,7 @@ import java.util.Map;
  */
 public interface SourceAnnotation {
 
-	String qualifiedName();
+    String qualifiedName();
 
-	Map<String, SourceAnnotationValue> members();
-
+    Map<String, SourceAnnotationValue> members();
 }

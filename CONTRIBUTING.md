@@ -7,7 +7,7 @@ Before submitting a Pull Request (PR), please ensure:
 - 📌 **Discuss new features**: Start with an [Issue](https://github.com/HsinDumas/stagger/issues) to align on proposed changes.
 - 🧩 **Single-focused PRs**: Submit one fix or feature per PR to simplify reviews.
 - 🌍 **English comments**: Use English for code comments to support international collaboration.
-- ✅ **Code quality**: Follow the [Spring Java Format](https://github.com/spring-io/java-format) style and add unit tests.
+- ✅ **Code quality**: Follow the [Palantir Java Format](https://github.com/palantir/palantir-java-format) style and add unit tests.
 - 📄 **Update documentation**: Reflect your changes in relevant documentation [`HsinDumas.github.io`](https://github.com/HsinDumas/stagger-group.github.io/tree/master/docs). if needed.
 - 📝 **Commit message guidelines**: All commits must follow the [Angular Commit Convention](https://github.com/angular/angular/blob/main/CONTRIBUTING.md#commit).
 	- Use appropriate types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, etc.

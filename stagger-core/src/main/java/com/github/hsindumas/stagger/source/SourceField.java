@@ -32,14 +32,13 @@ import java.util.Optional;
  */
 public interface SourceField {
 
-	String name();
+    String name();
 
-	SourceType type();
+    SourceType type();
 
-	List<SourceAnnotation> annotations();
+    List<SourceAnnotation> annotations();
 
-	String comment();
+    String comment();
 
-	Optional<String> initializer();
-
+    Optional<String> initializer();
 }

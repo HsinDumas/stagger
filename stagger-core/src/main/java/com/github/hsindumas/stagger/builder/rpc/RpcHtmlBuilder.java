@@ -25,7 +25,6 @@ import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.rpc.RpcApiDoc;
-
 import java.util.List;
 
 /**
@@ -37,35 +36,38 @@ import java.util.List;
  */
 public class RpcHtmlBuilder {
 
-	/**
-	 * private constructor
-	 */
-	private RpcHtmlBuilder() {
-		throw new IllegalStateException("Utility class");
-	}
+    /**
+     * private constructor
+     */
+    private RpcHtmlBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * build controller api
-	 * @param config config
-	 */
-	public static void buildApiDoc(ApiConfig config) {
-		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
-	}
+    /**
+     * build controller api
+     * @param config config
+     */
+    public static void buildApiDoc(ApiConfig config) {
+        buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
+    }
 
-	/**
-	 * Only for stagger maven plugin and gradle plugin.
-	 * @param config ApiConfig
-	 * @param configBuilder ProjectDocConfigBuilder
-	 */
-	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
-		RpcDocBuilderTemplate builderTemplate = new RpcDocBuilderTemplate();
-		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, config, configBuilder);
-		builderTemplate.copyJQueryAndCss(config);
-		String indexHtml = "rpc-index.html";
-		builderTemplate.buildAllInOne(apiDocList, config, configBuilder, DocGlobalConstants.RPC_ALL_IN_ONE_HTML_TPL,
-				indexHtml);
-		builderTemplate.buildSearchJs(apiDocList, config, configBuilder, DocGlobalConstants.RPC_ALL_IN_ONE_SEARCH_TPL,
-				DocGlobalConstants.SEARCH_JS_OUT);
-	}
-
+    /**
+     * Only for stagger maven plugin and gradle plugin.
+     * @param config ApiConfig
+     * @param configBuilder ProjectDocConfigBuilder
+     */
+    public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
+        RpcDocBuilderTemplate builderTemplate = new RpcDocBuilderTemplate();
+        List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, config, configBuilder);
+        builderTemplate.copyJQueryAndCss(config);
+        String indexHtml = "rpc-index.html";
+        builderTemplate.buildAllInOne(
+                apiDocList, config, configBuilder, DocGlobalConstants.RPC_ALL_IN_ONE_HTML_TPL, indexHtml);
+        builderTemplate.buildSearchJs(
+                apiDocList,
+                config,
+                configBuilder,
+                DocGlobalConstants.RPC_ALL_IN_ONE_SEARCH_TPL,
+                DocGlobalConstants.SEARCH_JS_OUT);
+    }
 }

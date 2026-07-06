@@ -30,43 +30,42 @@ import java.util.function.Function;
  */
 public class Template {
 
-	private final Function<Map<String, Object>, String> renderer;
+    private final Function<Map<String, Object>, String> renderer;
 
-	private final Map<String, Object> bindingValues = new HashMap<>(16);
+    private final Map<String, Object> bindingValues = new HashMap<>(16);
 
-	/**
-	 * Create a template wrapper.
-	 * @param renderer template renderer
-	 */
-	public Template(Function<Map<String, Object>, String> renderer) {
-		this.renderer = Objects.requireNonNull(renderer, "renderer");
-	}
+    /**
+     * Create a template wrapper.
+     * @param renderer template renderer
+     */
+    public Template(Function<Map<String, Object>, String> renderer) {
+        this.renderer = Objects.requireNonNull(renderer, "renderer");
+    }
 
-	/**
-	 * Bind a single value.
-	 * @param key key
-	 * @param value value
-	 */
-	public void binding(String key, Object value) {
-		bindingValues.put(key, value);
-	}
+    /**
+     * Bind a single value.
+     * @param key key
+     * @param value value
+     */
+    public void binding(String key, Object value) {
+        bindingValues.put(key, value);
+    }
 
-	/**
-	 * Bind multiple values.
-	 * @param values values
-	 */
-	public void binding(Map<String, Object> values) {
-		if (values != null) {
-			bindingValues.putAll(values);
-		}
-	}
+    /**
+     * Bind multiple values.
+     * @param values values
+     */
+    public void binding(Map<String, Object> values) {
+        if (values != null) {
+            bindingValues.putAll(values);
+        }
+    }
 
-	/**
-	 * Render output.
-	 * @return rendered content
-	 */
-	public String render() {
-		return renderer.apply(new HashMap<>(bindingValues));
-	}
-
+    /**
+     * Render output.
+     * @return rendered content
+     */
+    public String render() {
+        return renderer.apply(new HashMap<>(bindingValues));
+    }
 }

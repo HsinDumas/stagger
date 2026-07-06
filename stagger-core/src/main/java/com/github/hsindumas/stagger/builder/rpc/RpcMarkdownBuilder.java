@@ -21,12 +21,11 @@
 package com.github.hsindumas.stagger.builder.rpc;
 
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
+import com.github.hsindumas.stagger.common.util.DateTimeUtil;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.rpc.RpcApiDoc;
-import com.github.hsindumas.stagger.common.util.DateTimeUtil;
-
 import java.util.List;
 
 /**
@@ -35,42 +34,49 @@ import java.util.List;
  */
 public class RpcMarkdownBuilder {
 
-	/**
-	 * private constructor
-	 */
-	private RpcMarkdownBuilder() {
-		throw new IllegalStateException("Utility class");
-	}
+    /**
+     * private constructor
+     */
+    private RpcMarkdownBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * @param config ApiConfig
-	 */
-	public static void buildApiDoc(ApiConfig config) {
-		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
-	}
+    /**
+     * @param config ApiConfig
+     */
+    public static void buildApiDoc(ApiConfig config) {
+        buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
+    }
 
-	/**
-	 * Only for stagger maven plugin and gradle plugin.
-	 * @param apiConfig ApiConfig
-	 * @param configBuilder ProjectDocConfigBuilder
-	 */
-	public static void buildApiDoc(ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
-		RpcDocBuilderTemplate builderTemplate = new RpcDocBuilderTemplate();
-		List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, apiConfig, configBuilder);
-		if (apiConfig.isAllInOne()) {
-			String version = apiConfig.isCoverOld() ? "" : "-V" + DateTimeUtil.long2Str(System.currentTimeMillis(),
-					DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
-			String docName = builderTemplate.allInOneDocName(apiConfig, "rpc-all" + version,
-					DocGlobalConstants.MARKDOWN_EXTENSION);
-			builderTemplate.buildAllInOne(apiDocList, apiConfig, configBuilder,
-					DocGlobalConstants.RPC_ALL_IN_ONE_MD_TPL, docName);
-		}
-		else {
-			builderTemplate.buildApiDoc(apiDocList, apiConfig, DocGlobalConstants.RPC_API_DOC_MD_TPL,
-					DocGlobalConstants.MARKDOWN_API_FILE_EXTENSION);
-			builderTemplate.buildErrorCodeDoc(apiConfig, DocGlobalConstants.ERROR_CODE_LIST_MD_TPL,
-					DocGlobalConstants.ERROR_CODE_LIST_MD, configBuilder);
-		}
-	}
-
+    /**
+     * Only for stagger maven plugin and gradle plugin.
+     * @param apiConfig ApiConfig
+     * @param configBuilder ProjectDocConfigBuilder
+     */
+    public static void buildApiDoc(ApiConfig apiConfig, ProjectDocConfigBuilder configBuilder) {
+        RpcDocBuilderTemplate builderTemplate = new RpcDocBuilderTemplate();
+        List<RpcApiDoc> apiDocList = builderTemplate.getApiDoc(false, true, false, apiConfig, configBuilder);
+        if (apiConfig.isAllInOne()) {
+            String version = apiConfig.isCoverOld()
+                    ? ""
+                    : "-V"
+                            + DateTimeUtil.long2Str(
+                                    System.currentTimeMillis(), DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
+            String docName = builderTemplate.allInOneDocName(
+                    apiConfig, "rpc-all" + version, DocGlobalConstants.MARKDOWN_EXTENSION);
+            builderTemplate.buildAllInOne(
+                    apiDocList, apiConfig, configBuilder, DocGlobalConstants.RPC_ALL_IN_ONE_MD_TPL, docName);
+        } else {
+            builderTemplate.buildApiDoc(
+                    apiDocList,
+                    apiConfig,
+                    DocGlobalConstants.RPC_API_DOC_MD_TPL,
+                    DocGlobalConstants.MARKDOWN_API_FILE_EXTENSION);
+            builderTemplate.buildErrorCodeDoc(
+                    apiConfig,
+                    DocGlobalConstants.ERROR_CODE_LIST_MD_TPL,
+                    DocGlobalConstants.ERROR_CODE_LIST_MD,
+                    configBuilder);
+        }
+    }
 }

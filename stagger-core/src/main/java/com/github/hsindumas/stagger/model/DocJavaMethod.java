@@ -31,223 +31,222 @@ import java.util.Set;
  */
 public class DocJavaMethod {
 
-	/**
-	 * JavaMethod
-	 */
-	private Object javaMethod;
+    /**
+     * JavaMethod
+     */
+    private Object javaMethod;
 
-	/**
-	 * return schema map
-	 */
-	private Map<String, Object> returnSchema;
+    /**
+     * return schema map
+     */
+    private Map<String, Object> returnSchema;
 
-	/**
-	 * request schema map
-	 */
-	private Map<String, Object> requestSchema;
+    /**
+     * request schema map
+     */
+    private Map<String, Object> requestSchema;
 
-	/**
-	 * actualTypesMap
-	 */
-	private Map<String, ?> actualTypesMap;
+    /**
+     * actualTypesMap
+     */
+    private Map<String, ?> actualTypesMap;
 
-	/**
-	 * method type
-	 */
-	private String methodType;
+    /**
+     * method type
+     */
+    private String methodType;
 
-	/**
-	 * download
-	 */
-	private boolean download;
+    /**
+     * download
+     */
+    private boolean download;
 
-	/**
-	 * mark page
-	 */
-	private String page = "";
+    /**
+     * mark page
+     */
+    private String page = "";
 
-	/**
-	 * api group
-	 */
-	private String group;
+    /**
+     * api group
+     */
+    private String group;
 
-	/**
-	 * method author
-	 */
-	private String author;
+    /**
+     * method author
+     */
+    private String author;
 
-	/**
-	 * method description
-	 */
-	private String desc;
+    /**
+     * method description
+     */
+    private String desc;
 
-	/**
-	 * detailed introduction of the method
-	 */
-	private String detail;
+    /**
+     * detailed introduction of the method
+     */
+    private String detail;
 
-	/**
-	 * param tag map
-	 */
-	private Map<String, String> paramTagMap;
+    /**
+     * param tag map
+     */
+    private Map<String, String> paramTagMap;
 
-	/**
-	 * param tag map
-	 */
-	private Map<String, String> paramsComments;
+    /**
+     * param tag map
+     */
+    private Map<String, String> paramsComments;
 
-	/**
-	 * method api version
-	 */
-	private String version;
+    /**
+     * method api version
+     */
+    private String version;
 
-	/**
-	 * jsonViewClasses
-	 */
-	private Set<String> jsonViewClasses;
+    /**
+     * jsonViewClasses
+     */
+    private Set<String> jsonViewClasses;
 
-	public Set<String> getJsonViewClasses() {
-		if (jsonViewClasses == null) {
-			return Collections.emptySet();
-		}
-		return jsonViewClasses;
-	}
+    public Set<String> getJsonViewClasses() {
+        if (jsonViewClasses == null) {
+            return Collections.emptySet();
+        }
+        return jsonViewClasses;
+    }
 
-	public DocJavaMethod setJsonViewClasses(Set<String> jsonViewClasses) {
-		this.jsonViewClasses = jsonViewClasses;
-		return this;
-	}
+    public DocJavaMethod setJsonViewClasses(Set<String> jsonViewClasses) {
+        this.jsonViewClasses = jsonViewClasses;
+        return this;
+    }
 
-	public String getVersion() {
-		return version;
-	}
+    public String getVersion() {
+        return version;
+    }
 
-	public DocJavaMethod setVersion(String version) {
-		this.version = version;
-		return this;
-	}
+    public DocJavaMethod setVersion(String version) {
+        this.version = version;
+        return this;
+    }
 
-	public static DocJavaMethod builder() {
-		return new DocJavaMethod();
-	}
+    public static DocJavaMethod builder() {
+        return new DocJavaMethod();
+    }
 
-	@SuppressWarnings("unchecked")
-	public <T> T getJavaMethod() {
-		return (T) javaMethod;
-	}
+    @SuppressWarnings("unchecked")
+    public <T> T getJavaMethod() {
+        return (T) javaMethod;
+    }
 
-	public DocJavaMethod setJavaMethod(Object javaMethod) {
-		this.javaMethod = javaMethod;
-		return this;
-	}
+    public DocJavaMethod setJavaMethod(Object javaMethod) {
+        this.javaMethod = javaMethod;
+        return this;
+    }
 
-	@SuppressWarnings("unchecked")
-	public <T extends Map<String, ?>> T getActualTypesMap() {
-		return (T) actualTypesMap;
-	}
+    @SuppressWarnings("unchecked")
+    public <T extends Map<String, ?>> T getActualTypesMap() {
+        return (T) actualTypesMap;
+    }
 
-	public DocJavaMethod setActualTypesMap(Map<String, ?> actualTypesMap) {
-		this.actualTypesMap = actualTypesMap;
-		return this;
-	}
+    public DocJavaMethod setActualTypesMap(Map<String, ?> actualTypesMap) {
+        this.actualTypesMap = actualTypesMap;
+        return this;
+    }
 
-	public Map<String, Object> getReturnSchema() {
-		return returnSchema;
-	}
+    public Map<String, Object> getReturnSchema() {
+        return returnSchema;
+    }
 
-	public DocJavaMethod setReturnSchema(Map<String, Object> returnSchema) {
-		this.returnSchema = returnSchema;
-		return this;
-	}
+    public DocJavaMethod setReturnSchema(Map<String, Object> returnSchema) {
+        this.returnSchema = returnSchema;
+        return this;
+    }
 
-	public Map<String, Object> getRequestSchema() {
-		return requestSchema;
-	}
+    public Map<String, Object> getRequestSchema() {
+        return requestSchema;
+    }
 
-	public DocJavaMethod setRequestSchema(Map<String, Object> requestSchema) {
-		this.requestSchema = requestSchema;
-		return this;
-	}
+    public DocJavaMethod setRequestSchema(Map<String, Object> requestSchema) {
+        this.requestSchema = requestSchema;
+        return this;
+    }
 
-	public boolean isDownload() {
-		return download;
-	}
+    public boolean isDownload() {
+        return download;
+    }
 
-	public DocJavaMethod setDownload(boolean download) {
-		this.download = download;
-		return this;
-	}
+    public DocJavaMethod setDownload(boolean download) {
+        this.download = download;
+        return this;
+    }
 
-	public Map<String, String> getParamTagMap() {
-		return paramTagMap;
-	}
+    public Map<String, String> getParamTagMap() {
+        return paramTagMap;
+    }
 
-	public DocJavaMethod setParamTagMap(Map<String, String> paramTagMap) {
-		this.paramTagMap = paramTagMap;
-		return this;
-	}
+    public DocJavaMethod setParamTagMap(Map<String, String> paramTagMap) {
+        this.paramTagMap = paramTagMap;
+        return this;
+    }
 
-	public Map<String, String> getParamsComments() {
-		return paramsComments;
-	}
+    public Map<String, String> getParamsComments() {
+        return paramsComments;
+    }
 
-	public DocJavaMethod setParamsComments(Map<String, String> paramsComments) {
-		this.paramsComments = paramsComments;
-		return this;
-	}
+    public DocJavaMethod setParamsComments(Map<String, String> paramsComments) {
+        this.paramsComments = paramsComments;
+        return this;
+    }
 
-	public String getPage() {
-		return page;
-	}
+    public String getPage() {
+        return page;
+    }
 
-	public DocJavaMethod setPage(String page) {
-		this.page = page;
-		return this;
-	}
+    public DocJavaMethod setPage(String page) {
+        this.page = page;
+        return this;
+    }
 
-	public String getGroup() {
-		return group;
-	}
+    public String getGroup() {
+        return group;
+    }
 
-	public DocJavaMethod setGroup(String group) {
-		this.group = group;
-		return this;
-	}
+    public DocJavaMethod setGroup(String group) {
+        this.group = group;
+        return this;
+    }
 
-	public String getAuthor() {
-		return author;
-	}
+    public String getAuthor() {
+        return author;
+    }
 
-	public DocJavaMethod setAuthor(String author) {
-		this.author = author;
-		return this;
-	}
+    public DocJavaMethod setAuthor(String author) {
+        this.author = author;
+        return this;
+    }
 
-	public String getDesc() {
-		return desc;
-	}
+    public String getDesc() {
+        return desc;
+    }
 
-	public DocJavaMethod setDesc(String desc) {
-		this.desc = desc;
-		return this;
-	}
+    public DocJavaMethod setDesc(String desc) {
+        this.desc = desc;
+        return this;
+    }
 
-	public String getDetail() {
-		return detail;
-	}
+    public String getDetail() {
+        return detail;
+    }
 
-	public DocJavaMethod setDetail(String detail) {
-		this.detail = detail;
-		return this;
-	}
+    public DocJavaMethod setDetail(String detail) {
+        this.detail = detail;
+        return this;
+    }
 
-	public String getMethodType() {
-		return methodType;
-	}
+    public String getMethodType() {
+        return methodType;
+    }
 
-	public DocJavaMethod setMethodType(String methodType) {
-		this.methodType = methodType;
-		return this;
-	}
-
+    public DocJavaMethod setMethodType(String methodType) {
+        this.methodType = methodType;
+        return this;
+    }
 }

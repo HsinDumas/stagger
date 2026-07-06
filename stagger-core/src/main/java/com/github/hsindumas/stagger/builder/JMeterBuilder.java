@@ -21,15 +21,14 @@
 
 package com.github.hsindumas.stagger.builder;
 
+import com.github.hsindumas.stagger.common.util.DateTimeUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.factory.BuildTemplateFactory;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiDoc;
 import com.github.hsindumas.stagger.template.IDocBuildTemplate;
-import com.github.hsindumas.stagger.common.util.DateTimeUtil;
-import com.github.hsindumas.stagger.common.util.StringUtil;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -41,50 +40,51 @@ import java.util.Objects;
  */
 public class JMeterBuilder {
 
-	/**
-	 * Jmeter script extension
-	 */
-	private static final String JMETER_SCRIPT_EXTENSION = ".jmx";
+    /**
+     * Jmeter script extension
+     */
+    private static final String JMETER_SCRIPT_EXTENSION = ".jmx";
 
-	/**
-	 * private constructor
-	 */
-	private JMeterBuilder() {
-		throw new IllegalStateException("Utility class");
-	}
+    /**
+     * private constructor
+     */
+    private JMeterBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * @param config ApiConfig
-	 */
-	public static void buildApiDoc(ApiConfig config) {
-		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
-	}
+    /**
+     * @param config ApiConfig
+     */
+    public static void buildApiDoc(ApiConfig config) {
+        buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
+    }
 
-	/**
-	 * Only for stagger maven plugin and gradle plugin.
-	 * @param config ApiConfig
-	 * @param configBuilder ProjectDocConfigBuilder
-	 */
-	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
-		DocBuilderTemplate builderTemplate = new DocBuilderTemplate();
-		builderTemplate.checkAndInit(config, Boolean.TRUE);
-		config.setAdoc(false);
-		config.setShowJavaType(true);
-		config.setParamsDataToTree(Boolean.FALSE);
-		IDocBuildTemplate<ApiDoc> docBuildTemplate = BuildTemplateFactory.getDocBuildTemplate(config.getFramework(),
-				config.getClassLoader());
-		Objects.requireNonNull(docBuildTemplate, "doc build template is null");
-		List<ApiDoc> apiDocList = docBuildTemplate.getApiData(configBuilder).getApiDatas();
-		String version = config.isCoverOld() ? "" : "-V"
-				+ DateTimeUtil.long2Str(System.currentTimeMillis(), DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
-		String docName;
-		if (StringUtil.isNotEmpty(config.getProjectName())) {
-			docName = config.getProjectName() + version + JMETER_SCRIPT_EXTENSION;
-		}
-		else {
-			docName = "jmeter-script" + version + JMETER_SCRIPT_EXTENSION;
-		}
-		builderTemplate.buildAllInOne(apiDocList, config, configBuilder, DocGlobalConstants.JMETER_TPL, docName);
-	}
-
+    /**
+     * Only for stagger maven plugin and gradle plugin.
+     * @param config ApiConfig
+     * @param configBuilder ProjectDocConfigBuilder
+     */
+    public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) {
+        DocBuilderTemplate builderTemplate = new DocBuilderTemplate();
+        builderTemplate.checkAndInit(config, Boolean.TRUE);
+        config.setAdoc(false);
+        config.setShowJavaType(true);
+        config.setParamsDataToTree(Boolean.FALSE);
+        IDocBuildTemplate<ApiDoc> docBuildTemplate =
+                BuildTemplateFactory.getDocBuildTemplate(config.getFramework(), config.getClassLoader());
+        Objects.requireNonNull(docBuildTemplate, "doc build template is null");
+        List<ApiDoc> apiDocList = docBuildTemplate.getApiData(configBuilder).getApiDatas();
+        String version = config.isCoverOld()
+                ? ""
+                : "-V"
+                        + DateTimeUtil.long2Str(
+                                System.currentTimeMillis(), DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
+        String docName;
+        if (StringUtil.isNotEmpty(config.getProjectName())) {
+            docName = config.getProjectName() + version + JMETER_SCRIPT_EXTENSION;
+        } else {
+            docName = "jmeter-script" + version + JMETER_SCRIPT_EXTENSION;
+        }
+        builderTemplate.buildAllInOne(apiDocList, config, configBuilder, DocGlobalConstants.JMETER_TPL, docName);
+    }
 }

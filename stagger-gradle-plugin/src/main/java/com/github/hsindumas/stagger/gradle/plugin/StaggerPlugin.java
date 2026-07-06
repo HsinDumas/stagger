@@ -38,26 +38,25 @@ import org.gradle.api.tasks.TaskProvider;
  */
 public class StaggerPlugin implements Plugin<Project> {
 
-	@Override
-	public void apply(Project project) {
-		project.getPluginManager().apply(JavaPlugin.class);
-		TaskProvider<Task> javaCompileTask = project.getTasks().named(JavaPlugin.COMPILE_JAVA_TASK_NAME);
-		TaskConstants.taskMap
-			.forEach((taskName, taskClass) -> this.createTask(project, taskName, taskClass, javaCompileTask));
+    @Override
+    public void apply(Project project) {
+        project.getPluginManager().apply(JavaPlugin.class);
+        TaskProvider<Task> javaCompileTask = project.getTasks().named(JavaPlugin.COMPILE_JAVA_TASK_NAME);
+        TaskConstants.taskMap.forEach(
+                (taskName, taskClass) -> this.createTask(project, taskName, taskClass, javaCompileTask));
 
-		// extend project-model to get our settings/configuration via nice configuration
-		project.getExtensions().create(GlobalConstants.EXTENSION_NAME, StaggerPluginExtension.class);
-	}
+        // extend project-model to get our settings/configuration via nice configuration
+        project.getExtensions().create(GlobalConstants.EXTENSION_NAME, StaggerPluginExtension.class);
+    }
 
-	private <T extends Task> void createTask(Project project, String taskName, Class<T> taskClass,
-			TaskProvider<Task> javaCompileTask) {
-		project.getTasks().register(taskName, taskClass, task -> {
-			task.setGroup(GlobalConstants.TASK_GROUP);
-			task.dependsOn(javaCompileTask);
-			if (task instanceof DocBaseTask) {
-				((DocBaseTask) task).setTaskProject(project);
-			}
-		});
-	}
-
+    private <T extends Task> void createTask(
+            Project project, String taskName, Class<T> taskClass, TaskProvider<Task> javaCompileTask) {
+        project.getTasks().register(taskName, taskClass, task -> {
+            task.setGroup(GlobalConstants.TASK_GROUP);
+            task.dependsOn(javaCompileTask);
+            if (task instanceof DocBaseTask) {
+                ((DocBaseTask) task).setTaskProject(project);
+            }
+        });
+    }
 }

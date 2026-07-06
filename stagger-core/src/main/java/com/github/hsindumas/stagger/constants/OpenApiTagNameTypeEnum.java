@@ -40,44 +40,43 @@ package com.github.hsindumas.stagger.constants;
  */
 public enum OpenApiTagNameTypeEnum {
 
-	/**
-	 * Use the simple class name of the controller as the tag name.
-	 * <p>
-	 * This is the default strategy. The tag name will be derived from the controller
-	 * class name without its package prefix.
-	 * </p>
-	 * <p>
-	 * Example: For a controller class named `UserController`, the tag name will be
-	 * `UserController`.
-	 * </p>
-	 */
-	CLASS_NAME,
+    /**
+     * Use the simple class name of the controller as the tag name.
+     * <p>
+     * This is the default strategy. The tag name will be derived from the controller
+     * class name without its package prefix.
+     * </p>
+     * <p>
+     * Example: For a controller class named `UserController`, the tag name will be
+     * `UserController`.
+     * </p>
+     */
+    CLASS_NAME,
 
-	/**
-	 * Use the controller's description as the tag name.
-	 * <p>
-	 * The description is typically defined in the controller's documentation (e.g., via
-	 * Javadoc or configuration). This allows for more descriptive and user-friendly tag
-	 * names.
-	 * </p>
-	 * <p>
-	 * Example: If the controller has a description `User Management API`, the tag name
-	 * will be `User Management API`.
-	 * </p>
-	 */
-	DESCRIPTION,
+    /**
+     * Use the controller's description as the tag name.
+     * <p>
+     * The description is typically defined in the controller's documentation (e.g., via
+     * Javadoc or configuration). This allows for more descriptive and user-friendly tag
+     * names.
+     * </p>
+     * <p>
+     * Example: If the controller has a description `User Management API`, the tag name
+     * will be `User Management API`.
+     * </p>
+     */
+    DESCRIPTION,
 
-	/**
-	 * Use the full package name of the controller as the tag name.
-	 * <p>
-	 * This strategy is useful when you want to organize tags by package structure,
-	 * especially in large projects.
-	 * </p>
-	 * <p>
-	 * Example: For a controller in package `com.example.controller.user`, the tag name
-	 * will be `com.example.controller.user`.
-	 * </p>
-	 */
-	PACKAGE_NAME;
-
+    /**
+     * Use the full package name of the controller as the tag name.
+     * <p>
+     * This strategy is useful when you want to organize tags by package structure,
+     * especially in large projects.
+     * </p>
+     * <p>
+     * Example: For a controller in package `com.example.controller.user`, the tag name
+     * will be `com.example.controller.user`.
+     * </p>
+     */
+    PACKAGE_NAME;
 }

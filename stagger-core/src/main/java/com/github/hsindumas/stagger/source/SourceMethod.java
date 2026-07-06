@@ -32,18 +32,17 @@ import java.util.Optional;
  */
 public interface SourceMethod {
 
-	String name();
+    String name();
 
-	Optional<SourceType> returnType();
+    Optional<SourceType> returnType();
 
-	List<SourceParameter> parameters();
+    List<SourceParameter> parameters();
 
-	List<SourceAnnotation> annotations();
+    List<SourceAnnotation> annotations();
 
-	String comment();
+    String comment();
 
-	List<SourceDocletTag> docletTags();
+    List<SourceDocletTag> docletTags();
 
-	boolean isConstructor();
-
+    boolean isConstructor();
 }

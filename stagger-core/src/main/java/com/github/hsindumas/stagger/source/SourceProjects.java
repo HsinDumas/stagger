@@ -32,15 +32,13 @@ import java.util.ServiceLoader;
  */
 public final class SourceProjects {
 
-	private SourceProjects() {
-	}
+    private SourceProjects() {}
 
-	/**
-	 * Create default source model provider.
-	 * @return source model
-	 */
-	public static SourceModel create() {
-		return ServiceLoader.load(SourceModel.class).findFirst().orElseGet(JavaParserSourceModel::new);
-	}
-
+    /**
+     * Create default source model provider.
+     * @return source model
+     */
+    public static SourceModel create() {
+        return ServiceLoader.load(SourceModel.class).findFirst().orElseGet(JavaParserSourceModel::new);
+    }
 }

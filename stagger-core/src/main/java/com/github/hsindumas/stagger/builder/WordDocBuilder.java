@@ -20,6 +20,8 @@
  */
 package com.github.hsindumas.stagger.builder;
 
+import com.github.hsindumas.stagger.common.util.DateTimeUtil;
+import com.github.hsindumas.stagger.common.util.FileUtil;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.factory.BuildTemplateFactory;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
@@ -27,11 +29,8 @@ import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiDoc;
 import com.github.hsindumas.stagger.model.ApiSchema;
 import com.github.hsindumas.stagger.template.IDocBuildTemplate;
-import com.github.hsindumas.stagger.utils.DocUtil;
-import com.github.hsindumas.stagger.common.util.DateTimeUtil;
-import com.github.hsindumas.stagger.common.util.FileUtil;
 import com.github.hsindumas.stagger.template.engine.Template;
-
+import com.github.hsindumas.stagger.utils.DocUtil;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,88 +43,94 @@ import java.util.Objects;
  */
 public class WordDocBuilder {
 
-	/**
-	 * template docx
-	 */
-	private static final String TEMPLATE_DOCX = "template/word/template.docx";
+    /**
+     * template docx
+     */
+    private static final String TEMPLATE_DOCX = "template/word/template.docx";
 
-	/**
-	 * build docx file name
-	 */
-	private static final String BUILD_DOCX = "index.docx";
+    /**
+     * build docx file name
+     */
+    private static final String BUILD_DOCX = "index.docx";
 
-	/**
-	 * build error code docx file name
-	 */
-	private static final String BUILD_ERROR_DOCX = "error.docx";
+    /**
+     * build error code docx file name
+     */
+    private static final String BUILD_ERROR_DOCX = "error.docx";
 
-	/**
-	 * build directory data docx file name
-	 */
-	private static final String BUILD_DICT_DOCX = "dict.docx";
+    /**
+     * build directory data docx file name
+     */
+    private static final String BUILD_DICT_DOCX = "dict.docx";
 
-	/**
-	 * private constructor
-	 */
-	private WordDocBuilder() {
-		throw new IllegalStateException("Utility class");
-	}
+    /**
+     * private constructor
+     */
+    private WordDocBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * build controller api
-	 * @param config config
-	 * @throws Exception exception
-	 */
-	public static void buildApiDoc(ApiConfig config) throws Exception {
-		buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
-	}
+    /**
+     * build controller api
+     * @param config config
+     * @throws Exception exception
+     */
+    public static void buildApiDoc(ApiConfig config) throws Exception {
+        buildApiDoc(config, new ProjectDocConfigBuilder(config, JavaProjectBuilderHelper.create()));
+    }
 
-	/**
-	 * build controller api
-	 * @param config config
-	 * @param configBuilder ProjectDocConfigBuilder
-	 * @throws Exception exception
-	 */
-	public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) throws Exception {
-		DocBuilderTemplate builderTemplate = new DocBuilderTemplate();
-		builderTemplate.checkAndInit(config, Boolean.TRUE);
-		config.setParamsDataToTree(false);
-		IDocBuildTemplate<ApiDoc> docBuildTemplate = BuildTemplateFactory.getDocBuildTemplate(config.getFramework(),
-				config.getClassLoader());
-		Objects.requireNonNull(docBuildTemplate, "doc build template is null");
-		ApiSchema<ApiDoc> apiSchema = docBuildTemplate.getApiData(configBuilder);
-		List<ApiDoc> apiDocList = apiSchema.getApiDatas();
+    /**
+     * build controller api
+     * @param config config
+     * @param configBuilder ProjectDocConfigBuilder
+     * @throws Exception exception
+     */
+    public static void buildApiDoc(ApiConfig config, ProjectDocConfigBuilder configBuilder) throws Exception {
+        DocBuilderTemplate builderTemplate = new DocBuilderTemplate();
+        builderTemplate.checkAndInit(config, Boolean.TRUE);
+        config.setParamsDataToTree(false);
+        IDocBuildTemplate<ApiDoc> docBuildTemplate =
+                BuildTemplateFactory.getDocBuildTemplate(config.getFramework(), config.getClassLoader());
+        Objects.requireNonNull(docBuildTemplate, "doc build template is null");
+        ApiSchema<ApiDoc> apiSchema = docBuildTemplate.getApiData(configBuilder);
+        List<ApiDoc> apiDocList = apiSchema.getApiDatas();
 
-		if (config.isAllInOne()) {
-			String version = config.isCoverOld() ? "" : "-V" + DateTimeUtil.long2Str(System.currentTimeMillis(),
-					DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
-			String docName = builderTemplate.allInOneDocName(config, "AllInOne" + version + ".docx", ".docx");
-			apiDocList = docBuildTemplate.handleApiGroup(apiDocList, config);
-			String outPath = config.getOutPath();
-			FileUtil.mkdirs(outPath);
-			Template tpl = builderTemplate.buildAllRenderDocTemplate(apiDocList, config, configBuilder,
-					DocGlobalConstants.ALL_IN_ONE_WORD_XML_TPL, null, null);
-			DocUtil.copyAndReplaceDocx(tpl.render(), outPath + DocGlobalConstants.FILE_SEPARATOR + docName,
-					TEMPLATE_DOCX);
-		}
-		else {
-			FileUtil.mkdir(config.getOutPath());
-			for (ApiDoc doc : apiDocList) {
-				Template template = builderTemplate.buildApiDocTemplate(doc, config, DocGlobalConstants.WORD_XML_TPL);
-				DocUtil.copyAndReplaceDocx(template.render(),
-						config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + doc.getName() + BUILD_DOCX,
-						TEMPLATE_DOCX);
-			}
-			Template errorCodeDocTemplate = builderTemplate.buildErrorCodeDocTemplate(config,
-					DocGlobalConstants.WORD_ERROR_XML_TPL, configBuilder);
-			DocUtil.copyAndReplaceDocx(errorCodeDocTemplate.render(),
-					config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + BUILD_ERROR_DOCX, TEMPLATE_DOCX);
+        if (config.isAllInOne()) {
+            String version = config.isCoverOld()
+                    ? ""
+                    : "-V"
+                            + DateTimeUtil.long2Str(
+                                    System.currentTimeMillis(), DocGlobalConstants.DATE_FORMAT_YYYY_MM_DD_HH_MM);
+            String docName = builderTemplate.allInOneDocName(config, "AllInOne" + version + ".docx", ".docx");
+            apiDocList = docBuildTemplate.handleApiGroup(apiDocList, config);
+            String outPath = config.getOutPath();
+            FileUtil.mkdirs(outPath);
+            Template tpl = builderTemplate.buildAllRenderDocTemplate(
+                    apiDocList, config, configBuilder, DocGlobalConstants.ALL_IN_ONE_WORD_XML_TPL, null, null);
+            DocUtil.copyAndReplaceDocx(
+                    tpl.render(), outPath + DocGlobalConstants.FILE_SEPARATOR + docName, TEMPLATE_DOCX);
+        } else {
+            FileUtil.mkdir(config.getOutPath());
+            for (ApiDoc doc : apiDocList) {
+                Template template = builderTemplate.buildApiDocTemplate(doc, config, DocGlobalConstants.WORD_XML_TPL);
+                DocUtil.copyAndReplaceDocx(
+                        template.render(),
+                        config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + doc.getName() + BUILD_DOCX,
+                        TEMPLATE_DOCX);
+            }
+            Template errorCodeDocTemplate = builderTemplate.buildErrorCodeDocTemplate(
+                    config, DocGlobalConstants.WORD_ERROR_XML_TPL, configBuilder);
+            DocUtil.copyAndReplaceDocx(
+                    errorCodeDocTemplate.render(),
+                    config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + BUILD_ERROR_DOCX,
+                    TEMPLATE_DOCX);
 
-			Template directoryDataDocTemplate = builderTemplate.buildDirectoryDataDocTemplate(config, configBuilder,
-					DocGlobalConstants.WORD_DICT_XML_TPL);
-			DocUtil.copyAndReplaceDocx(directoryDataDocTemplate.render(),
-					config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + BUILD_DICT_DOCX, TEMPLATE_DOCX);
-		}
-	}
-
+            Template directoryDataDocTemplate = builderTemplate.buildDirectoryDataDocTemplate(
+                    config, configBuilder, DocGlobalConstants.WORD_DICT_XML_TPL);
+            DocUtil.copyAndReplaceDocx(
+                    directoryDataDocTemplate.render(),
+                    config.getOutPath() + DocGlobalConstants.FILE_SEPARATOR + BUILD_DICT_DOCX,
+                    TEMPLATE_DOCX);
+        }
+    }
 }

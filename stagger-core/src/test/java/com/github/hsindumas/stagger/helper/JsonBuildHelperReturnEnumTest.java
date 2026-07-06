@@ -21,6 +21,10 @@
 
 package com.github.hsindumas.stagger.helper;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.doReturn;
+
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.DocJavaMethod;
@@ -33,10 +37,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.doReturn;
-
 /**
  * Regression tests for enum return rendering in JsonBuildHelper.
  *
@@ -44,69 +44,68 @@ import static org.mockito.Mockito.doReturn;
  */
 class JsonBuildHelperReturnEnumTest {
 
-	@TempDir
-	Path tempDir;
+    @TempDir
+    Path tempDir;
 
-	@Test
-	void shouldRenderEnumReturnUsingFacadeResolvedEnumClass() throws Exception {
-		Path javaRoot = this.writeFixture();
-		ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
-		Object method = this.findMethod(builder, "sample.json.EnumReturnResource", "getLevel");
+    @Test
+    void shouldRenderEnumReturnUsingFacadeResolvedEnumClass() throws Exception {
+        Path javaRoot = this.writeFixture();
+        ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
+        Object method = this.findMethod(builder, "sample.json.EnumReturnResource", "getLevel");
 
-		String result = JsonBuildHelper.buildReturnJson(DocJavaMethod.builder().setJavaMethod(method), builder);
+        String result = JsonBuildHelper.buildReturnJson(DocJavaMethod.builder().setJavaMethod(method), builder);
 
-		assertEquals("BASIC", result);
-	}
+        assertEquals("BASIC", result);
+    }
 
-	@Test
-	void shouldRenderEnumReturnUsingSampleFallbackWhenFacadeClassUnavailable() throws Exception {
-		Path javaRoot = this.writeFixture();
-		ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
-		Object rawMethod = this.findMethod(builder, "sample.json.EnumReturnResource", "getLevel");
-		String returnType = DocUtil.getMethodReturnTypeGenericCanonicalName(rawMethod);
+    @Test
+    void shouldRenderEnumReturnUsingSampleFallbackWhenFacadeClassUnavailable() throws Exception {
+        Path javaRoot = this.writeFixture();
+        ProjectDocConfigBuilder builder = this.newBuilder(javaRoot);
+        Object rawMethod = this.findMethod(builder, "sample.json.EnumReturnResource", "getLevel");
+        String returnType = DocUtil.getMethodReturnTypeGenericCanonicalName(rawMethod);
 
-		ProjectDocConfigBuilder fallbackBuilder = Mockito.spy(builder);
-		doReturn(true).when(fallbackBuilder).isEnumType(returnType);
-		doReturn(null).when(fallbackBuilder).getClassByName(returnType);
-		doReturn("BASIC").when(fallbackBuilder).getEnumSampleValue(returnType);
+        ProjectDocConfigBuilder fallbackBuilder = Mockito.spy(builder);
+        doReturn(true).when(fallbackBuilder).isEnumType(returnType);
+        doReturn(null).when(fallbackBuilder).getClassByName(returnType);
+        doReturn("BASIC").when(fallbackBuilder).getEnumSampleValue(returnType);
 
-		String result = JsonBuildHelper.buildReturnJson(DocJavaMethod.builder().setJavaMethod(rawMethod),
-				fallbackBuilder);
+        String result =
+                JsonBuildHelper.buildReturnJson(DocJavaMethod.builder().setJavaMethod(rawMethod), fallbackBuilder);
 
-		assertEquals("BASIC", result);
-	}
+        assertEquals("BASIC", result);
+    }
 
-	private Path writeFixture() throws Exception {
-		Path javaRoot = this.tempDir.resolve("src/main/java");
-		Path packageRoot = javaRoot.resolve("sample/json");
-		Files.createDirectories(packageRoot);
-		String source = "package sample.json;\n\n" + "public class EnumReturnResource {\n"
-				+ "  enum Level { BASIC, PRO }\n\n" + "  public Level getLevel() {\n" + "    return Level.BASIC;\n"
-				+ "  }\n" + "}\n";
-		Files.writeString(packageRoot.resolve("EnumReturnResource.java"), source, StandardCharsets.UTF_8);
-		return javaRoot;
-	}
+    private Path writeFixture() throws Exception {
+        Path javaRoot = this.tempDir.resolve("src/main/java");
+        Path packageRoot = javaRoot.resolve("sample/json");
+        Files.createDirectories(packageRoot);
+        String source = "package sample.json;\n\n" + "public class EnumReturnResource {\n"
+                + "  enum Level { BASIC, PRO }\n\n" + "  public Level getLevel() {\n" + "    return Level.BASIC;\n"
+                + "  }\n" + "}\n";
+        Files.writeString(packageRoot.resolve("EnumReturnResource.java"), source, StandardCharsets.UTF_8);
+        return javaRoot;
+    }
 
-	private ProjectDocConfigBuilder newBuilder(Path javaRoot) {
-		ApiConfig config = new ApiConfig();
-		config.setSourceCodePaths(SourceCodePath.builder().setDesc("temp-source").setPath(javaRoot.toString()));
-		config.setServerUrl("http://127.0.0.1:8080");
-		return new ProjectDocConfigBuilder(config, null);
-	}
+    private ProjectDocConfigBuilder newBuilder(Path javaRoot) {
+        ApiConfig config = new ApiConfig();
+        config.setSourceCodePaths(
+                SourceCodePath.builder().setDesc("temp-source").setPath(javaRoot.toString()));
+        config.setServerUrl("http://127.0.0.1:8080");
+        return new ProjectDocConfigBuilder(config, null);
+    }
 
-	private Object findClass(ProjectDocConfigBuilder builder, String className) {
-		Object javaClass = builder.getClassByName(className);
-		assertNotNull(javaClass, "Expected class to be loaded: " + className);
-		return javaClass;
-	}
+    private Object findClass(ProjectDocConfigBuilder builder, String className) {
+        Object javaClass = builder.getClassByName(className);
+        assertNotNull(javaClass, "Expected class to be loaded: " + className);
+        return javaClass;
+    }
 
-	private Object findMethod(ProjectDocConfigBuilder builder, String className, String methodName) {
-		Object javaClass = this.findClass(builder, className);
-		return DocUtil.getClassMethods(javaClass)
-			.stream()
-			.filter(method -> methodName.equals(DocUtil.getMethodName(method)))
-			.findFirst()
-			.orElseThrow(() -> new IllegalStateException("Method not found: " + methodName));
-	}
-
+    private Object findMethod(ProjectDocConfigBuilder builder, String className, String methodName) {
+        Object javaClass = this.findClass(builder, className);
+        return DocUtil.getClassMethods(javaClass).stream()
+                .filter(method -> methodName.equals(DocUtil.getMethodName(method)))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Method not found: " + methodName));
+    }
 }

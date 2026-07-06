@@ -31,10 +31,9 @@ import com.github.hsindumas.stagger.template.engine.TemplateFunction;
  */
 public class LineBreaksToBr implements TemplateFunction {
 
-	@Override
-	public String call(Object[] paras) {
-		String str = String.valueOf(paras[0]);
-		return HtmlUtil.lineBreaksToBr(str);
-	}
-
+    @Override
+    public String call(Object[] paras) {
+        String str = String.valueOf(paras[0]);
+        return HtmlUtil.lineBreaksToBr(str);
+    }
 }

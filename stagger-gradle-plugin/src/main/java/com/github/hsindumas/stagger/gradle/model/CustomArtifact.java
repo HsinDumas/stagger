@@ -30,73 +30,72 @@ import java.util.Objects;
  */
 public class CustomArtifact {
 
-	/**
-	 * Artifact ID
-	 */
-	private String artifactId;
+    /**
+     * Artifact ID
+     */
+    private String artifactId;
 
-	/**
-	 * Artifact Group
-	 */
-	private String groupId;
+    /**
+     * Artifact Group
+     */
+    private String groupId;
 
-	/**
-	 * Artifact Version
-	 */
-	private String version;
+    /**
+     * Artifact Version
+     */
+    private String version;
 
-	/**
-	 * Build CustomArtifact
-	 * @return CustomArtifact
-	 */
-	public static CustomArtifact builder() {
-		return new CustomArtifact();
-	}
+    /**
+     * Build CustomArtifact
+     * @return CustomArtifact
+     */
+    public static CustomArtifact builder() {
+        return new CustomArtifact();
+    }
 
-	/**
-	 * Build CustomArtifact with ArtifactDisplayName
-	 * @param artifactDisplayName Artifact Display Name
-	 * @return CustomArtifact
-	 */
-	public static CustomArtifact builder(String artifactDisplayName) {
-		CustomArtifact artifact = builder();
-		if (Objects.isNull(artifactDisplayName)) {
-			return artifact;
-		}
-		String[] displayInfo = artifactDisplayName.split(":");
-		artifact.setArtifactId(displayInfo[1]);
-		artifact.setGroup(displayInfo[0]);
-		if (displayInfo.length > 2) {
-			artifact.setVersion(displayInfo[2]);
-		}
-		return artifact;
-	}
+    /**
+     * Build CustomArtifact with ArtifactDisplayName
+     * @param artifactDisplayName Artifact Display Name
+     * @return CustomArtifact
+     */
+    public static CustomArtifact builder(String artifactDisplayName) {
+        CustomArtifact artifact = builder();
+        if (Objects.isNull(artifactDisplayName)) {
+            return artifact;
+        }
+        String[] displayInfo = artifactDisplayName.split(":");
+        artifact.setArtifactId(displayInfo[1]);
+        artifact.setGroup(displayInfo[0]);
+        if (displayInfo.length > 2) {
+            artifact.setVersion(displayInfo[2]);
+        }
+        return artifact;
+    }
 
-	public String getArtifactId() {
-		return artifactId;
-	}
+    public String getArtifactId() {
+        return artifactId;
+    }
 
-	public CustomArtifact setArtifactId(String artifactId) {
-		this.artifactId = artifactId;
-		return this;
-	}
+    public CustomArtifact setArtifactId(String artifactId) {
+        this.artifactId = artifactId;
+        return this;
+    }
 
-	public String getGroupId() {
-		return groupId;
-	}
+    public String getGroupId() {
+        return groupId;
+    }
 
-	public CustomArtifact setGroup(String group) {
-		this.groupId = group;
-		return this;
-	}
+    public CustomArtifact setGroup(String group) {
+        this.groupId = group;
+        return this;
+    }
 
-	public String getVersion() {
-		return version;
-	}
+    public String getVersion() {
+        return version;
+    }
 
-	public CustomArtifact setVersion(String version) {
-		this.version = version;
-		return this;
-	}
-
+    public CustomArtifact setVersion(String version) {
+        this.version = version;
+        return this;
+    }
 }

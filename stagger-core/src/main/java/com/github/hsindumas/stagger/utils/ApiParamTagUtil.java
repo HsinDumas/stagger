@@ -20,13 +20,12 @@
  */
 package com.github.hsindumas.stagger.utils;
 
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.constants.ParamTypeConstants;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiMethodDoc;
 import com.github.hsindumas.stagger.model.BodyAdvice;
-import com.github.hsindumas.stagger.common.util.CollectionUtil;
-import com.github.hsindumas.stagger.common.util.StringUtil;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -37,71 +36,70 @@ import java.util.Optional;
  */
 public final class ApiParamTagUtil {
 
-	private ApiParamTagUtil() {
-		throw new IllegalStateException("Utility class");
-	}
+    private ApiParamTagUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * Set request/response array tags for an API method.
-	 * @param method method
-	 * @param apiMethodDoc api method doc
-	 * @param apiConfig api config
-	 */
-	public static void setArrayTags(Object method, ApiMethodDoc apiMethodDoc, ApiConfig apiConfig) {
-		String returnTypeName = DocUtil.getMethodReturnTypeCanonicalName(method);
-		apiMethodDoc.setIsRequestArray(0);
-		apiMethodDoc.setIsResponseArray(0);
-		String responseBodyAdviceClassName = Optional.ofNullable(apiConfig)
-			.map(ApiConfig::getResponseBodyAdvice)
-			.map(BodyAdvice::getClassName)
-			.orElse(StringUtil.EMPTY);
-		String realReturnTypeName = StringUtil.isEmpty(responseBodyAdviceClassName) ? returnTypeName
-				: responseBodyAdviceClassName;
-		boolean respArray = JavaClassValidateUtil.isCollection(realReturnTypeName)
-				|| JavaClassValidateUtil.isArray(realReturnTypeName);
-		if (respArray) {
-			apiMethodDoc.setIsResponseArray(1);
-			String className = getType(DocUtil.getMethodReturnTypeGenericCanonicalName(method));
-			String arrayType = JavaClassValidateUtil.isPrimitive(className) ? className
-					: ParamTypeConstants.PARAM_TYPE_OBJECT;
-			apiMethodDoc.setResponseArrayType(arrayType);
-		}
-		List<?> methodParameters = DocUtil.getMethodParameters(method);
-		if (CollectionUtil.isNotEmpty(methodParameters)) {
-			String requestBodyAdviceClassName = Optional.ofNullable(apiConfig)
-				.map(ApiConfig::getRequestBodyAdvice)
-				.map(BodyAdvice::getClassName)
-				.orElse(StringUtil.EMPTY);
-			for (Object param : methodParameters) {
-				String typeName = DocUtil.getParameterTypeCanonicalName(param);
-				String realTypeName = StringUtil.isEmpty(requestBodyAdviceClassName) ? typeName
-						: requestBodyAdviceClassName;
-				boolean reqArray = JavaClassValidateUtil.isCollection(realTypeName)
-						|| JavaClassValidateUtil.isArray(realTypeName);
-				if (reqArray) {
-					apiMethodDoc.setIsRequestArray(1);
-					String className = getType(DocUtil.getParameterTypeGenericCanonicalName(param));
-					String arrayType = JavaClassValidateUtil.isPrimitive(className) ? className
-							: ParamTypeConstants.PARAM_TYPE_OBJECT;
-					apiMethodDoc.setRequestArrayType(arrayType);
-					break;
-				}
-			}
-		}
-	}
+    /**
+     * Set request/response array tags for an API method.
+     * @param method method
+     * @param apiMethodDoc api method doc
+     * @param apiConfig api config
+     */
+    public static void setArrayTags(Object method, ApiMethodDoc apiMethodDoc, ApiConfig apiConfig) {
+        String returnTypeName = DocUtil.getMethodReturnTypeCanonicalName(method);
+        apiMethodDoc.setIsRequestArray(0);
+        apiMethodDoc.setIsResponseArray(0);
+        String responseBodyAdviceClassName = Optional.ofNullable(apiConfig)
+                .map(ApiConfig::getResponseBodyAdvice)
+                .map(BodyAdvice::getClassName)
+                .orElse(StringUtil.EMPTY);
+        String realReturnTypeName =
+                StringUtil.isEmpty(responseBodyAdviceClassName) ? returnTypeName : responseBodyAdviceClassName;
+        boolean respArray = JavaClassValidateUtil.isCollection(realReturnTypeName)
+                || JavaClassValidateUtil.isArray(realReturnTypeName);
+        if (respArray) {
+            apiMethodDoc.setIsResponseArray(1);
+            String className = getType(DocUtil.getMethodReturnTypeGenericCanonicalName(method));
+            String arrayType =
+                    JavaClassValidateUtil.isPrimitive(className) ? className : ParamTypeConstants.PARAM_TYPE_OBJECT;
+            apiMethodDoc.setResponseArrayType(arrayType);
+        }
+        List<?> methodParameters = DocUtil.getMethodParameters(method);
+        if (CollectionUtil.isNotEmpty(methodParameters)) {
+            String requestBodyAdviceClassName = Optional.ofNullable(apiConfig)
+                    .map(ApiConfig::getRequestBodyAdvice)
+                    .map(BodyAdvice::getClassName)
+                    .orElse(StringUtil.EMPTY);
+            for (Object param : methodParameters) {
+                String typeName = DocUtil.getParameterTypeCanonicalName(param);
+                String realTypeName =
+                        StringUtil.isEmpty(requestBodyAdviceClassName) ? typeName : requestBodyAdviceClassName;
+                boolean reqArray =
+                        JavaClassValidateUtil.isCollection(realTypeName) || JavaClassValidateUtil.isArray(realTypeName);
+                if (reqArray) {
+                    apiMethodDoc.setIsRequestArray(1);
+                    String className = getType(DocUtil.getParameterTypeGenericCanonicalName(param));
+                    String arrayType = JavaClassValidateUtil.isPrimitive(className)
+                            ? className
+                            : ParamTypeConstants.PARAM_TYPE_OBJECT;
+                    apiMethodDoc.setRequestArrayType(arrayType);
+                    break;
+                }
+            }
+        }
+    }
 
-	private static String getType(String typeName) {
-		String gicType;
-		if (typeName.contains("<")) {
-			gicType = typeName.substring(typeName.indexOf("<") + 1, typeName.lastIndexOf(">"));
-		}
-		else {
-			gicType = typeName;
-		}
-		if (gicType.contains("[")) {
-			gicType = gicType.substring(0, gicType.indexOf("["));
-		}
-		return gicType.substring(gicType.lastIndexOf(".") + 1).toLowerCase();
-	}
-
+    private static String getType(String typeName) {
+        String gicType;
+        if (typeName.contains("<")) {
+            gicType = typeName.substring(typeName.indexOf("<") + 1, typeName.lastIndexOf(">"));
+        } else {
+            gicType = typeName;
+        }
+        if (gicType.contains("[")) {
+            gicType = gicType.substring(0, gicType.indexOf("["));
+        }
+        return gicType.substring(gicType.lastIndexOf(".") + 1).toLowerCase();
+    }
 }

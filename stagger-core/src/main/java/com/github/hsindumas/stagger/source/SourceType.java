@@ -32,16 +32,15 @@ import java.util.Optional;
  */
 public interface SourceType {
 
-	String qualifiedName();
+    String qualifiedName();
 
-	List<SourceType> typeArguments();
+    List<SourceType> typeArguments();
 
-	boolean isArray();
+    boolean isArray();
 
-	boolean isPrimitive();
+    boolean isPrimitive();
 
-	boolean isWildcard();
+    boolean isWildcard();
 
-	Optional<SourceType> wildcardBound();
-
+    Optional<SourceType> wildcardBound();
 }

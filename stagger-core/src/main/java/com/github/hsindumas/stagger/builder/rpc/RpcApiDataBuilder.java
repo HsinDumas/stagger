@@ -20,13 +20,13 @@
  */
 package com.github.hsindumas.stagger.builder.rpc;
 
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.constants.FrameworkEnum;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.rpc.RpcApiAllData;
 import com.github.hsindumas.stagger.model.rpc.RpcApiDoc;
-import com.github.hsindumas.stagger.common.util.StringUtil;
-import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 
 /**
  * rpc api data builder.
@@ -36,28 +36,27 @@ import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
  */
 public class RpcApiDataBuilder {
 
-	/**
-	 * private constructor
-	 */
-	private RpcApiDataBuilder() {
-		throw new IllegalStateException("Utility class");
-	}
+    /**
+     * private constructor
+     */
+    private RpcApiDataBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * Get list of ApiDoc
-	 * @param config ApiConfig
-	 * @return List of ApiDoc
-	 */
-	public static RpcApiAllData<RpcApiDoc> getApiData(ApiConfig config) {
-		config.setShowJavaType(true);
-		if (StringUtil.isEmpty(config.getFramework())) {
-			config.setFramework(FrameworkEnum.DUBBO.getFramework());
-		}
-		RpcDocBuilderTemplate builderTemplate = new RpcDocBuilderTemplate();
-		builderTemplate.checkAndInitForGetApiData(config);
-		JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
-		builderTemplate.getApiData(config, javaProjectBuilder);
-		return builderTemplate.getApiData(config, javaProjectBuilder);
-	}
-
+    /**
+     * Get list of ApiDoc
+     * @param config ApiConfig
+     * @return List of ApiDoc
+     */
+    public static RpcApiAllData<RpcApiDoc> getApiData(ApiConfig config) {
+        config.setShowJavaType(true);
+        if (StringUtil.isEmpty(config.getFramework())) {
+            config.setFramework(FrameworkEnum.DUBBO.getFramework());
+        }
+        RpcDocBuilderTemplate builderTemplate = new RpcDocBuilderTemplate();
+        builderTemplate.checkAndInitForGetApiData(config);
+        JavaProjectBuilder javaProjectBuilder = JavaProjectBuilderHelper.create();
+        builderTemplate.getApiData(config, javaProjectBuilder);
+        return builderTemplate.getApiData(config, javaProjectBuilder);
+    }
 }

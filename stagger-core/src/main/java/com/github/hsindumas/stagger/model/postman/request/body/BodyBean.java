@@ -20,9 +20,8 @@
  */
 package com.github.hsindumas.stagger.model.postman.request.body;
 
-import java.util.List;
-
 import com.github.hsindumas.stagger.model.FormData;
+import java.util.List;
 
 /**
  * @author xingzi
@@ -30,62 +29,59 @@ import com.github.hsindumas.stagger.model.FormData;
  */
 public class BodyBean {
 
-	private String mode;
+    private String mode;
 
-	private String raw;
+    private String raw;
 
-	private List<FormData> formdata;
+    private List<FormData> formdata;
 
-	private BodyOptions options;
+    private BodyOptions options;
 
-	public BodyBean(boolean isFormData) {
-		if (!isFormData) {
-			this.options = new BodyOptions();
-		}
-	}
+    public BodyBean(boolean isFormData) {
+        if (!isFormData) {
+            this.options = new BodyOptions();
+        }
+    }
 
-	public List<FormData> getFormdata() {
-		return formdata;
-	}
+    public List<FormData> getFormdata() {
+        return formdata;
+    }
 
-	public void setFormdata(List<FormData> formdata) {
-		this.formdata = formdata;
-	}
+    public void setFormdata(List<FormData> formdata) {
+        this.formdata = formdata;
+    }
 
-	public String getMode() {
-		return mode;
-	}
+    public String getMode() {
+        return mode;
+    }
 
-	public void setMode(String mode) {
-		this.mode = mode;
-	}
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
 
-	public String getRaw() {
-		return raw;
-	}
+    public String getRaw() {
+        return raw;
+    }
 
-	public void setRaw(String raw) {
-		this.raw = raw;
-	}
+    public void setRaw(String raw) {
+        this.raw = raw;
+    }
 
-	private class BodyOptions {
+    private class BodyOptions {
 
-		private Raw raw;
+        private Raw raw;
 
-		public BodyOptions() {
-			this.raw = new Raw();
-		}
+        public BodyOptions() {
+            this.raw = new Raw();
+        }
 
-		private class Raw {
+        private class Raw {
 
-			private String language;
+            private String language;
 
-			Raw() {
-				this.language = "json";
-			}
-
-		}
-
-	}
-
+            Raw() {
+                this.language = "json";
+            }
+        }
+    }
 }

@@ -32,143 +32,146 @@ import java.util.Objects;
  */
 public class Message implements Serializable {
 
-	private static final long serialVersionUID = 8050823453899405074L;
+    private static final long serialVersionUID = 8050823453899405074L;
 
-	/**
-	 * The name of the message.
-	 */
-	private String name;
+    /**
+     * The name of the message.
+     */
+    private String name;
 
-	/**
-	 * The long name of the message.
-	 */
-	private String longName;
+    /**
+     * The long name of the message.
+     */
+    private String longName;
 
-	/**
-	 * The full name of the message.
-	 */
-	private String fullName;
+    /**
+     * The full name of the message.
+     */
+    private String fullName;
 
-	/**
-	 * Description or additional information about the message.
-	 */
-	private String description;
+    /**
+     * Description or additional information about the message.
+     */
+    private String description;
 
-	/**
-	 * Indicates if the message has extensions (optional, not used in current JSON
-	 * structure).
-	 */
-	private boolean hasExtensions;
+    /**
+     * Indicates if the message has extensions (optional, not used in current JSON
+     * structure).
+     */
+    private boolean hasExtensions;
 
-	/**
-	 * Indicates if the message has fields.
-	 */
-	private boolean hasFields;
+    /**
+     * Indicates if the message has fields.
+     */
+    private boolean hasFields;
 
-	/**
-	 * Indicates if the message has oneofs (optional, not used in current JSON structure).
-	 */
-	private boolean hasOneofs;
+    /**
+     * Indicates if the message has oneofs (optional, not used in current JSON structure).
+     */
+    private boolean hasOneofs;
 
-	/**
-	 * List of fields within the message.
-	 */
-	private List<MessageField> fields;
+    /**
+     * List of fields within the message.
+     */
+    private List<MessageField> fields;
 
-	public static Message builder() {
-		return new Message();
-	}
+    public static Message builder() {
+        return new Message();
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Message setName(String name) {
-		this.name = name;
-		return this;
-	}
+    public Message setName(String name) {
+        this.name = name;
+        return this;
+    }
 
-	public String getLongName() {
-		return longName;
-	}
+    public String getLongName() {
+        return longName;
+    }
 
-	public Message setLongName(String longName) {
-		this.longName = longName;
-		return this;
-	}
+    public Message setLongName(String longName) {
+        this.longName = longName;
+        return this;
+    }
 
-	public String getFullName() {
-		return fullName;
-	}
+    public String getFullName() {
+        return fullName;
+    }
 
-	public Message setFullName(String fullName) {
-		this.fullName = fullName;
-		return this;
-	}
+    public Message setFullName(String fullName) {
+        this.fullName = fullName;
+        return this;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Message setDescription(String description) {
-		this.description = description;
-		return this;
-	}
+    public Message setDescription(String description) {
+        this.description = description;
+        return this;
+    }
 
-	public boolean isHasExtensions() {
-		return hasExtensions;
-	}
+    public boolean isHasExtensions() {
+        return hasExtensions;
+    }
 
-	public Message setHasExtensions(boolean hasExtensions) {
-		this.hasExtensions = hasExtensions;
-		return this;
-	}
+    public Message setHasExtensions(boolean hasExtensions) {
+        this.hasExtensions = hasExtensions;
+        return this;
+    }
 
-	public boolean isHasFields() {
-		return hasFields;
-	}
+    public boolean isHasFields() {
+        return hasFields;
+    }
 
-	public Message setHasFields(boolean hasFields) {
-		this.hasFields = hasFields;
-		return this;
-	}
+    public Message setHasFields(boolean hasFields) {
+        this.hasFields = hasFields;
+        return this;
+    }
 
-	public boolean isHasOneofs() {
-		return hasOneofs;
-	}
+    public boolean isHasOneofs() {
+        return hasOneofs;
+    }
 
-	public Message setHasOneofs(boolean hasOneofs) {
-		this.hasOneofs = hasOneofs;
-		return this;
-	}
+    public Message setHasOneofs(boolean hasOneofs) {
+        this.hasOneofs = hasOneofs;
+        return this;
+    }
 
-	public List<MessageField> getFields() {
-		return fields;
-	}
+    public List<MessageField> getFields() {
+        return fields;
+    }
 
-	public Message setFields(List<MessageField> fields) {
-		this.fields = fields;
-		return this;
-	}
+    public Message setFields(List<MessageField> fields) {
+        this.fields = fields;
+        return this;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		Message message = (Message) o;
-		return hasExtensions == message.hasExtensions && hasFields == message.hasFields
-				&& hasOneofs == message.hasOneofs && Objects.equals(name, message.name)
-				&& Objects.equals(longName, message.longName) && Objects.equals(fullName, message.fullName)
-				&& Objects.equals(description, message.description) && Objects.equals(fields, message.fields);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Message message = (Message) o;
+        return hasExtensions == message.hasExtensions
+                && hasFields == message.hasFields
+                && hasOneofs == message.hasOneofs
+                && Objects.equals(name, message.name)
+                && Objects.equals(longName, message.longName)
+                && Objects.equals(fullName, message.fullName)
+                && Objects.equals(description, message.description)
+                && Objects.equals(fields, message.fields);
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(name, longName, fullName, description, hasExtensions, hasFields, hasOneofs, fields);
-	}
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, longName, fullName, description, hasExtensions, hasFields, hasOneofs, fields);
+    }
 }

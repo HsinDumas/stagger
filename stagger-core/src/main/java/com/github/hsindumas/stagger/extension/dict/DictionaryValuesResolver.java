@@ -21,7 +21,6 @@
 package com.github.hsindumas.stagger.extension.dict;
 
 import com.github.hsindumas.stagger.model.EnumDictionary;
-
 import java.util.Collection;
 import java.util.Collections;
 

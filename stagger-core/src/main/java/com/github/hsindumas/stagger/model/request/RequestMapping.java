@@ -26,78 +26,77 @@ package com.github.hsindumas.stagger.model.request;
  */
 public class RequestMapping {
 
-	/**
-	 * url
-	 */
-	private String url;
+    /**
+     * url
+     */
+    private String url;
 
-	/**
-	 * path
-	 */
-	private String shortUrl;
+    /**
+     * path
+     */
+    private String shortUrl;
 
-	/**
-	 * method type
-	 */
-	private String methodType;
+    /**
+     * method type
+     */
+    private String methodType;
 
-	/**
-	 * media type
-	 */
-	private String mediaType;
+    /**
+     * media type
+     */
+    private String mediaType;
 
-	/**
-	 * method deprecated
-	 */
-	private boolean deprecated;
+    /**
+     * method deprecated
+     */
+    private boolean deprecated;
 
-	public static RequestMapping builder() {
-		return new RequestMapping();
-	}
+    public static RequestMapping builder() {
+        return new RequestMapping();
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public RequestMapping setUrl(String url) {
-		this.url = url;
-		return this;
-	}
+    public RequestMapping setUrl(String url) {
+        this.url = url;
+        return this;
+    }
 
-	public String getShortUrl() {
-		return shortUrl;
-	}
+    public String getShortUrl() {
+        return shortUrl;
+    }
 
-	public RequestMapping setShortUrl(String shortUrl) {
-		this.shortUrl = shortUrl;
-		return this;
-	}
+    public RequestMapping setShortUrl(String shortUrl) {
+        this.shortUrl = shortUrl;
+        return this;
+    }
 
-	public String getMethodType() {
-		return methodType;
-	}
+    public String getMethodType() {
+        return methodType;
+    }
 
-	public RequestMapping setMethodType(String methodType) {
-		this.methodType = methodType;
-		return this;
-	}
+    public RequestMapping setMethodType(String methodType) {
+        this.methodType = methodType;
+        return this;
+    }
 
-	public String getMediaType() {
-		return mediaType;
-	}
+    public String getMediaType() {
+        return mediaType;
+    }
 
-	public RequestMapping setMediaType(String mediaType) {
-		this.mediaType = mediaType;
-		return this;
-	}
+    public RequestMapping setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+        return this;
+    }
 
-	public boolean isDeprecated() {
-		return deprecated;
-	}
+    public boolean isDeprecated() {
+        return deprecated;
+    }
 
-	public RequestMapping setDeprecated(boolean deprecated) {
-		this.deprecated = deprecated;
-		return this;
-	}
-
+    public RequestMapping setDeprecated(boolean deprecated) {
+        this.deprecated = deprecated;
+        return this;
+    }
 }

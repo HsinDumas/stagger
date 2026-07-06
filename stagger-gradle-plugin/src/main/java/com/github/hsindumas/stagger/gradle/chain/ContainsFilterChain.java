@@ -23,7 +23,6 @@
 package com.github.hsindumas.stagger.gradle.chain;
 
 import com.github.hsindumas.stagger.gradle.model.CustomArtifact;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,32 +32,31 @@ import java.util.Set;
  */
 public class ContainsFilterChain implements FilterChain {
 
-	private static final Set<String> CONTAINS_SET = new HashSet<>();
+    private static final Set<String> CONTAINS_SET = new HashSet<>();
 
-	static {
-		CONTAINS_SET.add("log4j");
-		CONTAINS_SET.add("logback");
-		CONTAINS_SET.add("slf4j");
-		CONTAINS_SET.add("swagger");
-		CONTAINS_SET.add("dom4j");
-		CONTAINS_SET.add("jsr");
-		CONTAINS_SET.add("jtds");
-	}
+    static {
+        CONTAINS_SET.add("log4j");
+        CONTAINS_SET.add("logback");
+        CONTAINS_SET.add("slf4j");
+        CONTAINS_SET.add("swagger");
+        CONTAINS_SET.add("dom4j");
+        CONTAINS_SET.add("jsr");
+        CONTAINS_SET.add("jtds");
+    }
 
-	private FilterChain filterChain;
+    private FilterChain filterChain;
 
-	@Override
-	public void setNext(FilterChain nextInChain) {
-		this.filterChain = nextInChain;
-	}
+    @Override
+    public void setNext(FilterChain nextInChain) {
+        this.filterChain = nextInChain;
+    }
 
-	@Override
-	public boolean ignoreArtifactById(CustomArtifact artifact) {
-		String artifactId = artifact.getArtifactId();
-		if (CONTAINS_SET.stream().anyMatch(artifactId::contains)) {
-			return true;
-		}
-		return this.ignore(filterChain, artifact);
-	}
-
+    @Override
+    public boolean ignoreArtifactById(CustomArtifact artifact) {
+        String artifactId = artifact.getArtifactId();
+        if (CONTAINS_SET.stream().anyMatch(artifactId::contains)) {
+            return true;
+        }
+        return this.ignore(filterChain, artifact);
+    }
 }

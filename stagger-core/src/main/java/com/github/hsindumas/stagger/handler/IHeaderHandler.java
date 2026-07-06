@@ -21,6 +21,7 @@
 package com.github.hsindumas.stagger.handler;
 
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.constants.DocTags;
 import com.github.hsindumas.stagger.constants.ParamTypeConstants;
 import com.github.hsindumas.stagger.helper.ParamsBuildHelper;
@@ -32,8 +33,6 @@ import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.github.hsindumas.stagger.utils.JavaFieldUtil;
-import com.github.hsindumas.stagger.common.util.StringUtil;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,270 +52,269 @@ import org.apache.commons.lang3.StringUtils;
  */
 public interface IHeaderHandler {
 
-	/**
-	 * Handle header
-	 * @param method JavaMethod
-	 * @param projectBuilder ProjectDocConfigBuilder
-	 * @return {@code List<ApiReqParam>}
-	 */
-	@SuppressWarnings("unchecked")
-	default List<ApiReqParam> handle(Object method, ProjectDocConfigBuilder projectBuilder) {
-		List<ApiReqParam> mappingHeaders = new ArrayList<>();
-		List<?> annotations = DocUtil.getMethodAnnotations(method);
-		HeaderAnnotation headerAnnotation = getHeaderAnnotation();
-		for (Object annotation : annotations) {
-			String annotationName = DocUtil.getAnnotationTypeValue(annotation);
-			Object headersObject = DocUtil.getAnnotationNamedParameter(annotation, "headers");
-			if (!isMapping(annotationName) || Objects.isNull(headersObject)) {
-				continue;
-			}
-			String mappingHeader = StringUtil.removeQuotes(headersObject.toString());
-			if (!mappingHeader.startsWith("[")) {
-				processMappingHeaders(mappingHeader, mappingHeaders);
-				continue;
-			}
-			List<String> headers = (LinkedList<String>) headersObject;
-			for (String str : headers) {
-				String header = StringUtil.removeQuotes(str);
-				if (header.startsWith("!")) {
-					continue;
-				}
-				processMappingHeaders(header, mappingHeaders);
-			}
-		}
-		List<ApiReqParam> reqHeaders = new ArrayList<>();
-		for (Object javaParameter : DocUtil.getMethodParameters(method)) {
-			List<?> javaAnnotations = DocUtil.getParameterAnnotations(javaParameter);
-			String className = DocUtil.getMethodDeclaringClassCanonicalName(method);
-			String parameterName = DocUtil.getParameterName(javaParameter);
-			Map<String, String> paramCommentMap = DocUtil.getCommentsByTag(method, DocTags.PARAM, className);
+    /**
+     * Handle header
+     * @param method JavaMethod
+     * @param projectBuilder ProjectDocConfigBuilder
+     * @return {@code List<ApiReqParam>}
+     */
+    @SuppressWarnings("unchecked")
+    default List<ApiReqParam> handle(Object method, ProjectDocConfigBuilder projectBuilder) {
+        List<ApiReqParam> mappingHeaders = new ArrayList<>();
+        List<?> annotations = DocUtil.getMethodAnnotations(method);
+        HeaderAnnotation headerAnnotation = getHeaderAnnotation();
+        for (Object annotation : annotations) {
+            String annotationName = DocUtil.getAnnotationTypeValue(annotation);
+            Object headersObject = DocUtil.getAnnotationNamedParameter(annotation, "headers");
+            if (!isMapping(annotationName) || Objects.isNull(headersObject)) {
+                continue;
+            }
+            String mappingHeader = StringUtil.removeQuotes(headersObject.toString());
+            if (!mappingHeader.startsWith("[")) {
+                processMappingHeaders(mappingHeader, mappingHeaders);
+                continue;
+            }
+            List<String> headers = (LinkedList<String>) headersObject;
+            for (String str : headers) {
+                String header = StringUtil.removeQuotes(str);
+                if (header.startsWith("!")) {
+                    continue;
+                }
+                processMappingHeaders(header, mappingHeaders);
+            }
+        }
+        List<ApiReqParam> reqHeaders = new ArrayList<>();
+        for (Object javaParameter : DocUtil.getMethodParameters(method)) {
+            List<?> javaAnnotations = DocUtil.getParameterAnnotations(javaParameter);
+            String className = DocUtil.getMethodDeclaringClassCanonicalName(method);
+            String parameterName = DocUtil.getParameterName(javaParameter);
+            Map<String, String> paramCommentMap = DocUtil.getCommentsByTag(method, DocTags.PARAM, className);
 
-			for (Object annotation : javaAnnotations) {
-				String annotationName = JavaClassUtil.getClassSimpleName(DocUtil.getAnnotationTypeValue(annotation));
-				if (!headerAnnotation.getAnnotationName().equals(annotationName)) {
-					continue;
-				}
-				ApiReqParam apiReqHeader = new ApiReqParam();
-				apiReqHeader.setName(parameterName);
-				apiReqHeader.setRequired(true);
-				apiReqHeader.setDesc(DocUtil.paramCommentResolve(paramCommentMap.get(parameterName)));
+            for (Object annotation : javaAnnotations) {
+                String annotationName = JavaClassUtil.getClassSimpleName(DocUtil.getAnnotationTypeValue(annotation));
+                if (!headerAnnotation.getAnnotationName().equals(annotationName)) {
+                    continue;
+                }
+                ApiReqParam apiReqHeader = new ApiReqParam();
+                apiReqHeader.setName(parameterName);
+                apiReqHeader.setRequired(true);
+                apiReqHeader.setDesc(DocUtil.paramCommentResolve(paramCommentMap.get(parameterName)));
 
-				handleParamAnnotation(annotation, apiReqHeader, projectBuilder);
-				handleParamTypeAndValue(javaParameter, apiReqHeader, projectBuilder, paramCommentMap);
-				reqHeaders.add(apiReqHeader);
-				break;
+                handleParamAnnotation(annotation, apiReqHeader, projectBuilder);
+                handleParamTypeAndValue(javaParameter, apiReqHeader, projectBuilder, paramCommentMap);
+                reqHeaders.add(apiReqHeader);
+                break;
+            }
+        }
+        return Stream.of(mappingHeaders, reqHeaders)
+                .flatMap(Collection::stream)
+                .distinct()
+                .collect(Collectors.toList());
+    }
 
-			}
-		}
-		return Stream.of(mappingHeaders, reqHeaders)
-			.flatMap(Collection::stream)
-			.distinct()
-			.collect(Collectors.toList());
-	}
+    /**
+     * handle Param
+     * @param javaParameter javaParameter
+     * @param apiReqHeader apiReqHeader
+     * @param builder builder
+     * @param paramCommentMap paramCommentMap
+     */
+    default void handleParamTypeAndValue(
+            Object javaParameter,
+            ApiReqParam apiReqHeader,
+            ProjectDocConfigBuilder builder,
+            Map<String, String> paramCommentMap) {
+        String fullyQualifiedName = DocUtil.getParameterFullyQualifiedName(javaParameter);
+        String genericFullyQualifiedName = DocUtil.getParameterGenericFullyQualifiedName(javaParameter);
+        String paramName = DocUtil.getParameterName(javaParameter);
+        Object javaClass = builder.getClassByName(genericFullyQualifiedName);
+        boolean enumType = builder.isEnumType(genericFullyQualifiedName);
+        String simpleTypeName = DocUtil.getParameterTypeValue(javaParameter);
+        List<?> parameterAnnotations = DocUtil.getParameterAnnotations(javaParameter);
 
-	/**
-	 * handle Param
-	 * @param javaParameter javaParameter
-	 * @param apiReqHeader apiReqHeader
-	 * @param builder builder
-	 * @param paramCommentMap paramCommentMap
-	 */
-	default void handleParamTypeAndValue(Object javaParameter, ApiReqParam apiReqHeader,
-			ProjectDocConfigBuilder builder, Map<String, String> paramCommentMap) {
-		String fullyQualifiedName = DocUtil.getParameterFullyQualifiedName(javaParameter);
-		String genericFullyQualifiedName = DocUtil.getParameterGenericFullyQualifiedName(javaParameter);
-		String paramName = DocUtil.getParameterName(javaParameter);
-		Object javaClass = builder.getClassByName(genericFullyQualifiedName);
-		boolean enumType = builder.isEnumType(genericFullyQualifiedName);
-		String simpleTypeName = DocUtil.getParameterTypeValue(javaParameter);
-		List<?> parameterAnnotations = DocUtil.getParameterAnnotations(javaParameter);
+        if (JavaClassValidateUtil.isCollection(fullyQualifiedName)
+                || JavaClassValidateUtil.isArray(fullyQualifiedName)) {
+            String[] gicNameArr = DocClassUtil.getSimpleGicName(genericFullyQualifiedName);
+            String gicName = gicNameArr[0];
+            if (JavaClassValidateUtil.isArray(gicName)) {
+                gicName = gicName.substring(0, gicName.indexOf("["));
+            }
+            // handle array and list mock value
+            Object gicJavaClass = builder.getClassByName(gicName);
+            boolean gicEnumType = builder.isEnumType(gicName);
+            if (gicEnumType) {
+                boolean hasGicJavaEnumClass = DocUtil.isClassEnum(gicJavaClass);
+                if (Objects.nonNull(gicJavaClass)) {
+                    String enumComment = ParamsBuildHelper.handleEnumComment(gicJavaClass, builder);
+                    apiReqHeader.setDesc(apiReqHeader.getDesc() + enumComment);
+                }
+                apiReqHeader.setType(ParamTypeConstants.PARAM_TYPE_ARRAY);
+                if (hasGicJavaEnumClass) {
+                    EnumInfoAndValues enumInfoAndValue =
+                            JavaClassUtil.getEnumInfoAndValue(gicJavaClass, builder, Boolean.FALSE);
+                    if (Objects.nonNull(enumInfoAndValue)) {
+                        String enumValue = StringUtil.removeDoubleQuotes(String.valueOf(enumInfoAndValue.getValue()));
+                        apiReqHeader.setValue(enumValue + "," + enumValue).setEnumInfoAndValues(enumInfoAndValue);
+                    }
+                } else {
+                    String enumSampleValue = builder.getEnumSampleValue(gicName);
+                    if (StringUtil.isNotEmpty(enumSampleValue)) {
+                        String sampleValue = StringUtil.removeDoubleQuotes(enumSampleValue);
+                        apiReqHeader
+                                .setValue(sampleValue + "," + sampleValue)
+                                .setEnumInfoAndValues(EnumInfoAndValues.builder()
+                                        .setEnumValues(Collections.singletonList(sampleValue)));
+                    }
+                }
+            } else if (JavaClassValidateUtil.isPrimitive(gicName)) {
+                String mockValue = JavaFieldUtil.createMockValue(
+                        paramCommentMap, paramName, gicName, gicName, parameterAnnotations);
+                if (StringUtil.isNotEmpty(mockValue) && !mockValue.contains(",")) {
+                    mockValue = StringUtils.join(
+                            mockValue,
+                            ",",
+                            JavaFieldUtil.createMockValue(
+                                    paramCommentMap, paramName, gicName, gicName, parameterAnnotations));
+                }
 
-		if (JavaClassValidateUtil.isCollection(fullyQualifiedName)
-				|| JavaClassValidateUtil.isArray(fullyQualifiedName)) {
-			String[] gicNameArr = DocClassUtil.getSimpleGicName(genericFullyQualifiedName);
-			String gicName = gicNameArr[0];
-			if (JavaClassValidateUtil.isArray(gicName)) {
-				gicName = gicName.substring(0, gicName.indexOf("["));
-			}
-			// handle array and list mock value
-			Object gicJavaClass = builder.getClassByName(gicName);
-			boolean gicEnumType = builder.isEnumType(gicName);
-			if (gicEnumType) {
-				boolean hasGicJavaEnumClass = DocUtil.isClassEnum(gicJavaClass);
-				if (Objects.nonNull(gicJavaClass)) {
-					String enumComment = ParamsBuildHelper.handleEnumComment(gicJavaClass, builder);
-					apiReqHeader.setDesc(apiReqHeader.getDesc() + enumComment);
-				}
-				apiReqHeader.setType(ParamTypeConstants.PARAM_TYPE_ARRAY);
-				if (hasGicJavaEnumClass) {
-					EnumInfoAndValues enumInfoAndValue = JavaClassUtil.getEnumInfoAndValue(gicJavaClass, builder,
-							Boolean.FALSE);
-					if (Objects.nonNull(enumInfoAndValue)) {
-						String enumValue = StringUtil.removeDoubleQuotes(String.valueOf(enumInfoAndValue.getValue()));
-						apiReqHeader.setValue(enumValue + "," + enumValue).setEnumInfoAndValues(enumInfoAndValue);
-					}
-				}
-				else {
-					String enumSampleValue = builder.getEnumSampleValue(gicName);
-					if (StringUtil.isNotEmpty(enumSampleValue)) {
-						String sampleValue = StringUtil.removeDoubleQuotes(enumSampleValue);
-						apiReqHeader.setValue(sampleValue + "," + sampleValue)
-							.setEnumInfoAndValues(
-									EnumInfoAndValues.builder().setEnumValues(Collections.singletonList(sampleValue)));
-					}
-				}
-			}
-			else if (JavaClassValidateUtil.isPrimitive(gicName)) {
-				String mockValue = JavaFieldUtil.createMockValue(paramCommentMap, paramName, gicName, gicName,
-						parameterAnnotations);
-				if (StringUtil.isNotEmpty(mockValue) && !mockValue.contains(",")) {
-					mockValue = StringUtils.join(mockValue, ",", JavaFieldUtil.createMockValue(paramCommentMap,
-							paramName, gicName, gicName, parameterAnnotations));
-				}
+                apiReqHeader.setType(ParamTypeConstants.PARAM_TYPE_ARRAY);
+                apiReqHeader.setValue(mockValue);
+            } else {
+                apiReqHeader.setType(ParamTypeConstants.PARAM_TYPE_ARRAY);
+            }
+        } else if (JavaClassValidateUtil.isPrimitive(fullyQualifiedName)) {
+            String mockValue = JavaFieldUtil.createMockValue(
+                    paramCommentMap, paramName, fullyQualifiedName, simpleTypeName, parameterAnnotations);
 
-				apiReqHeader.setType(ParamTypeConstants.PARAM_TYPE_ARRAY);
-				apiReqHeader.setValue(mockValue);
-			}
-			else {
-				apiReqHeader.setType(ParamTypeConstants.PARAM_TYPE_ARRAY);
-			}
-		}
-		else if (JavaClassValidateUtil.isPrimitive(fullyQualifiedName)) {
-			String mockValue = JavaFieldUtil.createMockValue(paramCommentMap, paramName, fullyQualifiedName,
-					simpleTypeName, parameterAnnotations);
+            apiReqHeader.setType(DocClassUtil.processTypeNameForParams(simpleTypeName));
+            apiReqHeader.setValue(mockValue);
+        }
+        // Handle if it is enum types
+        else if (enumType) {
+            boolean hasJavaEnumClass = DocUtil.isClassEnum(javaClass);
+            if (Objects.nonNull(javaClass)) {
+                String enumComment = ParamsBuildHelper.handleEnumComment(javaClass, builder);
+                apiReqHeader.setDesc(apiReqHeader.getDesc() + enumComment);
+            }
+            apiReqHeader.setType(ParamTypeConstants.PARAM_TYPE_ENUM);
+            if (hasJavaEnumClass) {
+                EnumInfoAndValues enumInfoAndValue =
+                        JavaClassUtil.getEnumInfoAndValue(javaClass, builder, Boolean.FALSE);
+                if (Objects.nonNull(enumInfoAndValue)) {
+                    String enumValue = StringUtil.removeDoubleQuotes(String.valueOf(enumInfoAndValue.getValue()));
+                    apiReqHeader
+                            .setValue(enumValue)
+                            .setEnumInfoAndValues(enumInfoAndValue)
+                            .setType(enumInfoAndValue.getType());
+                }
+            } else {
+                String enumSampleValue = builder.getEnumSampleValue(genericFullyQualifiedName);
+                if (StringUtil.isNotEmpty(enumSampleValue)) {
+                    String sampleValue = StringUtil.removeDoubleQuotes(enumSampleValue);
+                    apiReqHeader
+                            .setValue(sampleValue)
+                            .setEnumInfoAndValues(
+                                    EnumInfoAndValues.builder().setEnumValues(Collections.singletonList(sampleValue)));
+                }
+            }
+        } else {
+            apiReqHeader.setType(ParamTypeConstants.PARAM_TYPE_OBJECT);
+        }
+    }
 
-			apiReqHeader.setType(DocClassUtil.processTypeNameForParams(simpleTypeName));
-			apiReqHeader.setValue(mockValue);
-		}
-		// Handle if it is enum types
-		else if (enumType) {
-			boolean hasJavaEnumClass = DocUtil.isClassEnum(javaClass);
-			if (Objects.nonNull(javaClass)) {
-				String enumComment = ParamsBuildHelper.handleEnumComment(javaClass, builder);
-				apiReqHeader.setDesc(apiReqHeader.getDesc() + enumComment);
-			}
-			apiReqHeader.setType(ParamTypeConstants.PARAM_TYPE_ENUM);
-			if (hasJavaEnumClass) {
-				EnumInfoAndValues enumInfoAndValue = JavaClassUtil.getEnumInfoAndValue(javaClass, builder,
-						Boolean.FALSE);
-				if (Objects.nonNull(enumInfoAndValue)) {
-					String enumValue = StringUtil.removeDoubleQuotes(String.valueOf(enumInfoAndValue.getValue()));
-					apiReqHeader.setValue(enumValue)
-						.setEnumInfoAndValues(enumInfoAndValue)
-						.setType(enumInfoAndValue.getType());
-				}
-			}
-			else {
-				String enumSampleValue = builder.getEnumSampleValue(genericFullyQualifiedName);
-				if (StringUtil.isNotEmpty(enumSampleValue)) {
-					String sampleValue = StringUtil.removeDoubleQuotes(enumSampleValue);
-					apiReqHeader.setValue(sampleValue)
-						.setEnumInfoAndValues(
-								EnumInfoAndValues.builder().setEnumValues(Collections.singletonList(sampleValue)));
-				}
-			}
-		}
-		else {
-			apiReqHeader.setType(ParamTypeConstants.PARAM_TYPE_OBJECT);
-		}
-	}
+    /**
+     * Handle annotation
+     * @param annotation annotation
+     * @param apiReqHeader apiReqHeader
+     * @param projectBuilder projectBuilder
+     */
+    default void handleParamAnnotation(
+            Object annotation, ApiReqParam apiReqHeader, ProjectDocConfigBuilder projectBuilder) {
+        HeaderAnnotation headerAnnotation = getHeaderAnnotation();
+        Map<String, String> constantsMap = projectBuilder.getConstantsMap();
+        Map<String, Object> requestHeaderMap = DocUtil.getAnnotationNamedParameterMap(annotation);
+        if (requestHeaderMap != null && requestHeaderMap.size() > 0) {
+            // Obtain header value
+            if (requestHeaderMap.containsKey(headerAnnotation.getValueProp())) {
+                ClassLoader classLoader = projectBuilder.getApiConfig().getClassLoader();
+                String attrValue = DocUtil.handleRequestHeaderValue(classLoader, annotation);
+                String constValue =
+                        ((String) requestHeaderMap.get(headerAnnotation.getValueProp())).replaceAll("\"", "");
+                if (StringUtil.isEmpty(attrValue)) {
+                    Object value = constantsMap.get(constValue);
+                    if (value != null) {
+                        apiReqHeader.setName(value.toString());
+                    } else {
+                        apiReqHeader.setName(constValue);
+                    }
+                } else {
+                    apiReqHeader.setName(attrValue);
+                }
+            }
 
-	/**
-	 * Handle annotation
-	 * @param annotation annotation
-	 * @param apiReqHeader apiReqHeader
-	 * @param projectBuilder projectBuilder
-	 */
-	default void handleParamAnnotation(Object annotation, ApiReqParam apiReqHeader,
-			ProjectDocConfigBuilder projectBuilder) {
-		HeaderAnnotation headerAnnotation = getHeaderAnnotation();
-		Map<String, String> constantsMap = projectBuilder.getConstantsMap();
-		Map<String, Object> requestHeaderMap = DocUtil.getAnnotationNamedParameterMap(annotation);
-		if (requestHeaderMap != null && requestHeaderMap.size() > 0) {
-			// Obtain header value
-			if (requestHeaderMap.containsKey(headerAnnotation.getValueProp())) {
-				ClassLoader classLoader = projectBuilder.getApiConfig().getClassLoader();
-				String attrValue = DocUtil.handleRequestHeaderValue(classLoader, annotation);
-				String constValue = ((String) requestHeaderMap.get(headerAnnotation.getValueProp())).replaceAll("\"",
-						"");
-				if (StringUtil.isEmpty(attrValue)) {
-					Object value = constantsMap.get(constValue);
-					if (value != null) {
-						apiReqHeader.setName(value.toString());
-					}
-					else {
-						apiReqHeader.setName(constValue);
-					}
-				}
-				else {
-					apiReqHeader.setName(attrValue);
-				}
-			}
+            // Obtain header default value
+            if (requestHeaderMap.containsKey(headerAnnotation.getDefaultValueProp())) {
+                StringBuilder desc = new StringBuilder();
+                String defaultValue = String.valueOf(requestHeaderMap.get(headerAnnotation.getDefaultValueProp()));
+                desc.append("(defaultValue: ")
+                        .append(StringUtil.removeQuotes(defaultValue))
+                        .append(")");
+                apiReqHeader.setValue(StringUtil.removeQuotes(defaultValue));
+                apiReqHeader.setDesc(apiReqHeader.getDesc() + desc);
+            }
 
-			// Obtain header default value
-			if (requestHeaderMap.containsKey(headerAnnotation.getDefaultValueProp())) {
-				StringBuilder desc = new StringBuilder();
-				String defaultValue = String.valueOf(requestHeaderMap.get(headerAnnotation.getDefaultValueProp()));
-				desc.append("(defaultValue: ").append(StringUtil.removeQuotes(defaultValue)).append(")");
-				apiReqHeader.setValue(StringUtil.removeQuotes(defaultValue));
-				apiReqHeader.setDesc(apiReqHeader.getDesc() + desc);
-			}
+            if (requestHeaderMap.containsKey(headerAnnotation.getRequiredProp())) {
+                apiReqHeader.setRequired(
+                        !Boolean.FALSE.toString().equals(requestHeaderMap.get(headerAnnotation.getRequiredProp())));
+            }
+        }
+    }
 
-			if (requestHeaderMap.containsKey(headerAnnotation.getRequiredProp())) {
-				apiReqHeader.setRequired(
-						!Boolean.FALSE.toString().equals(requestHeaderMap.get(headerAnnotation.getRequiredProp())));
-			}
-		}
-	}
+    /**
+     * process mapping headers
+     * @param header header
+     * @param mappingHeaders mapping headers
+     */
+    default void processMappingHeaders(String header, List<ApiReqParam> mappingHeaders) {
+        if (header.contains("!=")) {
+            String headerName = header.substring(0, header.indexOf("!"));
+            ApiReqParam apiReqHeader = ApiReqParam.builder()
+                    .setName(headerName)
+                    .setRequired(true)
+                    .setValue(null)
+                    .setDesc("header condition")
+                    .setType("string");
+            mappingHeaders.add(apiReqHeader);
+        } else {
+            String headerName;
+            String headerValue = null;
+            if (header.contains("=")) {
+                int index = header.indexOf("=");
+                headerName = header.substring(0, index);
+                headerValue = header.substring(index + 1);
+            } else {
+                headerName = header;
+            }
+            ApiReqParam apiReqHeader = ApiReqParam.builder()
+                    .setName(headerName)
+                    .setRequired(true)
+                    .setValue(headerValue)
+                    .setDesc("header condition")
+                    .setType("string");
+            mappingHeaders.add(apiReqHeader);
+        }
+    }
 
-	/**
-	 * process mapping headers
-	 * @param header header
-	 * @param mappingHeaders mapping headers
-	 */
-	default void processMappingHeaders(String header, List<ApiReqParam> mappingHeaders) {
-		if (header.contains("!=")) {
-			String headerName = header.substring(0, header.indexOf("!"));
-			ApiReqParam apiReqHeader = ApiReqParam.builder()
-				.setName(headerName)
-				.setRequired(true)
-				.setValue(null)
-				.setDesc("header condition")
-				.setType("string");
-			mappingHeaders.add(apiReqHeader);
-		}
-		else {
-			String headerName;
-			String headerValue = null;
-			if (header.contains("=")) {
-				int index = header.indexOf("=");
-				headerName = header.substring(0, index);
-				headerValue = header.substring(index + 1);
-			}
-			else {
-				headerName = header;
-			}
-			ApiReqParam apiReqHeader = ApiReqParam.builder()
-				.setName(headerName)
-				.setRequired(true)
-				.setValue(headerValue)
-				.setDesc("header condition")
-				.setType("string");
-			mappingHeaders.add(apiReqHeader);
-		}
-	}
+    /**
+     * check mapping annotation
+     * @param annotationName annotation name
+     * @return boolean
+     */
+    boolean isMapping(String annotationName);
 
-	/**
-	 * check mapping annotation
-	 * @param annotationName annotation name
-	 * @return boolean
-	 */
-	boolean isMapping(String annotationName);
-
-	/**
-	 * Get framework annotation info
-	 * @return Header annotation info
-	 */
-	HeaderAnnotation getHeaderAnnotation();
-
+    /**
+     * Get framework annotation info
+     * @return Header annotation info
+     */
+    HeaderAnnotation getHeaderAnnotation();
 }

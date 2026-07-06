@@ -20,9 +20,8 @@
  */
 package com.github.hsindumas.stagger.model.postman;
 
-import java.util.List;
-
 import com.github.hsindumas.stagger.model.postman.request.RequestBean;
+import java.util.List;
 
 /**
  * @author xingzi
@@ -30,44 +29,43 @@ import com.github.hsindumas.stagger.model.postman.request.RequestBean;
  */
 public class ItemBean {
 
-	private String name;
+    private String name;
 
-	private RequestBean request;
+    private RequestBean request;
 
-	private List<ItemBean> item;
+    private List<ItemBean> item;
 
-	private String description;
+    private String description;
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public RequestBean getRequest() {
-		return request;
-	}
+    public RequestBean getRequest() {
+        return request;
+    }
 
-	public void setRequest(RequestBean request) {
-		this.request = request;
-	}
+    public void setRequest(RequestBean request) {
+        this.request = request;
+    }
 
-	public List<ItemBean> getItem() {
-		return item;
-	}
+    public List<ItemBean> getItem() {
+        return item;
+    }
 
-	public void setItem(List<ItemBean> item) {
-		this.item = item;
-	}
-
+    public void setItem(List<ItemBean> item) {
+        this.item = item;
+    }
 }

@@ -20,11 +20,9 @@
  */
 package com.github.hsindumas.stagger.model.postman;
 
-import java.util.UUID;
-
-import com.google.gson.annotations.SerializedName;
 import com.github.hsindumas.stagger.common.util.DateTimeUtil;
-
+import com.google.gson.annotations.SerializedName;
+import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -33,22 +31,20 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class InfoBean {
 
-	String schema;
+    String schema;
 
-	@SerializedName("_postman_id")
-	private String postmanId = UUID.randomUUID().toString();
+    @SerializedName("_postman_id")
+    private String postmanId = UUID.randomUUID().toString();
 
-	private String name;
+    private String name;
 
-	public InfoBean(String name) {
-		if (StringUtils.isBlank(name)) {
-			this.name = "stagger    "
-					+ DateTimeUtil.long2Str(System.currentTimeMillis(), DateTimeUtil.DATE_FORMAT_SECOND);
-		}
-		else {
-			this.name = name;
-		}
-		this.schema = "https://schema.getpostman.com/json/collection/v2.1.0/collection.json";
-	}
-
+    public InfoBean(String name) {
+        if (StringUtils.isBlank(name)) {
+            this.name =
+                    "stagger    " + DateTimeUtil.long2Str(System.currentTimeMillis(), DateTimeUtil.DATE_FORMAT_SECOND);
+        } else {
+            this.name = name;
+        }
+        this.schema = "https://schema.getpostman.com/json/collection/v2.1.0/collection.json";
+    }
 }

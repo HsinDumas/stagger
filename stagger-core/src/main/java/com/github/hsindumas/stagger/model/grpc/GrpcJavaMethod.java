@@ -22,7 +22,6 @@ package com.github.hsindumas.stagger.model.grpc;
 
 import com.github.hsindumas.stagger.constants.GrpcMethodTypeEnum;
 import com.github.hsindumas.stagger.model.JavadocJavaMethod;
-
 import java.io.Serializable;
 
 /**
@@ -34,22 +33,21 @@ import java.io.Serializable;
  */
 public class GrpcJavaMethod extends JavadocJavaMethod implements Serializable {
 
-	private static final long serialVersionUID = -542118595043785188L;
+    private static final long serialVersionUID = -542118595043785188L;
 
-	/**
-	 * grpc method type.
-	 *
-	 * @see GrpcMethodTypeEnum
-	 */
-	private String methodType;
+    /**
+     * grpc method type.
+     *
+     * @see GrpcMethodTypeEnum
+     */
+    private String methodType;
 
-	public String getMethodType() {
-		return methodType;
-	}
+    public String getMethodType() {
+        return methodType;
+    }
 
-	public GrpcJavaMethod setMethodType(String methodType) {
-		this.methodType = methodType;
-		return this;
-	}
-
+    public GrpcJavaMethod setMethodType(String methodType) {
+        this.methodType = methodType;
+        return this;
+    }
 }

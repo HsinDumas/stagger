@@ -29,18 +29,17 @@ package com.github.hsindumas.stagger.maven.plugin.constant;
  */
 public interface GlobalConstants {
 
-	String ERROR_MSG = "Failed to build ApiConfig, check if the configuration file is correct.";
+    String ERROR_MSG = "Failed to build ApiConfig, check if the configuration file is correct.";
 
-	String DEFAULT_CONFIG = "./src/main/resources/default.json";
+    String DEFAULT_CONFIG = "./src/main/resources/default.json";
 
-	String SOURCE_CODE_PATH = "src/main/java";
+    String SOURCE_CODE_PATH = "src/main/java";
 
-	String TARGET_OUT_PATH = "target/doc";
+    String TARGET_OUT_PATH = "target/doc";
 
-	String POM_XML = "pom.xml";
+    String POM_XML = "pom.xml";
 
-	String SOURCE_CODE_PATH_REVERSE = "\\src\\main\\java";
+    String SOURCE_CODE_PATH_REVERSE = "\\src\\main\\java";
 
-	String FILE_SEPARATOR = System.getProperty("file.separator");
-
+    String FILE_SEPARATOR = System.getProperty("file.separator");
 }

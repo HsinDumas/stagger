@@ -7,9 +7,8 @@ package com.github.hsindumas.stagger.enums;
  */
 public interface IEnum {
 
-	/**
-	 * get the enum code
-	 */
-	String getCode();
-
+    /**
+     * get the enum code
+     */
+    String getCode();
 }

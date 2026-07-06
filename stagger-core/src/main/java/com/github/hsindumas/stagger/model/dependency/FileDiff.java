@@ -30,112 +30,111 @@ import java.util.Objects;
  */
 public class FileDiff {
 
-	/**
-	 * file change type
-	 */
-	private ChangeType changeType;
+    /**
+     * file change type
+     */
+    private ChangeType changeType;
 
-	/**
-	 * old absolute path
-	 */
-	private String oldQualifiedName;
+    /**
+     * old absolute path
+     */
+    private String oldQualifiedName;
 
-	/**
-	 * new absolute path
-	 */
-	private String newQualifiedName;
+    /**
+     * new absolute path
+     */
+    private String newQualifiedName;
 
-	/**
-	 * whether the class is entry point before build
-	 */
-	private boolean isEntryPoint = false;
+    /**
+     * whether the class is entry point before build
+     */
+    private boolean isEntryPoint = false;
 
-	/**
-	 * File change classification.
-	 */
-	public enum ChangeType {
+    /**
+     * File change classification.
+     */
+    public enum ChangeType {
 
-		/** Add a new file to the project */
-		ADD,
+        /** Add a new file to the project */
+        ADD,
 
-		/** Modify an existing file in the project (content and/or mode) */
-		MODIFY,
+        /** Modify an existing file in the project (content and/or mode) */
+        MODIFY,
 
-		/** Delete an existing file from the project */
-		DELETE,
+        /** Delete an existing file from the project */
+        DELETE,
 
-		/** Rename an existing file to a new location */
-		RENAME,
+        /** Rename an existing file to a new location */
+        RENAME,
 
-		/** Copy an existing file to a new location, keeping the original */
-		COPY,
+        /** Copy an existing file to a new location, keeping the original */
+        COPY,
 
-		/**
-		 * File uncommitted, only with newPackagePath
-		 */
-		UNCOMMITTED,
+        /**
+         * File uncommitted, only with newPackagePath
+         */
+        UNCOMMITTED,
 
-		/**
-		 * File untracked, only with newPackagePath
-		 */
-		UNTRACKED,
+        /**
+         * File untracked, only with newPackagePath
+         */
+        UNTRACKED,
 
-		/**
-		 * The class related, only with newPackagePath
-		 */
-		RELATED;
+        /**
+         * The class related, only with newPackagePath
+         */
+        RELATED;
+    }
 
-	}
+    public ChangeType getChangeType() {
+        return changeType;
+    }
 
-	public ChangeType getChangeType() {
-		return changeType;
-	}
+    public void setChangeType(ChangeType changeType) {
+        this.changeType = changeType;
+    }
 
-	public void setChangeType(ChangeType changeType) {
-		this.changeType = changeType;
-	}
+    public String getOldQualifiedName() {
+        return oldQualifiedName;
+    }
 
-	public String getOldQualifiedName() {
-		return oldQualifiedName;
-	}
+    public void setOldQualifiedName(String oldQualifiedName) {
+        this.oldQualifiedName = oldQualifiedName;
+    }
 
-	public void setOldQualifiedName(String oldQualifiedName) {
-		this.oldQualifiedName = oldQualifiedName;
-	}
+    public String getNewQualifiedName() {
+        return newQualifiedName;
+    }
 
-	public String getNewQualifiedName() {
-		return newQualifiedName;
-	}
+    public void setNewQualifiedName(String newQualifiedName) {
+        this.newQualifiedName = newQualifiedName;
+    }
 
-	public void setNewQualifiedName(String newQualifiedName) {
-		this.newQualifiedName = newQualifiedName;
-	}
+    public boolean isEntryPoint() {
+        return isEntryPoint;
+    }
 
-	public boolean isEntryPoint() {
-		return isEntryPoint;
-	}
+    public void setEntryPoint(boolean entryPoint) {
+        isEntryPoint = entryPoint;
+    }
 
-	public void setEntryPoint(boolean entryPoint) {
-		isEntryPoint = entryPoint;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof FileDiff)) {
+            return false;
+        }
+        FileDiff fileDiff = (FileDiff) o;
+        return isEntryPoint == fileDiff.isEntryPoint
+                && changeType == fileDiff.changeType
+                && Objects.equals(oldQualifiedName, fileDiff.oldQualifiedName)
+                && Objects.equals(newQualifiedName, fileDiff.newQualifiedName);
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (!(o instanceof FileDiff)) {
-			return false;
-		}
-		FileDiff fileDiff = (FileDiff) o;
-		return isEntryPoint == fileDiff.isEntryPoint && changeType == fileDiff.changeType
-				&& Objects.equals(oldQualifiedName, fileDiff.oldQualifiedName)
-				&& Objects.equals(newQualifiedName, fileDiff.newQualifiedName);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(changeType, oldQualifiedName, newQualifiedName, isEntryPoint);
-	}
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(changeType, oldQualifiedName, newQualifiedName, isEntryPoint);
+    }
 }

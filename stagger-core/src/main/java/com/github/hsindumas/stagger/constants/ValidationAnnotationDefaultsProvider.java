@@ -38,24 +38,23 @@ import java.util.Map;
  */
 public interface ValidationAnnotationDefaultsProvider {
 
-	/**
-	 * Gets the default attribute values for the associated validation annotation.
-	 * <p>
-	 * The returned map should be immutable and contain only primitive/wrapper values
-	 * converted to their String representations. Implementations should return an empty
-	 * map if no defaults are available.
-	 * @return Unmodifiable map of default attribute values, or empty map if none exist
-	 */
-	default Map<String, String> getDefaultProperties() {
-		return Collections.emptyMap();
-	}
+    /**
+     * Gets the default attribute values for the associated validation annotation.
+     * <p>
+     * The returned map should be immutable and contain only primitive/wrapper values
+     * converted to their String representations. Implementations should return an empty
+     * map if no defaults are available.
+     * @return Unmodifiable map of default attribute values, or empty map if none exist
+     */
+    default Map<String, String> getDefaultProperties() {
+        return Collections.emptyMap();
+    }
 
-	/**
-	 * Checks if the annotation has any default property values defined.
-	 * @return true if default properties are available, false otherwise
-	 */
-	default boolean hasDefaults() {
-		return !this.getDefaultProperties().isEmpty();
-	}
-
+    /**
+     * Checks if the annotation has any default property values defined.
+     * @return true if default properties are available, false otherwise
+     */
+    default boolean hasDefaults() {
+        return !this.getDefaultProperties().isEmpty();
+    }
 }
