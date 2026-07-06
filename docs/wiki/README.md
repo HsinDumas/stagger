@@ -6,11 +6,11 @@ This is the documentation hub for practical Stagger usage and configuration.
 
 ### English
 
-- [stagger.json Configuration Reference](./stagger-json.md)
+- [stagger.json Configuration Reference](https://github.com/HsinDumas/stagger/wiki/stagger-json)
 
 ### 中文
 
-- [stagger.json 配置参考](./stagger-json-cn.md)
+- [stagger.json 配置参考](https://github.com/HsinDumas/stagger/wiki/stagger-json-cn)
 
 ## Entry by Role
 
@@ -20,10 +20,10 @@ This is the documentation hub for practical Stagger usage and configuration.
 
 ## Related Docs
 
-- [Migration Notes](../CODEX_MIGRATION_PLAN.md)
-- [Contributing Guide](../../CONTRIBUTING.md)
-- [Project README (EN)](../../README.md)
-- [Project README (中文)](../../README_CN.md)
+- [Migration Notes](https://github.com/HsinDumas/stagger/blob/main/docs/CODEX_MIGRATION_PLAN.md)
+- [Contributing Guide](https://github.com/HsinDumas/stagger/blob/main/CONTRIBUTING.md)
+- [Project README (EN)](https://github.com/HsinDumas/stagger/blob/main/README.md)
+- [Project README (中文)](https://github.com/HsinDumas/stagger/blob/main/README_CN.md)
 
 ## Maintenance Rules
 
