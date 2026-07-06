@@ -57,6 +57,7 @@ Detailed migration notes and contributor validation commands are documented in `
 
 ## 📚 Wiki
 
+- GitHub Wiki: https://github.com/HsinDumas/stagger/wiki
 - Documentation index: `docs/wiki/README.md`
 - `stagger.json` reference (EN): `docs/wiki/stagger-json.md`
 - `stagger.json` reference (中文): `docs/wiki/stagger-json-cn.md`
