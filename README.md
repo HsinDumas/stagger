@@ -4,8 +4,18 @@
 
 > **Let Swagger stagger. Keep your source code pristine.**
 
-Stagger is a **zero-intrusion, zero-annotation** API documentation generator built on JavaParser-powered static analysis.
-It is maintained as an independent project lineage from smart-doc, with a strong focus on modern Java engineering practices.
+Swagger asks your business code to carry docs metadata.
+Stagger says no.
+
+Stagger is a **zero-intrusion, zero-annotation** API documentation generator based on JavaParser static analysis.
+It is maintained independently from the smart-doc lineage, with explicit focus on modern Java engineering (JDK 25 toolchain, Gradle 9.x, Spring Boot 4 compatibility).
+
+## ⚡ One-Minute Pitch
+
+- Keep docs out of domain code.
+- Parse Java sources and JavaDoc directly.
+- Generate OpenAPI 3.1, Markdown, and offline HTML in build time.
+- Keep Maven and Gradle both first-class for users.
 
 ## 🙏 Tribute to smart-doc
 
@@ -15,11 +25,31 @@ Stagger would not exist without [smart-doc](https://github.com/smart-doc-group/s
 - Stagger inherits that philosophy: keep business code clean, use source analysis over annotation flooding.
 - We sincerely respect [shalousun](https://github.com/shalousun) and all smart-doc contributors.
 
-Stagger is not a denial of smart-doc. It is a focused continuation for teams that need a modernized stack and explicit migration visibility.
+Stagger is not a rejection of smart-doc. It is a focused continuation for teams that want a modernized toolchain and transparent migration records.
 
 ## 💡 Why Stagger?
 
-When Swagger floods business code with `@Schema` and `@Operation`, documentation starts to dictate domain model shape. Stagger keeps documentation generation in build-time analysis, not in business annotations.
+When docs start owning your model, your model stops being your model.
+
+Stagger keeps documentation generation in build-time analysis, not in controller-level annotation sprawl.
+
+### Before / After
+
+```java
+// Before: doc framework drives your business code shape
+@Schema(description = "Create order request")
+public class CreateOrderRequest {
+    @Schema(description = "Customer id")
+    private String customerId;
+}
+
+// After with Stagger: keep model clean, let JavaDoc + source analysis do the job
+/** Create order request */
+public class CreateOrderRequest {
+    /** Customer id */
+    private String customerId;
+}
+```
 
 Core principles:
 
@@ -40,7 +70,7 @@ Core principles:
 
 ## 🔍 How Stagger Differs from smart-doc
 
-Stagger keeps the same non-intrusive spirit while making different engineering choices:
+Same spirit, different engineering choices:
 
 | Area | Upstream Baseline | Stagger (this repository) |
 |------|-----------------------|----------------------------|
