@@ -23,6 +23,10 @@
 
 package com.github.hsindumas.stagger.maven.plugin.mojo;
 
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.DateTimeUtil;
+import com.github.hsindumas.stagger.common.util.RegexUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.helper.SortedClassLibraryBuilder;
@@ -32,22 +36,6 @@ import com.github.hsindumas.stagger.maven.plugin.util.ClassLoaderUtil;
 import com.github.hsindumas.stagger.maven.plugin.util.FileUtil;
 import com.github.hsindumas.stagger.maven.plugin.util.MojoUtils;
 import com.github.hsindumas.stagger.model.ApiConfig;
-import com.github.hsindumas.stagger.common.constants.Charset;
-import com.github.hsindumas.stagger.common.util.CollectionUtil;
-import com.github.hsindumas.stagger.common.util.DateTimeUtil;
-import com.github.hsindumas.stagger.common.util.RegexUtil;
-import com.github.hsindumas.stagger.common.util.StringUtil;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.stream.Collectors;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -69,6 +57,19 @@ import org.apache.maven.repository.RepositorySystem;
 import org.apache.maven.shared.dependency.graph.DependencyGraphBuilder;
 import org.apache.maven.shared.dependency.graph.DependencyGraphBuilderException;
 import org.apache.maven.shared.dependency.graph.DependencyNode;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 /**
  * reference https://github.com/jboz/living-documentation
@@ -158,7 +159,7 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
 			return;
 		}
 		javaProjectBuilder = buildJavaProjectBuilder(apiConfig.getCodePath());
-		javaProjectBuilder.setEncoding(Charset.DEFAULT_CHARSET);
+		javaProjectBuilder.setEncoding(StandardCharsets.UTF_8.name());
 		String rpcConsumerConfig = apiConfig.getRpcConsumerConfig();
 		if (!FileUtil.isAbsPath(rpcConsumerConfig) && StringUtil.isNotEmpty(rpcConsumerConfig)) {
 			apiConfig.setRpcConsumerConfig(project.getBasedir().getPath() + "/" + rpcConsumerConfig);
@@ -184,7 +185,7 @@ public abstract class BaseDocsGeneratorMojo extends AbstractMojo {
 		SortedClassLibraryBuilder classLibraryBuilder = new SortedClassLibraryBuilder();
 		classLibraryBuilder.setErrorHander(e -> getLog().error("Parse error", e));
 		JavaProjectBuilder javaDocBuilder = JavaProjectBuilderHelper.create(classLibraryBuilder);
-		javaDocBuilder.setEncoding(Charset.DEFAULT_CHARSET);
+		javaDocBuilder.setEncoding(StandardCharsets.UTF_8.name());
 		javaDocBuilder.setErrorHandler(e -> getLog().warn(e.getMessage()));
 		// addSourceTree
 		javaDocBuilder.addSourceTree(new File(codePath));

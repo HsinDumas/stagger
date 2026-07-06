@@ -20,7 +20,6 @@
  */
 package com.github.hsindumas.stagger.model;
 
-import com.github.hsindumas.stagger.common.model.EnumDictionary;
 import com.github.hsindumas.stagger.common.util.EnumUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -137,14 +136,13 @@ public class ApiDataDictionary {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder("{");
-		sb.append("\"title\":\"").append(title).append('\"');
-		sb.append(",\"enumClass\":").append(enumClass);
-		sb.append(",\"enumClassName\":\"").append(enumClassName).append('\"');
-		sb.append(",\"codeField\":\"").append(codeField).append('\"');
-		sb.append(",\"descField\":\"").append(descField).append('\"');
-		sb.append('}');
-		return sb.toString();
+		String sb = "{" + "\"title\":\"" + title + '\"' +
+				",\"enumClass\":" + enumClass +
+				",\"enumClassName\":\"" + enumClassName + '\"' +
+				",\"codeField\":\"" + codeField + '\"' +
+				",\"descField\":\"" + descField + '\"' +
+				'}';
+		return sb;
 	}
 
 }

@@ -20,7 +20,7 @@
  */
 package com.github.hsindumas.stagger.extension.dict;
 
-import com.github.hsindumas.stagger.common.model.EnumDictionary;
+import com.github.hsindumas.stagger.model.EnumDictionary;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -34,25 +34,24 @@ import java.util.Collections;
  */
 public interface DictionaryValuesResolver {
 
-	/**
-	 * resolve the dictionary, if an exception occurs, return empty collection instead of
-	 * null default behaviour is the same as {@link #resolve()}
-	 * @param clazz dictionary class
-	 * @param <T> the type parameter
-	 * @return the dictionary
-	 */
-	default <T extends EnumDictionary> Collection<T> resolve(Class<?> clazz) {
-		return resolve();
-	}
+    /**
+     * resolve the dictionary, if an exception occurs, return empty collection instead of
+     * null default behaviour is the same as {@link #resolve()}
+     * @param clazz dictionary class
+     * @param <T> the type parameter
+     * @return the dictionary
+     */
+    default <T extends EnumDictionary> Collection<T> resolve(Class<?> clazz) {
+        return resolve();
+    }
 
-	/**
-	 * resolve the dictionary, for compatibility, do not return null
-	 * @param <T> the type parameter
-	 * @return the dictionary
-	 * @see #resolve(Class)
-	 */
-	default <T extends EnumDictionary> Collection<T> resolve() {
-		return Collections.emptyList();
-	}
-
+    /**
+     * resolve the dictionary, for compatibility, do not return null
+     * @param <T> the type parameter
+     * @return the dictionary
+     * @see #resolve(Class)
+     */
+    default <T extends EnumDictionary> Collection<T> resolve() {
+        return Collections.emptyList();
+    }
 }

@@ -23,6 +23,9 @@
 package com.github.hsindumas.stagger.utils;
 
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.EnumUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.constants.DefaultClassConstants;
 import com.github.hsindumas.stagger.constants.DocAnnotationConstants;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
@@ -31,17 +34,14 @@ import com.github.hsindumas.stagger.constants.DocValidatorAnnotationEnum;
 import com.github.hsindumas.stagger.constants.JSRAnnotationConstants;
 import com.github.hsindumas.stagger.constants.JavaTypeConstants;
 import com.github.hsindumas.stagger.constants.ParamTypeConstants;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiDataDictionary;
 import com.github.hsindumas.stagger.model.DocJavaField;
+import com.github.hsindumas.stagger.model.EnumDictionary;
 import com.github.hsindumas.stagger.model.enums.EnumInfo;
 import com.github.hsindumas.stagger.model.enums.EnumInfoAndValues;
 import com.github.hsindumas.stagger.model.enums.Item;
-import com.github.hsindumas.stagger.common.model.EnumDictionary;
-import com.github.hsindumas.stagger.common.util.CollectionUtil;
-import com.github.hsindumas.stagger.common.util.EnumUtil;
-import com.github.hsindumas.stagger.common.util.StringUtil;
-import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;

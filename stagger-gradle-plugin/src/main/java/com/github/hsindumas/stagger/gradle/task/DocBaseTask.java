@@ -22,13 +22,9 @@
  */
 package com.github.hsindumas.stagger.gradle.task;
 
-import org.gradle.work.DisableCachingByDefault;
-
-import com.github.hsindumas.stagger.common.constants.Charset;
 import com.github.hsindumas.stagger.common.util.CollectionUtil;
 import com.github.hsindumas.stagger.common.util.RegexUtil;
-import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
-import com.github.hsindumas.stagger.model.ApiConfig;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.gradle.constant.GlobalConstants;
 import com.github.hsindumas.stagger.gradle.extension.StaggerPluginExtension;
 import com.github.hsindumas.stagger.gradle.model.CustomArtifact;
@@ -36,9 +32,10 @@ import com.github.hsindumas.stagger.gradle.util.ArtifactFilterUtil;
 import com.github.hsindumas.stagger.gradle.util.GradleUtil;
 import com.github.hsindumas.stagger.gradle.util.I18nMsgUtil;
 import com.github.hsindumas.stagger.gradle.util.SourceSetUtil;
-import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.helper.SortedClassLibraryBuilder;
+import com.github.hsindumas.stagger.model.ApiConfig;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
@@ -53,9 +50,11 @@ import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.jvm.JvmLibrary;
 import org.gradle.language.base.artifact.SourcesArtifact;
+import org.gradle.work.DisableCachingByDefault;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -76,18 +75,16 @@ import java.util.jar.JarFile;
 
 public abstract class DocBaseTask extends DefaultTask {
 
+	private static final String MSG = I18nMsgUtil.get("code_loading_msg");
+	/**
+	 * QDOX JavaProjectBuilder
+	 */
+	protected JavaProjectBuilder javaProjectBuilder;
 	private Project taskProject;
 
 	public void setTaskProject(Project taskProject) {
 		this.taskProject = taskProject;
 	}
-
-	/**
-	 * QDOX JavaProjectBuilder
-	 */
-	protected JavaProjectBuilder javaProjectBuilder;
-
-	private static final String MSG = I18nMsgUtil.get("code_loading_msg");
 
 	/**
 	 * Abstract execute action
@@ -111,7 +108,7 @@ public abstract class DocBaseTask extends DefaultTask {
 		Set<String> excludes = pluginExtension.getExclude();
 		Set<String> includes = pluginExtension.getInclude();
 		javaProjectBuilder = buildJavaProjectBuilder(project, excludes, includes);
-		javaProjectBuilder.setEncoding(Charset.DEFAULT_CHARSET);
+		javaProjectBuilder.setEncoding(StandardCharsets.UTF_8.name());
 		File file;
 		// Also configurable with Gradle or System Property: ${stagger.configFile}
 		if (project.hasProperty(GlobalConstants.CONFIG_FILE)) {
@@ -155,7 +152,7 @@ public abstract class DocBaseTask extends DefaultTask {
 		SortedClassLibraryBuilder classLibraryBuilder = new SortedClassLibraryBuilder();
 		classLibraryBuilder.setErrorHander(e -> getLogger().error("Parse error", e));
 		JavaProjectBuilder javaDocBuilder = JavaProjectBuilderHelper.create(classLibraryBuilder);
-		javaDocBuilder.setEncoding(Charset.DEFAULT_CHARSET);
+		javaDocBuilder.setEncoding(StandardCharsets.UTF_8.name());
 		javaDocBuilder.setErrorHandler(e -> getLogger().warn(e.getMessage()));
 		// addSourceTree
 		Set<File> set = SourceSetUtil.getMainJava(project);

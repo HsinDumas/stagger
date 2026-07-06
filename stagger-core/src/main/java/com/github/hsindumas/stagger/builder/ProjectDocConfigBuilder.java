@@ -20,9 +20,12 @@
  */
 package com.github.hsindumas.stagger.builder;
 
+import com.github.hsindumas.stagger.common.util.CollectionUtil;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.constants.HighLightJsConstants;
 import com.github.hsindumas.stagger.constants.HighlightStyle;
+import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 import com.github.hsindumas.stagger.helper.JavaProjectBuilderHelper;
 import com.github.hsindumas.stagger.model.ApiConfig;
 import com.github.hsindumas.stagger.model.ApiConstant;
@@ -38,13 +41,8 @@ import com.github.hsindumas.stagger.source.SourceProject;
 import com.github.hsindumas.stagger.source.SourceProjects;
 import com.github.hsindumas.stagger.source.SourceScanRequest;
 import com.github.hsindumas.stagger.source.SourceType;
-import com.github.hsindumas.stagger.utils.DocClassUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
-import com.github.hsindumas.stagger.common.constants.Charset;
-import com.github.hsindumas.stagger.common.util.CollectionUtil;
-import com.github.hsindumas.stagger.common.util.StringUtil;
-import com.github.hsindumas.stagger.helper.JavaProjectBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -157,7 +155,7 @@ public class ProjectDocConfigBuilder {
 			this.serverUrl = apiConfig.getServerUrl();
 		}
 		this.setHighlightStyle();
-		javaProjectBuilder.setEncoding(Charset.DEFAULT_CHARSET);
+		javaProjectBuilder.setEncoding(StandardCharsets.UTF_8.name());
 		this.javaProjectBuilder = javaProjectBuilder;
 		SourceProject builtSourceProject;
 		try {
@@ -182,6 +180,23 @@ public class ProjectDocConfigBuilder {
 		this.initDict(apiConfig);
 		this.checkBodyAdvice(apiConfig.getRequestBodyAdvice());
 		this.checkBodyAdvice(apiConfig.getResponseBodyAdvice());
+	}
+
+	/**
+	 * Delete dir.
+	 * @param file file
+	 */
+	public static void deleteDir(File file) {
+		File[] files = file.listFiles();
+		if (file.isFile() || Objects.isNull(files) || files.length == 0) {
+			file.delete();
+		}
+		else {
+			for (File f : files) {
+				deleteDir(f);
+			}
+		}
+		file.delete();
 	}
 
 	/**
@@ -630,7 +645,7 @@ public class ProjectDocConfigBuilder {
 			return;
 		}
 		try (JarFile jarFile = new JarFile(path)) {
-			builder.setEncoding(Charset.DEFAULT_CHARSET);
+			builder.setEncoding(StandardCharsets.UTF_8.name());
 			Enumeration<JarEntry> entryEnumeration = jarFile.entries();
 			while (entryEnumeration.hasMoreElements()) {
 				JarEntry entry = entryEnumeration.nextElement();
@@ -656,23 +671,6 @@ public class ProjectDocConfigBuilder {
 		catch (IOException e) {
 			log.info("jar" + path + " load  error ,e :" + e);
 		}
-	}
-
-	/**
-	 * Delete dir.
-	 * @param file file
-	 */
-	public static void deleteDir(File file) {
-		File[] files = file.listFiles();
-		if (file.isFile() || Objects.isNull(files) || files.length == 0) {
-			file.delete();
-		}
-		else {
-			for (File f : files) {
-				deleteDir(f);
-			}
-		}
-		file.delete();
 	}
 
 	/**

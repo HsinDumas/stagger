@@ -23,6 +23,7 @@
 package com.github.hsindumas.stagger.helper;
 
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
+import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.constants.DocTags;
 import com.github.hsindumas.stagger.constants.JavaTypeConstants;
@@ -34,6 +35,7 @@ import com.github.hsindumas.stagger.model.ApiDataDictionary;
 import com.github.hsindumas.stagger.model.ApiParam;
 import com.github.hsindumas.stagger.model.CustomFieldInfo;
 import com.github.hsindumas.stagger.model.DocJavaField;
+import com.github.hsindumas.stagger.model.EnumDictionary;
 import com.github.hsindumas.stagger.model.FieldJsonAnnotationInfo;
 import com.github.hsindumas.stagger.model.enums.EnumInfoAndValues;
 import com.github.hsindumas.stagger.utils.DocClassUtil;
@@ -42,8 +44,6 @@ import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.github.hsindumas.stagger.utils.JavaFieldUtil;
 import com.github.hsindumas.stagger.utils.ParamUtil;
-import com.github.hsindumas.stagger.common.model.EnumDictionary;
-import com.github.hsindumas.stagger.common.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -933,7 +933,7 @@ public class ParamsBuildHelper extends BaseHelper {
 			comment = StringUtil.removeQuotes(comment);
 		}
 
-		if (Boolean.TRUE.equals(projectBuilder.getApiConfig().isDisplayActualType())) {
+		if (projectBuilder.getApiConfig().isDisplayActualType()) {
 			comment = comment + " (ActualType: " + DocUtil.getClassSimpleName(javaClass) + ")";
 		}
 

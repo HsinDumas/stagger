@@ -20,8 +20,6 @@
  */
 package com.github.hsindumas.stagger.model;
 
-import com.github.hsindumas.stagger.common.model.EnumDictionary;
-
 import java.util.Objects;
 
 /**
@@ -39,10 +37,9 @@ public class ApiErrorCode extends EnumDictionary {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof ApiErrorCode)) {
+		if (!(obj instanceof ApiErrorCode other)) {
 			return false;
 		}
-		ApiErrorCode other = (ApiErrorCode) obj;
 		return Objects.equals(getValue(), other.getValue()) && Objects.equals(getType(), other.getType())
 				&& Objects.equals(getDesc(), other.getDesc()) && Objects.equals(getOrdinal(), other.getOrdinal())
 				&& Objects.equals(getName(), other.getName());

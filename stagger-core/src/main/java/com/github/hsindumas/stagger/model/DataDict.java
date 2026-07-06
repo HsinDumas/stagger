@@ -20,12 +20,8 @@
  */
 package com.github.hsindumas.stagger.model;
 
-import com.github.hsindumas.stagger.common.model.EnumDictionary;
-
 /**
  * @author yu 2019/10/31.
  * @author HsinDumas
  */
-public class DataDict extends EnumDictionary {
-
-}
+public class DataDict extends EnumDictionary {}
