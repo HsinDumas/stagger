@@ -33,6 +33,6 @@ This is the documentation hub for practical Stagger usage and configuration.
 
 ## Sync to GitHub Wiki
 
-- Source of truth is this folder: `docs/wiki`.
-- GitHub Wiki `Home.md` is synced from this file.
-- Automatic sync is handled by workflow: `.github/workflows/sync-wiki.yml`.
+- Source of truth is this folder: [docs/wiki](https://github.com/HsinDumas/stagger/tree/main/docs/wiki).
+- GitHub Wiki [Home.md](https://github.com/HsinDumas/stagger/wiki) is synced from this file.
+- Automatic sync is handled by workflow: [sync-wiki.yml](https://github.com/HsinDumas/stagger/blob/main/.github/workflows/sync-wiki.yml).
