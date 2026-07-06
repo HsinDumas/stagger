@@ -40,22 +40,7 @@ public final class FileUtil {
 	}
 
 	public static boolean writeFileNotAppend(String content, String path) {
-		if (StringUtil.isEmpty(path)) {
-			return false;
-		}
-		try {
-			Path target = Path.of(path);
-			Path parent = target.getParent();
-			if (parent != null) {
-				Files.createDirectories(parent);
-			}
-			Files.writeString(target, content == null ? StringUtil.EMPTY : content, StandardCharsets.UTF_8,
-					StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
-			return true;
-		}
-		catch (IOException ex) {
-			return false;
-		}
+		return nioWriteFile(content, path);
 	}
 
 	public static String getFileContent(String path) {
@@ -109,10 +94,7 @@ public final class FileUtil {
 		}
 		try {
 			Path target = Path.of(path);
-			Path parent = target.getParent();
-			if (parent != null) {
-				Files.createDirectories(parent);
-			}
+			createParentDirectories(target);
 			Files.writeString(target, content == null ? StringUtil.EMPTY : content, StandardCharsets.UTF_8,
 					StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
 			return true;
@@ -128,10 +110,7 @@ public final class FileUtil {
 		}
 		try (InputStream in = inputStream) {
 			Path targetPath = target.toPath();
-			Path parent = targetPath.getParent();
-			if (parent != null) {
-				Files.createDirectories(parent);
-			}
+			createParentDirectories(targetPath);
 			if (copyOption == null) {
 				Files.copy(in, targetPath);
 			}
@@ -142,6 +121,13 @@ public final class FileUtil {
 		}
 		catch (IOException ex) {
 			return false;
+		}
+	}
+
+	private static void createParentDirectories(Path targetPath) throws IOException {
+		Path parent = targetPath.getParent();
+		if (parent != null) {
+			Files.createDirectories(parent);
 		}
 	}
 

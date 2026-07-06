@@ -311,7 +311,6 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	public void buildDoc(List<ApiDoc> apiDocList, ApiConfig config, JavaProjectBuilder javaProjectBuilder,
 			String template, String outPutFileName, ApiDoc apiDoc, String index) {
 		String outPath = config.getOutPath();
-		FileUtil.mkdirs(outPath);
 		Template tpl = this.buildAllRenderDocTemplate(apiDocList, config, javaProjectBuilder, template, apiDoc, index);
 		FileUtil.nioWriteFile(tpl.render(), outPath + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
 	}
@@ -329,7 +328,6 @@ public class DocBuilderTemplate implements IBaseDocBuilderTemplate<ApiDoc> {
 	public void buildDoc(List<ApiDoc> apiDocList, ApiConfig config, ProjectDocConfigBuilder configBuilder,
 			String template, String outPutFileName, ApiDoc apiDoc, String index) {
 		String outPath = config.getOutPath();
-		FileUtil.mkdirs(outPath);
 		Template tpl = this.buildAllRenderDocTemplate(apiDocList, config, configBuilder, template, apiDoc, index);
 		FileUtil.nioWriteFile(tpl.render(), outPath + DocGlobalConstants.FILE_SEPARATOR + outPutFileName);
 	}

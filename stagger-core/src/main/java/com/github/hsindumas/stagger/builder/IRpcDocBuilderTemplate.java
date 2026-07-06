@@ -114,7 +114,6 @@ public interface IRpcDocBuilderTemplate<T extends AbstractRpcApiDoc<?>> extends 
 		if (Objects.nonNull(rpcConfig)) {
 			rpcConfigConfigContent = FileUtil.getFileContent(rpcConfig);
 		}
-		FileUtil.mkdirs(outPath);
 		Template tpl = BeetlTemplateUtil.getByName(template);
 		tpl.binding(TemplateVariable.API_DOC_LIST.getVariable(), apiDocList);
 		tpl.binding(TemplateVariable.DEPENDENCY_LIST.getVariable(), config.getRpcApiDependencies());
@@ -140,7 +139,6 @@ public interface IRpcDocBuilderTemplate<T extends AbstractRpcApiDoc<?>> extends 
 		if (Objects.nonNull(rpcConfig)) {
 			rpcConfigConfigContent = FileUtil.getFileContent(rpcConfig);
 		}
-		FileUtil.mkdirs(outPath);
 		Template tpl = BeetlTemplateUtil.getByName(template);
 		tpl.binding(TemplateVariable.API_DOC_LIST.getVariable(), apiDocList);
 		tpl.binding(TemplateVariable.DEPENDENCY_LIST.getVariable(), config.getRpcApiDependencies());

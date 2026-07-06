@@ -129,7 +129,6 @@ public class WebSocketDocBuilderTemplate implements IBaseDocBuilderTemplate<WebS
 	public void buildWebSocketAllInOne(List<WebSocketDoc> webSocketDocList, ApiConfig config,
 			JavaProjectBuilder javaProjectBuilder, String template, String outPutFileName) {
 		String outPath = config.getOutPath();
-		FileUtil.mkdirs(outPath);
 		Template tpl = BeetlTemplateUtil.getByName(template);
 		String style = config.getStyle();
 		tpl.binding(TemplateVariable.STYLE.getVariable(), style);
@@ -154,7 +153,6 @@ public class WebSocketDocBuilderTemplate implements IBaseDocBuilderTemplate<WebS
 	public void buildWebSocketAllInOne(List<WebSocketDoc> webSocketDocList, ApiConfig config,
 			ProjectDocConfigBuilder configBuilder, String template, String outPutFileName) {
 		String outPath = config.getOutPath();
-		FileUtil.mkdirs(outPath);
 		Template tpl = BeetlTemplateUtil.getByName(template);
 		String style = config.getStyle();
 		tpl.binding(TemplateVariable.STYLE.getVariable(), style);
