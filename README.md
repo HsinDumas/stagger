@@ -55,6 +55,12 @@ Stagger uses Gradle internally, but it does not force users to switch build tool
 
 Detailed migration notes and contributor validation commands are documented in `docs/CODEX_MIGRATION_PLAN.md` and `CONTRIBUTING.md`.
 
+## 📚 Wiki
+
+- Documentation index: `docs/wiki/README.md`
+- `stagger.json` reference (EN): `docs/wiki/stagger-json.md`
+- `stagger.json` reference (中文): `docs/wiki/stagger-json-cn.md`
+
 ## 🚀 Quick Start
 
 Use the latest release from https://github.com/HsinDumas/stagger/releases (tag format: `vX.Y.Z`), then replace `REPLACE_WITH_LATEST_RELEASE` below (for example: `3.2.2`).
