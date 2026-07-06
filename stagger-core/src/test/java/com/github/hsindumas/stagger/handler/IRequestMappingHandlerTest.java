@@ -1,5 +1,4 @@
 /*
- * Copyright (C) 2018-2026 stagger
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file

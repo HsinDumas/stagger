@@ -1,8 +1,6 @@
 /*
  * stagger https://github.com/HsinDumas/stagger
  *
- * Copyright (C) 2018-2024 stagger
- *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
