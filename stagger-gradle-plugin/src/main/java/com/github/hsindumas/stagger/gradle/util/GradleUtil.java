@@ -133,7 +133,11 @@ public class GradleUtil {
 	 * @param classLoader urls
 	 * @return Class
 	 */
-	public static Class getClassByClassName(String className, ClassLoader classLoader) {
+	public static Class<?> getClassByClassName(String className, ClassLoader classLoader) {
+		if (StringUtil.isEmpty(className)) {
+			return null;
+		}
+
 		try {
 			return classLoader.loadClass(className);
 		}

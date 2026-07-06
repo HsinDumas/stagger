@@ -27,7 +27,7 @@ If your contribution involves:
 1. Fork the repository and clone it locally.
 2. Create a new branch for your changes.
 3. Test your modifications using `stagger` (see [Quick Start](https://HsinDumas.github.io/guide/getting-started)).
-4. Format code with `mvn spring-javaformat:apply`.
+4. Format code with `./gradlew format`.
 5. Submit a PR to the main repository.
 
 ## Community Engagement

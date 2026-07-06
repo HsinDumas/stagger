@@ -7,6 +7,8 @@ import com.github.hsindumas.stagger.utils.DocUrlUtil;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author HsinDumas
  */
@@ -20,7 +22,12 @@ public class DocUrlUtilTest {
 		urls.add(" /{path2}/abc3]");
 		String baseServer = "http://{{host}}:{{port}}";
 
-		System.out.println(DocUrlUtil.getMvcUrls(baseServer, baseUrl, urls));
+		String mvcUrls = DocUrlUtil.getMvcUrls(baseServer, baseUrl, urls);
+		assertTrue(mvcUrls.contains("http://{{host}}:{{port}}"));
+		assertTrue(mvcUrls.contains("testMultiPathOne"));
+		assertTrue(mvcUrls.contains("testMultiPathTwo"));
+		assertTrue(mvcUrls.contains("abc2"));
+		assertTrue(mvcUrls.contains("abc3"));
 
 	}
 

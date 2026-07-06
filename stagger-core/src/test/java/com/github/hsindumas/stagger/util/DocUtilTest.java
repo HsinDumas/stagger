@@ -42,7 +42,8 @@ public class DocUtilTest {
 	public void test() {
 		System.setProperty(DocGlobalConstants.DOC_LANGUAGE, DocLanguage.CHINESE.getCode());
 		String str = DocUtil.getValByTypeAndFieldName("string", "name");
-		System.out.println(str);
+		assertTrue(str.startsWith("\""));
+		assertTrue(str.endsWith("\""));
 	}
 
 	@Test
@@ -53,17 +54,21 @@ public class DocUtilTest {
 		params.put("age", "0");
 
 		String url2 = "${server.error.path:${error.path:/error}}/test/{name:[a-zA-Z0-9]{3}}/{bb}/add";
-		System.out.println(DocUtil.formatAndRemove(url2, params));
+		String formattedUrl2 = DocUtil.formatAndRemove(url2, params);
+		assertTrue(formattedUrl2.contains("/test/{name}/{bb}/add")
+				|| formattedUrl2.contains("/test/dd/{bb}/add"));
 
 		params.put("name", "dd");
 		params.put("age", "0");
 		String url3 = "http://localhost:8080/detail/{id:[a-zA-Z0-9]{3}}/{name:[a-zA-Z0-9]{3}}";
-		System.out.println(DocUtil.formatAndRemove(url3, params));
+		String formattedUrl3 = DocUtil.formatAndRemove(url3, params);
+		assertTrue(formattedUrl3.startsWith("http://localhost:8080/detail/"));
+		assertTrue(formattedUrl3.contains("/detail/"));
 	}
 
 	@Test
 	public void testGetInterfacesEnum() throws ClassNotFoundException {
-		System.out.println(IEnum.class.isAssignableFrom(OrderEnum.class));
+		assertTrue(IEnum.class.isAssignableFrom(OrderEnum.class));
 	}
 
 	@Test
@@ -72,25 +77,24 @@ public class DocUtilTest {
 		String pattern = "com.aaa.*.controller";
 		String controllerName = "com.aaa.cc.controlle";
 
-		System.out.println(DocUtil.isMatch(pattern, controllerName));
+		assertTrue(!DocUtil.isMatch(pattern, controllerName));
 	}
 
 	@Test
 	public void testFormatPathUrl() {
 		System.setProperty(DocGlobalConstants.DOC_LANGUAGE, DocLanguage.CHINESE.getCode());
 		String url = "http://localhost:8080/detail/{id:[a-zA-Z0-9]{3}}/{name:[a-zA-Z0-9]{3}}";
-		System.out.println(DocUtil.formatPathUrl(url));
+		assertEquals("http://localhost:8080/detail/{id}/{name}", DocUtil.formatPathUrl(url));
 	}
 
 	@Test
 	public void testSplitPathBySlash() {
 		String str = "${server.error.path:${error.path:/error}}/test/{name:[a-zA-Z0-9]{3}}/{bb}/add";
 		List<String> paths = DocUtil.splitPathBySlash(str);
-		for (String s : paths) {
-			if (s != null) {
-				System.out.println(s);
-			}
-		}
+		assertEquals(5, paths.size());
+		assertEquals("${server.error.path:${error.path:/error}}", paths.get(0));
+		assertEquals("test", paths.get(1));
+		assertEquals("add", paths.get(4));
 	}
 
 	@Test
@@ -99,7 +103,7 @@ public class DocUtilTest {
 		String originalGeneric = "T";
 		String replacement = "User";
 		String result = DocUtil.replaceGenericParameter(base, originalGeneric, replacement);
-		System.out.println(result); // Output: com.Test<List<Use
+		assertEquals("java.util.List<com.stagger.example.model.TreeNode<User>>", result);
 	}
 
 	private Object createMockTag(String value) {

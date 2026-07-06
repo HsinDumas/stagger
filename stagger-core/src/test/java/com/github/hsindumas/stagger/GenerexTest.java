@@ -4,6 +4,8 @@ import com.mifmif.common.regex.Generex;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author yu3.sun on 2022/10/15
  * @author HsinDumas
@@ -15,8 +17,7 @@ public class GenerexTest {
 		Generex generex = new Generex("[a-zA-Z0-9]{3}");
 		// Generate random String
 		String randomStr = generex.random();
-		System.out.println(randomStr);
-
+		assertTrue(randomStr.matches("[a-zA-Z0-9]{3}"));
 	}
 
 }

@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author HsinDumas
  */
@@ -28,7 +30,9 @@ public class CurlUtilTest {
 			.setContentType("application/json")
 			.setReqHeaders(Arrays.asList(apiReqParam));
 		String curl = CurlUtil.toCurl(builder);
-		System.out.println(curl);
+		assertTrue(curl.contains("curl -X POST"));
+		assertTrue(curl.contains("http://127.0.0.1:8080/region/list"));
+		assertTrue(curl.contains("-H \"Authorization:"));
 	}
 
 }

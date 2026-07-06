@@ -35,7 +35,8 @@ class JsonBuildHelperTest {
 		Assertions.assertFalse(DocUtil.getClassMethods(builder.getClassByName(Task.class.getName())).isEmpty());
 		String json = JsonBuildHelper.buildJson(Task.class.getName(), Task.class.getCanonicalName(), false, 0,
 				new HashMap<>(16), new HashSet<>(), new HashSet<>(), builder);
-		System.out.println(json);
+		Assertions.assertNotNull(json);
+		Assertions.assertTrue(json.contains("taskType"));
 	}
 
 	interface Serialize<T extends Serialize<T>> {
