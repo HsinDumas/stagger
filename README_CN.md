@@ -4,19 +4,29 @@
 
 > **Let Swagger stagger. Keep your source code pristine.**
 
-Stagger 是一款基于 JavaParser 静态分析的 **零侵入、零注解** API 文档自动化生成工具。
-它面向现代 Java 技术栈（JDK 25+ / Spring Boot 4.x+），同时保持源码洁净。
+Stagger 是一款基于 JavaParser 静态分析的 **零侵入、零注解** API 文档生成工具。
+它源于 smart-doc 思路并独立维护，重点面向现代 Java 工程实践。
+
+## 🙏 致敬 smart-doc
+
+Stagger 的起点来自 [smart-doc](https://github.com/smart-doc-group/smart-doc)。
+
+- smart-doc 在 Java 生态中率先走通了“低侵入文档生成”这条路。
+- Stagger 继承的是这套理念：尽量不污染业务代码，通过源码分析生成文档。
+- 我们向 [shalousun](https://github.com/shalousun) 与所有 smart-doc 贡献者致敬。
+
+Stagger 不是对 smart-doc 的否定，而是针对“现代化技术栈 + 迁移透明度”这个方向做的延伸维护。
 
 ## 💡 为什么叫 Stagger？
 
-当 Swagger 用满屏幕的 `@Schema` 和 `@Operation` 注解将你的业务代码搅得一团糟时，它已经背离了"优雅"的初衷。在现代 Clean Code 的趋势下，这样的方案只能**步履蹒跚（Stagger）**向前。
+当 Swagger 用大量 `@Schema`、`@Operation` 等注解侵入业务代码时，文档系统会反过来绑架领域模型。Stagger 的选择是把文档生成放在构建期源码分析，而不是业务注解堆砌。
 
-Stagger 继承了优秀的静态解析理念，彻底摒弃注解流：
+核心原则：
 
-- 🚫 **零侵入** - 你的代码里不需要任何第三方注解。
-- 📝 **纯 JavaDoc 解析** - 直接读取标准 JavaDoc 注释与源码元信息。
-- ⚡ **面向未来** - 原生支持 JDK 25 新特性（Records、Pattern Matching）与 Spring Boot 4.x。
-- 🔄 **多样输出** - 一键生成 OpenAPI 3.1、Markdown、离线 HTML 等多种格式。
+- 🚫 **零侵入** - 业务代码无需引入第三方文档注解。
+- 📝 **JavaDoc + 源码元信息** - 从源码结构和注释推导文档。
+- ⚡ **现代 Java 优先** - 重点支持 JDK 25 toolchain 与新框架兼容。
+- 🔄 **多格式输出** - 一次构建可生成 OpenAPI 3.1、Markdown、离线 HTML。
 
 ## ✨ 功能对比
 
@@ -28,23 +38,22 @@ Stagger 继承了优秀的静态解析理念，彻底摒弃注解流：
 | Gradle 9.x | ✅ | ✅ | ✅ |
 | OpenAPI 3.1 | ✅ | ✅ | ✅ |
 
-## 🔍 上游沿革与差异
+## 🔍 与 smart-doc 的差异化
 
-Stagger 源于 smart-doc 上游项目，目前以独立项目方式持续维护，并在保持稳定性的同时做增量架构升级。当前差异主要是：
+Stagger 保留了“低侵入”理念，但在工程路线上做了不同选择：
 
 | 维度 | 上游基线 | Stagger（本仓库） |
 |------|--------------------|-------------------|
-| 构建体系 | Maven 为主 | Gradle Monorepo 为主（对用户同时提供 Maven 与 Gradle 一等插件） |
-| JDK 策略 | 传统基线 | 使用 JDK 25 toolchain 构建，产物保持向下兼容目标 |
-| 解析架构 | QDox 为中心 | 基于 JavaParser 的 SourceModel 抽象 |
-| Spring 侧重点 | 常规 Spring 生态 | 更强调 Spring Boot 4 与新注解形态兼容 |
+| 项目定位 | 上游通用基线 | 独立维护分支，明确现代化路线图 |
+| 构建体系 | Maven 为主 | Gradle Monorepo 为主（同时提供 Maven/Gradle 一等插件） |
+| 解析架构 | QDox 体系 | JavaParser SourceModel 抽象 |
+| JDK 策略 | 传统基线 | JDK 25 toolchain 构建，产物保持向下兼容目标 |
+| Spring 侧重点 | 常规 Spring 生态 | 强化 Spring Boot 4 与新注解形态兼容 |
 | 迁移透明度 | N/A | 公开迁移记录：`docs/CODEX_MIGRATION_PLAN.md` |
 
-Stagger 在仓库内部使用 Gradle 构建 monorepo，但对 Maven 与 Gradle 用户都提供可直接用于生产的一等插件支持。
+Stagger 在仓库内部使用 Gradle 构建，但不会强迫用户切换构建工具；Maven 与 Gradle 用户体验都保持一等支持。
 
-我们已完成从 QDox 到 JavaParser SourceModel 的替换，以提升对现代 Java 特性的兼容性。
-
-详细迁移日志与面向贡献者的验证命令，请参考 `docs/CODEX_MIGRATION_PLAN.md` 与 `CONTRIBUTING.md`。
+详细迁移日志与贡献验证命令，请参考 `docs/CODEX_MIGRATION_PLAN.md` 与 `CONTRIBUTING.md`。
 
 ## 🚀 快速开始
 

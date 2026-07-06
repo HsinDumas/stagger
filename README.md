@@ -5,18 +5,28 @@
 > **Let Swagger stagger. Keep your source code pristine.**
 
 Stagger is a **zero-intrusion, zero-annotation** API documentation generator built on JavaParser-powered static analysis.
-It targets modern Java stacks (JDK 25+ / Spring Boot 4.x+) while keeping your source code pristine.
+It is maintained as an independent project lineage from smart-doc, with a strong focus on modern Java engineering practices.
+
+## 🙏 Tribute to smart-doc
+
+Stagger would not exist without [smart-doc](https://github.com/smart-doc-group/smart-doc).
+
+- smart-doc pioneered the non-intrusive API doc path in the Java ecosystem.
+- Stagger inherits that philosophy: keep business code clean, use source analysis over annotation flooding.
+- We sincerely respect [shalousun](https://github.com/shalousun) and all smart-doc contributors.
+
+Stagger is not a denial of smart-doc. It is a focused continuation for teams that need a modernized stack and explicit migration visibility.
 
 ## 💡 Why Stagger?
 
-When Swagger floods your business code with `@Schema` and `@Operation` annotations, it defeats the purpose of elegance. In the modern Clean Code era, such approaches **stagger** forward clumsily.
+When Swagger floods business code with `@Schema` and `@Operation`, documentation starts to dictate domain model shape. Stagger keeps documentation generation in build-time analysis, not in business annotations.
 
-Stagger embraces the elegant static analysis approach and completely abandons annotation hell:
+Core principles:
 
-- 🚫 **Zero Intrusion** - No third-party annotations in your codebase.
-- 📝 **Pure JavaDoc Parsing** - Reads standard JavaDoc comments and source metadata directly.
-- ⚡ **Future-Ready** - Native support for JDK 25 features (Records, Pattern Matching) & Spring Boot 4.x.
-- 🔄 **Multiple Formats** - Generate OpenAPI 3.1, Markdown, offline HTML in one command.
+- 🚫 **Zero Intrusion** - No third-party API doc annotations in your domain code.
+- 📝 **JavaDoc + Source Metadata** - Derive docs from source structure and comments.
+- ⚡ **Modern Java First** - Focus on JDK 25 toolchain and newer framework compatibility.
+- 🔄 **Multi-format Output** - Generate OpenAPI 3.1, Markdown, and offline HTML.
 
 ## ✨ Feature Comparison
 
@@ -28,23 +38,22 @@ Stagger embraces the elegant static analysis approach and completely abandons an
 | Gradle 9.x Support | ✅ | ✅ | ✅ |
 | OpenAPI 3.1 | ✅ | ✅ | ✅ |
 
-## 🔍 Upstream Lineage and Differences
+## 🔍 How Stagger Differs from smart-doc
 
-Stagger originated from the smart-doc upstream and is now maintained as an independent project with a gradual architecture upgrade path. The main differences are:
+Stagger keeps the same non-intrusive spirit while making different engineering choices:
 
 | Area | Upstream Baseline | Stagger (this repository) |
 |------|-----------------------|----------------------------|
-| Build System | Maven-centric | Gradle monorepo-first (with first-class Maven and Gradle plugins for users) |
+| Project Positioning | Broad upstream baseline | Independent maintenance fork with explicit modernization roadmap |
+| Build System | Maven-centric | Gradle monorepo-first (while still shipping first-class Maven + Gradle plugins) |
+| Parser Architecture | QDox-centric lineage | JavaParser-based SourceModel abstraction |
 | JDK Strategy | Traditional baseline | Built with JDK 25 toolchain, release-compatible output target |
-| Parser Architecture | QDox-centric | JavaParser-based SourceModel abstraction |
-| Spring Focus | Mainstream Spring stack | Extra focus on Spring Boot 4 / modern annotation compatibility |
-| Migration Transparency | N/A | Public migration notes in `docs/CODEX_MIGRATION_PLAN.md` |
+| Spring Focus | Mainstream Spring stack | Additional focus on Spring Boot 4 and modern annotation compatibility |
+| Migration Transparency | N/A | Public migration records in `docs/CODEX_MIGRATION_PLAN.md` |
 
-Stagger uses Gradle internally to build its monorepo, but provides first-class, fully production-ready plugins for both Maven and Gradle users.
+Stagger uses Gradle internally, but it does not force users to switch build tools. Maven and Gradle plugin experiences remain first-class.
 
-We have fully replaced QDox with a JavaParser-based source model to ensure better compatibility with modern Java features.
-
-Detailed migration logs and contributor-oriented validation commands are documented in `docs/CODEX_MIGRATION_PLAN.md` and `CONTRIBUTING.md`.
+Detailed migration notes and contributor validation commands are documented in `docs/CODEX_MIGRATION_PLAN.md` and `CONTRIBUTING.md`.
 
 ## 🚀 Quick Start
 
