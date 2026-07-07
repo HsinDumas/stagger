@@ -1,56 +1,50 @@
-<h1 align="center"><a href="https://github.com/HsinDumas/stagger-maven-plugin" target="_blank">Smart-Doc Maven Plugin</a></h1>
+# Stagger Maven Plugin
 
 ![maven](https://img.shields.io/maven-central/v/com.github.hsindumas/stagger-maven-plugin)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-![number of issues closed](https://img.shields.io/github/issues-closed-raw/HsinDumas/stagger-maven-plugin)
-![closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/HsinDumas/stagger-maven-plugin)
-![java version](https://img.shields.io/badge/JAVA-1.8+-green.svg)
 
-## Introduce
+`stagger-maven-plugin` 是 Stagger 官方 Maven 插件，用于在构建阶段生成 API 文档。
 
-`stagger-maven-plugin`是`stagger`官方团队开发的`maven`插件，该插件从`stagger 1.7.9`版本开始提供，
-使用`stagger-maven-plugin`更方便用户集成到自己的项目中，集成也更加轻量，你不再需要在项目中编写单元测试来
-启动`stagger`扫描代码分析生成接口文档。可以直接运行`maven`命令
-或者是`IDE`中点击`stagger-maven-plugin`预设好的`goal`即可生成接口文档。
-`stagger-maven-plugin`底层完全依赖于官方开源的`stagger`解析库，
-因此整个使用过程中遇到问题或者是想查看完整解决方案请前往码云`stagger`的仓库查看`wiki`文档。
+- 无侵入：不需要在业务代码中加入文档框架注解。
+- 多格式输出：支持 HTML、Markdown、OpenAPI、Postman、Word、JMeter。
+- 易集成：直接通过 Maven goal 生成，无需额外测试启动器。
 
-[关于stagger](https://gitee.com/stagger-team/stagger)
+项目仓库：<https://github.com/HsinDumas/stagger>
 
-## Getting started
+## 环境要求
 
-### Add plugin
+- 构建基线：JDK 21
+- Release 产物运行时：JDK 17 及以上
+- Maven：3.8+
 
-```
+## 快速开始
+
+### 1) 在项目中添加插件
+
+```xml
 <plugin>
     <groupId>com.github.hsindumas</groupId>
     <artifactId>stagger-maven-plugin</artifactId>
-    <version>【最新版】</version>
+    <version>最新版本</version>
     <configuration>
-        <!--指定生成文档的使用的配置文件,配置文件放在自己的项目中-->
-        <configFile>./src/main/resources/stagger.json</configFile>
-        <!--指定项目名称-->
-        <projectName>测试</projectName>
-        <!--stagger实现自动分析依赖树加载第三方依赖的源码，如果一些框架依赖库加载不到导致报错，这时请使用excludes排除掉-->
+        <configFile>${project.basedir}/src/main/resources/stagger.json</configFile>
+        <!-- 可选：仅子模块禁用 -->
+        <!-- <skip>true</skip> -->
+
+        <!-- 可选：排除依赖源码 -->
         <excludes>
-            <!--格式为：groupId:artifactId;参考如下-->
-            <!--1.0.7版本开始你还可以用正则匹配排除,如：poi.* -->
-            <exclude>com.alibaba:fastjson</exclude>
+            <exclude>com.google.guava:guava</exclude>
         </excludes>
-        <!--自1.0.8版本开始，插件提供includes支持,配置了includes后插件会按照用户配置加载而不是自动加载，因此使用时需要注意-->
-        <!--stagger能自动分析依赖树加载所有依赖源码，原则上会影响文档构建效率，因此你可以使用includes来让插件加载你配置的组件-->
+
+        <!-- 可选：显式包含依赖源码（配置后按 includes 精确加载） -->
         <includes>
-            <!--格式为：groupId:artifactId;参考如下-->
-            <include>com.alibaba:fastjson</include>
-            <!-- 如果配置了includes的情况下， 使用了mybatis-plus的分页需要include所使用的源码包 -->
             <include>com.baomidou:mybatis-plus-extension</include>
-            <!-- 如果配置了includes的情况下， 使用了jpa的分页需要include所使用的源码包 -->
             <include>org.springframework.data:spring-data-commons</include>
         </includes>
     </configuration>
     <executions>
         <execution>
-            <!--如果不需要在执行编译时启动stagger，则将phase注释掉-->
+            <!-- 如不希望在 compile 自动执行，可移除 phase -->
             <phase>compile</phase>
             <goals>
                 <goal>html</goal>
@@ -60,97 +54,64 @@
 </plugin>
 ```
 
-### Create a json config
+### 2) 创建配置文件 stagger.json
 
-在自己的项目中创建一个`json`配置文件，`stagger-maven-plugin`插件会根据这个配置生成项目的接口文档。
-例如在项目中创建`/src/main/resources/stagger.json`。配置内容参考如下。
+在项目中创建 `src/main/resources/stagger.json`。
 
-**最小配置单元:**
+最小可用配置：
 
-```
+```json
 {
-   "outPath": "D://md2" //指定文档的输出路径 相对路径时请写 ./ 不要写 / eg:./src/main/resources/static/doc
+  "allInOne": true,
+  "isStrict": false,
+  "outPath": "./src/main/resources/static/doc"
 }
 ```
 
-> 如果你想把html文档也打包到应用中随着服务一起访问，则建议你配置路径为：src/main/resources/static/doc。
-[服务访问配置参考](https://gitee.com/stagger-team/stagger/wikis/stagger常见问题解决方法?sort_id=2457284)
+完整配置参考：
+- <https://github.com/HsinDumas/stagger/wiki>
 
-仅仅需要上面一行配置就能启动`stagger-maven-plugin`插件，根据自己项目情况更多详细的配置参考下面。
+## 常用命令
 
-`stagger`提供很多配置项，详细配置请参考[官方文档](https://HsinDumas.github.io/#/zh-cn/diy/config?id=allconfig)
-
-### Generated document
-
-#### Run plugin with maven command
-
-```
-//生成html
+```bash
+# HTML
 mvn -Dfile.encoding=UTF-8 stagger:html
-//生成markdown
+
+# Markdown
 mvn -Dfile.encoding=UTF-8 stagger:markdown
-//生成postman json数据
-mvn -Dfile.encoding=UTF-8 stagger:postman
-// 生成 Open Api 3.0+,Since stagger-maven-plugin 1.1.5
+
+# OpenAPI
 mvn -Dfile.encoding=UTF-8 stagger:openapi
-// 生成word格式文档，推荐使用stagger 3.0.2及更高版本
+
+# Postman
+mvn -Dfile.encoding=UTF-8 stagger:postman
+
+# Word
 mvn -Dfile.encoding=UTF-8 stagger:word
-// 生成jmeter性能压测脚本
+
+# JMeter
 mvn -Dfile.encoding=UTF-8 stagger:jmeter
 
-// Apache Dubbo RPC文档
-// Generate html
+# Dubbo RPC 文档
 mvn -Dfile.encoding=UTF-8 stagger:rpc-html
-// Generate markdown
 mvn -Dfile.encoding=UTF-8 stagger:rpc-markdown
 ```
 
-**注意：** 尤其在`window`系统下，如果实际使用`maven`命令行执行文档生成，可能会出现乱码，因此需要在执行时指定
-`-Dfile.encoding=UTF-8`。
+## IDEA 使用
 
-查看maven的编码
+在 IDEA 的 Maven 工具窗口中，展开插件 goals，直接点击对应目标即可生成文档。
 
-```
-# mvn -version
-Apache Maven 3.3.3 (7994120775791599e205a5524ec3e0dfe41d4a06; 2015-04-22T19:57:37+08:00)
-Maven home: D:\ProgramFiles\maven\bin\..
-Java version: 1.8.0_191, vendor: Oracle Corporation
-Java home: D:\ProgramFiles\Java\jdk1.8.0_191\jre
-Default locale: zh_CN, platform encoding: GBK
-OS name: "windows 10", version: "10.0", arch: "amd64", family: "dos"
-```
+## 构建插件
 
-#### Run plugin in IDEA
-
-当你使用`Idea`时，可以通过`Maven Helper`插件选择生成何种文档。
-
-![idea中stagger-maven插件使用](https://gitee.com/stagger-team/stagger-maven-plugin/raw/master/images/idea.png "maven_plugin_tasks.png")
-
-### Generated document example
-
-[点击查看文档生成文档效果图](https://gitee.com/stagger-team/stagger/wikis/文档效果图?sort_id=1652819)
-
-## Building
-
-如果你需要自己构建，那可以使用下面命令，构建需要依赖`Java 1.8`。
-
-```
+```bash
 mvn clean install -Dmaven.test.skip=true
 ```
 
-## Releases
+## 发布记录
 
-[发布记录](https://gitee.com/stagger-team/stagger-maven-plugin/blob/master/CHANGELOG.md)
+- [CHANGELOG](./CHANGELOG.md)
 
-## License
+## 许可证
 
-stagger-maven-plugin is under the Apache 2.0 license. See
-the [LICENSE](https://gitee.com/stagger-team/stagger/blob/master/license.txt) file for details.
-
-**注意：** stagger源代码文件全部带有版权注释，使用关键代码二次开源请保留原始版权，否则后果自负！
-
-## Contact
-
-愿意参与构建`stagger`或者是需要交流问题可以加入qq群：
-
-<img src="https://gitee.com/stagger-team/stagger/raw/master/images/wechat.png" title="qq群" width="200px" height="200px"/>
+Apache License 2.0：
+- <https://www.apache.org/licenses/LICENSE-2.0>

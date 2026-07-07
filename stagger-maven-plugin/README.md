@@ -1,58 +1,52 @@
-<h1 align="center">Smart-Doc Maven Plugin</h1>
+# Stagger Maven Plugin
 
 ![maven](https://img.shields.io/maven-central/v/com.github.hsindumas/stagger-maven-plugin)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-![number of issues closed](https://img.shields.io/github/issues-closed-raw/HsinDumas/stagger-maven-plugin)
-![closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/HsinDumas/stagger-maven-plugin)
-![java version](https://img.shields.io/badge/JAVA-1.8+-green.svg)
-[![chinese](https://img.shields.io/badge/chinese-中文文档-brightgreen)](https://github.com/HsinDumas/stagger-maven-plugin/blob/master/README_CN.md)
 
-## Introduce
+`stagger-maven-plugin` is the official Maven plugin for Stagger API documentation generation.
 
-stagger-maven-plugin is a `maven` plugin developed by the stagger official team.
-This plugin is available from stagger 1.7.9.
-Using stagger-maven-plugin makes it easier to integrate stagger into your project, and integration is more
-lightweight.
-You no longer need to write unit tests in your project to
-Start stagger to scan source code analysis and generate API documents.
-You can run the `maven` command directly or click on the preset` goal` of the stagger-maven-plugin in the IDE to
-generate API documentation.
-stagger-maven-plugin will also make stagger's ability to generate API documentation more powerful.
-[About stagger](https://HsinDumas.github.io/#/)
+- Non-invasive: no need to add extra documentation annotations to business code.
+- Multiple outputs: HTML, Markdown, OpenAPI, Postman, Word, and JMeter.
+- Easy integration: generate docs directly via Maven goals.
 
-## Getting started
+Project repository: <https://github.com/HsinDumas/stagger>
 
-### Add plugin
+## Requirements
 
-```
+- Build baseline: JDK 21
+- Runtime for released artifacts: JDK 17+
+- Maven: 3.8+
+
+## Getting Started
+
+### 1) Add the plugin
+
+```xml
 <plugin>
     <groupId>com.github.hsindumas</groupId>
     <artifactId>stagger-maven-plugin</artifactId>
-    <version>[latest version]</version>
+    <version>latest</version>
     <configuration>
-        <!--skip option is used to disable plugin in child module-->
-        <!--<skip>true</skip>-->
-        <!--Specify the configuration file used to generate the document-->
-        <configFile>./src/main/resources/stagger.json</configFile>
-        <!--stagger implements automatic analysis of the dependency tree to load the source code of third-party dependencies. If some framework dependency libraries are not loaded, an error is reported, then use excludes to exclude-->
+        <configFile>${project.basedir}/src/main/resources/stagger.json</configFile>
+        <!-- Optional: disable in child module only -->
+        <!-- <skip>true</skip> -->
+
+        <!-- Optional: exclude dependency sources -->
         <excludes>
-            <!--The format is: groupId: artifactId; refer to the following-->
-            <!--since 1.0.7 version you can also use regular matching to exclude, such as: poi. *-->
             <exclude>com.google.guava:guava</exclude>
         </excludes>
-        <!--Since version 1.0.8, the plugin provides includes support-->
-        <!--stagger can automatically analyze the dependency tree to load all dependent source code. In principle, it will affect the efficiency of document construction, so you can use includes to let the plugin load the components you configure.-->
+
+        <!-- Optional: include dependency sources explicitly -->
         <includes>
-            <!--The format is: groupId: artifactId; refer to the following-->
-            <include>com.alibaba:fastjson</include>
+            <include>com.baomidou:mybatis-plus-extension</include>
+            <include>org.springframework.data:spring-data-commons</include>
         </includes>
     </configuration>
     <executions>
         <execution>
-            <!--Comment out phase if you don't need to start stagger when compiling-->
+            <!-- Remove phase if you don't want auto execution during compile -->
             <phase>compile</phase>
             <goals>
-                <!--stagger provides html, openapi, markdown and other goals-->
                 <goal>html</goal>
             </goals>
         </execution>
@@ -60,108 +54,64 @@ stagger-maven-plugin will also make stagger's ability to generate API documentat
 </plugin>
 ```
 
-### Create a json config
+### 2) Create stagger.json
 
-Create a json configuration file in your project. The stagger-maven-plugin plugin will use this configuration
-information.
-For example, create `/src/main/resources/stagger.json` in the project.
-The configuration contents are as follows.
+Create `src/main/resources/stagger.json` in your project.
 
-**Minimize configuration:**
+Minimum config:
 
-```
+```json
 {
-   "allInOne": true, // whether to merge documents into one file, generally recommended as true
-   "isStrict": false,//If the strict mode is set to true, Smart-doc forces that the public method in each interface in the code has a comment.
-   "outPath": "/src/main/resources" //Set the api document output path.
+  "allInOne": true,
+  "isStrict": false,
+  "outPath": "./src/main/resources/static/doc"
 }
 ```
 
-Only three configurations items are needed to generate API documentation using stagger-maven-plugin. In fact, only
-outPath must be configured.
+Full configuration reference:
+- <https://github.com/HsinDumas/stagger/wiki>
 
-**Detailed configuration content:**
+## Common Commands
 
-stagger provides a lot of configuration options. For more configuration options,
-please refer to the [official documentation](https://HsinDumas.github.io/#/diy/config?id=allconfig)
-
-### Generated document
-
-#### Run plugin with maven command
-
-```
+```bash
+# HTML
 mvn -Dfile.encoding=UTF-8 stagger:html
-//  Generate document output to Markdown
+
+# Markdown
 mvn -Dfile.encoding=UTF-8 stagger:markdown
-// Generate Postman.
-mvn -Dfile.encoding=UTF-8 stagger:postman
-// build Open Api 3.0+,Since stagger-maven-plugin 1.1.5
+
+# OpenAPI
 mvn -Dfile.encoding=UTF-8 stagger:openapi
-// Generate document output to Word.
+
+# Postman
+mvn -Dfile.encoding=UTF-8 stagger:postman
+
+# Word
 mvn -Dfile.encoding=UTF-8 stagger:word
-// Generate Jmeter performance pressure test scripts.
-mvn -Dfile.encoding=UTF-8 stagger:
 
+# JMeter
+mvn -Dfile.encoding=UTF-8 stagger:jmeter
 
-// Apache Dubbo RPC
-// Generate html
+# Dubbo RPC docs
 mvn -Dfile.encoding=UTF-8 stagger:rpc-html
-// Generate markdown
 mvn -Dfile.encoding=UTF-8 stagger:rpc-markdown
 ```
 
-**Note:** Under the window system, if you use the maven command line to perform document generation,
-non-English characters may be garbled, so you need to specify `-Dfile.encoding = UTF-8` during execution.
+## IntelliJ IDEA
 
-View maven's coding
+Open the Maven tool window in IntelliJ IDEA, expand plugin goals, and run the goal you need.
 
-```
-# mvn -version
-Apache Maven 3.3.3 (7994120775791599e205a5524ec3e0dfe41d4a06; 2015-04-22T19:57:37+08:00)
-Maven home: D:\ProgramFiles\maven\bin\..
-Java version: 1.8.0_191, vendor: Oracle Corporation
-Java home: D:\ProgramFiles\Java\jdk1.8.0_191\jre
-Default locale: zh_CN, platform encoding: GBK
-OS name: "windows 10", version: "10.0", arch: "amd64", family: "dos"
-```
+## Build Plugin Locally
 
-#### Run plugin in IDEA
-
-On Use IntelliJ IDE, if you have added stagger-maven-plugin to the project,
-you can directly find the plugin stagger plugin and click to generate API documentation.
-
-![stagger-maven-plugin](https://raw.githubusercontent.com/HsinDumas/stagger-maven-plugin/master/images/idea.png)
-
-### Generated document example
-
-#### Interface header rendering
-
-![header](https://images.gitee.com/uploads/images/2019/1231/223538_be45f8a9_144669.png "header.png")
-
-#### Request parameter example rendering
-
-![request-params](https://images.gitee.com/uploads/images/2019/1231/223710_88933f55_144669.png "request.png")
-
-#### Response parameter example renderings
-
-![response-fields](https://images.gitee.com/uploads/images/2019/1231/223817_32bea6dc_144669.png "response.png")
-
-## Building
-
-- `Maven` 3.8+
-- `JDK` 1.8+
-
-you can build with the following commands.
-
-```
+```bash
 mvn clean install -Dmaven.test.skip=true
 ```
 
+## Release Notes
+
+- [CHANGELOG](./CHANGELOG.md)
+
 ## License
 
-stagger-maven-plugin is under the Apache 2.0 license. See
-the [LICENSE](https://raw.githubusercontent.com/HsinDumas/stagger-maven-plugin/master/LICENSE) file for details.
-
-## Contact
-
-Email： opensource@ly.com
+Apache License 2.0:
+- <https://www.apache.org/licenses/LICENSE-2.0>
