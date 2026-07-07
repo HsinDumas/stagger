@@ -4,7 +4,7 @@
 > 输出仓库：`HsinDumas/stagger`（fork 自 smart-doc）
 > 编写时间：2026-07-01（rev2）
 > 主基调：
-> - **顶层适配 JDK 25 + Spring Boot 4.x**，构建 toolchain=25。
+> - **顶层适配 JDK 21 + Spring Boot 4.x**，构建 toolchain=21。
 > - **单 jar 向下兼容**：`--release 17` 一把梭；产物一个 jar 即可覆盖 JDK 17~25。
 > - **QDox → JavaParser**（不保留 QDox provider，M5 直接删）。
 > - **Maven → Gradle 多模块**。
@@ -36,11 +36,11 @@
 ## 1. 目标
 
 1. **单一 jar，编译目标 JDK 17**
-   - Gradle toolchain 用 JDK 25（保证在最新 JDK 上编译）。
+   - Gradle toolchain 用 JDK 21（保证在最新 JDK 上编译）。
    - `tasks.withType<JavaCompile> { options.release = 17 }`。
    - 产物 **一个 jar**，可在 JDK 17 / 21 / 25 上原生运行。
    - 源码里禁用 JDK 18+ 特有 API（可用 `-Xlint:all -Werror` 兜底）。
-   - stagger 能识别的用户源码 JDK 版本与自身运行 JDK **解耦**：JavaParser 语言级别设为 `JAVA_25`（含 preview 时按需切），保证能解析用户 JDK 25 语法。
+   - stagger 能识别的用户源码 JDK 版本与自身运行 JDK **解耦**：JavaParser 语言级别设为 `JAVA_21`（含 preview 时按需切），保证能解析用户 JDK 21 语法。
    - 若日后需要下探 JDK 8，把 `options.release = 17` 改成 `8` 即可（放弃 record / var / switch pattern），无需 MRJAR。
 2. **Spring Boot 4.x 主线**
    - 识别与解析 Spring Web 6.x（Boot 3.x）与 Spring Web 7.x（Boot 4.x）的注解形态。
@@ -67,7 +67,7 @@
 |---|---|---|
 | **M1 目录 + 包 + groupId 统一** | 全项目 rename 到 `com.github.hsindumas.stagger.*`；三个模块 groupId 统一 `com.github.hsindumas` | Maven 与旧 Gradle 都能构建通过；无 `smartdoc / com.github.hsindumas.stagger / com.ly.doc / com.ly.stagger / com.github.hsindumas` 残留 |
 | **M2 Gradle 化** | 根 `settings.gradle.kts` + `build.gradle.kts` + `libs.versions.toml` + `buildSrc`；三模块统一 Gradle | `./gradlew build publishToMavenLocal` 通过；产物 GAV 为新的 `com.github.hsindumas:*`；旧 Maven pom 保留以便对比 |
-| **M3 JDK 25 编译 + release 17 + Boot 4.x 适配** | toolchain=25，`--release 17`；补 Boot 4 注解识别；查漏补缺 jakarta 常量 | JDK 25 编译通过；产物在 JDK 17 环境下能加载运行；Boot 3/4 样例都能生成文档 |
+| **M3 JDK 21 编译 + release 17 + Boot 4.x 适配** | toolchain=21，`--release 17`；补 Boot 4 注解识别；查漏补缺 jakarta 常量 | JDK 21 编译通过；产物在 JDK 17 环境下能加载运行；Boot 3/4 样例都能生成文档 |
 | **M4 JavaParser 抽象层** | 新增 `com.github.hsindumas.stagger.source` 抽象；JavaParser 唯一实现；79+ 业务文件切换到抽象层 | 抽象层单测全绿；样例项目通过 |
 | **M5 QDox + Maven 下线** | 移除 QDox 依赖与所有 `com.thoughtworks.qdox` import；删除全部 `pom.xml`；`@author HsinDumas` 全量落地；CI/README 更新 | 仓库内 `rg com.thoughtworks.qdox`、`rg pom.xml` 均为空；`./gradlew build` 全绿 |
 
@@ -167,7 +167,7 @@ group = "com.github.hsindumas"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(25))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
     withJavadocJar()
     withSourcesJar()
@@ -265,14 +265,14 @@ mockito      = { module = "org.mockito:mockito-junit-jupiter",      version.ref 
 
 ---
 
-### 3.3 M3 JDK 25 编译 + release 17 + Boot 4.x 适配
+### 3.3 M3 JDK 21 编译 + release 17 + Boot 4.x 适配
 
 **编译与运行边界**
-- toolchain=JDK 25：Gradle 通过 `JavaLanguageVersion.of(25)` 自动下载或使用已装的 JDK 25。
+- toolchain=JDK 21：Gradle 通过 `JavaLanguageVersion.of(21)` 自动下载或使用已装的 JDK 21。
 - `--release 17`：字节码 major=61，运行时兼容 JDK 17/21/25；**源码不能使用 JDK 18+ 的 API**（如 `Instant.until` 新增 API、`Foreign Memory` 稳定版等），但可以使用 JDK 17 的 record、sealed、pattern for switch。
-- **JavaParser 语言级别** 独立设置：`ParserConfiguration.setLanguageLevel(LanguageLevel.JAVA_25)`（如 JavaParser 尚未支持 JAVA_25，用最新可用的 `BLEEDING_EDGE`）。这样即使 stagger 自身跑在 JDK 17，也能解析用户 JDK 25 源码。
+- **JavaParser 语言级别** 独立设置：`ParserConfiguration.setLanguageLevel(LanguageLevel.JAVA_21)`（如 JavaParser 尚未支持 JAVA_21，用最新可用的 `BLEEDING_EDGE`）。这样即使 stagger 自身跑在 JDK 17，也能解析用户 JDK 21 源码。
 - 关闭对 `sun.*` / `Unsafe` 的引用（`Xlint:all` 已覆盖）。
-- 三方库排查（在 JDK 25 运行时）：
+- 三方库排查（在 JDK 21 运行时）：
   - `freemarker 2.3.x`：跑一个 smoke test，覆盖 html/md/xml 模板渲染路径。
   - `jgit 6.9.x`：升级到 6.x（旧的 5.13 在高 JDK 有告警）。
   - `common-util 2.2.9`：跑 smoke test；如遇 Unsafe 问题按需升级/替换。
@@ -293,7 +293,7 @@ rg 'javax\.(servlet|validation|persistence|ws\.rs|annotation)' -g '*.java'
 
 **验收**
 - 一个位于 `samples/spring-boot-4x/` 的最小样例项目（Boot 4.0.0-M2 或最新 milestone），通过 `./gradlew :samples:spring-boot-4x:generateStaggerDoc` 产出 markdown。
-- 样例项目在 JDK 25 上运行 stagger-core.jar；stagger-core.jar 自身编译目标 `--release 17`。
+- 样例项目在 JDK 21 上运行 stagger-core.jar；stagger-core.jar 自身编译目标 `--release 17`。
 - 用 JDK 17 也跑一次 `samples/spring-boot-3x/`，产出与旧版基线一致。
 
 ---
@@ -390,11 +390,11 @@ public interface SourceDocletTag {
 - 从 `libs.versions.toml`、所有 `build.gradle.kts` 移除 `qdox` 与相关内部适配代码。
 - `rg 'com\.thoughtworks\.qdox' -g '*.java'` 必须为空。
 - 删除根 `pom.xml`、`stagger-core/pom.xml`、`stagger-maven-plugin/pom.xml`；`stagger-gradle-plugin/build.gradle`（Groovy 版）由 Kotlin DSL 版替代后删除。
-- CI（`.travis.yml` 或新的 GitHub Actions）改为 Gradle。建议同时新增 `.github/workflows/build.yml`（`setup-java 25`、`./gradlew build`）。
+- CI（`.travis.yml` 或新的 GitHub Actions）改为 Gradle。建议同时新增 `.github/workflows/build.yml`（`setup-java 21`、`./gradlew build`）。
 - 全量执行 `@author HsinDumas` 追加脚本（见附录 B），覆盖 M1~M5 期间所有被改动过的 `.java` 文件。
 - `README.md` / `README_CN.md`：
   - 引入方式改为 Gradle DSL 与 Maven Central 新 groupId 示例。
-  - "最低 JDK" 改为 JDK 17；"最高适配" 标注 JDK 25 + Spring Boot 4.x。
+  - "最低 JDK" 改为 JDK 17；"最高适配" 标注 JDK 21 + Spring Boot 4.x。
 - `CHANGELOG.md` 新增 `5.0.0` 条目：
   - Breaking：groupId `com.github.hsindumas` → `com.github.hsindumas`；包名 `com.github.hsindumas.stagger.*` → `com.github.hsindumas.stagger.*`；最低 JDK 提升到 17；QDox 依赖移除；Maven 构建移除。
 
@@ -421,7 +421,7 @@ public interface SourceDocletTag {
 | PR-5 | M2-b stagger-core Gradle 化 | ~3 |
 | PR-6 | M2-c stagger-maven-plugin Gradle 化（plugin.xml 生成） | ~3 |
 | PR-7 | M2-d stagger-gradle-plugin Kotlin DSL 化 | ~3 |
-| PR-8 | M3-a toolchain=25 / `--release 17` / 三方库升级（jgit 6.x） | ~5 |
+| PR-8 | M3-a toolchain=21 / `--release 17` / 三方库升级（jgit 6.x） | ~5 |
 | PR-9 | M3-b Spring Boot 4 注解识别 + Jakarta 查漏 | 10~20 |
 | PR-10 | M4-a 抽象层接口 + 单测 | 抽象层 20+ 类 |
 | PR-11 | M4-b JavaParser Provider 实现 + 对拍 QDox 参考实现（测试域） | 20+ |
@@ -437,10 +437,10 @@ public interface SourceDocletTag {
 
 ## 6. 验证与验收
 
-- **编译**：`./gradlew clean build --no-daemon --console=plain` 在 toolchain=25 下通过；产物 class 文件用 `javap -v` 检查 `major version: 61`（对应 JDK 17）。
+- **编译**：`./gradlew clean build --no-daemon --console=plain` 在 toolchain=21 下通过；产物 class 文件用 `javap -v` 检查 `major version: 61`（对应 JDK 17）。
 - **运行时兼容**：
   - `JAVA_HOME` 切到 JDK 17：`java -jar stagger-core-<v>.jar --help`（若有 CLI）或用样例调用能启动。
-  - `JAVA_HOME` 切到 JDK 25：同上，且能识别用户 JDK 25 源码语法。
+  - `JAVA_HOME` 切到 JDK 21：同上，且能识别用户 JDK 21 源码语法。
 - **单元测试**：`./gradlew test`。
 - **集成样例**：
   - `samples/spring-boot-3x/` 生成结果与旧基线一致（QDox → JavaParser 允许字段顺序差异）。
@@ -462,7 +462,7 @@ public interface SourceDocletTag {
    - `JavaParameterizedType / JavaTypeVariable / WildcardType` 与 JavaParser 的 `ClassOrInterfaceType / TypeParameter / WildcardType` 不完全一一对应。抽象层给出统一的 `SourceType` + `SourceTypeParam`。
 4. **Record / Sealed / Pattern**
    - JavaParser 原生支持；抽象层暴露 `isRecord / isSealed / permittedSubtypes`；这也是切换的核心收益。
-5. **FreeMarker / JGit / Unsafe 在 JDK 25**
+5. **FreeMarker / JGit / Unsafe 在 JDK 21**
   - FreeMarker 2.3.x 需 smoke test，重点覆盖模板语法兼容层与输出一致性。
    - JGit 升到 6.9.x。
 6. **Maven 插件产物 packaging**

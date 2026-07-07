@@ -12,7 +12,7 @@
 Stagger 是一款 **零侵入、零注解** 的 API 文档生成工具。它通过静态分析（JavaParser）读取你的 Java
 源码与 JavaDoc，在构建期输出 OpenAPI 3.1、Markdown 和离线 HTML —— 文档元信息永远不会渗进你的领域模型。
 
-源于 smart-doc 思路并独立维护，重点面向现代工具链（JDK 25、Gradle 9.x、Spring Boot 4）。
+源于 smart-doc 思路并独立维护，重点面向现代工具链（JDK 21、Gradle 9.x、Spring Boot 4）。
 
 ## 👀 生成效果
 
@@ -52,7 +52,7 @@ public class CreateOrderRequest {
 
 ## 🚀 快速试用
 
-克隆仓库并生成示例文档（需要 JDK 25）：
+克隆仓库并生成示例文档（需要 JDK 21）：
 
 ```bash
 git clone https://github.com/HsinDumas/stagger.git
