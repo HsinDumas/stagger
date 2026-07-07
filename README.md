@@ -2,6 +2,11 @@
 
 [中文版本](./README_CN.md)
 
+[![CI](https://github.com/HsinDumas/stagger/actions/workflows/ci.yml/badge.svg)](https://github.com/HsinDumas/stagger/actions/workflows/ci.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.hsindumas/stagger-core)](https://central.sonatype.com/artifact/com.github.hsindumas/stagger-core)
+[![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/com.github.hsindumas.stagger)](https://plugins.gradle.org/plugin/com.github.hsindumas.stagger)
+[![License](https://img.shields.io/github/license/HsinDumas/stagger)](./LICENSE)
+
 > **Let Swagger stagger. Keep your source code pristine.**
 
 Swagger asks your business code to carry docs metadata.
