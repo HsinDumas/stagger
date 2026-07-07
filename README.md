@@ -9,52 +9,32 @@
 
 > **Let Swagger stagger. Keep your source code pristine.**
 
-Swagger asks your business code to carry docs metadata.
-Stagger says no.
+Stagger is a **zero-intrusion, zero-annotation** API documentation generator. It reads your Java
+sources and JavaDoc via static analysis (JavaParser) and produces OpenAPI 3.1, Markdown, and
+offline HTML at build time — so docs metadata never leaks into your domain code.
 
-Stagger is a **zero-intrusion, zero-annotation** API documentation generator based on JavaParser static analysis.
-It is maintained independently from the smart-doc lineage, with explicit focus on modern Java engineering (JDK 25 toolchain, Gradle 9.x, Spring Boot 4 compatibility).
+Maintained independently from the smart-doc lineage, with focus on a modern toolchain (JDK 25,
+Gradle 9.x, Spring Boot 4).
 
-## 👀 Generated Result Preview
+## 👀 What You Get
 
-Generated offline HTML from the built-in sample project:
+Offline HTML generated from the built-in `example/` project:
 
 ![Stagger generated HTML preview](./images/stagger-example-html.png)
 
-Before/After code style at a glance:
+## ✍️ Before / After
 
-![Before and after clean domain model](./images/before-after-clean-code.svg)
-
-## 🎯 Who Stagger Is For
-
-- Teams that want API docs without Swagger annotations in domain code.
-- Existing smart-doc users who need a modern toolchain path.
-- Java teams upgrading toward newer JDK/Spring Boot baselines.
-
-## ⚡ One-Minute Pitch
-
-- Keep docs out of domain code.
-- Parse Java sources and JavaDoc directly.
-- Generate OpenAPI 3.1, Markdown, and offline HTML in build time.
-- Keep Maven and Gradle both first-class for users.
-
-## 💡 Why Stagger?
-
-When docs start owning your model, your model stops being your model.
-
-Stagger keeps documentation generation in build-time analysis, not in controller-level annotation sprawl.
-
-### Before / After
+Your model stays yours — no doc-framework annotations:
 
 ```java
-// Before: doc framework drives your business code shape
+// Before: the doc framework drives your business code shape
 @Schema(description = "Create order request")
 public class CreateOrderRequest {
     @Schema(description = "Customer id")
     private String customerId;
 }
 
-// After with Stagger: keep model clean, let JavaDoc + source analysis do the job
+// After with Stagger: plain model, JavaDoc + source analysis do the job
 /** Create order request */
 public class CreateOrderRequest {
     /** Customer id */
@@ -62,64 +42,30 @@ public class CreateOrderRequest {
 }
 ```
 
-Core principles:
-
-- 🚫 **Zero Intrusion** - No third-party API doc annotations in your domain code.
-- 📝 **JavaDoc + Source Metadata** - Derive docs from source structure and comments.
-- ⚡ **Modern Java First** - Focus on JDK 25 toolchain and newer framework compatibility.
-- 🔄 **Multi-format Output** - Generate OpenAPI 3.1, Markdown, and offline HTML.
-
-## ✨ Feature Comparison
+## ✨ Comparison
 
 | Feature | Stagger | Swagger | springdoc-openapi |
-|---------|---------|---------|------------------|
-| Zero Code Intrusion | ✅ | ❌ | ❌ |
+|---------|---------|---------|-------------------|
+| Zero code intrusion | ✅ | ❌ | ❌ |
 | Pure JavaDoc | ✅ | ❌ | ❌ |
-| Build-time Generation | ✅ | ❌ | ❌ |
-| Gradle 9.x Support | ✅ | ✅ | ✅ |
+| Build-time generation | ✅ | ❌ | ❌ |
+| Gradle 9.x support | ✅ | ✅ | ✅ |
 | OpenAPI 3.1 | ✅ | ✅ | ✅ |
 
-## 🚀 5-Second Integration (In Your Project)
+## 🚀 Try It
 
-Use Stagger directly in your existing service project:
+Clone and generate the sample docs (requires JDK 25):
 
-- Add the plugin.
-- Add `stagger.json`.
-- Run generation.
+```bash
+git clone https://github.com/HsinDumas/stagger.git
+cd stagger
+./gradlew :example:restHtml
+# open the generated HTML at: example/build/stagger/
+```
 
-Copy-paste configuration is in **Quick Start** below.
+## 🔧 Use It in Your Project
 
-## 🔍 How Stagger Differs from smart-doc
-
-Same spirit, different engineering choices:
-
-| Area | Upstream Baseline | Stagger (this repository) |
-|------|-----------------------|----------------------------|
-| Project Positioning | Broad upstream baseline | Independent maintenance fork with explicit modernization roadmap |
-| Build System | Maven-centric | Gradle monorepo-first (while still shipping first-class Maven + Gradle plugins) |
-| Parser Architecture | QDox-centric lineage | JavaParser-based SourceModel abstraction |
-| JDK Strategy | Traditional baseline | Built with JDK 25 toolchain, release-compatible output target |
-| Spring Focus | Mainstream Spring stack | Additional focus on Spring Boot 4 and modern annotation compatibility |
-| Migration Transparency | N/A | Public migration records in `docs/CODEX_MIGRATION_PLAN.md` |
-
-Stagger uses Gradle internally, but it does not force users to switch build tools. Maven and Gradle plugin experiences remain first-class.
-
-## 🙏 Tribute to smart-doc
-
-Stagger would not exist without [smart-doc](https://github.com/smart-doc-group/smart-doc).
-We continue the same non-intrusive documentation philosophy and thank [shalousun](https://github.com/shalousun) and all contributors.
-
-## 📚 Wiki
-
-- GitHub Wiki: https://github.com/HsinDumas/stagger/wiki
-- Documentation index: `docs/wiki/README.md`
-- `stagger.json` reference (EN): `docs/wiki/stagger-json.md`
-- `stagger.json` reference (中文): `docs/wiki/stagger-json-cn.md`
-
-## 🚀 Quick Start
-
-Current examples use `3.2.1` for copy-paste convenience.
-Latest release: https://github.com/HsinDumas/stagger/releases (tag format: `vX.Y.Z`).
+Examples pin `3.2.1`. Latest release: https://github.com/HsinDumas/stagger/releases
 
 ### Maven
 
@@ -159,8 +105,6 @@ stagger {
 
 ```bash
 ./gradlew restHtml
-# Optional: override config path at runtime
-./gradlew restHtml -Pstagger.configFile=src/main/resources/stagger.json
 ```
 
 ### Minimal `stagger.json`
@@ -173,27 +117,17 @@ stagger {
 }
 ```
 
-## 🔧 Building
+Full config reference: [`docs/wiki/stagger-json.md`](./docs/wiki/stagger-json.md) ·
+[中文](./docs/wiki/stagger-json-cn.md) · [Wiki](https://github.com/HsinDumas/stagger/wiki)
 
-```bash
-# Build all modules
-./gradlew clean build -x test
+## 🙏 smart-doc
 
-# Build specific modules
-./gradlew :stagger-core:build -x test
-./gradlew :stagger-maven-plugin:build -x test
-./gradlew :stagger-gradle-plugin:build -x test
-```
-
-## 📄 License
-
-Apache License 2.0 - See LICENSE file
+Stagger continues the non-intrusive documentation philosophy pioneered by
+[smart-doc](https://github.com/smart-doc-group/smart-doc) — thanks to
+[shalousun](https://github.com/shalousun) and all contributors. Engineering differences and the
+migration path are recorded in [`docs/CODEX_MIGRATION_PLAN.md`](./docs/CODEX_MIGRATION_PLAN.md).
 
 ## 🤝 Contributing
 
-Pull requests welcome! Please open an issue first for major changes.
-
-## 👏 Acknowledgments
-
-- **Upstream Project**: [smart-doc](https://github.com/smart-doc-group/smart-doc)
-- **Current Maintainer**: [HsinDumas](https://github.com/HsinDumas)
+Pull requests welcome — please open an issue first for major changes.
+Licensed under [Apache 2.0](./LICENSE).
