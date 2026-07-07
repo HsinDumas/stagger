@@ -67,7 +67,7 @@ cd stagger
 
 ## 🔧 Use It in Your Project
 
-Examples pin `3.2.1`. Latest release: https://github.com/HsinDumas/stagger/releases
+Examples pin `3.3.0`. Latest release: https://github.com/HsinDumas/stagger/releases
 
 ### Maven
 
@@ -75,7 +75,7 @@ Examples pin `3.2.1`. Latest release: https://github.com/HsinDumas/stagger/relea
 <plugin>
     <groupId>com.github.hsindumas</groupId>
     <artifactId>stagger-maven-plugin</artifactId>
-    <version>3.2.1</version>
+    <version>3.3.0</version>
     <configuration>
         <configFile>${project.basedir}/src/main/resources/stagger.json</configFile>
     </configuration>
@@ -97,7 +97,7 @@ mvn -Dfile.encoding=UTF-8 stagger:html
 
 ```kotlin
 plugins {
-    id("com.github.hsindumas.stagger") version "3.2.1"
+    id("com.github.hsindumas.stagger") version "3.3.0"
 }
 
 stagger {

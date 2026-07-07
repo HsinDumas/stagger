@@ -63,7 +63,7 @@ cd stagger
 
 ## 🔧 在你的项目中使用
 
-示例固定使用 `3.2.1`。最新版本：https://github.com/HsinDumas/stagger/releases
+示例固定使用 `3.3.0`。最新版本：https://github.com/HsinDumas/stagger/releases
 
 ### Maven
 
@@ -71,7 +71,7 @@ cd stagger
 <plugin>
     <groupId>com.github.hsindumas</groupId>
     <artifactId>stagger-maven-plugin</artifactId>
-    <version>3.2.1</version>
+    <version>3.3.0</version>
     <configuration>
         <configFile>${project.basedir}/src/main/resources/stagger.json</configFile>
     </configuration>
@@ -93,7 +93,7 @@ mvn -Dfile.encoding=UTF-8 stagger:html
 
 ```kotlin
 plugins {
-    id("com.github.hsindumas.stagger") version "3.2.1"
+    id("com.github.hsindumas.stagger") version "3.3.0"
 }
 
 stagger {
