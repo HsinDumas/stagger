@@ -19,7 +19,7 @@ group = "com.github.hsindumas"
 
 extensions.configure<JavaPluginExtension> {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(25))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
