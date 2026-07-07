@@ -79,20 +79,15 @@ Core principles:
 | Gradle 9.x Support | ✅ | ✅ | ✅ |
 | OpenAPI 3.1 | ✅ | ✅ | ✅ |
 
-## 🚀 5-Second Demo (Clone and Run)
+## 🚀 5-Second Integration (In Your Project)
 
-```bash
-git clone https://github.com/HsinDumas/stagger.git
-cd stagger
-./gradlew :example:restHtml
-open example/build/stagger/index.html
-```
+Use Stagger directly in your existing service project:
 
-What you get:
+- Add the plugin.
+- Add `stagger.json`.
+- Run generation.
 
-- A generated offline HTML doc at `example/build/stagger/index.html`.
-- A minimal controller + DTO sample under `example/src/main/java`.
-- Ready-to-edit `stagger.json` under `example/src/main/resources`.
+Copy-paste configuration is in **Quick Start** below.
 
 ## 🔍 How Stagger Differs from smart-doc
 

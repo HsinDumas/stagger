@@ -79,20 +79,15 @@ public class CreateOrderRequest {
 | Gradle 9.x | ✅ | ✅ | ✅ |
 | OpenAPI 3.1 | ✅ | ✅ | ✅ |
 
-## 🚀 5 秒上手 Demo（克隆即跑）
+## 🚀 5 秒接入（在你的项目中）
 
-```bash
-git clone https://github.com/HsinDumas/stagger.git
-cd stagger
-./gradlew :example:restHtml
-open example/build/stagger/index.html
-```
+直接在你现有业务项目里接入 Stagger：
 
-你将得到：
+- 添加插件。
+- 添加 `stagger.json`。
+- 执行生成。
 
-- `example/build/stagger/index.html` 的离线 HTML 文档。
-- `example/src/main/java` 下最小 Controller + DTO 示例。
-- `example/src/main/resources/stagger.json` 可直接修改验证。
+完整可复制配置请看下方 **快速开始**。
 
 ## 🔍 与 smart-doc 的差异化
 
