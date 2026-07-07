@@ -293,18 +293,18 @@ public class ParamsBuildHelper extends BaseHelper {
 
         if (Objects.isNull(cls) && isMybatisPlusPageType(className)) {
             return buildMybatisPlusPageParams(
-                className,
-                pre,
-                level,
-                isRequired,
-                isResp,
-                registryClasses,
-                projectBuilder,
-                groupClasses,
-                methodJsonViewClasses,
-                pid,
-                jsonRequest,
-                atomicInteger);
+                    className,
+                    pre,
+                    level,
+                    isRequired,
+                    isResp,
+                    registryClasses,
+                    projectBuilder,
+                    groupClasses,
+                    methodJsonViewClasses,
+                    pid,
+                    jsonRequest,
+                    atomicInteger);
         }
 
         if (Objects.isNull(cls)) {
@@ -909,13 +909,13 @@ public class ParamsBuildHelper extends BaseHelper {
         // end field
     }
 
-        private static boolean isMybatisPlusPageType(String className) {
+    private static boolean isMybatisPlusPageType(String className) {
         return StringUtil.isNotEmpty(className)
-            && (className.startsWith("com.baomidou.mybatisplus.extension.plugins.pagination.Page")
-                || className.startsWith("com.baomidou.mybatisplus.core.metadata.IPage"));
-        }
+                && (className.startsWith("com.baomidou.mybatisplus.extension.plugins.pagination.Page")
+                        || className.startsWith("com.baomidou.mybatisplus.core.metadata.IPage"));
+    }
 
-        private static List<ApiParam> buildMybatisPlusPageParams(
+    private static List<ApiParam> buildMybatisPlusPageParams(
             String className,
             String pre,
             int level,
@@ -933,74 +933,74 @@ public class ParamsBuildHelper extends BaseHelper {
         String recordType = gicNames.length > 0 ? gicNames[0] : JavaTypeConstants.JAVA_OBJECT_FULLY;
 
         ApiParam records = ApiParam.of()
-            .setField(pre + "records")
-            .setType(ParamTypeConstants.PARAM_TYPE_ARRAY)
-            .setClassName(className)
-            .setPid(pid)
-            .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
-            .setDesc(StringUtil.EMPTY)
-            .setRequired(false)
-            .setVersion(DocGlobalConstants.DEFAULT_VERSION);
+                .setField(pre + "records")
+                .setType(ParamTypeConstants.PARAM_TYPE_ARRAY)
+                .setClassName(className)
+                .setPid(pid)
+                .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
+                .setDesc(StringUtil.EMPTY)
+                .setRequired(false)
+                .setVersion(DocGlobalConstants.DEFAULT_VERSION);
         paramList.add(records);
 
         int recordsPid = records.getId();
         if (StringUtil.isNotEmpty(recordType)
-            && !JavaTypeConstants.JAVA_OBJECT_FULLY.equals(recordType)
-            && !JavaClassValidateUtil.isPrimitive(recordType)) {
+                && !JavaTypeConstants.JAVA_OBJECT_FULLY.equals(recordType)
+                && !JavaClassValidateUtil.isPrimitive(recordType)) {
             paramList.addAll(buildParams(
-                recordType,
-                DocUtil.getStringBuilderByLevel(level).toString(),
-                level + 1,
-                isRequired,
-                isResp,
-                registryClasses,
-                projectBuilder,
-                groupClasses,
-                methodJsonViewClasses,
-                recordsPid,
-                jsonRequest,
-                atomicInteger));
+                    recordType,
+                    DocUtil.getStringBuilderByLevel(level).toString(),
+                    level + 1,
+                    isRequired,
+                    isResp,
+                    registryClasses,
+                    projectBuilder,
+                    groupClasses,
+                    methodJsonViewClasses,
+                    recordsPid,
+                    jsonRequest,
+                    atomicInteger));
         }
 
         paramList.add(ApiParam.of()
-            .setField(pre + "total")
-            .setType("int64")
-            .setClassName(className)
-            .setPid(pid)
-            .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
-            .setDesc(StringUtil.EMPTY)
-            .setRequired(false)
-            .setVersion(DocGlobalConstants.DEFAULT_VERSION));
+                .setField(pre + "total")
+                .setType("int64")
+                .setClassName(className)
+                .setPid(pid)
+                .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
+                .setDesc(StringUtil.EMPTY)
+                .setRequired(false)
+                .setVersion(DocGlobalConstants.DEFAULT_VERSION));
         paramList.add(ApiParam.of()
-            .setField(pre + "size")
-            .setType("int64")
-            .setClassName(className)
-            .setPid(pid)
-            .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
-            .setDesc(StringUtil.EMPTY)
-            .setRequired(false)
-            .setVersion(DocGlobalConstants.DEFAULT_VERSION));
+                .setField(pre + "size")
+                .setType("int64")
+                .setClassName(className)
+                .setPid(pid)
+                .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
+                .setDesc(StringUtil.EMPTY)
+                .setRequired(false)
+                .setVersion(DocGlobalConstants.DEFAULT_VERSION));
         paramList.add(ApiParam.of()
-            .setField(pre + "current")
-            .setType("int64")
-            .setClassName(className)
-            .setPid(pid)
-            .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
-            .setDesc(StringUtil.EMPTY)
-            .setRequired(false)
-            .setVersion(DocGlobalConstants.DEFAULT_VERSION));
+                .setField(pre + "current")
+                .setType("int64")
+                .setClassName(className)
+                .setPid(pid)
+                .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
+                .setDesc(StringUtil.EMPTY)
+                .setRequired(false)
+                .setVersion(DocGlobalConstants.DEFAULT_VERSION));
         paramList.add(ApiParam.of()
-            .setField(pre + "pages")
-            .setType("int64")
-            .setClassName(className)
-            .setPid(pid)
-            .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
-            .setDesc(StringUtil.EMPTY)
-            .setRequired(false)
-            .setVersion(DocGlobalConstants.DEFAULT_VERSION));
+                .setField(pre + "pages")
+                .setType("int64")
+                .setClassName(className)
+                .setPid(pid)
+                .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
+                .setDesc(StringUtil.EMPTY)
+                .setRequired(false)
+                .setVersion(DocGlobalConstants.DEFAULT_VERSION));
 
         return paramList;
-        }
+    }
 
     /**
      * Builds a list of {@link ApiParam} objects for a map parameter.
@@ -1204,15 +1204,20 @@ public class ParamsBuildHelper extends BaseHelper {
                 String simpleFieldType = DocClassUtil.getSimpleName(fieldType);
                 if (JavaClassValidateUtil.isPrimitive(simpleFieldType)) {
                     param.setType(processFieldTypeName(isShowJavaType, fieldType));
-                    processApiParam(paramList, param, isRequired, StringUtil.EMPTY, DocGlobalConstants.DEFAULT_VERSION, false);
+                    processApiParam(
+                            paramList, param, isRequired, StringUtil.EMPTY, DocGlobalConstants.DEFAULT_VERSION, false);
                     continue;
                 }
 
-                if (JavaClassValidateUtil.isCollection(simpleFieldType) || JavaClassValidateUtil.isArray(simpleFieldType)) {
+                if (JavaClassValidateUtil.isCollection(simpleFieldType)
+                        || JavaClassValidateUtil.isArray(simpleFieldType)) {
                     param.setType(ParamTypeConstants.PARAM_TYPE_ARRAY);
-                    processApiParam(paramList, param, isRequired, StringUtil.EMPTY, DocGlobalConstants.DEFAULT_VERSION, false);
+                    processApiParam(
+                            paramList, param, isRequired, StringUtil.EMPTY, DocGlobalConstants.DEFAULT_VERSION, false);
                     String[] gNames = DocClassUtil.getSimpleGicName(fieldType);
-                    if (gNames.length > 0 && StringUtil.isNotEmpty(gNames[0]) && !JavaClassValidateUtil.isPrimitive(gNames[0])) {
+                    if (gNames.length > 0
+                            && StringUtil.isNotEmpty(gNames[0])
+                            && !JavaClassValidateUtil.isPrimitive(gNames[0])) {
                         paramList.addAll(buildParams(
                                 gNames[0],
                                 preBuilder.toString(),
@@ -1232,9 +1237,12 @@ public class ParamsBuildHelper extends BaseHelper {
 
                 if (JavaClassValidateUtil.isMap(simpleFieldType)) {
                     param.setType(ParamTypeConstants.PARAM_TYPE_OBJECT);
-                    processApiParam(paramList, param, isRequired, StringUtil.EMPTY, DocGlobalConstants.DEFAULT_VERSION, false);
+                    processApiParam(
+                            paramList, param, isRequired, StringUtil.EMPTY, DocGlobalConstants.DEFAULT_VERSION, false);
                     String[] keyValue = DocClassUtil.getMapKeyValueType(fieldType);
-                    if (keyValue.length == 2 && StringUtil.isNotEmpty(keyValue[1]) && !JavaClassValidateUtil.isPrimitive(keyValue[1])) {
+                    if (keyValue.length == 2
+                            && StringUtil.isNotEmpty(keyValue[1])
+                            && !JavaClassValidateUtil.isPrimitive(keyValue[1])) {
                         paramList.addAll(buildParams(
                                 keyValue[1],
                                 preBuilder.toString(),
@@ -1253,7 +1261,8 @@ public class ParamsBuildHelper extends BaseHelper {
                 }
 
                 param.setType(ParamTypeConstants.PARAM_TYPE_OBJECT);
-                processApiParam(paramList, param, isRequired, StringUtil.EMPTY, DocGlobalConstants.DEFAULT_VERSION, false);
+                processApiParam(
+                        paramList, param, isRequired, StringUtil.EMPTY, DocGlobalConstants.DEFAULT_VERSION, false);
                 paramList.addAll(buildParams(
                         fieldType,
                         preBuilder.toString(),

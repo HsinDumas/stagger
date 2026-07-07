@@ -1,6 +1,6 @@
 plugins {
     java
-    id("com.github.hsindumas.stagger") version "3.2.2-SNAPSHOT"
+    id("com.github.hsindumas.stagger") version "3.2.1"
 }
 
 repositories {

@@ -331,7 +331,11 @@ public interface IHeaderHandler {
         List<Object> imports = (List<Object>) importsObj;
         for (Object imp : imports) {
             String importText = String.valueOf(imp).trim();
-            importText = importText.replace("import", "").replace("static", "").replace(";", "").trim();
+            importText = importText
+                    .replace("import", "")
+                    .replace("static", "")
+                    .replace(";", "")
+                    .trim();
             if (StringUtil.isEmpty(importText) || importText.endsWith(".*")) {
                 continue;
             }

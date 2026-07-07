@@ -151,7 +151,7 @@ public class FormDataBuildHelper extends BaseHelper {
             if (JavaClassValidateUtil.isMap(subTypeName)) {
                 continue;
             }
-                String comment = docField.getComment();
+            String comment = docField.getComment();
             if (JavaClassValidateUtil.isFile(fieldGicName)) {
                 FormData formData = new FormData();
                 formData.setKey(pre + fieldName);

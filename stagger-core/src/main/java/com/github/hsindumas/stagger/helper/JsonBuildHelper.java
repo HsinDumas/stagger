@@ -811,7 +811,8 @@ public class JsonBuildHelper extends BaseHelper {
                     result.append(DocUtil.jsonValueByType(fieldType)).append(",");
                     continue;
                 }
-                if (JavaClassValidateUtil.isCollection(simpleFieldType) || JavaClassValidateUtil.isArray(simpleFieldType)) {
+                if (JavaClassValidateUtil.isCollection(simpleFieldType)
+                        || JavaClassValidateUtil.isArray(simpleFieldType)) {
                     String[] gics = DocClassUtil.getSimpleGicName(fieldType);
                     if (gics.length == 0 || StringUtil.isEmpty(gics[0])) {
                         result.append("[{\"object\":\"any object\"}],");
@@ -819,7 +820,9 @@ public class JsonBuildHelper extends BaseHelper {
                     }
                     String itemType = gics[0];
                     if (JavaClassValidateUtil.isPrimitive(itemType)) {
-                        result.append("[").append(DocUtil.jsonValueByType(itemType)).append("],");
+                        result.append("[")
+                                .append(DocUtil.jsonValueByType(itemType))
+                                .append("],");
                         continue;
                     }
                     String itemJson = buildJson(
