@@ -10,22 +10,28 @@ Stagger says no.
 Stagger is a **zero-intrusion, zero-annotation** API documentation generator based on JavaParser static analysis.
 It is maintained independently from the smart-doc lineage, with explicit focus on modern Java engineering (JDK 25 toolchain, Gradle 9.x, Spring Boot 4 compatibility).
 
+## 👀 Generated Result Preview
+
+Generated offline HTML from the built-in sample project:
+
+![Stagger generated HTML preview](./images/stagger-example-html.png)
+
+Before/After code style at a glance:
+
+![Before and after clean domain model](./images/before-after-clean-code.svg)
+
+## 🎯 Who Stagger Is For
+
+- Teams that want API docs without Swagger annotations in domain code.
+- Existing smart-doc users who need a modern toolchain path.
+- Java teams upgrading toward newer JDK/Spring Boot baselines.
+
 ## ⚡ One-Minute Pitch
 
 - Keep docs out of domain code.
 - Parse Java sources and JavaDoc directly.
 - Generate OpenAPI 3.1, Markdown, and offline HTML in build time.
 - Keep Maven and Gradle both first-class for users.
-
-## 🙏 Tribute to smart-doc
-
-Stagger would not exist without [smart-doc](https://github.com/smart-doc-group/smart-doc).
-
-- smart-doc pioneered the non-intrusive API doc path in the Java ecosystem.
-- Stagger inherits that philosophy: keep business code clean, use source analysis over annotation flooding.
-- We sincerely respect [shalousun](https://github.com/shalousun) and all smart-doc contributors.
-
-Stagger is not a rejection of smart-doc. It is a focused continuation for teams that want a modernized toolchain and transparent migration records.
 
 ## 💡 Why Stagger?
 
@@ -68,6 +74,21 @@ Core principles:
 | Gradle 9.x Support | ✅ | ✅ | ✅ |
 | OpenAPI 3.1 | ✅ | ✅ | ✅ |
 
+## 🚀 5-Second Demo (Clone and Run)
+
+```bash
+git clone https://github.com/HsinDumas/stagger.git
+cd stagger
+./gradlew :example:restHtml
+open example/build/stagger/index.html
+```
+
+What you get:
+
+- A generated offline HTML doc at `example/build/stagger/index.html`.
+- A minimal controller + DTO sample under `example/src/main/java`.
+- Ready-to-edit `stagger.json` under `example/src/main/resources`.
+
 ## 🔍 How Stagger Differs from smart-doc
 
 Same spirit, different engineering choices:
@@ -83,7 +104,10 @@ Same spirit, different engineering choices:
 
 Stagger uses Gradle internally, but it does not force users to switch build tools. Maven and Gradle plugin experiences remain first-class.
 
-Detailed migration notes and contributor validation commands are documented in `docs/CODEX_MIGRATION_PLAN.md` and `CONTRIBUTING.md`.
+## 🙏 Tribute to smart-doc
+
+Stagger would not exist without [smart-doc](https://github.com/smart-doc-group/smart-doc).
+We continue the same non-intrusive documentation philosophy and thank [shalousun](https://github.com/shalousun) and all contributors.
 
 ## 📚 Wiki
 
@@ -94,7 +118,8 @@ Detailed migration notes and contributor validation commands are documented in `
 
 ## 🚀 Quick Start
 
-Use the latest release from https://github.com/HsinDumas/stagger/releases (tag format: `vX.Y.Z`), then replace `REPLACE_WITH_LATEST_RELEASE` below (for example: `3.2.2`).
+Current examples use `3.2.1` for copy-paste convenience.
+Latest release: https://github.com/HsinDumas/stagger/releases (tag format: `vX.Y.Z`).
 
 ### Maven
 
@@ -102,7 +127,7 @@ Use the latest release from https://github.com/HsinDumas/stagger/releases (tag f
 <plugin>
     <groupId>com.github.hsindumas</groupId>
     <artifactId>stagger-maven-plugin</artifactId>
-    <version>REPLACE_WITH_LATEST_RELEASE</version>
+    <version>3.2.1</version>
     <configuration>
         <configFile>${project.basedir}/src/main/resources/stagger.json</configFile>
     </configuration>
@@ -124,7 +149,7 @@ mvn -Dfile.encoding=UTF-8 stagger:html
 
 ```kotlin
 plugins {
-    id("com.github.hsindumas.stagger") version "REPLACE_WITH_LATEST_RELEASE"
+    id("com.github.hsindumas.stagger") version "3.2.1"
 }
 
 stagger {

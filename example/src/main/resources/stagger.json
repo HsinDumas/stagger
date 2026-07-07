@@ -1,0 +1,7 @@
+{
+  "projectName": "stagger-example",
+  "outPath": "build/stagger",
+  "allInOne": true,
+  "isStrict": false,
+  "packageFilters": "com.example.stagger.demo"
+}

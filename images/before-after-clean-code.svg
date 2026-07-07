@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc">
+  <title id="title">Before and After: API documentation style</title>
+  <desc id="desc">Comparison of annotation-heavy model versus clean model with JavaDoc and source analysis.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f4f7fb"/>
+      <stop offset="100%" stop-color="#eef3f8"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 34px 'SFMono-Regular', Menlo, Consolas, monospace; fill: #0f172a; }
+      .subtitle { font: 500 18px 'SFMono-Regular', Menlo, Consolas, monospace; fill: #334155; }
+      .panelTitle { font: 700 24px 'SFMono-Regular', Menlo, Consolas, monospace; }
+      .code { font: 500 18px 'SFMono-Regular', Menlo, Consolas, monospace; fill: #0b1220; }
+      .muted { fill: #475569; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="560" fill="url(#bg)"/>
+
+  <text x="60" y="62" class="title">Before / After: Keep docs out of domain code</text>
+  <text x="60" y="94" class="subtitle">Stagger keeps API docs in JavaDoc + source analysis, not business annotations.</text>
+
+  <rect x="60" y="130" width="520" height="370" rx="18" fill="#fff1f2" stroke="#fda4af"/>
+  <text x="90" y="176" class="panelTitle" fill="#be123c">Before: annotation-heavy</text>
+  <text x="90" y="218" class="code">@Schema(description = "Create order")</text>
+  <text x="90" y="248" class="code">class CreateOrderRequest {</text>
+  <text x="120" y="278" class="code">@Schema(description = "Customer id")</text>
+  <text x="120" y="308" class="code">String customerId;</text>
+  <text x="90" y="338" class="code">}</text>
+  <text x="90" y="386" class="subtitle muted">Business model carries doc framework metadata.</text>
+
+  <rect x="620" y="130" width="520" height="370" rx="18" fill="#ecfdf5" stroke="#86efac"/>
+  <text x="650" y="176" class="panelTitle" fill="#166534">After: clean domain model</text>
+  <text x="650" y="218" class="code">/** Create order */</text>
+  <text x="650" y="248" class="code">class CreateOrderRequest {</text>
+  <text x="680" y="278" class="code">/** Customer id */</text>
+  <text x="680" y="308" class="code">String customerId;</text>
+  <text x="650" y="338" class="code">}</text>
+  <text x="650" y="386" class="subtitle muted">Doc stays in JavaDoc, output generated at build time.</text>
+
+  <circle cx="600" cy="315" r="24" fill="#0ea5e9"/>
+  <text x="585" y="322" class="code" fill="#ffffff">→</text>
+</svg>
