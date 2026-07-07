@@ -141,6 +141,11 @@ public class ApiParam implements Serializable {
     private String maxLength;
 
     /**
+     * Valid @Min
+     */
+    private String minLength;
+
+    /**
      * is config.json config param default false
      */
     private boolean configParam;
@@ -303,6 +308,15 @@ public class ApiParam implements Serializable {
         return this;
     }
 
+    public String getMinLength() {
+        return minLength;
+    }
+
+    public ApiParam setMinLength(String minLength) {
+        this.minLength = minLength;
+        return this;
+    }
+
     public boolean isConfigParam() {
         return configParam;
     }
@@ -414,7 +428,7 @@ public class ApiParam implements Serializable {
                 + desc + '\'' + ", required=" + required + ", version='" + version + '\'' + ", pid=" + pid
                 + ", pathParam=" + pathParam + ", queryParam=" + queryParam + ", value='" + value + '\'' + ", children="
                 + children + ", hasItems=" + hasItems + ", enumValues=" + enumValues + ", enumInfo=" + enumInfo
-                + ", maxLength='" + maxLength + '\'' + ", configParam=" + configParam + ", selfReferenceLoop="
-                + selfReferenceLoop + ", extensions=" + extensions + '}';
+                + ", maxLength='" + maxLength + '\'' + ", minLength='" + minLength + '\'' + ", configParam="
+                + configParam + ", selfReferenceLoop=" + selfReferenceLoop + ", extensions=" + extensions + '}';
     }
 }

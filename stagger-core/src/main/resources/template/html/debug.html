@@ -80,8 +80,10 @@
         <%if(isNotEmpty(doc.author)){%>
         <div class="paragraph"><p><strong>Author:</strong>&nbsp;${doc.author}</p></div>
         <%}%>
+        <%if(isNotEmpty(doc.contentType)){%>
         <div class="paragraph" data-content-type="${doc.contentType}" id="${doc.methodId}-content-type"><p><strong>Content-Type:</strong>&nbsp;${doc.contentType}
         </p></div>
+        <%}%>
         <div class="paragraph"><p><strong>Description:</strong>&nbsp;${lineBreaksToBr(doc.detail)}</p></div>
         <%if(isNotEmpty(doc.requestHeaders)){%>
         <div class="paragraph"><p><strong>Request-headers:</strong></p></div>
@@ -117,7 +119,7 @@
             </td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${header.name}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock"><input name="${header.name}" type="text"
-                                                                                       value="${header.value}"/></p>
+                                                                                       value="${header.value!''}"/></p>
             </td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${header.type}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${header.required}</p></td>

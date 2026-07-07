@@ -42,6 +42,13 @@ import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.github.hsindumas.stagger.utils.JavaFieldUtil;
 import com.github.hsindumas.stagger.utils.ParamUtil;
+import java.lang.reflect.Field;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -284,6 +291,42 @@ public class ParamsBuildHelper extends BaseHelper {
         Map<String, String> genericMap = new HashMap<>(globGicName.length);
         JavaClassUtil.genericParamMap(genericMap, cls, globGicName);
 
+        if (Objects.isNull(cls) && isMybatisPlusPageType(className)) {
+            return buildMybatisPlusPageParams(
+                className,
+                pre,
+                level,
+                isRequired,
+                isResp,
+                registryClasses,
+                projectBuilder,
+                groupClasses,
+                methodJsonViewClasses,
+                pid,
+                jsonRequest,
+                atomicInteger);
+        }
+
+        if (Objects.isNull(cls)) {
+            List<ApiParam> reflectedParams = buildParamsFromReflectedClass(
+                    className,
+                    pre,
+                    level,
+                    isRequired,
+                    isResp,
+                    registryClasses,
+                    projectBuilder,
+                    groupClasses,
+                    methodJsonViewClasses,
+                    pid,
+                    jsonRequest,
+                    atomicInteger,
+                    isShowJavaType);
+            if (!reflectedParams.isEmpty()) {
+                return reflectedParams;
+            }
+        }
+
         Map<String, String> ignoreFields = JavaClassUtil.getClassJsonIgnoreFields(cls);
         List<DocJavaField> fields = JavaClassUtil.getFields(cls, 0, new LinkedHashMap<>(), classLoader);
         for (DocJavaField docField : fields) {
@@ -294,6 +337,7 @@ public class ParamsBuildHelper extends BaseHelper {
             }
             List<?> javaAnnotations = docField.getAnnotations();
             String maxLength = JavaFieldUtil.getParamMaxLength(classLoader, javaAnnotations);
+            String minLength = JavaFieldUtil.getParamMinLength(classLoader, javaAnnotations);
             StringBuilder comment = new StringBuilder();
             comment.append(docField.getComment());
 
@@ -358,8 +402,6 @@ public class ParamsBuildHelper extends BaseHelper {
                 strRequired = annotationInfo.getStrRequired();
             }
 
-            comment.append(JavaFieldUtil.getJsrComment(
-                    projectBuilder.getApiConfig().isShowValidation(), classLoader, javaAnnotations));
             // fix mock post form curl example error
             String fieldValue = getFieldValueFromMock(tagsMap);
 
@@ -388,6 +430,7 @@ public class ParamsBuildHelper extends BaseHelper {
                         .setPid(pid)
                         .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
                         .setMaxLength(maxLength)
+                        .setMinLength(minLength)
                         .setDesc(comment.toString())
                         .setRequired(strRequired)
                         .setVersion(since)
@@ -409,6 +452,7 @@ public class ParamsBuildHelper extends BaseHelper {
                         .setPid(pid)
                         .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
                         .setMaxLength(maxLength)
+                        .setMinLength(minLength)
                         .setDesc(comment.toString())
                         .setRequired(strRequired)
                         .setVersion(since)
@@ -446,6 +490,7 @@ public class ParamsBuildHelper extends BaseHelper {
                         .setField(pre + fieldName)
                         .setPid(pid)
                         .setMaxLength(maxLength)
+                        .setMinLength(minLength)
                         .setValue(fieldValue);
                 param.setId(atomicOrDefault(atomicInteger, paramList.size() + param.getPid() + 1));
                 String processedType = (isResp && toStringSerializer)
@@ -492,7 +537,8 @@ public class ParamsBuildHelper extends BaseHelper {
                         .setField(pre + fieldName)
                         .setClassName(className)
                         .setPid(pid)
-                        .setMaxLength(maxLength);
+                        .setMaxLength(maxLength)
+                        .setMinLength(minLength);
                 param.setId(atomicOrDefault(atomicInteger, paramList.size() + param.getPid() + 1));
                 param.setExtensions(extensionParams);
                 String processedType;
@@ -675,6 +721,7 @@ public class ParamsBuildHelper extends BaseHelper {
                                 .setPid(fieldPid)
                                 .setClassName(className)
                                 .setMaxLength(maxLength)
+                                .setMinLength(minLength)
                                 .setType(ParamTypeConstants.PARAM_TYPE_OBJECT)
                                 .setDesc(DocGlobalConstants.ANY_OBJECT_MSG)
                                 .setVersion(DocGlobalConstants.DEFAULT_VERSION)
@@ -831,6 +878,7 @@ public class ParamsBuildHelper extends BaseHelper {
                                 .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
                                 .setClassName(subTypeName)
                                 .setMaxLength(maxLength)
+                                .setMinLength(minLength)
                                 .setType(ParamTypeConstants.PARAM_TYPE_OBJECT)
                                 .setDesc(comment.append(" $ref... self").toString())
                                 .setVersion(DocGlobalConstants.DEFAULT_VERSION)
@@ -860,6 +908,99 @@ public class ParamsBuildHelper extends BaseHelper {
         return paramList;
         // end field
     }
+
+        private static boolean isMybatisPlusPageType(String className) {
+        return StringUtil.isNotEmpty(className)
+            && (className.startsWith("com.baomidou.mybatisplus.extension.plugins.pagination.Page")
+                || className.startsWith("com.baomidou.mybatisplus.core.metadata.IPage"));
+        }
+
+        private static List<ApiParam> buildMybatisPlusPageParams(
+            String className,
+            String pre,
+            int level,
+            String isRequired,
+            boolean isResp,
+            Map<String, String> registryClasses,
+            ProjectDocConfigBuilder projectBuilder,
+            Set<String> groupClasses,
+            Set<String> methodJsonViewClasses,
+            int pid,
+            boolean jsonRequest,
+            AtomicInteger atomicInteger) {
+        List<ApiParam> paramList = new ArrayList<>();
+        String[] gicNames = DocClassUtil.getSimpleGicName(className);
+        String recordType = gicNames.length > 0 ? gicNames[0] : JavaTypeConstants.JAVA_OBJECT_FULLY;
+
+        ApiParam records = ApiParam.of()
+            .setField(pre + "records")
+            .setType(ParamTypeConstants.PARAM_TYPE_ARRAY)
+            .setClassName(className)
+            .setPid(pid)
+            .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
+            .setDesc(StringUtil.EMPTY)
+            .setRequired(false)
+            .setVersion(DocGlobalConstants.DEFAULT_VERSION);
+        paramList.add(records);
+
+        int recordsPid = records.getId();
+        if (StringUtil.isNotEmpty(recordType)
+            && !JavaTypeConstants.JAVA_OBJECT_FULLY.equals(recordType)
+            && !JavaClassValidateUtil.isPrimitive(recordType)) {
+            paramList.addAll(buildParams(
+                recordType,
+                DocUtil.getStringBuilderByLevel(level).toString(),
+                level + 1,
+                isRequired,
+                isResp,
+                registryClasses,
+                projectBuilder,
+                groupClasses,
+                methodJsonViewClasses,
+                recordsPid,
+                jsonRequest,
+                atomicInteger));
+        }
+
+        paramList.add(ApiParam.of()
+            .setField(pre + "total")
+            .setType("int64")
+            .setClassName(className)
+            .setPid(pid)
+            .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
+            .setDesc(StringUtil.EMPTY)
+            .setRequired(false)
+            .setVersion(DocGlobalConstants.DEFAULT_VERSION));
+        paramList.add(ApiParam.of()
+            .setField(pre + "size")
+            .setType("int64")
+            .setClassName(className)
+            .setPid(pid)
+            .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
+            .setDesc(StringUtil.EMPTY)
+            .setRequired(false)
+            .setVersion(DocGlobalConstants.DEFAULT_VERSION));
+        paramList.add(ApiParam.of()
+            .setField(pre + "current")
+            .setType("int64")
+            .setClassName(className)
+            .setPid(pid)
+            .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
+            .setDesc(StringUtil.EMPTY)
+            .setRequired(false)
+            .setVersion(DocGlobalConstants.DEFAULT_VERSION));
+        paramList.add(ApiParam.of()
+            .setField(pre + "pages")
+            .setType("int64")
+            .setClassName(className)
+            .setPid(pid)
+            .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1))
+            .setDesc(StringUtil.EMPTY)
+            .setRequired(false)
+            .setVersion(DocGlobalConstants.DEFAULT_VERSION));
+
+        return paramList;
+        }
 
     /**
      * Builds a list of {@link ApiParam} objects for a map parameter.
@@ -1019,6 +1160,180 @@ public class ParamsBuildHelper extends BaseHelper {
                 nextLevel,
                 atomicInteger));
         return paramList;
+    }
+
+    private static List<ApiParam> buildParamsFromReflectedClass(
+            String className,
+            String pre,
+            int level,
+            String isRequired,
+            boolean isResp,
+            Map<String, String> registryClasses,
+            ProjectDocConfigBuilder projectBuilder,
+            Set<String> groupClasses,
+            Set<String> methodJsonViewClasses,
+            int pid,
+            boolean jsonRequest,
+            AtomicInteger atomicInteger,
+            boolean isShowJavaType) {
+        ClassLoader classLoader = projectBuilder.getApiConfig().getClassLoader();
+        String rawTypeName = className.contains("<") ? className.substring(0, className.indexOf('<')) : className;
+        try {
+            Class<?> rawClass = classLoader.loadClass(rawTypeName);
+            Map<String, String> typeVarMap = buildTypeVariableMap(rawClass, className);
+            List<ApiParam> paramList = new ArrayList<>();
+            StringBuilder preBuilder = DocUtil.getStringBuilderByLevel(level);
+            for (Field field : getAllFields(rawClass)) {
+                if (Modifier.isStatic(field.getModifiers())
+                        || Modifier.isTransient(field.getModifiers())
+                        || field.isSynthetic()) {
+                    continue;
+                }
+
+                String fieldType = resolveReflectTypeName(field.getGenericType(), typeVarMap);
+                if (StringUtil.isEmpty(fieldType)) {
+                    continue;
+                }
+
+                ApiParam param = ApiParam.of()
+                        .setField(pre + field.getName())
+                        .setClassName(className)
+                        .setPid(pid)
+                        .setId(atomicOrDefault(atomicInteger, paramList.size() + pid + 1));
+
+                String simpleFieldType = DocClassUtil.getSimpleName(fieldType);
+                if (JavaClassValidateUtil.isPrimitive(simpleFieldType)) {
+                    param.setType(processFieldTypeName(isShowJavaType, fieldType));
+                    processApiParam(paramList, param, isRequired, StringUtil.EMPTY, DocGlobalConstants.DEFAULT_VERSION, false);
+                    continue;
+                }
+
+                if (JavaClassValidateUtil.isCollection(simpleFieldType) || JavaClassValidateUtil.isArray(simpleFieldType)) {
+                    param.setType(ParamTypeConstants.PARAM_TYPE_ARRAY);
+                    processApiParam(paramList, param, isRequired, StringUtil.EMPTY, DocGlobalConstants.DEFAULT_VERSION, false);
+                    String[] gNames = DocClassUtil.getSimpleGicName(fieldType);
+                    if (gNames.length > 0 && StringUtil.isNotEmpty(gNames[0]) && !JavaClassValidateUtil.isPrimitive(gNames[0])) {
+                        paramList.addAll(buildParams(
+                                gNames[0],
+                                preBuilder.toString(),
+                                level + 1,
+                                isRequired,
+                                isResp,
+                                registryClasses,
+                                projectBuilder,
+                                groupClasses,
+                                methodJsonViewClasses,
+                                param.getId(),
+                                jsonRequest,
+                                atomicInteger));
+                    }
+                    continue;
+                }
+
+                if (JavaClassValidateUtil.isMap(simpleFieldType)) {
+                    param.setType(ParamTypeConstants.PARAM_TYPE_OBJECT);
+                    processApiParam(paramList, param, isRequired, StringUtil.EMPTY, DocGlobalConstants.DEFAULT_VERSION, false);
+                    String[] keyValue = DocClassUtil.getMapKeyValueType(fieldType);
+                    if (keyValue.length == 2 && StringUtil.isNotEmpty(keyValue[1]) && !JavaClassValidateUtil.isPrimitive(keyValue[1])) {
+                        paramList.addAll(buildParams(
+                                keyValue[1],
+                                preBuilder.toString(),
+                                level + 1,
+                                isRequired,
+                                isResp,
+                                registryClasses,
+                                projectBuilder,
+                                groupClasses,
+                                methodJsonViewClasses,
+                                param.getId(),
+                                jsonRequest,
+                                atomicInteger));
+                    }
+                    continue;
+                }
+
+                param.setType(ParamTypeConstants.PARAM_TYPE_OBJECT);
+                processApiParam(paramList, param, isRequired, StringUtil.EMPTY, DocGlobalConstants.DEFAULT_VERSION, false);
+                paramList.addAll(buildParams(
+                        fieldType,
+                        preBuilder.toString(),
+                        level + 1,
+                        isRequired,
+                        isResp,
+                        registryClasses,
+                        projectBuilder,
+                        groupClasses,
+                        methodJsonViewClasses,
+                        param.getId(),
+                        jsonRequest,
+                        atomicInteger));
+            }
+            return paramList;
+        } catch (ClassNotFoundException ignored) {
+            return Collections.emptyList();
+        }
+    }
+
+    private static Map<String, String> buildTypeVariableMap(Class<?> rawClass, String className) {
+        Map<String, String> result = new HashMap<>();
+        String[] actualGics = DocClassUtil.getSimpleGicName(className);
+        TypeVariable<?>[] typeVariables = rawClass.getTypeParameters();
+        int len = Math.min(typeVariables.length, actualGics.length);
+        for (int i = 0; i < len; i++) {
+            result.put(typeVariables[i].getName(), actualGics[i]);
+        }
+        return result;
+    }
+
+    private static List<Field> getAllFields(Class<?> clazz) {
+        List<Field> fields = new ArrayList<>();
+        Class<?> current = clazz;
+        while (Objects.nonNull(current) && !Object.class.equals(current)) {
+            Collections.addAll(fields, current.getDeclaredFields());
+            current = current.getSuperclass();
+        }
+        return fields;
+    }
+
+    private static String resolveReflectTypeName(Type type, Map<String, String> typeVarMap) {
+        if (type instanceof Class) {
+            Class<?> c = (Class<?>) type;
+            if (c.isArray()) {
+                return c.getComponentType().getName().replace('$', '.') + "[]";
+            }
+            return c.getName().replace('$', '.');
+        }
+        if (type instanceof ParameterizedType) {
+            ParameterizedType pt = (ParameterizedType) type;
+            String raw = resolveReflectTypeName(pt.getRawType(), typeVarMap);
+            Type[] args = pt.getActualTypeArguments();
+            StringBuilder sb = new StringBuilder(raw).append('<');
+            for (int i = 0; i < args.length; i++) {
+                if (i > 0) {
+                    sb.append(',');
+                }
+                sb.append(resolveReflectTypeName(args[i], typeVarMap));
+            }
+            sb.append('>');
+            return sb.toString();
+        }
+        if (type instanceof TypeVariable) {
+            TypeVariable<?> tv = (TypeVariable<?>) type;
+            return typeVarMap.getOrDefault(tv.getName(), JavaTypeConstants.JAVA_OBJECT_FULLY);
+        }
+        if (type instanceof WildcardType) {
+            WildcardType wt = (WildcardType) type;
+            Type[] upper = wt.getUpperBounds();
+            if (upper.length > 0) {
+                return resolveReflectTypeName(upper[0], typeVarMap);
+            }
+            return JavaTypeConstants.JAVA_OBJECT_FULLY;
+        }
+        if (type instanceof GenericArrayType) {
+            GenericArrayType gat = (GenericArrayType) type;
+            return resolveReflectTypeName(gat.getGenericComponentType(), typeVarMap) + "[]";
+        }
+        return Optional.ofNullable(type).map(Type::getTypeName).orElse(JavaTypeConstants.JAVA_OBJECT_FULLY);
     }
 
     /**

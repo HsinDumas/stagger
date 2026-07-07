@@ -114,7 +114,7 @@ public class ApiMethodDoc implements IMethod, Serializable, Cloneable {
     /**
      * http contentType
      */
-    private String contentType = MediaType.APPLICATION_FORM_URLENCODED_VALUE;
+    private String contentType = "";
 
     /**
      * http request headers

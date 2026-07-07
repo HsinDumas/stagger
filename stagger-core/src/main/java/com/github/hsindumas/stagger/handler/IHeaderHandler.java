@@ -21,6 +21,7 @@ package com.github.hsindumas.stagger.handler;
 
 import com.github.hsindumas.stagger.builder.ProjectDocConfigBuilder;
 import com.github.hsindumas.stagger.common.util.StringUtil;
+import com.github.hsindumas.stagger.constants.DocAnnotationConstants;
 import com.github.hsindumas.stagger.constants.DocTags;
 import com.github.hsindumas.stagger.constants.ParamTypeConstants;
 import com.github.hsindumas.stagger.helper.ParamsBuildHelper;
@@ -32,6 +33,8 @@ import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.github.hsindumas.stagger.utils.JavaFieldUtil;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -99,7 +102,7 @@ public interface IHeaderHandler {
                 apiReqHeader.setRequired(true);
                 apiReqHeader.setDesc(DocUtil.paramCommentResolve(paramCommentMap.get(parameterName)));
 
-                handleParamAnnotation(annotation, apiReqHeader, projectBuilder);
+                handleParamAnnotation(annotation, apiReqHeader, projectBuilder, method);
                 handleParamTypeAndValue(javaParameter, apiReqHeader, projectBuilder, paramCommentMap);
                 reqHeaders.add(apiReqHeader);
                 break;
@@ -228,27 +231,30 @@ public interface IHeaderHandler {
      * @param projectBuilder projectBuilder
      */
     default void handleParamAnnotation(
-            Object annotation, ApiReqParam apiReqHeader, ProjectDocConfigBuilder projectBuilder) {
+            Object annotation, ApiReqParam apiReqHeader, ProjectDocConfigBuilder projectBuilder, Object method) {
         HeaderAnnotation headerAnnotation = getHeaderAnnotation();
         Map<String, String> constantsMap = projectBuilder.getConstantsMap();
         Map<String, Object> requestHeaderMap = DocUtil.getAnnotationNamedParameterMap(annotation);
         if (requestHeaderMap != null && requestHeaderMap.size() > 0) {
             // Obtain header value
+            String headerNameProp = null;
             if (requestHeaderMap.containsKey(headerAnnotation.getValueProp())) {
+                headerNameProp = headerAnnotation.getValueProp();
+            } else if (requestHeaderMap.containsKey(DocAnnotationConstants.NAME_PROP)) {
+                // Spring's @RequestHeader supports both value and name.
+                headerNameProp = DocAnnotationConstants.NAME_PROP;
+            }
+            if (StringUtil.isNotEmpty(headerNameProp)) {
                 ClassLoader classLoader = projectBuilder.getApiConfig().getClassLoader();
                 String attrValue = DocUtil.handleRequestHeaderValue(classLoader, annotation);
-                String constValue =
-                        ((String) requestHeaderMap.get(headerAnnotation.getValueProp())).replaceAll("\"", "");
-                if (StringUtil.isEmpty(attrValue)) {
-                    Object value = constantsMap.get(constValue);
-                    if (value != null) {
-                        apiReqHeader.setName(value.toString());
-                    } else {
-                        apiReqHeader.setName(constValue);
-                    }
-                } else {
-                    apiReqHeader.setName(attrValue);
+                Object rawHeaderName = requestHeaderMap.get(headerNameProp);
+                String constValue = StringUtil.removeQuotes(String.valueOf(rawHeaderName));
+                String resolvedHeaderName = StringUtil.isEmpty(attrValue) ? constValue : attrValue;
+                resolvedHeaderName = DocUtil.handleConstants(constantsMap, resolvedHeaderName);
+                if (StringUtil.isNotEmpty(resolvedHeaderName)) {
+                    resolvedHeaderName = resolveHeaderConstantExpression(method, classLoader, resolvedHeaderName);
                 }
+                apiReqHeader.setName(StringUtil.removeQuotes(resolvedHeaderName));
             }
 
             // Obtain header default value
@@ -267,6 +273,210 @@ public interface IHeaderHandler {
                         !Boolean.FALSE.toString().equals(requestHeaderMap.get(headerAnnotation.getRequiredProp())));
             }
         }
+    }
+
+    /**
+     * Resolve constant-like header expressions (e.g. HEADER_X / AppConst.Header.DEVICE_CODE).
+     */
+    static String resolveHeaderConstantExpression(Object method, ClassLoader classLoader, String expression) {
+        String expr = StringUtil.removeQuotes(StringUtil.trimBlank(expression));
+        if (StringUtil.isEmpty(expr)) {
+            return expression;
+        }
+        // Already a literal header name like x-device-code.
+        if (expr.contains("-") || expr.contains(" ")) {
+            return expr;
+        }
+        String resolved = resolveExpressionAgainstClassLoader(classLoader, expr);
+        if (StringUtil.isNotEmpty(resolved)) {
+            return resolved;
+        }
+        String qualifiedExpr = qualifyExpressionWithImports(method, expr);
+        if (StringUtil.isNotEmpty(qualifiedExpr) && !qualifiedExpr.equals(expr)) {
+            resolved = resolveExpressionAgainstClassLoader(classLoader, qualifiedExpr);
+            if (StringUtil.isNotEmpty(resolved)) {
+                return resolved;
+            }
+        }
+        String declaringClassName = DocUtil.getMethodDeclaringClassCanonicalName(method);
+        if (StringUtil.isNotEmpty(declaringClassName)) {
+            resolved = resolveSimpleConstantFromClass(classLoader, declaringClassName, expr);
+            if (StringUtil.isNotEmpty(resolved)) {
+                return resolved;
+            }
+        }
+        return expr;
+    }
+
+    static String qualifyExpressionWithImports(Object method, String expression) {
+        int dot = expression.indexOf('.');
+        if (dot <= 0) {
+            return expression;
+        }
+        String firstToken = expression.substring(0, dot);
+        // Already qualified package name.
+        if (Character.isLowerCase(firstToken.charAt(0))) {
+            return expression;
+        }
+        Object declaringClass = DocUtil.getMethodDeclaringClass(method);
+        if (Objects.isNull(declaringClass)) {
+            return expression;
+        }
+        Object source = invokeAccessor(declaringClass, "getSource");
+        Object importsObj = invokeAccessor(source, "getImports");
+        if (!(importsObj instanceof List)) {
+            return expression;
+        }
+        @SuppressWarnings("unchecked")
+        List<Object> imports = (List<Object>) importsObj;
+        for (Object imp : imports) {
+            String importText = String.valueOf(imp).trim();
+            importText = importText.replace("import", "").replace("static", "").replace(";", "").trim();
+            if (StringUtil.isEmpty(importText) || importText.endsWith(".*")) {
+                continue;
+            }
+            if (importText.endsWith("." + firstToken)) {
+                return importText + expression.substring(dot);
+            }
+        }
+        return expression;
+    }
+
+    static Object invokeAccessor(Object target, String methodName) {
+        if (Objects.isNull(target)) {
+            return null;
+        }
+        try {
+            return target.getClass().getMethod(methodName).invoke(target);
+        } catch (ReflectiveOperationException ignored) {
+            return null;
+        }
+    }
+
+    /**
+     * Resolve expression by trying to load a class from left side and reading static fields on the right side.
+     */
+    static String resolveExpressionAgainstClassLoader(ClassLoader classLoader, String expression) {
+        String[] parts = expression.split("\\.");
+        if (parts.length < 2) {
+            return StringUtil.EMPTY;
+        }
+        for (int split = parts.length - 1; split >= 1; split--) {
+            String className = String.join(".", java.util.Arrays.copyOfRange(parts, 0, split));
+            String[] fieldPath = java.util.Arrays.copyOfRange(parts, split, parts.length);
+            Class<?> clazz = loadClassWithInnerFallback(classLoader, className);
+            if (Objects.nonNull(clazz)) {
+                String resolved = resolveStaticFieldPath(clazz, fieldPath);
+                if (StringUtil.isNotEmpty(resolved)) {
+                    return resolved;
+                }
+            }
+        }
+        return StringUtil.EMPTY;
+    }
+
+    static Class<?> loadClassWithInnerFallback(ClassLoader classLoader, String dottedName) {
+        try {
+            return classLoader.loadClass(dottedName);
+        } catch (ClassNotFoundException ignored) {
+            // continue with nested-class fallback
+        }
+        String[] segments = dottedName.split("\\.");
+        if (segments.length < 2) {
+            return null;
+        }
+        for (int pivot = segments.length - 1; pivot >= 1; pivot--) {
+            StringBuilder binaryName = new StringBuilder();
+            for (int i = 0; i < segments.length; i++) {
+                if (i > 0) {
+                    binaryName.append(i < pivot ? '.' : '$');
+                }
+                binaryName.append(segments[i]);
+            }
+            try {
+                return classLoader.loadClass(binaryName.toString());
+            } catch (ClassNotFoundException ignored) {
+                // Try next pivot.
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Resolve simple constant name from declaring class and its inner classes.
+     */
+    static String resolveSimpleConstantFromClass(ClassLoader classLoader, String declaringClassName, String fieldName) {
+        try {
+            Class<?> clazz = classLoader.loadClass(declaringClassName);
+            String value = readStaticFieldValue(clazz, fieldName);
+            if (StringUtil.isNotEmpty(value)) {
+                return value;
+            }
+            for (Class<?> nested : clazz.getDeclaredClasses()) {
+                value = readStaticFieldValue(nested, fieldName);
+                if (StringUtil.isNotEmpty(value)) {
+                    return value;
+                }
+            }
+        } catch (ClassNotFoundException ignored) {
+            // Best-effort fallback.
+        }
+        return StringUtil.EMPTY;
+    }
+
+    /**
+     * Resolve a field path where every segment is a static field in order.
+     */
+    static String resolveStaticFieldPath(Class<?> startClass, String[] fieldPath) {
+        Class<?> currentClass = startClass;
+        Object currentObject = null;
+        for (int i = 0; i < fieldPath.length; i++) {
+            Field field = findField(currentClass, fieldPath[i]);
+            if (Objects.isNull(field) || !Modifier.isStatic(field.getModifiers())) {
+                return StringUtil.EMPTY;
+            }
+            try {
+                field.setAccessible(true);
+                Object value = field.get(currentObject);
+                if (i == fieldPath.length - 1) {
+                    return Objects.nonNull(value) ? String.valueOf(value) : StringUtil.EMPTY;
+                }
+                if (Objects.isNull(value)) {
+                    return StringUtil.EMPTY;
+                }
+                currentObject = value;
+                currentClass = value.getClass();
+            } catch (IllegalAccessException ignored) {
+                return StringUtil.EMPTY;
+            }
+        }
+        return StringUtil.EMPTY;
+    }
+
+    static String readStaticFieldValue(Class<?> clazz, String fieldName) {
+        Field field = findField(clazz, fieldName);
+        if (Objects.isNull(field) || !Modifier.isStatic(field.getModifiers())) {
+            return StringUtil.EMPTY;
+        }
+        try {
+            field.setAccessible(true);
+            Object value = field.get(null);
+            return Objects.nonNull(value) ? String.valueOf(value) : StringUtil.EMPTY;
+        } catch (IllegalAccessException ignored) {
+            return StringUtil.EMPTY;
+        }
+    }
+
+    static Field findField(Class<?> clazz, String fieldName) {
+        Class<?> current = clazz;
+        while (Objects.nonNull(current)) {
+            try {
+                return current.getDeclaredField(fieldName);
+            } catch (NoSuchFieldException ignored) {
+                current = current.getSuperclass();
+            }
+        }
+        return null;
     }
 
     /**

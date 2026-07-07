@@ -34,7 +34,6 @@ import com.github.hsindumas.stagger.utils.DocClassUtil;
 import com.github.hsindumas.stagger.utils.DocUtil;
 import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
-import com.github.hsindumas.stagger.utils.JavaFieldUtil;
 import com.github.hsindumas.stagger.utils.ParamUtil;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -75,7 +74,6 @@ public class FormDataBuildHelper extends BaseHelper {
 
         ApiConfig apiConfig = builder.getApiConfig();
 
-        ClassLoader classLoader = builder.getApiConfig().getClassLoader();
         List<FormData> formDataList = new ArrayList<>();
         if (counter > apiConfig.getRecursionLimit()) {
             return formDataList;
@@ -153,8 +151,7 @@ public class FormDataBuildHelper extends BaseHelper {
             if (JavaClassValidateUtil.isMap(subTypeName)) {
                 continue;
             }
-            String comment = docField.getComment()
-                    + JavaFieldUtil.getJsrComment(apiConfig.isShowValidation(), classLoader, javaAnnotations);
+                String comment = docField.getComment();
             if (JavaClassValidateUtil.isFile(fieldGicName)) {
                 FormData formData = new FormData();
                 formData.setKey(pre + fieldName);

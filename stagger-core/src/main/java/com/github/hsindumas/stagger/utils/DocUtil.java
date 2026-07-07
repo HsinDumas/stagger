@@ -2207,12 +2207,11 @@ public class DocUtil {
     }
 
     public static String paramCommentResolve(String comment) {
-        if (StringUtil.isEmpty(comment)) {
-            comment = DocGlobalConstants.NO_COMMENTS_FOUND;
-        } else {
-            if (comment.contains("|")) {
-                comment = comment.substring(0, comment.indexOf("|"));
-            }
+        if (StringUtil.isEmpty(comment) || DocGlobalConstants.NO_COMMENTS_FOUND.equals(comment)) {
+            return StringUtil.EMPTY;
+        }
+        if (comment.contains("|")) {
+            comment = comment.substring(0, comment.indexOf("|"));
         }
         return comment;
     }

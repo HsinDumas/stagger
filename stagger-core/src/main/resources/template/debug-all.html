@@ -144,8 +144,10 @@
         <%if(isNotEmpty(doc.author)){%>
         <div class="paragraph"><p><strong>Author:</strong>&nbsp;${doc.author}</p></div>
         <%}%>
+        <%if(isNotEmpty(doc.contentType)){%>
         <div class="paragraph" id="${doc.methodId}-content-type" data-content-type="${doc.contentType}"><p><strong>Content-Type:</strong>&nbsp;${doc.contentType}
         </p></div>
+        <%}%>
         <div class="paragraph"><p><strong>Description:</strong>&nbsp;${htmlEscape(doc.detail)}</p></div>
         <%if(isNotEmpty(doc.requestHeaders)&&displayRequestParams){%>
         <div class="paragraph"><p><strong>Request-headers:</strong></p></div>
@@ -181,7 +183,7 @@
             </td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${header.name}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock"><input name="${header.name}" type="text"
-                                                                                       value="${header.value}"/></td>
+                                                                                       value="${header.value!''}"/></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${header.type}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${header.required}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${htmlEscape(header.desc)}</p></td>

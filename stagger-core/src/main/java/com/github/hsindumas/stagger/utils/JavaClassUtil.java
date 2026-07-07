@@ -26,7 +26,6 @@ import com.github.hsindumas.stagger.common.util.EnumUtil;
 import com.github.hsindumas.stagger.common.util.StringUtil;
 import com.github.hsindumas.stagger.constants.DefaultClassConstants;
 import com.github.hsindumas.stagger.constants.DocAnnotationConstants;
-import com.github.hsindumas.stagger.constants.DocGlobalConstants;
 import com.github.hsindumas.stagger.constants.DocTags;
 import com.github.hsindumas.stagger.constants.DocValidatorAnnotationEnum;
 import com.github.hsindumas.stagger.constants.JSRAnnotationConstants;
@@ -166,7 +165,7 @@ public class JavaClassUtil {
                 }
                 String comment = DocUtil.getMethodComment(javaMethod);
                 if (StringUtil.isEmpty(comment)) {
-                    comment = DocGlobalConstants.NO_COMMENTS_FOUND;
+                    comment = StringUtil.EMPTY;
                 }
                 Object javaField =
                         createSyntheticJavaField(DocUtil.getMethodReturnTypeCanonicalName(javaMethod), methodName);
@@ -221,7 +220,7 @@ public class JavaClassUtil {
                     comment = addedFields.get(methodName).getComment();
                 }
                 if (StringUtil.isEmpty(comment)) {
-                    comment = DocGlobalConstants.NO_COMMENTS_FOUND;
+                    comment = StringUtil.EMPTY;
                 }
                 DocJavaField docJavaField = addedFields.get(methodName);
                 docJavaField.setAnnotations(DocUtil.getMethodAnnotations(method));
@@ -285,7 +284,7 @@ public class JavaClassUtil {
                     comment = recordComments.get(fieldName);
                 }
                 if (Objects.isNull(comment)) {
-                    comment = DocGlobalConstants.NO_COMMENTS_FOUND;
+                    comment = StringUtil.EMPTY;
                 }
                 // Getting the Original Defined Type of Field
                 if (!docJavaField.isFile()

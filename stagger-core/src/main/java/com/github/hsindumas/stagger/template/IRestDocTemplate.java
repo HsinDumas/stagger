@@ -1080,7 +1080,6 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
             FrameworkAnnotations frameworkAnnotations) {
         Object javaMethod = docJavaMethod.getJavaMethod();
         boolean isStrict = builder.getApiConfig().isStrict();
-        boolean isShowValidation = builder.getApiConfig().isShowValidation();
         ClassLoader classLoader = builder.getApiConfig().getClassLoader();
         String className = DocUtil.getMethodDeclaringClassCanonicalName(javaMethod);
         Map<String, String> paramTagMap = docJavaMethod.getParamTagMap();
@@ -1309,7 +1308,6 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
             }
             boolean isQueryParam = ApiParamEnum.QUERY.equals(apiParamEnum);
             boolean isPathVariable = ApiParamEnum.PATH.equals(apiParamEnum);
-            comment.append(JavaFieldUtil.getJsrComment(isShowValidation, classLoader, paramAnnotations));
             if (requestFieldToUnderline && !isPathVariable) {
                 paramName = StringUtil.camelToUnderline(paramName);
             }
@@ -1712,7 +1710,8 @@ public interface IRestDocTemplate extends IBaseDocBuildTemplate {
                         .getAnnotationName()
                         .equals(annotationName)) {
                     // priority use mapping annotation's consumer value
-                    if (apiMethodDoc.getContentType().equals(MediaType.APPLICATION_FORM_URLENCODED_VALUE)) {
+                    if (StringUtil.isEmpty(apiMethodDoc.getContentType())
+                            || apiMethodDoc.getContentType().equals(MediaType.APPLICATION_FORM_URLENCODED_VALUE)) {
                         apiMethodDoc.setContentType(MediaType.APPLICATION_JSON);
                     }
                     boolean isArrayOrCollection = false;

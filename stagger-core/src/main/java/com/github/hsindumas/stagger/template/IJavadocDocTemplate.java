@@ -220,7 +220,6 @@ public interface IJavadocDocTemplate<T extends JavadocJavaMethod> extends IBaseD
             Map<String, ?> actualTypesMap) {
         boolean isStrict = builder.getApiConfig().isStrict();
         boolean isShowJavaType = builder.getApiConfig().getShowJavaType();
-        boolean isShowValidation = builder.getApiConfig().isShowValidation();
         String className = DocUtil.getMethodDeclaringClassCanonicalName(javaMethod);
         Map<String, String> paramTagMap = DocUtil.getCommentsByTag(javaMethod, DocTags.PARAM, className);
         List<?> parameterList = DocUtil.getMethodParameters(javaMethod);
@@ -253,7 +252,6 @@ public interface IJavadocDocTemplate<T extends JavadocJavaMethod> extends IBaseD
                     required = true;
                 }
             }
-            comment.append(JavaFieldUtil.getJsrComment(isShowValidation, classLoader, annotations));
             Set<String> groupClasses = JavaClassUtil.getParamGroupJavaClass(annotations, builder);
             Set<String> paramJsonViewClasses = JavaClassUtil.getParamJsonViewClasses(annotations, builder);
             if (JavaClassValidateUtil.isCollection(fullTypeName) || JavaClassValidateUtil.isArray(fullTypeName)) {
@@ -299,6 +297,7 @@ public interface IJavadocDocTemplate<T extends JavadocJavaMethod> extends IBaseD
                         .setDesc(comment.toString())
                         .setRequired(required)
                         .setMaxLength(JavaFieldUtil.getParamMaxLength(classLoader, annotations))
+                        .setMinLength(JavaFieldUtil.getParamMinLength(classLoader, annotations))
                         .setValue(mockValue)
                         .setVersion(DocGlobalConstants.DEFAULT_VERSION);
                 paramList.add(param);

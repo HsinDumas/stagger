@@ -154,6 +154,13 @@ public class JavaFieldUtil {
             if (JSRAnnotationConstants.LENGTH.equalsIgnoreCase(simpleAnnotationName)) {
                 annotationValue = DocUtil.getAnnotationProperty(annotation, JSRAnnotationPropConstants.MAX_PROP);
             }
+            if (JSRAnnotationConstants.RANGE.equalsIgnoreCase(simpleAnnotationName)) {
+                annotationValue = DocUtil.getAnnotationProperty(annotation, JSRAnnotationPropConstants.MAX_PROP);
+            }
+            if (JSRAnnotationConstants.MAX.equalsIgnoreCase(simpleAnnotationName)
+                    || JSRAnnotationConstants.DECIMAL_MAX.equalsIgnoreCase(simpleAnnotationName)) {
+                annotationValue = DocUtil.getAnnotationProperty(annotation, JSRAnnotationPropConstants.VALUE);
+            }
             if (Objects.nonNull(annotationValue)) {
                 maxLength = DocUtil.resolveAnnotationValue(classLoader, annotationValue);
             }
@@ -169,6 +176,47 @@ public class JavaFieldUtil {
     public static String getParamMaxLength(List<?> annotations) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         return getParamMaxLength(classLoader, annotations);
+    }
+
+    /**
+     * get param min length
+     * @param classLoader classLoader
+     * @param annotations annotation
+     * @return min length
+     */
+    public static String getParamMinLength(ClassLoader classLoader, List<?> annotations) {
+        String minLength = "";
+        for (Object annotation : annotations) {
+            String simpleAnnotationName = DocUtil.getAnnotationTypeValue(annotation);
+            Object annotationValue = null;
+            if (JSRAnnotationConstants.SIZE.equalsIgnoreCase(simpleAnnotationName)) {
+                annotationValue = DocUtil.getAnnotationProperty(annotation, JSRAnnotationPropConstants.MIN_PROP);
+            }
+            if (JSRAnnotationConstants.LENGTH.equalsIgnoreCase(simpleAnnotationName)) {
+                annotationValue = DocUtil.getAnnotationProperty(annotation, JSRAnnotationPropConstants.MIN_PROP);
+            }
+            if (JSRAnnotationConstants.RANGE.equalsIgnoreCase(simpleAnnotationName)) {
+                annotationValue = DocUtil.getAnnotationProperty(annotation, JSRAnnotationPropConstants.MIN_PROP);
+            }
+            if (JSRAnnotationConstants.MIN.equalsIgnoreCase(simpleAnnotationName)
+                    || JSRAnnotationConstants.DECIMAL_MIN.equalsIgnoreCase(simpleAnnotationName)) {
+                annotationValue = DocUtil.getAnnotationProperty(annotation, JSRAnnotationPropConstants.VALUE);
+            }
+            if (Objects.nonNull(annotationValue)) {
+                minLength = DocUtil.resolveAnnotationValue(classLoader, annotationValue);
+            }
+        }
+        return minLength;
+    }
+
+    /**
+     * get param min length
+     * @param annotations annotation
+     * @return min length
+     */
+    public static String getParamMinLength(List<?> annotations) {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        return getParamMinLength(classLoader, annotations);
     }
 
     /**

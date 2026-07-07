@@ -13,8 +13,10 @@ Stagger is a **zero-intrusion, zero-annotation** API documentation generator. It
 sources and JavaDoc via static analysis (JavaParser) and produces OpenAPI 3.1, Markdown, and
 offline HTML at build time — so docs metadata never leaks into your domain code.
 
-Maintained independently from the smart-doc lineage, with focus on a modern toolchain (JDK 25,
+Maintained independently from the smart-doc lineage, with focus on a modern toolchain (JDK 21,
 Gradle 9.x, Spring Boot 4).
+
+Current release artifacts run on JDK 17 and above.
 
 ## 👀 What You Get
 
@@ -54,7 +56,7 @@ public class CreateOrderRequest {
 
 ## 🚀 Try It
 
-Clone and generate the sample docs (requires JDK 25):
+Clone and generate the sample docs (requires JDK 21):
 
 ```bash
 git clone https://github.com/HsinDumas/stagger.git
@@ -126,6 +128,14 @@ Stagger continues the non-intrusive documentation philosophy pioneered by
 [smart-doc](https://github.com/smart-doc-group/smart-doc) — thanks to
 [shalousun](https://github.com/shalousun) and all contributors. Engineering differences and the
 migration path are recorded in [`docs/CODEX_MIGRATION_PLAN.md`](./docs/CODEX_MIGRATION_PLAN.md).
+
+### Key Differences From smart-doc
+
+- Independent evolution path with Stagger-owned roadmap and implementation choices.
+- Modernized build baseline for contributors (JDK 21, Gradle 9.x), while published artifacts keep
+    runtime compatibility for JDK 17+ users.
+- Refined offline HTML UX focused on API browsing efficiency: single-endpoint focus, response tree
+    expand/collapse, and faster copy-oriented interactions.
 
 ## 🤝 Contributing
 

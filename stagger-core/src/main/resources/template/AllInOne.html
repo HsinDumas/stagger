@@ -24,6 +24,15 @@
 <div id="header"><%if(isNotEmpty(projectName)){%><h1>${projectName}</h1><%}%>
   <div class="toc2" id="toc">
     <div id="book-search-input"><input id="search" placeholder="Type to search" type="text"></div>
+    <div id="stg-view-controls">
+      <button id="stg-theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+        <span class="stg-theme-track">
+          <span class="stg-theme-option stg-theme-option-light">Light</span>
+          <span class="stg-theme-option stg-theme-option-dark">Dark</span>
+          <span class="stg-theme-thumb"></span>
+        </span>
+      </button>
+    </div>
     <div id="toctitle"><span>API Reference</span></div>
     <ul class="sectlevel1" id="accordion"><%for(apiGroup in
       apiDocList){%><%if(!apiDocListOnlyHasDefaultGroup){%><%if(apiGroupLP.first){%>
@@ -86,41 +95,7 @@
     </ul>
   </div>
 </div>
-<div id="content"><%if(isNotEmpty(revisionLogList)){%>
-  <div id="preamble">
-    <div class="sectionbody">
-      <table class="tableblock frame-all grid-all spread">
-        <colgroup>
-          <col style="width: 20%;">
-          <col style="width: 20%;">
-          <col style="width: 20%;">
-          <col style="width: 20%;">
-          <col style="width: 20%;">
-        </colgroup>
-        <thead>
-        <tr>
-          <th class="tableblock halign-left valign-top">Version</th>
-          <th class="tableblock halign-left valign-top">Update Time</th>
-          <th class="tableblock halign-left valign-top">Status</th>
-          <th class="tableblock halign-left valign-top">Author</th>
-          <th class="tableblock halign-left valign-top">Description</th>
-        </tr>
-        </thead>
-        <tbody><%for(revisionLog in revisionLogList){%>
-        <tr>
-          <td class="tableblock halign-left valign-top"><p class="tableblock">${revisionLog.version}</p></td>
-          <td class="tableblock halign-left valign-top"><p class="tableblock">${revisionLog.revisionTime}</p></td>
-          <td class="tableblock halign-left valign-top"><p class="tableblock">${revisionLog.status}</p></td>
-          <td class="tableblock halign-left valign-top"><p class="tableblock">${revisionLog.author}</p></td>
-          <td class="tableblock halign-left valign-top"><p class="tableblock">${htmlEscape(revisionLog.remarks)}</p>
-          </td>
-        </tr>
-        <%}%>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <%}%><%for(apiGroup in apiDocList){%><%if(!apiDocListOnlyHasDefaultGroup){%><h1
+<div id="content"><%for(apiGroup in apiDocList){%><%if(!apiDocListOnlyHasDefaultGroup){%><h1
       id="_${apiGroup.order}_${apiGroup.name}"><a class="anchor" href="#_${apiGroup.order}_${apiGroup.name}"></a><a
         class="link" href="#_${apiGroup.order}_${apiGroup.name}">${htmlEscape(apiGroup.name)}</a></h1>
   <%}%><%for(api in apiGroup.childrenApiDocs){%>
@@ -142,8 +117,10 @@
         <%if(isNotEmpty(doc.author)){%>
         <div class="paragraph"><p><strong>Author:&nbsp;</strong>${doc.author}</p></div>
         <%}%>
+        <%if(isNotEmpty(doc.contentType)){%>
         <div class="paragraph" data-content-type="${doc.contentType}" id="${doc.methodId}-content-type"><p><strong>Content-Type:&nbsp;</strong>${doc.contentType}
         </p></div>
+        <%}%>
         <div class="paragraph"><p><strong>Description:&nbsp;</strong>${htmlEscape(doc.detail)}</p></div>
         <%if(isNotEmpty(doc.requestHeaders)&&displayRequestParams){%>
         <div class="paragraph"><p><strong>Request-headers:</strong></p></div>
@@ -172,7 +149,7 @@
             <td class="tableblock halign-left valign-top"><p class="tableblock">${htmlEscape(header.desc)}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${header.required}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${header.since}</p></td>
-            <td class="tableblock halign-left valign-top"><p class="tableblock">${header.value}</p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">${header.value!''}</p></td>
           </tr>
           <%}%>
           </tbody>
@@ -201,7 +178,7 @@
           <tr>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.field}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.type}</p></td>
-            <td class="tableblock halign-left valign-top"><p class="tableblock">${param.desc}</p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">${param.desc}</p><%if(isNotEmpty(param.minLength)||isNotEmpty(param.maxLength)){%><p class="tableblock stg-constraint-line"><%if(isNotEmpty(param.minLength)){%><span class="stg-constraint-badge">min: ${param.minLength}</span><%}%><%if(isNotEmpty(param.maxLength)){%><span class="stg-constraint-badge">max: ${param.maxLength}</span><%}%></p><%}%></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.required}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.version}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.value!''}</p></td>
@@ -233,7 +210,7 @@
           <tr>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.field}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.type}</p></td>
-            <td class="tableblock halign-left valign-top"><p class="tableblock">${param.desc}</p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">${param.desc}</p><%if(isNotEmpty(param.minLength)||isNotEmpty(param.maxLength)){%><p class="tableblock stg-constraint-line"><%if(isNotEmpty(param.minLength)){%><span class="stg-constraint-badge">min: ${param.minLength}</span><%}%><%if(isNotEmpty(param.maxLength)){%><span class="stg-constraint-badge">max: ${param.maxLength}</span><%}%></p><%}%></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.required}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.version}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.value!''}</p></td>
@@ -265,7 +242,7 @@
           <tr>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.field}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.type}</p></td>
-            <td class="tableblock halign-left valign-top"><p class="tableblock">${param.desc}</p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">${param.desc}</p><%if(isNotEmpty(param.minLength)||isNotEmpty(param.maxLength)){%><p class="tableblock stg-constraint-line"><%if(isNotEmpty(param.minLength)){%><span class="stg-constraint-badge">min: ${param.minLength}</span><%}%><%if(isNotEmpty(param.maxLength)){%><span class="stg-constraint-badge">max: ${param.maxLength}</span><%}%></p><%}%></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.required}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.version}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.value!''}</p></td>
@@ -280,7 +257,21 @@
             <pre><code class="bash">${doc.requestUsage}</code></pre>
           </div>
         </div>
-        <%}%><%if(isNotEmpty(doc.responseParams)&&displayResponseParams){%>
+        <%}%>
+        <%if((isNotEmpty(doc.responseParams)&&displayResponseParams)||(isNotEmpty(doc.responseUsage)&&isResponseExample)){%>
+        <div class="stg-response-panel" id="${doc.methodId}-response-panel">
+          <div class="stg-response-toolbar">
+            <%if(isNotEmpty(doc.responseParams)&&displayResponseParams&&isNotEmpty(doc.responseUsage)&&isResponseExample){%>
+            <button class="stg-tab-btn active" data-target="${doc.methodId}-schema" type="button">Schema</button>
+            <button class="stg-tab-btn" data-target="${doc.methodId}-example" type="button">Example</button>
+            <%}%>
+            <%if(isNotEmpty(doc.responseParams)&&displayResponseParams){%>
+            <button class="stg-action-btn stg-expand-all" data-method-id="${doc.methodId}" type="button">Expand all</button>
+            <button class="stg-action-btn stg-collapse-all" data-method-id="${doc.methodId}" type="button">Collapse all</button>
+            <%}%>
+          </div>
+          <%if(isNotEmpty(doc.responseParams)&&displayResponseParams){%>
+          <div class="stg-tab-content active" id="${doc.methodId}-schema">
         <div class="paragraph"><p><strong>Response-fields:</strong></p></div>
         <table class="tableblock frame-all grid-all spread">
           <colgroup>
@@ -299,8 +290,8 @@
           </tr>
           </thead>
           <tbody><%for(param in doc.responseParams){%>
-          <tr>
-            <td class="tableblock halign-left valign-top"><p class="tableblock">${param.field}</p></td>
+          <tr class="stg-response-row" data-method-id="${doc.methodId}" data-row-id="${param.id}" data-parent-id="${param.pid}">
+            <td class="tableblock halign-left valign-top"><p class="tableblock stg-field-cell"><button class="stg-node-toggle" type="button" aria-label="toggle" aria-expanded="true"> </button><span class="stg-node-label">${param.field}</span><span class="stg-node-meta"></span></p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.type}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.desc}</p></td>
             <td class="tableblock halign-left valign-top"><p class="tableblock">${param.version}</p></td>
@@ -309,12 +300,17 @@
           <%}%>
           </tbody>
         </table>
-        <%}%><%if(isNotEmpty(doc.responseUsage)&&isResponseExample){%>
+          </div>
+          <%}%><%if(isNotEmpty(doc.responseUsage)&&isResponseExample){%>
+          <div class="stg-tab-content<%if(!(isNotEmpty(doc.responseParams)&&displayResponseParams)){%> active<%}%>" id="${doc.methodId}-example">
         <div class="paragraph"><p><strong>Response-example:</strong></p></div>
         <div class="listingblock">
           <div class="content">
             <pre><code class="json">${doc.responseUsage}</code></pre>
           </div>
+        </div>
+          </div>
+          <%}%>
         </div>
         <%}%>
       </div>
@@ -387,10 +383,8 @@
     </div>
   </div>
   <%}%>
-  <footer class="page-footer"><span class="copyright">Generated by stagger at ${createTime}</span><span
-      class="footer-modification">Suggestions,contact,support and error reporting on<a
-      href="https://gitee.com/stagger-team/stagger" target="_blank">&nbsp;Gitee&nbsp;</a>or<a
-      href="https://github.com/HsinDumas/stagger.git" target="_blank">&nbsp;Github</a></span></footer>
+    <footer class="page-footer"><span class="footer-modification">Suggestions, contact, support and error reporting on <a
+      href="https://github.com/HsinDumas/stagger.git" target="_blank">Github</a></span></footer>
   <div href="javascript:void(0)" id="toTop"><img id="upArrow"
                                                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABlUlEQVRIS+2UvUvDQBiH398Rly4udnARwUXs4qAIOigI4iL30dTZ2T9AcNPVvUsXF7uYttdScNDFRRAnB11cFFwKxcXBJTQnJ6lEbRI/CIiY9e6e5/e+9+ZAGX/ImE9/QKCU2jfGbGTQqq4xZgtSyisiKmQgIAAVCCFWAGxnIOhqrdd/xyUrpRZsP40xSwA6AI57vd5eq9W6T6s8tQIppSKi+gDQNREprfVNkiRRwDlfY4xZ+FAIuSOi8Qjw0nEc5XnebZwkViClXA2T5+xhY8xus9ncEUJMAziITN5FEARuXLsGCoQQywBs8uEovJ+Scz7FGDuMSM4cx3E9z+u8r+SDQEq5SEQ1IhoZBE+QnBKRq7V+iEreCDjn84wxCx9NgidITnK5nFutVh/7e14FSqnZIAhqAMY+A4+TADjyfb/Ubref7J4XQXhxNvnEV+AJlbTy+XypUqn4KBaLBZuciCa/A0+opN5oNFz7FpUBbP4EHicxxsyAcz7HGDvvz3nar5+2Ho5wOQwsU5+KNGDa+r8grUP0DBLjtRtNKEliAAAAAElFTkSuQmCC"><span
       id="upText">Top</span></div>
@@ -413,10 +407,323 @@
     }
   };
   new Accordion($("#accordion"), false);
+  const themeStorageKey = "stg-theme-mode";
+
+  function getSystemTheme() {
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+
+  function applyTheme() {
+    const mode = localStorage.getItem(themeStorageKey) || "system";
+    const resolved = mode === "system" ? getSystemTheme() : mode;
+    $("body").removeClass("stg-theme-light stg-theme-dark").addClass("stg-theme-" + resolved);
+    $("#stg-theme-toggle")
+      .attr("data-theme", resolved)
+      .attr("title", resolved === "dark" ? "Switch to light theme" : "Switch to dark theme")
+      .attr("aria-label", resolved === "dark" ? "Switch to light theme" : "Switch to dark theme");
+  }
+
+  function isMethodSection(id) {
+    if (!id) {
+      return false;
+    }
+    const el = document.getElementById(String(id));
+    return !!(el && $(el).hasClass("sect2"));
+  }
+
+  function refreshSectionVisibility() {
+    $(".sect1").each(function () {
+      const hasActiveMethod = $(this).find(".sect2[data-active='true']").length > 0;
+      $(this).toggle(hasActiveMethod);
+    });
+  }
+
+  function activateMethodPanel(methodId, syncHash) {
+    if (!isMethodSection(methodId)) {
+      return;
+    }
+    $(".sect2").hide().attr("data-active", "false");
+    const methodEl = document.getElementById(String(methodId));
+    if (!methodEl) {
+      return;
+    }
+    $(methodEl).show().attr("data-active", "true");
+    refreshSectionVisibility();
+
+    $("#toc a").removeClass("stg-active");
+    const safeMethodId = String(methodId).replace(/"/g, '\\"');
+    $("#toc a[href='#" + safeMethodId + "']").addClass("stg-active");
+
+    if (syncHash) {
+      history.replaceState(null, "", "#" + methodId);
+    }
+  }
+
+  function initSingleMethodView() {
+    const hashId = window.location.hash ? window.location.hash.substring(1) : "";
+    const firstMethodId = $(".sect2").first().attr("id");
+    const initialMethodId = isMethodSection(hashId) ? hashId : firstMethodId;
+    if (initialMethodId) {
+      activateMethodPanel(initialMethodId, !isMethodSection(hashId));
+    }
+
+    $("#toc a[href^='#']").on("click", function (e) {
+      const href = $(this).attr("href") || "";
+      const methodId = href.startsWith("#") ? href.substring(1) : "";
+      if (!isMethodSection(methodId)) {
+        return;
+      }
+      e.preventDefault();
+      activateMethodPanel(methodId, true);
+    });
+
+    $(window).on("hashchange", function () {
+      const methodId = window.location.hash ? window.location.hash.substring(1) : "";
+      if (isMethodSection(methodId)) {
+        activateMethodPanel(methodId, false);
+      }
+    });
+  }
+
+  $("#stg-theme-toggle").on("click", function () {
+    const currentMode = localStorage.getItem(themeStorageKey) || "system";
+    const currentResolved = currentMode === "system" ? getSystemTheme() : currentMode;
+    const next = currentResolved === "dark" ? "light" : "dark";
+    localStorage.setItem(themeStorageKey, next);
+    applyTheme();
+  });
+
+  if (window.matchMedia) {
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
+      if ((localStorage.getItem(themeStorageKey) || "system") === "system") {
+        applyTheme();
+      }
+    });
+  }
+
+  applyTheme();
+  initSingleMethodView();
   hljs.addPlugin(new CopyButtonPlugin({
 	autohide: false
   }));
   hljs.highlightAll();
+
+  function getResponseRows(methodId) {
+    return $(".stg-response-row[data-method-id='" + methodId + "']");
+  }
+
+  function getRowMap(methodId) {
+    const rowMap = {};
+    getResponseRows(methodId).each(function () {
+      const $row = $(this);
+      const rowId = String($row.data("row-id") || "");
+      if (rowId) {
+        rowMap[rowId] = $row;
+      }
+    });
+    return rowMap;
+  }
+
+  function normalizeTreeLabel(raw) {
+    return String(raw || "")
+      .replace(/^[\s\u00a0]*(?:[└├│─]+\s*)+/, "")
+      .trim();
+  }
+
+  function initResponseTree(methodId) {
+    const rowMap = getRowMap(methodId);
+    const childrenMap = {};
+    Object.keys(rowMap).forEach(function (id) {
+      childrenMap[id] = [];
+    });
+
+    Object.keys(rowMap).forEach(function (id) {
+      const parentId = String(rowMap[id].data("parent-id") || "0");
+      if (childrenMap[parentId]) {
+        childrenMap[parentId].push(id);
+      }
+    });
+
+    function computeDepth(id) {
+      let depth = 0;
+      let current = rowMap[id];
+      const guard = {};
+      while (current) {
+        const parentId = String(current.data("parent-id") || "0");
+        if (!parentId || parentId === "0" || !rowMap[parentId] || guard[parentId]) {
+          break;
+        }
+        guard[parentId] = true;
+        depth += 1;
+        current = rowMap[parentId];
+      }
+      return depth;
+    }
+
+    Object.keys(rowMap).forEach(function (id) {
+      const $row = rowMap[id];
+      const depth = computeDepth(id);
+      const childCount = (childrenMap[id] || []).length;
+      const expanded = depth < 1;
+      const $label = $row.find(".stg-node-label");
+      $label.text(normalizeTreeLabel($label.text()));
+      $row.attr("data-depth", String(depth));
+      $row.attr("data-expanded", expanded ? "true" : "false");
+      $row.find(".stg-field-cell").css("padding-left", String(depth * 16) + "px");
+
+      const $toggle = $row.find(".stg-node-toggle");
+      if (childCount > 0) {
+        $toggle.addClass("has-children");
+        $toggle.text(expanded ? "▾" : "▸");
+        $toggle.attr("aria-expanded", expanded ? "true" : "false");
+        $row.find(".stg-node-meta").text("(" + String(childCount) + ")");
+      } else {
+        $toggle.removeClass("has-children");
+        $toggle.text(" ");
+        $toggle.attr("aria-expanded", "true");
+        $row.find(".stg-node-meta").text("");
+      }
+    });
+  }
+
+  function renderResponseTree(methodId) {
+    const rowMap = getRowMap(methodId);
+    const visibleMap = {};
+
+    getResponseRows(methodId).each(function () {
+      const $row = $(this);
+      const rowId = String($row.data("row-id") || "");
+      const parentId = String($row.data("parent-id") || "0");
+      const parentVisible = !parentId || parentId === "0" || !rowMap[parentId] ? true : !!visibleMap[parentId];
+      const parentExpanded = !parentId || parentId === "0" || !rowMap[parentId]
+        ? true
+        : rowMap[parentId].attr("data-expanded") === "true";
+      const visible = parentVisible && parentExpanded;
+      visibleMap[rowId] = visible;
+      $row.toggle(visible);
+    });
+  }
+
+  function setExpandedState(methodId, expanded) {
+    getResponseRows(methodId).each(function () {
+      const $row = $(this);
+      const hasChildren = $row.find(".stg-node-toggle").hasClass("has-children");
+      if (!hasChildren) {
+        return;
+      }
+      const depth = Number($row.attr("data-depth") || "0");
+      const nextExpanded = expanded ? true : depth < 1;
+      $row.attr("data-expanded", nextExpanded ? "true" : "false");
+      const $toggle = $row.find(".stg-node-toggle");
+      $toggle.text(nextExpanded ? "▾" : "▸");
+      $toggle.attr("aria-expanded", nextExpanded ? "true" : "false");
+    });
+    renderResponseTree(methodId);
+  }
+
+  function copyText(text) {
+    const normalized = String(text || "").trim();
+    if (!normalized) {
+      return Promise.resolve(false);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(normalized).then(function () {
+        return true;
+      }).catch(function () {
+        return false;
+      });
+    }
+    const $temp = $("<textarea>").val(normalized).css({
+      position: "fixed",
+      left: "-9999px",
+      top: "-9999px"
+    }).appendTo("body");
+    $temp[0].focus();
+    $temp[0].select();
+    let ok = false;
+    try {
+      ok = document.execCommand("copy");
+    } catch (e) {
+      ok = false;
+    }
+    $temp.remove();
+    return Promise.resolve(ok);
+  }
+
+  function flashCopied($el, ok) {
+    const cls = ok ? "stg-copied" : "stg-copy-failed";
+    $el.addClass(cls);
+    setTimeout(function () {
+      $el.removeClass(cls);
+    }, 700);
+  }
+
+  function getCopyValueFromCell($cell) {
+    const $label = $cell.find(".stg-node-label");
+    if ($label.length > 0) {
+      return String($label.text() || "").trim();
+    }
+    return String($cell.text() || "").trim();
+  }
+
+  $(".stg-tab-btn").on("click", function () {
+    const targetId = $(this).data("target");
+    const $panel = $(this).closest(".stg-response-panel");
+    $panel.find(".stg-tab-btn").removeClass("active");
+    $(this).addClass("active");
+    $panel.find(".stg-tab-content").removeClass("active");
+    $panel.find("#" + targetId).addClass("active");
+  });
+
+  $(document).on("click", ".stg-node-toggle.has-children", function () {
+    const $row = $(this).closest(".stg-response-row");
+    const methodId = String($row.data("method-id") || "");
+    const expanded = $row.attr("data-expanded") === "true";
+    $row.attr("data-expanded", expanded ? "false" : "true");
+    $(this).text(expanded ? "▸" : "▾");
+    $(this).attr("aria-expanded", expanded ? "false" : "true");
+    renderResponseTree(methodId);
+  });
+
+  $(".stg-expand-all").on("click", function () {
+    setExpandedState($(this).data("method-id"), true);
+  });
+
+  $(".stg-collapse-all").on("click", function () {
+    setExpandedState($(this).data("method-id"), false);
+  });
+
+  $(document).on("click", "#content .paragraph[data-url] a.bare", function (e) {
+    e.preventDefault();
+    const text = String($(this).text() || "").replace(/^\s+/, "");
+    const $target = $(this);
+    copyText(text).then(function (ok) {
+      flashCopied($target, ok);
+    });
+  });
+
+  $(document).on("click", "#content table.tableblock tbody td:first-child p.tableblock", function (e) {
+    if ($(e.target).closest("button,input,a").length > 0) {
+      return;
+    }
+    const text = getCopyValueFromCell($(this));
+    const $target = $(this);
+    copyText(text).then(function (ok) {
+      flashCopied($target, ok);
+    });
+  });
+
+  const responseMethodIds = {};
+  $(".stg-response-row").each(function () {
+    const methodId = String($(this).data("method-id") || "");
+    if (methodId) {
+      responseMethodIds[methodId] = true;
+    }
+  });
+  Object.keys(responseMethodIds).forEach(function (methodId) {
+    initResponseTree(methodId);
+    renderResponseTree(methodId);
+  });
   $(window).scroll(function () {
     if ($(window).scrollTop() > 100) {
       let $toTop = $("#toTop");

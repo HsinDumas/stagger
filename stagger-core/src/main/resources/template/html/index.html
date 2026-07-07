@@ -74,7 +74,9 @@
                 <%if(isNotEmpty(doc.author)){%>
                 <div class="paragraph"><p><strong>Author:</strong>&nbsp;${doc.author}</p></div>
                 <%}%>
+                <%if(isNotEmpty(doc.contentType)){%>
                 <div class="paragraph"><p><strong>Content-Type:</strong>&nbsp;${doc.contentType}</p></div>
+                <%}%>
                 <div class="paragraph"><p><strong>Description:</strong>&nbsp;${lineBreaksToBr(doc.detail)}</p></div>
                 <%if(isNotEmpty(doc.requestHeaders)){%>
                 <div class="paragraph"><p><strong>Request-headers:</strong></p></div>
@@ -103,7 +105,7 @@
                         <td class="tableblock halign-left valign-top"><p class="tableblock">${htmlEscape(header.desc)}</p></td>
                         <td class="tableblock halign-left valign-top"><p class="tableblock">${header.required}</p></td>
                         <td class="tableblock halign-left valign-top"><p class="tableblock">${header.since}</p></td>
-                        <td class="tableblock halign-left valign-top"><p class="tableblock">${header.value}</p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">${header.value!''}</p></td>
                     </tr>
                     <%}%>
                     </tbody>

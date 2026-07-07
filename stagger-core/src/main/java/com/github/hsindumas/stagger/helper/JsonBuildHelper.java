@@ -38,12 +38,21 @@ import com.github.hsindumas.stagger.utils.JavaClassUtil;
 import com.github.hsindumas.stagger.utils.JavaClassValidateUtil;
 import com.github.hsindumas.stagger.utils.JavaFieldUtil;
 import com.github.hsindumas.stagger.utils.JsonUtil;
+import java.lang.reflect.Field;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -301,6 +310,20 @@ public class JsonBuildHelper extends BaseHelper {
         }
         // Process fields of the class
         else {
+            if (Objects.isNull(cls)) {
+                String reflectedJson = buildJsonFromReflectedClass(
+                        typeName,
+                        genericCanonicalName,
+                        isResp,
+                        nextLevel,
+                        registryClasses,
+                        groupClasses,
+                        methodJsonViewClasses,
+                        projectBuilder);
+                if (StringUtil.isNotEmpty(reflectedJson)) {
+                    return reflectedJson;
+                }
+            }
             boolean requestFieldToUnderline = projectBuilder.getApiConfig().isRequestFieldToUnderline();
             boolean responseFieldToUnderline = projectBuilder.getApiConfig().isResponseFieldToUnderline();
             List<DocJavaField> fields = JavaClassUtil.getFields(
@@ -745,5 +768,172 @@ public class JsonBuildHelper extends BaseHelper {
                         methodJsonViewClasses,
                         builder))
                 .append("}");
+    }
+
+    private static String buildJsonFromReflectedClass(
+            String typeName,
+            String genericCanonicalName,
+            boolean isResp,
+            int nextLevel,
+            Map<String, String> registryClasses,
+            Set<String> groupClasses,
+            Set<String> methodJsonViewClasses,
+            ProjectDocConfigBuilder projectBuilder) {
+        ClassLoader classLoader = projectBuilder.getApiConfig().getClassLoader();
+        String rawTypeName = genericCanonicalName.contains("<")
+                ? genericCanonicalName.substring(0, genericCanonicalName.indexOf('<'))
+                : typeName;
+        try {
+            Class<?> rawClass = classLoader.loadClass(rawTypeName);
+            Map<String, String> typeVarMap = buildTypeVariableMap(rawClass, genericCanonicalName);
+            boolean requestFieldToUnderline = projectBuilder.getApiConfig().isRequestFieldToUnderline();
+            boolean responseFieldToUnderline = projectBuilder.getApiConfig().isResponseFieldToUnderline();
+
+            StringBuilder result = new StringBuilder("{");
+            for (Field field : getAllFields(rawClass)) {
+                if (Modifier.isStatic(field.getModifiers())
+                        || Modifier.isTransient(field.getModifiers())
+                        || field.isSynthetic()) {
+                    continue;
+                }
+                String fieldName = field.getName();
+                if ((responseFieldToUnderline && isResp) || (requestFieldToUnderline && !isResp)) {
+                    fieldName = StringUtil.camelToUnderline(fieldName);
+                }
+                String fieldType = resolveReflectTypeName(field.getGenericType(), typeVarMap);
+                if (StringUtil.isEmpty(fieldType)) {
+                    continue;
+                }
+                String simpleFieldType = DocClassUtil.getSimpleName(fieldType);
+                result.append("\"").append(fieldName).append("\":");
+
+                if (JavaClassValidateUtil.isPrimitive(simpleFieldType)) {
+                    result.append(DocUtil.jsonValueByType(fieldType)).append(",");
+                    continue;
+                }
+                if (JavaClassValidateUtil.isCollection(simpleFieldType) || JavaClassValidateUtil.isArray(simpleFieldType)) {
+                    String[] gics = DocClassUtil.getSimpleGicName(fieldType);
+                    if (gics.length == 0 || StringUtil.isEmpty(gics[0])) {
+                        result.append("[{\"object\":\"any object\"}],");
+                        continue;
+                    }
+                    String itemType = gics[0];
+                    if (JavaClassValidateUtil.isPrimitive(itemType)) {
+                        result.append("[").append(DocUtil.jsonValueByType(itemType)).append("],");
+                        continue;
+                    }
+                    String itemJson = buildJson(
+                            DocClassUtil.getSimpleName(itemType),
+                            itemType,
+                            isResp,
+                            nextLevel,
+                            registryClasses,
+                            groupClasses,
+                            methodJsonViewClasses,
+                            projectBuilder);
+                    result.append("[").append(itemJson).append("],");
+                    continue;
+                }
+                if (JavaClassValidateUtil.isMap(simpleFieldType)) {
+                    StringBuilder mapData = new StringBuilder();
+                    buildMapJson(
+                            fieldType,
+                            isResp,
+                            nextLevel,
+                            registryClasses,
+                            groupClasses,
+                            methodJsonViewClasses,
+                            projectBuilder,
+                            mapData,
+                            nextLevel + 1);
+                    result.append(mapData).append(",");
+                    continue;
+                }
+
+                if (JavaTypeConstants.JAVA_OBJECT_FULLY.equals(fieldType)) {
+                    result.append("{},");
+                    continue;
+                }
+                String childJson = buildJson(
+                        simpleFieldType,
+                        fieldType,
+                        isResp,
+                        nextLevel,
+                        registryClasses,
+                        groupClasses,
+                        methodJsonViewClasses,
+                        projectBuilder);
+                result.append(childJson).append(",");
+            }
+            if (result.charAt(result.length() - 1) == ',') {
+                result.deleteCharAt(result.length() - 1);
+            }
+            result.append("}");
+            return result.toString();
+        } catch (ClassNotFoundException ignored) {
+            return StringUtil.EMPTY;
+        }
+    }
+
+    private static Map<String, String> buildTypeVariableMap(Class<?> rawClass, String genericCanonicalName) {
+        Map<String, String> result = new HashMap<>();
+        String[] actualGics = DocClassUtil.getSimpleGicName(genericCanonicalName);
+        TypeVariable<?>[] typeVariables = rawClass.getTypeParameters();
+        int len = Math.min(typeVariables.length, actualGics.length);
+        for (int i = 0; i < len; i++) {
+            result.put(typeVariables[i].getName(), actualGics[i]);
+        }
+        return result;
+    }
+
+    private static List<Field> getAllFields(Class<?> clazz) {
+        List<Field> fields = new ArrayList<>();
+        Class<?> current = clazz;
+        while (Objects.nonNull(current) && !Object.class.equals(current)) {
+            Collections.addAll(fields, current.getDeclaredFields());
+            current = current.getSuperclass();
+        }
+        return fields;
+    }
+
+    private static String resolveReflectTypeName(Type type, Map<String, String> typeVarMap) {
+        if (type instanceof Class) {
+            Class<?> c = (Class<?>) type;
+            if (c.isArray()) {
+                return c.getComponentType().getName().replace('$', '.') + "[]";
+            }
+            return c.getName().replace('$', '.');
+        }
+        if (type instanceof ParameterizedType) {
+            ParameterizedType pt = (ParameterizedType) type;
+            String raw = resolveReflectTypeName(pt.getRawType(), typeVarMap);
+            Type[] args = pt.getActualTypeArguments();
+            StringBuilder sb = new StringBuilder(raw).append('<');
+            for (int i = 0; i < args.length; i++) {
+                if (i > 0) {
+                    sb.append(',');
+                }
+                sb.append(resolveReflectTypeName(args[i], typeVarMap));
+            }
+            sb.append('>');
+            return sb.toString();
+        }
+        if (type instanceof TypeVariable) {
+            TypeVariable<?> tv = (TypeVariable<?>) type;
+            return typeVarMap.getOrDefault(tv.getName(), JavaTypeConstants.JAVA_OBJECT_FULLY);
+        }
+        if (type instanceof WildcardType) {
+            WildcardType wt = (WildcardType) type;
+            Type[] upper = wt.getUpperBounds();
+            if (upper.length > 0) {
+                return resolveReflectTypeName(upper[0], typeVarMap);
+            }
+            return JavaTypeConstants.JAVA_OBJECT_FULLY;
+        }
+        if (type instanceof GenericArrayType) {
+            GenericArrayType gat = (GenericArrayType) type;
+            return resolveReflectTypeName(gat.getGenericComponentType(), typeVarMap) + "[]";
+        }
+        return Optional.ofNullable(type).map(Type::getTypeName).orElse(JavaTypeConstants.JAVA_OBJECT_FULLY);
     }
 }

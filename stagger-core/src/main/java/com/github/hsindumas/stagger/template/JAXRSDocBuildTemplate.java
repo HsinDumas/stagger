@@ -391,7 +391,6 @@ public class JAXRSDocBuildTemplate
                     .setRequestParams(new ArrayList<>(0));
         }
         boolean isStrict = builder.getApiConfig().isStrict();
-        boolean isShowValidation = builder.getApiConfig().isShowValidation();
         ClassLoader classLoader = builder.getApiConfig().getClassLoader();
         Object javaMethod = docJavaMethod.getJavaMethod();
         String className = DocUtil.getMethodDeclaringClassCanonicalName(javaMethod);
@@ -459,7 +458,6 @@ public class JAXRSDocBuildTemplate
                         strRequired = "true";
                     }
                 }
-                comment.append(JavaFieldUtil.getJsrComment(isShowValidation, classLoader, annotations));
             } else {
                 isRequestBody = true;
             }
